@@ -1,0 +1,20 @@
+# The same styling as the application this table was extracted from, so code
+# can move between the two without a lint argument.
+inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+  Exclude:
+    - "vendor/**/*"
+
+Performance:
+  Enabled: true
+
+# There is no Rails here.
+Rails:
+  Enabled: false
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: true
+  EnforcedStyle: no_space
