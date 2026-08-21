@@ -9,6 +9,9 @@ on:
     branches: [main]
     paths:
       - "lib/seaports/version.rb"
+  # The first release has no version bump to ride in on, and a release that
+  # failed on something unrelated should not need a fake one either.
+  workflow_dispatch:
 
 permissions:
   contents: write
