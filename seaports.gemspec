@@ -10,10 +10,10 @@ Gem::Specification.new do |spec|
 
   spec.summary = "UN/LOCODE sea ports: a locode in, a port name and position out."
   spec.description = <<~TEXT
-    Every sea port UNECE publishes a UN/LOCODE for, as a lookup table with no
-    dependencies and no network calls. Turns the bare codes in an AIS or
-    carrier tracking feed back into port names and coordinates. The table is
-    regenerated from each UN/LOCODE release and shipped inside the gem.
+    Every sea port UNECE publishes a UN/LOCODE for, as a lookup table that
+    makes no network calls. Turns the bare codes in an AIS or carrier tracking
+    feed back into port names and coordinates. The table is regenerated from
+    each UN/LOCODE release and shipped inside the gem.
   TEXT
   spec.homepage = "https://github.com/Trackberry/seaports"
   spec.license = "MIT"
