@@ -73,6 +73,42 @@ from a three-character carrier code, which is a heuristic: a code that is not a
 locode tail could pair with a country to form a valid-looking locode for some
 inland village, and a table of ports is far less likely to name it.
 
+## What it costs
+
+A lookup is a hash fetch. The table is parsed once, on the first lookup rather
+than at require time, and after that nothing touches the disk again.
+
+| | |
+| --- | --- |
+| lookup | **0.31 µs** — about 3.2M per second |
+| miss | 0.28 µs |
+| malformed input | 0.25 µs — rejected on shape before the table is consulted |
+| first lookup, which parses the table | ~140 ms, once per process |
+| resident table | 3.9 MB |
+
+Measured on Ruby 4.0, Apple Silicon, against the shipped 468 KB table. Reading
+the file off disk is 0.4 ms of that first 140 ms; the rest is CSV parsing and
+building the 17,520 objects, so it is CPU rather than I/O.
+
+There is no database, no ActiveRecord, and no query per lookup. That is worth
+saying because the alternative approach in this corner of the ecosystem is to
+ship a SQLite file and read it through ActiveRecord, which puts a second
+database connection and a version-pinned ORM into the dependency graph of an
+application that only wanted to turn `CNXMG` into `Xiamen Pt`. A CSV and a hash
+answer the same question with one dependency and no connection.
+
+Nothing here is cached, because there is nothing left to cache: the table
+already is the cache. A `Rails.cache` round trip costs around a millisecond,
+which is some three thousand times slower than the lookup it would be caching.
+
+The one cost worth managing is that first 140 ms, and the fix is to move it off
+the request path rather than to cache it:
+
+```ruby
+# config/initializers/seaports.rb
+Rails.application.config.after_initialize { Seaports.count }
+```
+
 ## How the table stays current
 
 UNECE republishes twice a year and does not announce it. A scheduled workflow
