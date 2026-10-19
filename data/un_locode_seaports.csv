@@ -1,11 +1,14 @@
 locode,name,lat,lng
+AEAAN,Al Ain,24.0167,55.55
 AEABU,Abu al Bukhoosh,25.4833,53.1333
 AEAJM,Ajman,,
 AEAJP,Al Jeer Port,26.0333,56.05
+AEALF,Al Faya,24.8,55.0667
 AEAMF,Musaffah,24.3833,54.4833
 AEAMU,Abu Musa,25.8667,55.0167
 AEARP,Ahmed Bin Rashid Port,25.5333,55.55
 AEAUH,Abu Dhabi,24.4667,54.3667
+AECAD,Abu Dhabi Industrial City (ICAD),24.3333,54.4333
 AEDAS,Das Island,,
 AEDBP,Dibba,25.6167,56.2667
 AEDUJ,The Palm Jumeirah,,
@@ -14,8 +17,11 @@ AEEND,Esnnad,24.3167,54.45
 AEFAT,Fateh Terminal,,
 AEFJR,Al Fujayrah,25.1167,56.3333
 AEFRP,Free Port,25.25,55.25
+AEGTT,Al Ghuwaifat,24.1333,51.6167
+AEHAB,Habshan,23.9333,53.6333
 AEHSN,Hassyan,24.9,54.9
 AEHTL,Hulaylah Terminal,25.9833,55.9333
+AEHYR,Al Hiyar,24.6,55.75
 AEHZP,Hamriya Free Zone Port,25.3,55.3167
 AEJAZ,Al Jazeera Port,25.7167,55.8
 AEJEA,Jebel Ali,,
@@ -37,9 +43,10 @@ AERKP,Rak Khor Port,25.8167,55.95
 AERKT,Ras al Khaimah,25.7833,55.95
 AERMC,Rak Maritime City,25.95,56.05
 AERUW,Ar Ruways,24.1167,52.7333
-AERWP,Ruwais Port,24.1,52.7167
+AERWP,Ruwais,24.1,52.7167
 AESHJ,Sharjah,25.35,55.3833
 AESID,Sadiyat Island,24.5333,54.4
+AESIL,Al Sila,24.0667,51.75
 AEULR,Umm Al Nar,24.4333,54.5
 AEYAS,Yas Island,24.3167,52.6
 AEZUR,Zirku Island,24.8833,53.0667
@@ -241,7 +248,7 @@ ARVMD,Villa Mercedes,,
 ARVTT,Villa del Totoral,,
 ARXPD,San Pedro,,
 ARZAE,Zárate,-34.1,-59.0333
-ASPPG,Pago Pago,14.2667,-170.7
+ASPPG,Pago Pago,-14.2667,-170.7
 AT7PZ,Prinzersdorf,48.2,15.5167
 ATATK,Paternion,46.7,13.6333
 ATATN,Asten,48.2167,14.4
@@ -254,7 +261,7 @@ ATBRZ,Bregenz,47.5,9.7667
 ATDFC,Engerwitzdorf,48.35,14.45
 ATDKZ,Deutschkreutz,47.6,16.6333
 ATDOF,Hadersdorf,48.45,15.7167
-ATDRA,Drasenhofen,48.75,-16.65
+ATDRA,Drasenhofen,48.75,16.65
 ATDRO,Dross,48.45,15.5667
 ATDUE,Dürnstein,48.3833,15.5167
 ATDWA,Deutsch Wagram,48.3,16.5667
@@ -278,7 +285,7 @@ ATGDN,Gmunden,47.9167,13.8
 ATGFS,Greifenstein,48.3333,16.2333
 ATGGU,Oggau,47.8333,16.6667
 ATGHH,Haugsdorf,48.7,16.0667
-ATGHJ,Krustetten,48.3667,-154.0
+ATGHJ,Krustetten,48.3667,15.6667
 ATGRN,Grein,48.2167,14.8333
 ATGSN,Gutenstein,47.8667,15.8833
 ATHKM,Hadersdorf-Kammern,48.45,15.7167
@@ -574,7 +581,7 @@ AUMDC,Mordialloc,-38.0167,145.0833
 AUMEL,Melbourne,-37.8167,144.9667
 AUMHW,Mount Hawthorn,-31.9167,115.8333
 AUMIB,Milner Bay,,
-AUMID,Midland,31.8833,-115.9833
+AUMID,Midland,-31.8833,116.0
 AUMIL,Milperra,,
 AUMKY,Mackay,-21.15,149.2
 AUMLI,Melville Island,-11.55,130.9333
@@ -2143,7 +2150,7 @@ CAZFT,Forest,43.1,-82.0
 CAZTI,Saint-Tite,46.7333,-72.5667
 CAZYE,Yamachiche,46.2833,-72.8333
 CCCCK,Cocos Islands,-12.0,96.8333
-CDBNW,Banana,6.0167,12.4
+CDBNW,Banana,-6.0167,12.4
 CDBOA,Boma,,
 CDFIH,Kinshasa,,
 CDMAT,Matadi,,
@@ -2154,7 +2161,7 @@ CGDJE,Djeno Terminal,,
 CGMOS,Mossaka,-1.2167,16.8
 CGNKO,N'Kossa Terminal,-5.2333,11.6
 CGOUE,Ouesso,,
-CGOYO,Oyo,1.0,15.9
+CGOYO,Oyo,-1.1667,15.9667
 CGPNR,Pointe Noire,-4.8,11.85
 CGYOM,Yombo,-2.9333,12.7
 CHBA8,Ballwil,47.15,8.3167
@@ -3309,7 +3316,7 @@ CZDOL,Dolní Lhota,49.1333,17.8167
 CZDRN,Drnholec,48.85,16.5
 CZDRO,Dobromerice,50.3667,13.8
 CZDRS,Dobris,49.7833,14.1667
-CZG44,Chvalatice,48.95,-154.8333
+CZG44,Chvalatice,48.95,15.75
 CZHLP,Hlubocepy,,
 CZHLU,Hluk,48.9833,17.5167
 CZHOT,Hostomice,,
@@ -3676,7 +3683,7 @@ DEGXG,Gager,54.3,13.6833
 DEGXN,Gimmeldingen,49.3667,8.15
 DEGXR,Gröde,54.6333,8.7167
 DEGXS,Gaussig,51.1167,14.3167
-DEGYM,Mainzlar,50.6667,-8.7333
+DEGYM,Mainzlar,50.6667,8.7333
 DEGZG,Grosszerlang,53.1833,12.95
 DEHAF,Hafenlohr,,
 DEHAJ,Hannover,52.3667,9.7167
@@ -4219,7 +4226,7 @@ DEWNG,Weissenburg in Bayern,49.0333,10.9667
 DEWNH,Windheim,52.4,9.0167
 DEWNI,Winnweiler,49.5667,7.85
 DEWNL,Wandersleben,50.9,10.85
-DEWNT,Wedlenstedt,52.25,-10.4
+DEWNT,Wedlenstedt,52.25,10.4
 DEWNU,Weissenthurm,50.4167,7.45
 DEWOB,Wolfsburg,52.4333,10.8
 DEWOE,Wörth am Rhein,,
@@ -4512,7 +4519,7 @@ DMPOR,Portsmouth,15.5667,-61.45
 DMRSU,Roseau,,
 DOAZU,Azua,18.45,-70.7333
 DOBAN,Baní,18.2833,-70.3333
-DOBAV,Bavaro,-18.7167,-68.45
+DOBAV,Bavaro,18.7167,-68.45
 DOBCC,Boca Chica,,
 DOBQL,Barcequillo,18.4333,-70.0333
 DOBRX,Barahona,,
@@ -5808,7 +5815,7 @@ FRHET,Hennebont,47.8,-3.2833
 FRHEY,Chessy,48.8833,2.7667
 FRHIY,Chierry,49.0333,3.4333
 FRHJK,Bonnencontre,47.0833,5.15
-FRHMX,Île-de-Batz,48.75,3.9833
+FRHMX,Île-de-Batz,48.75,-3.9833
 FRHOG,Hombourg,47.7667,7.5
 FRHON,Honfleur,49.4167,0.2333
 FRHOP,Hopital-Camfrout,48.3333,-4.2333
@@ -5857,7 +5864,7 @@ FRJMQ,Combertault,47.0,4.9
 FRJPL,Virey,46.8333,4.8667
 FRJUU,Jouarre,48.9333,3.1333
 FRJYS,La Penne-sur-Ouveze,44.25,5.2167
-FRKAQ,Saint-Julien-de-Chédon,47.3,-1.2
+FRKAQ,Saint-Julien-de-Chédon,47.3,1.2
 FRKLO,Ponte Leccia,42.4667,9.2
 FRKLU,Muides-sur-Loire,47.6667,1.5333
 FRKLY,Cruzy,43.35,2.95
@@ -6025,7 +6032,7 @@ FRPC6,Saint-Nicolas,50.3,2.7667
 FRPD2,Plombières-lès-Dijon,47.3333,4.9667
 FRPDB,Port-de-Bouc,43.4,4.9833
 FRPDF,Pontevès,43.5667,6.05
-FRPDH,Port-des-Barques,45.95,0.9167
+FRPDH,Port-des-Barques,45.95,-0.9167
 FRPDU,Saint-Pierre-d'Autils,49.1167,1.4167
 FRPET,Petit-Couronne,49.3833,1.0333
 FRPF4,Étrigny,46.5833,4.8
@@ -6594,7 +6601,7 @@ GBCKN,Culkein,58.25,-5.35
 GBCKR,Chickerell,50.6167,-2.5
 GBCKS,Creeksea,51.6333,0.7833
 GBCLF,Cliffe,,
-GBCLJ,Claonaig,55.75,5.3833
+GBCLJ,Claonaig,55.75,-5.3833
 GBCLM,Culkein/Drumbeg,58.2333,-5.3333
 GBCLR,Coleraine,,
 GBCLS,Clacton-on-Sea,51.8,1.15
@@ -6643,7 +6650,7 @@ GBCUB,"Church Bay, Rathlin Island",55.2833,-6.1833
 GBCUE,Cushendun,55.1333,-6.05
 GBCUJ,Cumbria,54.5,-3.25
 GBCUM,Cumbraes,55.7333,-4.9167
-GBCUN,Cullen,57.6833,2.8167
+GBCUN,Cullen,57.6833,-2.8167
 GBCUR,Curlew,56.7333,1.3
 GBCUS,Cushendall,55.0833,-6.05
 GBCUV,"Cullivoe, Yell",60.7,-1.0167
@@ -7612,7 +7619,7 @@ GBVEN,Ventnor,50.6,-1.2
 GBVGI,Varg field,,
 GBVID,Vidlin,60.3667,-1.1333
 GBVOE,Voe,60.35,-1.25
-GBVVE,Belgrave,52.65,-2.1667
+GBVVE,Belgrave,52.65,-1.1167
 GBWAB,Wadebridge,50.5167,-4.8333
 GBWAF,Watford,,
 GBWAT,Watchet,,
@@ -7653,7 +7660,7 @@ GBWMF,Walmer,,
 GBWMS,West Mersea,51.7833,0.9167
 GBWND,Warndon,52.2,-2.1667
 GBWNL,Whinnyfold,57.3833,-1.8667
-GBWNS,Wells-next-the-Sea,52.95,-0.8333
+GBWNS,Wells-next-the-Sea,52.95,0.8333
 GBWNZ,Walton-on-the-Naze,51.8667,1.2667
 GBWOL,North Woolwich,51.5,0.6667
 GBWOR,Workington,,
@@ -8142,7 +8149,7 @@ GRYAL,Yaltra,38.85,22.9833
 GRYER,Yerakiní,40.2833,23.45
 GRYLI,Yali Island,,
 GRYPS,Ypsos,39.7,19.8333
-GRZAQ,Sérifos,37.15,-24.5
+GRZAQ,Sérifos,37.15,24.5
 GRZTH,Zákynthos,37.7833,20.9
 GSGRV,Grytviken,-54.2667,-36.5
 GSLEH,Leith Harbour,,
@@ -8392,7 +8399,7 @@ HUAFU,Almásfüzitó,47.7,18.2667
 HUAKT,Andornaktálya,47.8333,20.4167
 HUALS,Alsóörs,46.9833,17.9833
 HUASZ,Alsozsolca,48.0667,20.8833
-HUBDA,Berhida,48.1667,18.1333
+HUBDA,Berhida,47.1167,18.1333
 HUBRS,Badacsonyörs,46.8,17.5333
 HUBUD,Budapest,47.5,19.0833
 HUBZE,Berzence,46.2,17.15
@@ -8735,7 +8742,7 @@ IDTRK,"Tarakan, Kalimantan",,
 IDTSE,"Tanjung Sekong, Jv",,
 IDTTE,"Ternate, Halmahera",,
 IDTUA,Tual,-5.6333,132.7333
-IDTZD,Amurang,1.1667,-124.5667
+IDTZD,Amurang,1.1833,124.5667
 IDUDG,Udang Natuna Terminal,4.0167,106.4667
 IDUPG,"Ujung Pandang, Sulawesi",,
 IDUTC,Jakarta UTC1,,
@@ -9409,7 +9416,7 @@ ITFNL,Finale Ligure,44.1667,8.3333
 ITFOL,Follonica,42.9167,10.75
 ITFOM,Formia,41.25,13.6167
 ITFOR,Isolotto Formica,37.9833,12.4167
-ITFPO,Filicudi Porto,,
+ITFPO,Filicudi Porto,38.5667,14.5833
 ITFRD,Forio,40.7333,13.85
 ITFSA,Fusina,45.4167,12.2333
 ITGAE,Gaeta,41.2,13.5833
@@ -9417,7 +9424,7 @@ ITGAI,Golfo Aranci,41.0,9.6167
 ITGAL,Gallipoli,40.05,17.9833
 ITGEA,Gela,37.0667,14.25
 ITGIA,Giardini Naxos,37.8167,15.2667
-ITGII,Giannutri,,
+ITGII,Giannutri,42.25,11.1
 ITGIT,Gioia Tauro,38.4167,15.9
 ITGLJ,Camogli,44.35,9.15
 ITGMA,Gabicce Mare,43.9667,12.7667
@@ -9452,7 +9459,7 @@ ITLES,Lesina,41.8667,15.35
 ITLEV,Levanzo,37.9833,12.3333
 ITLIC,Licata,37.1,13.9333
 ITLIP,Lipari,38.45,14.95
-ITLIU,Linosa,,
+ITLIU,Linosa,35.8667,12.8667
 ITLIV,Livorno,43.55,10.3167
 ITLLT,Savelletri,40.8667,17.4167
 ITLMP,Lampedusa,35.5,12.6
@@ -9464,7 +9471,7 @@ ITMAJ,Marano Lagunare,45.7667,13.1667
 ITMAM,Marciana Marina,42.8,10.2
 ITMAZ,Mazara del Vallo,37.65,12.5833
 ITMDA,La Maddalena,41.2167,9.4
-ITMDC,Marina di Carrara,,
+ITMDC,Marina di Carrara,44.0333,10.05
 ITMDW,Margherita di Savoia,41.3667,16.15
 ITMFR,Manfredonia,41.6333,15.9167
 ITMGE,Marina Grande,40.55,14.25
@@ -9474,13 +9481,13 @@ ITMIT,Marina di Camerota,40.0,15.3667
 ITMLB,Marina della Lobra,40.6,14.3333
 ITMLS,Montalto di Castro,42.35,11.6167
 ITMLU,Massa Lubrense,40.6,14.3333
-ITMLZ,Milazzo,,
-ITMMO,Marettimo,,
+ITMLZ,Milazzo,38.2167,15.2333
+ITMMO,Marettimo,37.9667,12.0667
 ITMND,"Mondello, Palermo",38.2,13.3333
-ITMNF,Monfalcone,,
-ITMNP,Monopoli,,
+ITMNF,Monfalcone,45.8,13.5333
+ITMNP,Monopoli,40.95,17.3
 ITMNU,Marinella di Selinunte,37.5833,12.7833
-ITMOL,Molfetta,,
+ITMOL,Molfetta,41.2,16.6
 ITMPA,Marina di Pisa,43.6667,10.2667
 ITMPS,Melito di Porto Salvo,37.9167,15.7833
 ITMRA,Marsala,37.8,12.4333
@@ -9488,12 +9495,12 @@ ITMRM,Cirò Marina,39.3667,17.1333
 ITMRP,Marina di Campo,42.7333,10.2333
 ITMSB,Marina di Pisciotta,40.1,15.2333
 ITMSD,Marina di Grosseto,42.7167,10.9833
-ITMSN,Messina,,
+ITMSN,Messina,38.2,15.55
 ITMTH,Meta,40.65,14.4
 ITNAP,Napoli,40.8333,14.25
 ITNCT,San Cataldo,40.3833,18.3
 ITNGA,Sperlonga,41.25,13.4333
-ITNIG,Cannigione,,
+ITNIG,Cannigione,41.1,9.4333
 ITNLI,Noli,44.2,8.4333
 ITNNE,Cala Gonone,40.3,9.6333
 ITNSR,Nova Siri,40.15,16.5333
@@ -9506,24 +9513,24 @@ ITODB,Mola di Bari,41.0667,17.0833
 ITODG,Mondragone,41.1167,13.8833
 ITOGN,Ognina,36.9833,15.25
 ITOLB,Olbia,40.9167,9.5167
-ITONE,Oneglia,,
+ITONE,Oneglia,43.8833,8.0333
 ITORL,Porticello,38.0833,13.5333
-ITOTN,Ortona,,
-ITOTO,Otranto,,
+ITOTN,Ortona,42.35,14.4
+ITOTO,Otranto,40.15,18.4833
 ITOZI,Pozzillo,37.65,15.1833
 ITPAN,Panarea,,
-ITPAU,Palau,,
-ITPAZ,Porto Azzurro,,
-ITPCE,Porto Cervo,,
-ITPCH,Peschici,,
+ITPAU,Palau,41.1833,9.3833
+ITPAZ,Porto Azzurro,42.7667,10.4
+ITPCE,Porto Cervo,41.1333,9.5333
+ITPCH,Peschici,41.95,16.0167
 ITPCN,Porto Conte Torre Nuova,40.6,8.2
-ITPDI,Porto d'Ischia,,
+ITPDI,Porto d'Ischia,40.75,13.95
 ITPED,Pedaso,43.1,13.8333
-ITPEM,Porto Empedocle,,
+ITPEM,Porto Empedocle,37.2833,13.5333
 ITPES,Pesaro,43.9,12.9167
-ITPFE,Portoferraio,,
+ITPFE,Portoferraio,42.8167,10.3333
 ITPFX,Porto Foxi (Sarroch),39.05,9.0
-ITPGA,Porto Garibaldi,,
+ITPGA,Porto Garibaldi,44.6833,12.2333
 ITPGL,Portigliola,38.2333,16.2167
 ITPIA,Pianosa,42.5667,10.0667
 ITPIM,Praia a Mare,39.9,15.7833
@@ -9534,13 +9541,13 @@ ITPLN,Palinuro,40.0333,15.2833
 ITPMA,Marghera,45.45,12.2167
 ITPMM,Palmi,38.35,15.85
 ITPMO,Palermo,38.1167,13.3667
-ITPMZ,Porto Maurizio,,
-ITPNG,Porto Nogaro,,
-ITPNL,Pantelleria,,
+ITPMZ,Porto Maurizio,43.8833,8.0167
+ITPNG,Porto Nogaro,45.8167,13.2167
+ITPNL,Pantelleria,36.8333,11.95
 ITPNZ,Ponza,40.9,12.9667
 ITPOM,Pomezia,41.6667,12.5
 ITPOQ,Porto Viro,45.05,12.25
-ITPOS,Positano,,
+ITPOS,Positano,40.6333,14.4833
 ITPOZ,Pozzuoli,,
 ITPPF,Porto Palo,37.5667,12.9
 ITPPL,Portopalo,36.6833,15.1333
@@ -9549,42 +9556,42 @@ ITPRF,Porto Recanati,43.4333,13.6667
 ITPRH,Sapri,40.0667,15.6333
 ITPRJ,Capri,40.55,14.2333
 ITPRL,Priolo Gargallo,37.15,15.1833
-ITPRO,Procida,,
+ITPRO,Procida,40.7667,14.0167
 ITPRR,Piano di Sorrento,40.6333,14.3833
 ITPRW,Portovenere,44.05,9.85
 ITPSR,Pescara,42.4667,14.2333
-ITPSS,Porto Santo Stefano,,
+ITPSS,Porto Santo Stefano,42.4333,11.1167
 ITPTC,Portici,40.8167,14.3333
-ITPTF,Portofino,,
+ITPTF,Portofino,44.3,9.2167
 ITPTH,Porto Ercole,42.3833,11.2
 ITPTI,Patti,38.1333,14.9667
-ITPTO,Porto Torres,,
+ITPTO,Porto Torres,40.8333,8.4
 ITPUC,Punta Cugno,37.2167,15.2
 ITPVE,Portoscuso (Porto Vesme),39.2,8.3833
 ITPVT,Porto Levante,45.05,12.3667
 ITPZL,Pozzallo,36.7167,14.85
 ITQMM,Marina di Massa,44.0,10.1
 ITQOS,Oristano,39.9,8.6
-ITRAN,Ravenna,,
+ITRAN,Ravenna,44.4167,12.2
 ITRCE,Riccione,43.9833,12.65
 ITREC,Recco,44.3667,9.15
 ITREG,Reggio di Calabria,38.1,15.65
-ITRGG,Rodi Garganico,,
+ITRGG,Rodi Garganico,41.9333,15.8833
 ITRIN,Rinella,38.5333,14.8333
-ITRMA,Rio Marina,,
+ITRMA,Rio Marina,42.8167,10.4333
 ITRMG,Rio Maggiore,44.1,9.7333
 ITRMI,Rimini,44.0667,12.5833
 ITRNS,Spotorno,44.2333,8.4167
 ITROC,Roccella Ionica,38.3167,16.4
 ITRPO,Rapallo,44.35,9.2333
 ITRPT,Riposto,37.7333,15.2
-ITRRO,Sorrento,,
+ITRRO,Sorrento,40.6167,14.3667
 ITRRV,Sferracavallo,38.2,13.2333
 ITRSM,Monterosso al Mare,44.15,9.65
 ITRTS,Riva Trigoso,44.2667,9.4167
 ITRTT,Marotta,43.7667,13.1333
 ITSAL,Salerno,,
-ITSAT,Sant' Antioco,,
+ITSAT,Sant' Antioco,39.0667,8.45
 ITSCK,Sciacca,37.5167,13.05
 ITSCO,Scoglitti,36.8833,14.4333
 ITSDB,San Benedetto del Tronto,42.95,13.8833
@@ -9593,40 +9600,40 @@ ITSFE,San Felice Circeo,41.2333,13.0833
 ITSFM,Santa Foca di Melendugno,40.2667,18.3333
 ITSID,Siderno Marina,38.2667,16.3
 ITSIG,Porto San Giorgio,43.1833,13.8
-ITSIR,Siracusa,,
+ITSIR,Siracusa,37.0667,15.2833
 ITSLA,Santa Marina Salina,38.5667,14.8667
 ITSLC,"Saline, Reggio Calabria",37.95,15.7
 ITSLL,Scilla,38.25,15.7167
 ITSLV,Silvi Marina,42.5667,14.0833
 ITSMA,Santa Marinella,42.0333,11.85
 ITSMK,Santa Maria di Castellabate,40.2833,14.95
-ITSML,Santa Margherita Ligure,,
+ITSML,Santa Margherita Ligure,44.3333,9.2167
 ITSNR,Terrasini,38.15,13.0833
 ITSOO,Soverato,38.6833,16.55
 ITSPA,Santa Panagia,37.1,15.25
 ITSPE,La Spezia,44.1167,9.8333
-ITSRE,San Remo,,
+ITSRE,San Remo,43.8167,7.7833
 ITSRH,Scario,40.05,15.4833
 ITSSF,Santo Stefano al Mare,43.8333,7.8833
 ITSTE,Santa Teresa di Gallura,41.2333,9.1833
-ITSTR,Stromboli,,
-ITSVC,San Vito lo Capo,,
+ITSTR,Stromboli,38.8,15.2333
+ITSVC,San Vito lo Capo,38.1667,12.7333
 ITSVN,Savona,44.2833,8.5
 ITTAA,Cetara,40.65,14.7
-ITTAL,Talamone,,
+ITTAL,Talamone,42.55,11.1333
 ITTAO,Taormina,37.85,15.2833
 ITTAR,Taranto,40.4833,17.2333
 ITTCC,Trebisacce,39.8667,16.5333
 ITTCS,Torre Cesarea,40.0333,18.45
 ITTEA,Maratea,39.9833,15.7167
 ITTEF,Santo Stefano di Camastra,38.0167,14.35
-ITTGR,Torregrande,,
+ITTGR,Torregrande,39.9,8.5167
 ITTGV,Torre Gaveta,40.8167,14.05
 ITTLY,Porto San Vitale,44.4333,12.2333
-ITTMI,Termoli,,
+ITTMI,Termoli,42.0,15.0
 ITTMT,Isole Tremiti,42.1167,15.4833
-ITTNI,Trani,,
-ITTOA,Torre Annunziata,,
+ITTNI,Trani,41.2833,16.4167
+ITTOA,Torre Annunziata,40.75,14.45
 ITTPS,Trapani,38.0167,12.4833
 ITTRC,Terracina,,
 ITTRH,Torre Faro,38.25,15.6333
@@ -9638,20 +9645,20 @@ ITTVC,Torviscosa,45.8167,13.2667
 ITUGG,Muggia,45.6,13.7667
 ITULE,Zaule,45.6,13.8
 ITURI,Scauri,41.25,13.7
-ITUST,Ustica,,
+ITUST,Ustica,38.7167,13.1833
 ITVCE,Venezia,45.4333,12.3333
 ITVDA,Vada,,
 ITVDL,Vado Ligure,44.2667,8.45
 ITVEN,Ventimiglia,43.7833,7.6
-ITVIA,Viareggio,,
-ITVIE,Vieste,,
+ITVIA,Viareggio,43.8667,10.25
+ITVIE,Vieste,41.8833,16.1833
 ITVSG,"Villa San Giovanni, Calabria",38.2167,15.6333
 ITVSO,Vasto,,
 ITVT3,Villafranca Tirrena,38.2333,15.4333
 ITVTI,Voltri,44.4333,8.75
-ITVTT,Ventotene,,
-ITVUL,Vulcano porto,,
-ITVVA,Vibo Valentia,,
+ITVTT,Ventotene,40.8,13.4333
+ITVUL,Vulcano porto,38.4167,14.95
+ITVVA,Vibo Valentia,38.6667,16.1
 ITVZN,Vernazza,44.1333,9.6833
 ITXXX,RIS Inland waterways,,
 ITZQQ,Polignano a Mare,41.0,17.2167
@@ -12182,7 +12189,7 @@ NLGRK,Groenendijk,52.1333,4.5667
 NLGRQ,Groningen,,
 NLGRW,Groeneweg,51.9833,4.6
 NLGRZ,'s-Gravenzande,52.0,4.1667
-NLGSS,Gasselternijveen,52.9833,60.85
+NLGSS,Gasselternijveen,52.9833,6.85
 NLGUN,Goudriaan,51.9,4.9
 NLGWD,Groenewoud,51.5167,5.6167
 NLGWO,Garmerwolde,53.25,6.65
@@ -12274,7 +12281,7 @@ NLLAV,Loenen aan de Vecht,,
 NLLAW,Lage Weide,,
 NLLDD,Leiderdorp,,
 NLLEM,Lemsterland,,
-NLLEN,Lieren,52.1667,60.0
+NLLEN,Lieren,52.1667,6.0
 NLLEO,Leons,53.1167,5.4667
 NLLES,Leens,53.3667,6.3833
 NLLEY,Lelystad,,
@@ -12301,7 +12308,7 @@ NLMAK,Makkum,53.05,5.4
 NLMAR,Markelo,,
 NLMAU,Maurik,,
 NLMDG,Muiderberg,52.3333,5.1167
-NLMDI,Middenbeemster,52.55,40.9167
+NLMDI,Middenbeemster,52.55,4.9167
 NLMDT,Mildert,,
 NLMDU,Middelstum,53.35,6.65
 NLMEH,Mesch,,
@@ -12353,7 +12360,7 @@ NLNSD,Nieuw-Scheemda,53.2,6.9333
 NLNST,Nederasselt,51.7667,5.75
 NLNSU,Nessersluis,52.25,4.8667
 NLNSZ,Nieuwe Statenzijl,53.2333,7.2
-NLNTJ,Neeltje Jans,53.6333,3.7
+NLNTJ,Neeltje Jans,51.6333,3.7
 NLNWG,Nieuwegein,,
 NLNWJ,Noordwelle,51.7167,3.8
 NLNWO,Nieuwolda,53.25,6.9833
@@ -14245,7 +14252,7 @@ ROPPC,Prelipca,47.6,26.35
 ROPSE,Pietroasele,46.1,26.5667
 ROPTA,Petelea,46.7333,24.7167
 RORDE,Rediu,46.9,27.5833
-RORNN,Rosia Montana,-46.3,23.1333
+RORNN,Rosia Montana,46.3,23.1333
 RORVA,Hârsova,44.6833,27.95
 ROSUL,Sulina (Port et Zone Franche),45.15,29.6667
 ROTCE,Tulcea,45.1833,28.8
@@ -14532,7 +14539,7 @@ RUZDK,Zelënodol'sk,55.8333,48.5167
 RUZEM,Zeleniy Mys,,
 RWNSA,Nyagatare,-1.2833,30.3167
 RWRUB,Rubengera,,
-RWRW4,Rwamagana,1.95,30.4333
+RWRW4,Rwamagana,-1.95,30.4333
 SAAHA,Al Hada,,
 SAALK,Al Khobar,,
 SAAMU,Al Muajjiz,23.4667,38.3833
@@ -14944,7 +14951,7 @@ SIPOW,Portoroz,,
 SIROG,Rogasovci,46.8,16.0333
 SIS8L,Selca,46.2167,14.2
 SISEC,Secovlje,45.4667,13.6167
-SISLV,Lukovica pri Domzalah,46.1667,-144.3333
+SISLV,Lukovica pri Domzalah,46.1667,14.6833
 SISML,Mala Nedelja,46.5167,16.05
 SITOL,Tolmin,46.1667,13.7167
 SIVB9,Vremski Britof,45.65,14.0167
@@ -15041,7 +15048,7 @@ SVMIR,Miramar,,
 SVNCU,Nuevo Cuscatlan,13.6333,-89.25
 SVNHZ,Nahuizalco,,
 SVSAL,San Salvador,,
-SVSSO,Armenia,13.7333,89.4833
+SVSSO,Armenia,13.75,-89.5
 SVTUE,Moncagua,,
 SXGES,Gallis Bay,18.0167,-63.0667
 SXMAR,Marigot,18.0667,-63.0667
@@ -15153,7 +15160,7 @@ TNDID,Didon,33.7667,11.9
 TNDJE,Djerba,,
 TNGAE,Gabès,33.8833,10.1167
 TNHMM,Al Hammamat,36.4,10.6167
-TNJAR,Jarjis,33.5,-11.1
+TNJAR,Jarjis,33.5,11.1
 TNKEB,Kebili,33.7,8.9667
 TNKEM,Ksibet el Médiouni,35.6667,10.8333
 TNLGN,La Goulette Nord (Halqueloued),,
@@ -15287,7 +15294,7 @@ TRPEN,Pendik,,
 TRPLP,Poliport,37.9833,42.05
 TRPZR,Pazar,41.1667,40.8833
 TRRIZ,Rize,41.0333,40.4833
-TRRZY,Rota-Izmit Bay,29.7167,40.7667
+TRRZY,Rota-Izmit Bay,40.7667,29.7167
 TRSER,Serviburun,,
 TRSIC,Sinop,42.0167,35.1333
 TRSIL,Silivri,41.0667,28.25
@@ -15862,7 +15869,7 @@ USG8Y,Guy,35.3167,-92.3333
 USGA7,Garrison,41.3833,-73.9333
 USGAJ,Bagley,47.5167,-95.4
 USGBC,Gibson City,40.45,-88.3667
-USGBV,Garberville,40.1,123.8
+USGBV,Garberville,40.1,-123.8
 USGCA,Golconda,40.95,-117.4833
 USGCL,Coolidge,31.0,-83.8667
 USGDJ,Guildhall,44.5667,-71.5667
@@ -17500,7 +17507,7 @@ ZARCB,Richards Bay,,
 ZARSS,Izmit,,
 ZARWC,Riebeek West,-33.35,18.8667
 ZASDB,Saldanha Bay,,
-ZASHM,Robertsham,26.25,28.0167
+ZASHM,Robertsham,-26.25,28.0167
 ZASID,Sidwell,,
 ZASMN,Simon's Town,-34.1833,18.4333
 ZASNL,Southbroom,-30.9167,30.3167

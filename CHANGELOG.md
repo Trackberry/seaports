@@ -3,6 +3,10 @@
 Every entry below the first is a UN/LOCODE refresh, opened as a pull request by
 `.github/workflows/refresh.yml` and merged by a person.
 
+## 1.1.0 — 2026-10-19
+
+UN/LOCODE release unknown. 17527 sea ports (17520 before): 7 added, 0 removed, 1 renamed, 83 repositioned.
+
 ## 1.0.0 — 2026-08-21
 
 First release. Extracted from the Trackberry application, where this table
