@@ -6,9 +6,10 @@
 A locode in, a port name and a position out.
 
 ```ruby
-Seaports.name("CNXMG")         # => "Xiamen Pt"
-Seaports.coordinates("AUBNE")  # => { "lat" => -27.4667, "lng" => 153.0167 }
-Seaports.find("KRPUS")         # => #<data Seaports::Port locode="KRPUS", name="Busan", ...>
+Seaports.name("CNXMG")                   # => "Xiamen Pt"
+Seaports.coordinates("AUBNE")            # => { "lat" => -27.4667, "lng" => 153.0167 }
+Seaports.principal_subdivision("DEHAM")  # => "DE-HH"
+Seaports.find("KRPUS")                   # => #<data Seaports::Port locode="KRPUS", name="Busan", ...>
 ```
 
 Tracking feeds speak in codes. An AIS provider names some port calls and sends
@@ -29,11 +30,12 @@ out of the default gems.
 
 ## What is in it
 
-Every entry UN/LOCODE classifies as a sea port: **17,520 ports**, 11,762 of them
-with published coordinates, built from **UN/LOCODE 2024-2**.
+Every entry UN/LOCODE classifies as a sea port: **17,527 ports**, 11,820 of them
+with published coordinates and 14,567 with a subdivision, built from
+**UN/LOCODE 2024-2**.
 
 ```ruby
-Seaports.count          # => 17520
+Seaports.count          # => 17527
 Seaports.all            # => [#<data Seaports::Port ...>, ...]
 Seaports.data_release   # => "2024-2"
 ```
@@ -52,6 +54,63 @@ unknown code is the ordinary case rather than an error.
 Roughly a third of the table has no position published. That is a fact about
 the source, not a failure — the name is still worth having, and a map simply
 draws no marker.
+
+### Subdivisions
+
+UN/LOCODE files each place under a subdivision of its country, which joined to
+the country is an ISO 3166-2 code. It picks whatever level suits the country:
+a state for Hamburg, a county for Felixstowe. Each port carries that code, the
+**path** of every ISO subdivision above it, and the **principal subdivision**
+at the top:
+
+```ruby
+Seaports.subdivision("GBFXT")            # => "GB-SFK"  Suffolk
+Seaports.principal_subdivision("GBFXT")  # => "GB-ENG"  England
+Seaports.subdivision_path("FRSXB")       # => ["FR-67", "FR-6AE", "FR-GES"]  Bas-Rhin › Alsace › Grand Est
+Seaports.principal_subdivision("DEHAM")  # => "DE-HH"   Hamburg, already top level
+Seaports.principal_subdivision("ESVLC")  # => "ES-VC"   Comunitat Valenciana
+```
+
+To join a port to other data, a public holiday calendar say, match on
+whichever level of the path that data uses. The principal subdivision is
+usually the one (German states, UK nations, Spanish communities), but ISO's
+top level is not always where things are decided: Alsace-Moselle (`FR-6AE`)
+keeps holidays the rest of Grand Est does not, Ireland's top level is its four
+provinces rather than its counties, and Indonesia's is island groups (`ID-JW`
+Java) rather than provinces (`ID-JK` Jakarta). The path carries every level, so
+matching on any of it is always safe.
+
+A port's subdivision comes from the first of three sources that has one, and
+the table records which (`subdivision_source`):
+
+| Source | Ports | How |
+| --- | --- | --- |
+| `override` | 106 | A reviewed list, `data/sources/subdivision_overrides.csv`, for ports neither of the others places: Valencia, Algeciras and Barcelona have no subdivision and no position in UN/LOCODE. Each row says where its code came from. |
+| `unlocode` | 13,149 | UN/LOCODE's own subdivision column. |
+| `boundaries` | 1,312 | The port's coordinates placed on [Natural Earth](https://www.naturalearthdata.com/)'s states-and-provinces map (public domain, pinned to one commit), or the nearest subdivision within 10 km when a waterfront position lands just offshore. Amsterdam is placed this way. |
+
+Every code is checked against ISO 3166-2, and the path follows ISO's own
+hierarchy, taken from
+[Debian's iso-codes](https://salsa.debian.org/iso-codes-team/iso-codes). A code
+whose chain is broken in that list is dropped rather than shipped without a
+trustworthy top. Both maps are read when the table is built; nothing is
+fetched at runtime.
+
+2,960 ports stay without one, mostly offshore fields and moorings, and ports in
+countries with no regional distinctions worth drawing. To place more, run
+`ruby script/suggest_subdivision_overrides.rb candidates.csv`: it searches each
+port's name on OpenStreetMap's Nominatim and prints suggestions with the place
+it matched, for a person to check before adding them to the overrides file. A
+name search does find the wrong Puerto de Santa María. Place names in the
+overrides file are © OpenStreetMap contributors, under the
+[ODbL](https://www.openstreetmap.org/copyright).
+
+Each refresh lists, for review, overrides that have outlived their reason: a
+port that left UN/LOCODE, or one UN/LOCODE now places itself.
+
+`Seaports::Port` gained `subdivision`, `principal_subdivision` and
+`subdivision_path` in 1.2.0, all optional, so a `Port` built from locode, name
+and coordinates as before still works.
 
 ### What is deliberately not in it
 

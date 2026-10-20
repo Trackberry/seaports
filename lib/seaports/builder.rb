@@ -24,7 +24,13 @@ module Seaports
     SOURCE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/data/code-list.csv"
     DATAPACKAGE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/datapackage.json"
 
-    HEADERS = %w[locode name lat lng].freeze
+    HEADERS = %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source].freeze
+
+    # Reviewed subdivisions for ports neither UN/LOCODE nor the map places:
+    # Valencia, Algeciras and Barcelona have no subdivision and no position.
+    # Kept outside data/*.csv so it is not shipped in the gem; only its result
+    # is.
+    OVERRIDES_PATH = File.expand_path("../../data/sources/subdivision_overrides.csv", __dir__)
 
     # The published list, straight off the network — or off disk, if what was
     # handed over is a path. Both, because a rebuild from an already-downloaded
@@ -50,11 +56,48 @@ module Seaports
       nil
     end
 
-    def initialize(source)
-      @source = source
+    # Reads OVERRIDES_PATH (or +path+) into { locode => ISO 3166-2 code }.
+    #
+    # The file is typed by people, so a blank cell, a malformed locode or a
+    # port listed twice stops the build with the line to fix, rather than
+    # crashing on a nil or letting the second row quietly win.
+    def self.overrides(path = OVERRIDES_PATH)
+      return {} unless File.exist?(path)
+
+      CSV.foreach(path, headers: true).with_index(2).each_with_object({}) do |(row, line), overrides|
+        locode = row["locode"].to_s.strip.upcase
+        code = row["subdivision"].to_s.strip.upcase
+        raise ArgumentError, "#{path}:#{line}: #{locode.inspect} is not a locode" unless locode.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/)
+        raise ArgumentError, "#{path}:#{line}: #{locode} has no subdivision" if code.empty?
+        raise ArgumentError, "#{path}:#{line}: #{locode} is listed twice" if overrides.key?(locode)
+
+        overrides[locode] = code
+      end
     end
 
-    # [locode, name, lat, lng] per port, deduplicated and sorted by locode.
+    # Where a port's subdivision comes from, best first:
+    #
+    # - +overrides+, { locode => code }, reviewed by a person;
+    # - UN/LOCODE's own subdivision column;
+    # - +boundaries+ (Seaports::Boundaries), the subdivision the port's
+    #   coordinates fall in.
+    #
+    # Every code is checked against +subdivisions+, the ISO 3166-2 list (see
+    # Seaports::Subdivisions), which also gives the principal subdivision
+    # above it. Without that list the subdivision columns stay empty, which
+    # keeps a test about something else from needing it.
+    def initialize(source, subdivisions: nil, boundaries: nil, overrides: {})
+      @source = source
+      @subdivisions = subdivisions
+      @boundaries = boundaries
+      @overrides = overrides
+      @superseded = []
+    end
+
+    # [locode, name, lat, lng, subdivision, principal_subdivision,
+    # subdivision_path, subdivision_source] per port, deduplicated and sorted
+    # by locode. The path is the subdivision and everything above it, space
+    # separated, most specific first (see Seaports::Subdivisions#path).
     # Sorted because the file is committed: a stable order means a refresh
     # diff shows what changed rather than the whole table moving.
     def rows
@@ -77,6 +120,27 @@ module Seaports
       rows.count { |row| !row[2].nil? }
     end
 
+    def subdivided_count
+      rows.count { |row| !row[5].nil? }
+    end
+
+    # Overrides worth a person's attention, written the way they should read
+    # in a refresh pull request. An override wins over everything, so one that
+    # has outlived its reason keeps masking better data until someone looks:
+    #
+    # - its port is no longer in UN/LOCODE's sea-port list;
+    # - UN/LOCODE now gives the port a subdivision of its own.
+    def override_report
+      rows # the report is a by-product of building them
+      stale = (@overrides.keys - rows.map(&:first)).sort
+        .map { |locode| "`#{locode}` is overridden but no longer a UN/LOCODE sea port: remove its row." }
+      superseded = @superseded.uniq.sort.map do |locode, own, override|
+        same = own == override ? "the same code" : "#{own}, not #{override}"
+        "`#{locode}` now has a UN/LOCODE subdivision (#{same}): its override can go."
+      end
+      stale + superseded
+    end
+
     private
 
     # UNECE classifies every entry by function, and position 1 of that string
@@ -94,8 +158,35 @@ module Seaports
     end
 
     def port_row(row)
+      locode = "#{row['Country']}#{row['Location']}".upcase
       lat, lng = decimal_degrees(row["Coordinates"])
-      ["#{row['Country']}#{row['Location']}".upcase, row["Name"].strip, lat, lng]
+      subdivision, source = subdivision_for(locode, row, lat, lng)
+      path = @subdivisions&.path(subdivision) || []
+      # A code whose chain breaks has no trustworthy top, so it is not kept.
+      subdivision = source = nil if path.empty?
+      [locode, row["Name"].strip, lat, lng, subdivision, path.last, path.empty? ? nil : path.join(" "), source]
+    end
+
+    # [code, source], or [nil, nil] when no source has a valid one.
+    def subdivision_for(locode, row, lat, lng)
+      return [nil, nil] if @subdivisions.nil?
+
+      country = row["Country"].to_s.strip.upcase
+      own = @subdivisions.code(country, row["Subdivision"])
+
+      if (override = @overrides[locode])
+        code = @subdivisions.code(country, override.delete_prefix("#{country}-"))
+        raise ArgumentError, "#{locode}: override #{override} is not an ISO 3166-2 code of #{country}" if code.nil?
+
+        @superseded << [locode, own, code] if own
+        return [code, "override"]
+      end
+
+      return [own, "unlocode"] if own
+
+      mapped = (@boundaries&.codes_at(country, lat, lng) || []).lazy
+        .filter_map { |candidate| @subdivisions.code(country, candidate.delete_prefix("#{country}-")) }.first
+      mapped ? [mapped, "boundaries"] : [nil, nil]
     end
 
     # UNECE writes coordinates as "2421N 11812E" — degrees and whole minutes,

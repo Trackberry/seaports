@@ -21,20 +21,42 @@ namespace :seaports do
   REFRESH_DIR = "tmp/refresh"
 
   desc "Rebuild the table from a UN/LOCODE release and report what changed"
-  task :refresh, [:source, :release] do |_task, args|
+  task :refresh, [:source, :release, :subdivisions, :boundaries] do |_task, args|
     require_relative "lib/seaports/builder"
     require_relative "lib/seaports/diff"
+    require_relative "lib/seaports/subdivisions"
+    require_relative "lib/seaports/boundaries"
     require "fileutils"
 
     FileUtils.mkdir_p(REFRESH_DIR)
     before = File.join(REFRESH_DIR, "before.csv")
     FileUtils.cp(Seaports::TABLE_PATH, before)
 
-    source = Seaports::Builder.fetch(args[:source] || Seaports::Builder::SOURCE_URL)
-    Seaports::Builder.new(source).write(Seaports::TABLE_PATH)
+    # Three downloads and a hand-edited overrides file: any of them failing is
+    # a refusal for a person to read, the same as a failed gate, not a red
+    # build nobody is told about.
+    begin
+      source = Seaports::Builder.fetch(args[:source] || Seaports::Builder::SOURCE_URL)
+      subdivisions = Seaports::Subdivisions.parse(
+        Seaports::Builder.fetch(args[:subdivisions] || Seaports::Subdivisions::SOURCE_URL)
+      )
+      boundaries = Seaports::Boundaries.parse(
+        Seaports::Builder.fetch(args[:boundaries] || Seaports::Boundaries::SOURCE_URL)
+      )
+      builder = Seaports::Builder.new(source, subdivisions:, boundaries:, overrides: Seaports::Builder.overrides)
+      builder.write(Seaports::TABLE_PATH)
+    rescue StandardError => e
+      FileUtils.cp(before, Seaports::TABLE_PATH)
+      File.write(File.join(REFRESH_DIR, "summary.md"), "**Blocked**\n\nThe rebuild stopped: #{e.class}: #{e.message}\n")
+      record "failed", "The rebuild stopped: #{e.class}: #{e.message}"
+      next
+    end
 
     diff = Seaports::Diff.between(before, Seaports::TABLE_PATH)
-    File.write(File.join(REFRESH_DIR, "summary.md"), "#{diff.summary}\n")
+    overrides = builder.override_report
+    summary = [diff.summary, overrides.empty? ? nil : "**Overrides to review**\n\n#{overrides.map { |line| "- #{line}" }.join("\n")}"]
+    File.write(File.join(REFRESH_DIR, "summary.md"), "#{summary.compact.join("\n\n")}\n")
+    puts overrides unless overrides.empty?
 
     if !diff.changed?
       record "unchanged", "The table is already current: #{diff.headline}"

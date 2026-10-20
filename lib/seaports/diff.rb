@@ -41,8 +41,14 @@ module Seaports
         locode = row["locode"].to_s.strip.upcase
         next if locode.empty?
 
-        ports[locode] = { name: row["name"].to_s.strip, point: point(row) }
+        ports[locode] = { name: row["name"].to_s.strip, point: point(row), path: path(row) }
       end
+    end
+
+    # The port's subdivision chain as written, "GB-SFK GB-ENG". A table from
+    # before the path column existed has only the principal, which stands in.
+    def self.path(row)
+      (row["subdivision_path"] || row["principal_subdivision"]).to_s.split.join(" ")
     end
 
     def self.point(row)
@@ -59,7 +65,7 @@ module Seaports
     end
 
     def changed?
-      !(added.empty? && removed.empty? && renamed.empty? && repositioned.empty?)
+      !(added.empty? && removed.empty? && renamed.empty? && repositioned.empty? && resubdivided.empty?)
     end
 
     def added
@@ -93,10 +99,33 @@ module Seaports
       end
     end
 
+    # [locode, name, was, now] for a port whose subdivision path changed at
+    # any level, each path a space-separated string ("" for none). A county
+    # that moves inside the same nation changes Seaports.subdivision without
+    # touching the principal one, and it still has to ship. Each change can
+    # move a port onto another holiday calendar, so all are listed, though
+    # none is a failure on its own.
+    def resubdivided
+      @resubdivided ||= common.filter_map do |locode|
+        was = @before[locode][:path].to_s
+        now = @after[locode][:path].to_s
+        [locode, @after[locode][:name], was, now] if was != now
+      end
+    end
+
+    # The subset of resubdivided whose principal subdivision went from one
+    # code to another: placed before, placed now, somewhere else. Gaining or
+    # losing a code is not in it.
+    def reassigned
+      @reassigned ||= resubdivided.select do |_, _, was, now|
+        !was.empty? && !now.empty? && was.split.last != now.split.last
+      end
+    end
+
     # Empty means the refresh may ship. Anything here is a reason it may not,
     # written the way it should read in an issue.
     def failures
-      [count_failure, shrinkage_failure, *anchor_failures, *excluded_failures].compact
+      [count_failure, shrinkage_failure, region_failure, reassignment_failure, *anchor_failures, *excluded_failures].compact
     end
 
     def ok?
@@ -110,7 +139,8 @@ module Seaports
         section("Removed", removed.map { |locode| "`#{locode}` #{@before[locode][:name]}" }, limit: nil),
         section("Added", added.map { |locode| "`#{locode}` #{@after[locode][:name]}" }),
         section("Renamed", renamed.map { |locode, was, now| "`#{locode}` #{was} → #{now}" }),
-        section("Coordinates", repositioned.map { |locode, name, kind| "`#{locode}` #{name} — #{POSITION_WORDS.fetch(kind)}" })
+        section("Coordinates", repositioned.map { |locode, name, kind| "`#{locode}` #{name} — #{POSITION_WORDS.fetch(kind)}" }),
+        section("Subdivision", resubdivided.map { |locode, name, was, now| "`#{locode}` #{name}: #{path_words(was)} → #{path_words(now)}" })
       ].compact.join("\n\n")
     end
 
@@ -125,10 +155,31 @@ module Seaports
     def headline
       "#{@after.size} sea ports (#{@before.size} before): " \
         "#{added.size} added, #{removed.size} removed, " \
-        "#{renamed.size} renamed, #{repositioned.size} repositioned."
+        "#{renamed.size} renamed, #{repositioned.size} repositioned, " \
+        "#{resubdivided.size} with a new subdivision (#{reassigned.size} moved to another principal one)."
     end
 
+    # A real refresh moves a handful of ports between regions, when UNECE
+    # corrects an entry or ISO redraws a country. Moving more than this share
+    # of the placed ports at once means a source reshuffled its codes.
+    MAXIMUM_REASSIGNMENT = 0.02
+
     private
+
+    def path_words(path)
+      path.empty? ? "none" : path.split.join(" › ")
+    end
+
+    def reassignment_failure
+      placed = regioned_count(@before)
+      return nil if placed.zero?
+
+      share = reassigned.size.to_f / placed
+      return nil if share <= MAXIMUM_REASSIGNMENT
+
+      "#{reassigned.size} ports moved to another principal subdivision, past the #{(MAXIMUM_REASSIGNMENT * 100).round}% limit: " \
+        "a source reshuffled its codes."
+    end
 
     def common
       @common ||= (@before.keys & @after.keys).sort
@@ -147,6 +198,25 @@ module Seaports
       return nil if shrinkage <= MAXIMUM_SHRINKAGE
 
       "The table shrank by #{(shrinkage * 100).round(1)}%, past the #{(MAXIMUM_SHRINKAGE * 100).round}% limit."
+    end
+
+    # Losing subdivisions in bulk means the ISO 3166-2 list failed to load or
+    # UNECE dropped the column, not that ports moved country. A table that
+    # had none before (every table before this column existed) has nothing
+    # to lose.
+    def region_failure
+      was = regioned_count(@before)
+      return nil if was.zero?
+
+      now = regioned_count(@after)
+      shrinkage = (was - now).to_f / was
+      return nil if shrinkage <= MAXIMUM_SHRINKAGE
+
+      "Ports with a principal subdivision fell from #{was} to #{now}, past the #{(MAXIMUM_SHRINKAGE * 100).round}% limit."
+    end
+
+    def regioned_count(ports)
+      ports.count { |_, port| !port[:path].to_s.empty? }
     end
 
     def anchor_failures
