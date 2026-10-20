@@ -84,7 +84,7 @@ class BuilderTest < Minitest::Test
     path = File.join(Dir.mktmpdir, "ports.csv")
     Seaports::Builder.new(SOURCE).write(path)
 
-    assert_equal %w[locode name lat lng subdivision principal_subdivision], CSV.readlines(path).first
+    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_source], CSV.readlines(path).first
     assert_equal @locodes, CSV.readlines(path).drop(1).map(&:first)
   end
 
@@ -92,22 +92,90 @@ class BuilderTest < Minitest::Test
     "3166-2" => [
       { "code" => "NZ-BOP", "name" => "Bay of Plenty", "type" => "Region" },
       { "code" => "AU-QLD", "name" => "Queensland", "type" => "State" },
+      { "code" => "AU-NSW", "name" => "New South Wales", "type" => "State" },
       { "code" => "ES-VC", "name" => "Valenciana, Comunidad", "type" => "Autonomous community" },
-      { "code" => "ES-V", "name" => "Valencia", "type" => "Province", "parent" => "ES-VC" }
+      { "code" => "ES-V", "name" => "Valencia", "type" => "Province", "parent" => "ES-VC" },
+      { "code" => "NL-NH", "name" => "Noord-Holland", "type" => "Province" }
     ]
   }.freeze
 
-  def test_resolves_each_port_s_subdivision_and_the_principal_one_above_it
-    rows = Seaports::Builder.new(SOURCE, subdivisions: Seaports::Subdivisions.parse(JSON.dump(ISO))).rows
-    by_locode = rows.to_h { |row| [row.first, row.last(2)] }
+  # Places any port it is asked about in +codes+, and remembers being asked.
+  class FakeBoundaries
+    attr_reader :asked
 
-    assert_equal ["AU-QLD", "AU-QLD"], by_locode["AUBNE"]
-    assert_equal ["ES-V", "ES-VC"], by_locode["ESVLC"]
-    assert_equal ["NZ-BOP", "NZ-BOP"], by_locode["NZTRG"]
+    def initialize(codes)
+      @codes = codes
+      @asked = []
+    end
+
+    def codes_at(country, lat, lng)
+      @asked << [country, lat, lng]
+      @codes
+    end
+  end
+
+  def iso
+    Seaports::Subdivisions.parse(JSON.dump(ISO))
+  end
+
+  # [subdivision, principal_subdivision, subdivision_source] by locode.
+  def subdivisions_by_locode(builder)
+    builder.rows.to_h { |row| [row.first, row.last(3)] }
+  end
+
+  def test_resolves_each_port_s_subdivision_and_the_principal_one_above_it
+    by_locode = subdivisions_by_locode(Seaports::Builder.new(SOURCE, subdivisions: iso))
+
+    assert_equal ["AU-QLD", "AU-QLD", "unlocode"], by_locode["AUBNE"]
+    assert_equal ["ES-V", "ES-VC", "unlocode"], by_locode["ESVLC"]
+    assert_equal ["NZ-BOP", "NZ-BOP", "unlocode"], by_locode["NZTRG"]
   end
 
   def test_leaves_subdivisions_empty_without_the_iso_list
-    assert(@rows.all? { |row| row.last(2) == [nil, nil] })
+    assert(@rows.all? { |row| row.last(3) == [nil, nil, nil] })
+  end
+
+  AMSTERDAM = <<~CSV
+    #{HEADERS}
+    ,NL,AMS,Amsterdam,Amsterdam,,AI,12345---,0001,AMS,5224N 00449E,
+  CSV
+
+  # UN/LOCODE gives Amsterdam no subdivision, but it gives a position.
+  def test_places_a_port_unlocode_leaves_blank_by_its_coordinates
+    boundaries = FakeBoundaries.new(%w[NL-XX NL-NH])
+    by_locode = subdivisions_by_locode(Seaports::Builder.new(AMSTERDAM, subdivisions: iso, boundaries:))
+
+    assert_equal ["NL-NH", "NL-NH", "boundaries"], by_locode["NLAMS"], "the first code ISO knows wins"
+    assert_equal [["NL", 52.4, 4.8167]], boundaries.asked
+  end
+
+  def test_trusts_unlocode_before_the_map
+    boundaries = FakeBoundaries.new(%w[AU-NSW])
+    by_locode = subdivisions_by_locode(Seaports::Builder.new(SOURCE, subdivisions: iso, boundaries:))
+
+    assert_equal "AU-QLD", by_locode["AUBNE"].first
+  end
+
+  def test_a_reviewed_override_wins_over_everything
+    builder = Seaports::Builder.new(SOURCE, subdivisions: iso, overrides: { "AUBNE" => "AU-NSW" })
+
+    assert_equal ["AU-NSW", "AU-NSW", "override"], subdivisions_by_locode(builder)["AUBNE"]
+  end
+
+  # An override is typed by a person, so a typo stops the build instead of
+  # quietly leaving the port unplaced.
+  def test_refuses_an_override_that_is_not_an_iso_code
+    builder = Seaports::Builder.new(SOURCE, subdivisions: iso, overrides: { "AUBNE" => "AU-XYZ" })
+
+    error = assert_raises(ArgumentError) { builder.rows }
+    assert_includes error.message, "AUBNE"
+  end
+
+  def test_every_shipped_override_is_a_valid_row
+    overrides = Seaports::Builder.overrides
+
+    assert_operator overrides.size, :>=, 100
+    assert(overrides.all? { |locode, code| locode.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/) && code.start_with?("#{locode[0, 2]}-") })
   end
 
   # The shipped table must be exactly what the builder produces from the

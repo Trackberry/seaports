@@ -31,7 +31,7 @@ out of the default gems.
 ## What is in it
 
 Every entry UN/LOCODE classifies as a sea port: **17,527 ports**, 11,820 of them
-with published coordinates and 13,149 with a subdivision, built from
+with published coordinates and 14,569 with a subdivision, built from
 **UN/LOCODE 2024-2**.
 
 ```ruby
@@ -68,16 +68,29 @@ Seaports.subdivision("GBFXT")            # => "GB-SFK"  Suffolk
 Seaports.principal_subdivision("GBFXT")  # => "GB-ENG"  England
 Seaports.principal_subdivision("DEHAM")  # => "DE-HH"   Hamburg, already top level
 Seaports.principal_subdivision("ITGOA")  # => "IT-42"   Liguria, above Genova
-Seaports.principal_subdivision("ESVLC")  # => nil       UN/LOCODE gives none
+Seaports.principal_subdivision("ESVLC")  # => "ES-VC"   Comunitat Valenciana
 ```
 
-The climb from county to nation follows ISO's own hierarchy, taken from
-[Debian's iso-codes](https://salsa.debian.org/iso-codes-team/iso-codes) when the
-table is built; nothing is fetched at runtime. A UN/LOCODE subdivision that is
-not an ISO 3166-2 code is left out rather than passed on. About a quarter of
-ports have none, including some large ones (Valencia, Algeciras, Barcelona,
-Amsterdam), so a caller that needs a region for every port should fall back to
-geocoding its coordinates.
+A port's subdivision comes from the first of three sources that has one, and
+the table records which (`subdivision_source`):
+
+| Source | Ports | How |
+| --- | --- | --- |
+| `override` | 108 | A reviewed list, `data/sources/subdivision_overrides.csv`, for ports with no subdivision and no position: Valencia, Algeciras, Barcelona. Each row says where its code came from. |
+| `unlocode` | 13,149 | UN/LOCODE's own subdivision column. |
+| `boundaries` | 1,312 | The port's coordinates placed on [Natural Earth](https://www.naturalearthdata.com/)'s states-and-provinces map (public domain), or the nearest subdivision within 10 km when a waterfront position lands just offshore. Amsterdam is placed this way. |
+
+Every code is checked against ISO 3166-2, and the climb from county to nation
+follows ISO's own hierarchy, taken from
+[Debian's iso-codes](https://salsa.debian.org/iso-codes-team/iso-codes). Both
+maps are read when the table is built; nothing is fetched at runtime.
+
+2,958 ports stay without one, mostly offshore fields and moorings, and ports in
+countries with no regional distinctions worth drawing. To place more, run
+`ruby script/suggest_subdivision_overrides.rb candidates.csv`: it searches each
+port's name on OpenStreetMap and prints suggestions with the place it matched,
+for a person to check before adding them to the overrides file. A name search
+does find the wrong Puerto de Santa María.
 
 ### What is deliberately not in it
 

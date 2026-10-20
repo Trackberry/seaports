@@ -60,9 +60,17 @@ class SeaportsTest < Minitest::Test
     assert_equal "US-CA", Seaports.principal_subdivision("USLAX")
   end
 
-  def test_a_port_unlocode_gives_no_subdivision_has_none
-    assert_nil Seaports.subdivision("ESVLC")
-    assert_nil Seaports.principal_subdivision("ESVLC")
+  # UN/LOCODE gives these no subdivision. Amsterdam is placed by its
+  # coordinates; the Spanish ports have none and come from the reviewed list.
+  def test_places_the_large_ports_unlocode_leaves_blank
+    assert_equal "NL-NH", Seaports.principal_subdivision("NLAMS")
+    assert_equal "ES-VC", Seaports.principal_subdivision("ESVLC")
+    assert_equal "ES-AN", Seaports.principal_subdivision("ESALG")
+    assert_equal "ES-CT", Seaports.principal_subdivision("ESBCN")
+  end
+
+  def test_a_port_nothing_places_has_no_subdivision
+    assert_nil Seaports.principal_subdivision("GBCUR") # Curlew, a North Sea field
     assert_nil Seaports.principal_subdivision("not a locode")
   end
 

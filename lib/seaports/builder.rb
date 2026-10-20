@@ -24,7 +24,12 @@ module Seaports
     SOURCE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/data/code-list.csv"
     DATAPACKAGE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/datapackage.json"
 
-    HEADERS = %w[locode name lat lng subdivision principal_subdivision].freeze
+    HEADERS = %w[locode name lat lng subdivision principal_subdivision subdivision_source].freeze
+
+    # Reviewed subdivisions for ports UN/LOCODE gives none and no position to
+    # place on a map: Valencia, Algeciras, Barcelona. Kept outside data/*.csv
+    # so it is not shipped in the gem; only its result is.
+    OVERRIDES_PATH = File.expand_path("../../data/sources/subdivision_overrides.csv", __dir__)
 
     # The published list, straight off the network — or off disk, if what was
     # handed over is a path. Both, because a rebuild from an already-downloaded
@@ -50,17 +55,33 @@ module Seaports
       nil
     end
 
-    # +subdivisions+ is the ISO 3166-2 list (see Seaports::Subdivisions) that
-    # turns UN/LOCODE's subdivision column into codes. Without it the two
-    # subdivision columns are left empty, which keeps a test about something
-    # else from needing the list.
-    def initialize(source, subdivisions: nil)
-      @source = source
-      @subdivisions = subdivisions
+    # Reads OVERRIDES_PATH (or +path+) into { locode => ISO 3166-2 code }.
+    def self.overrides(path = OVERRIDES_PATH)
+      return {} unless File.exist?(path)
+
+      CSV.foreach(path, headers: true).to_h { |row| [row["locode"].strip.upcase, row["subdivision"].strip.upcase] }
     end
 
-    # [locode, name, lat, lng, subdivision, principal_subdivision] per port,
-    # deduplicated and sorted by locode.
+    # Where a port's subdivision comes from, best first:
+    #
+    # - +overrides+, { locode => code }, reviewed by a person;
+    # - UN/LOCODE's own subdivision column;
+    # - +boundaries+ (Seaports::Boundaries), the subdivision the port's
+    #   coordinates fall in.
+    #
+    # Every code is checked against +subdivisions+, the ISO 3166-2 list (see
+    # Seaports::Subdivisions), which also gives the principal subdivision
+    # above it. Without that list the subdivision columns stay empty, which
+    # keeps a test about something else from needing it.
+    def initialize(source, subdivisions: nil, boundaries: nil, overrides: {})
+      @source = source
+      @subdivisions = subdivisions
+      @boundaries = boundaries
+      @overrides = overrides
+    end
+
+    # [locode, name, lat, lng, subdivision, principal_subdivision,
+    # subdivision_source] per port, deduplicated and sorted by locode.
     # Sorted because the file is committed: a stable order means a refresh
     # diff shows what changed rather than the whole table moving.
     def rows
@@ -104,10 +125,30 @@ module Seaports
     end
 
     def port_row(row)
+      locode = "#{row['Country']}#{row['Location']}".upcase
       lat, lng = decimal_degrees(row["Coordinates"])
-      subdivision = @subdivisions&.code(row["Country"], row["Subdivision"])
-      ["#{row['Country']}#{row['Location']}".upcase, row["Name"].strip, lat, lng,
-        subdivision, @subdivisions&.principal(subdivision)]
+      subdivision, source = subdivision_for(locode, row, lat, lng)
+      [locode, row["Name"].strip, lat, lng, subdivision, @subdivisions&.principal(subdivision), source]
+    end
+
+    # [code, source], or [nil, nil] when no source has a valid one.
+    def subdivision_for(locode, row, lat, lng)
+      return [nil, nil] if @subdivisions.nil?
+
+      country = row["Country"].to_s.strip.upcase
+      if (override = @overrides[locode])
+        code = @subdivisions.code(country, override.delete_prefix("#{country}-"))
+        raise ArgumentError, "#{locode}: override #{override} is not an ISO 3166-2 code of #{country}" if code.nil?
+
+        return [code, "override"]
+      end
+
+      code = @subdivisions.code(country, row["Subdivision"])
+      return [code, "unlocode"] if code
+
+      mapped = (@boundaries&.codes_at(country, lat, lng) || []).lazy
+        .filter_map { |candidate| @subdivisions.code(country, candidate.delete_prefix("#{country}-")) }.first
+      mapped ? [mapped, "boundaries"] : [nil, nil]
     end
 
     # UNECE writes coordinates as "2421N 11812E" — degrees and whole minutes,

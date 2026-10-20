@@ -5,7 +5,7 @@ Every entry below the first is a UN/LOCODE refresh, opened as a pull request by
 
 ## 1.2.0 — 2026-10-20
 
-Each port now carries its ISO 3166-2 subdivision and the principal (top-level) subdivision above it: `Seaports.subdivision("GBFXT")` is `"GB-SFK"` (Suffolk), `Seaports.principal_subdivision("GBFXT")` is `"GB-ENG"`. The principal one is the level public holiday calendars and address geocoders use, so a port can be joined to them. Codes come from UN/LOCODE's subdivision column, checked against ISO 3166-2 (Debian iso-codes) at build time; 13,149 of 17,527 ports have one. Same UN/LOCODE 2024-2 ports, names and positions as 1.1.0.
+Each port now carries its ISO 3166-2 subdivision and the principal (top-level) subdivision above it: `Seaports.subdivision("GBFXT")` is `"GB-SFK"` (Suffolk), `Seaports.principal_subdivision("GBFXT")` is `"GB-ENG"`. The principal one is the level public holiday calendars and address geocoders use, so a port can be joined to them. 14,569 of 17,527 ports have one: 13,149 from UN/LOCODE's subdivision column, 1,312 placed by their coordinates on Natural Earth's states-and-provinces map (Amsterdam), and 108 from a reviewed list for ports with neither (Valencia, Algeciras, Barcelona). Every code is checked against ISO 3166-2 (Debian iso-codes) at build time. Same UN/LOCODE 2024-2 ports, names and positions as 1.1.0.
 
 ## 1.1.0 — 2026-10-19
 

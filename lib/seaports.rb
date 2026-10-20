@@ -38,12 +38,16 @@ require_relative "seaports/version"
 module Seaports
   TABLE_PATH = File.expand_path("../data/un_locode_seaports.csv", __dir__)
 
-  # +subdivision+ is the ISO 3166-2 code UN/LOCODE files the port under, at
-  # whatever level UNECE chose: "DE-HH" for Hamburg, "GB-SFK" (Suffolk) for
-  # Felixstowe. +principal_subdivision+ is the top-level one it sits in,
+  # +subdivision+ is the ISO 3166-2 code of the area the port is in, at
+  # whatever level its source chose: "DE-HH" for Hamburg, "GB-SFK" (Suffolk)
+  # for Felixstowe. +principal_subdivision+ is the top-level one it sits in,
   # "DE-HH" and "GB-ENG": the level public holiday calendars and address
-  # geocoders work at, so it is the one to join on. Both nil where UN/LOCODE
-  # gives none, as it does for Valencia and Amsterdam.
+  # geocoders work at, so it is the one to join on.
+  #
+  # The code comes from UN/LOCODE where it gives one, from the port's
+  # coordinates on Natural Earth's map where it does not, and from a reviewed
+  # list for the few large ports with neither (Valencia, Barcelona). Both nil
+  # when none of the three places the port.
   Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision)
 
   class << self

@@ -21,10 +21,11 @@ namespace :seaports do
   REFRESH_DIR = "tmp/refresh"
 
   desc "Rebuild the table from a UN/LOCODE release and report what changed"
-  task :refresh, [:source, :release, :subdivisions] do |_task, args|
+  task :refresh, [:source, :release, :subdivisions, :boundaries] do |_task, args|
     require_relative "lib/seaports/builder"
     require_relative "lib/seaports/diff"
     require_relative "lib/seaports/subdivisions"
+    require_relative "lib/seaports/boundaries"
     require "fileutils"
 
     FileUtils.mkdir_p(REFRESH_DIR)
@@ -35,7 +36,11 @@ namespace :seaports do
     subdivisions = Seaports::Subdivisions.parse(
       Seaports::Builder.fetch(args[:subdivisions] || Seaports::Subdivisions::SOURCE_URL)
     )
-    Seaports::Builder.new(source, subdivisions:).write(Seaports::TABLE_PATH)
+    boundaries = Seaports::Boundaries.parse(
+      Seaports::Builder.fetch(args[:boundaries] || Seaports::Boundaries::SOURCE_URL)
+    )
+    Seaports::Builder.new(source, subdivisions:, boundaries:, overrides: Seaports::Builder.overrides)
+      .write(Seaports::TABLE_PATH)
 
     diff = Seaports::Diff.between(before, Seaports::TABLE_PATH)
     File.write(File.join(REFRESH_DIR, "summary.md"), "#{diff.summary}\n")
