@@ -42,18 +42,35 @@ module Seaports
       @parents.key?(candidate) ? candidate : nil
     end
 
-    # The top-level subdivision +code+ sits in: GB-ENG for GB-SFK, ES-VC for
-    # ES-V, DE-HH for DE-HH itself. Nil for nil.
-    def principal(code)
-      return nil if code.nil?
+    # +code+ and every subdivision above it, most specific first:
+    # ["FR-67", "FR-6AE", "FR-GES"] for Bas-Rhin, ["DE-HH"] for Hamburg.
+    #
+    # The whole chain rather than just its top, because ISO's top level is not
+    # always the one that matters. Alsace-Moselle (FR-6AE) has holidays the
+    # rest of Grand Est (FR-GES) does not, and Indonesia's top level is island
+    # groups, above the provinces that run anything. A caller matches on
+    # whichever level its own data uses.
+    #
+    # Empty for nil, and for a chain that breaks (a parent the list does not
+    # hold) or loops: a guessed top would be believed.
+    def path(code)
+      return [] if code.nil?
 
+      chain = [code]
       MAX_DEPTH.times do
-        parent = @parents[code]
-        return code if parent.nil? || !@parents.key?(parent)
+        parent = @parents[chain.last]
+        return chain if parent.nil?
+        return [] unless @parents.key?(parent)
 
-        code = parent
+        chain << parent
       end
-      nil
+      []
+    end
+
+    # The top of +code+'s path: GB-ENG for GB-SFK, ES-VC for ES-V, DE-HH for
+    # DE-HH itself. Nil when the path is empty.
+    def principal(code)
+      path(code).last
     end
 
     def size

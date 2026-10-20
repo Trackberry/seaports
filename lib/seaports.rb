@@ -40,15 +40,29 @@ module Seaports
 
   # +subdivision+ is the ISO 3166-2 code of the area the port is in, at
   # whatever level its source chose: "DE-HH" for Hamburg, "GB-SFK" (Suffolk)
-  # for Felixstowe. +principal_subdivision+ is the top-level one it sits in,
-  # "DE-HH" and "GB-ENG": the level public holiday calendars and address
-  # geocoders work at, so it is the one to join on.
+  # for Felixstowe. +subdivision_path+ is that code and every ISO subdivision
+  # above it, most specific first: ["GB-SFK", "GB-ENG"], or ["FR-67",
+  # "FR-6AE", "FR-GES"] for Strasbourg. +principal_subdivision+ is the last of
+  # them, ISO's top level.
+  #
+  # To join a port to other data, match on whichever level of the path that
+  # data uses. The top is usually right (German states, UK nations, Spanish
+  # communities) but not always: Alsace-Moselle (FR-6AE) has its own
+  # holidays inside Grand Est, and Indonesia's top level is island groups,
+  # above its provinces.
   #
   # The code comes from UN/LOCODE where it gives one, from the port's
   # coordinates on Natural Earth's map where it does not, and from a reviewed
-  # list for the few large ports with neither (Valencia, Barcelona). Both nil
-  # when none of the three places the port.
-  Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision)
+  # list for ports neither places (Valencia, Barcelona). Nil, and an empty
+  # path, when none of the three does.
+  #
+  # The three were added in 1.2.0 with defaults, so a Port built from
+  # locode, name and coordinates alone, as before, still works.
+  Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision, :subdivision_path) do
+    def initialize(locode:, name:, coordinates:, subdivision: nil, principal_subdivision: nil, subdivision_path: [])
+      super
+    end
+  end
 
   class << self
     # Nil for anything the table does not hold, which callers must handle:
@@ -77,10 +91,16 @@ module Seaports
       find(locode)&.subdivision
     end
 
-    # "GB-ENG" for Felixstowe, "DE-HH" for Hamburg, or nil. The code to hand a
-    # holiday calendar: Trackberry::Holidays.holiday?(date, "DE-HH").
+    # "GB-ENG" for Felixstowe, "DE-HH" for Hamburg, or nil. See Port.
     def principal_subdivision(locode)
       find(locode)&.principal_subdivision
+    end
+
+    # ["GB-SFK", "GB-ENG"] for Felixstowe, [] for a port nothing places or a
+    # code the table does not hold. The codes to hand a holiday calendar that
+    # matches on any level: Trackberry::Holidays.holiday?(date, path).
+    def subdivision_path(locode)
+      find(locode)&.subdivision_path || []
     end
 
     # Every port in the table, ordered by locode. Materialised on each call
@@ -126,7 +146,8 @@ module Seaports
         next if locode.nil? || blank?(row["name"])
 
         ports[locode] = Port.new(locode: locode, name: row["name"], coordinates: point(row),
-          subdivision: presence(row["subdivision"]), principal_subdivision: presence(row["principal_subdivision"]))
+          subdivision: presence(row["subdivision"]), principal_subdivision: presence(row["principal_subdivision"]),
+          subdivision_path: row["subdivision_path"].to_s.split.freeze)
       end
     end
 

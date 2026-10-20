@@ -84,7 +84,7 @@ class BuilderTest < Minitest::Test
     path = File.join(Dir.mktmpdir, "ports.csv")
     Seaports::Builder.new(SOURCE).write(path)
 
-    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_source], CSV.readlines(path).first
+    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source], CSV.readlines(path).first
     assert_equal @locodes, CSV.readlines(path).drop(1).map(&:first)
   end
 
@@ -120,7 +120,7 @@ class BuilderTest < Minitest::Test
 
   # [subdivision, principal_subdivision, subdivision_source] by locode.
   def subdivisions_by_locode(builder)
-    builder.rows.to_h { |row| [row.first, row.last(3)] }
+    builder.rows.to_h { |row| [row.first, row.values_at(4, 5, 7)] }
   end
 
   def test_resolves_each_port_s_subdivision_and_the_principal_one_above_it
@@ -131,8 +131,26 @@ class BuilderTest < Minitest::Test
     assert_equal ["NZ-BOP", "NZ-BOP", "unlocode"], by_locode["NZTRG"]
   end
 
+  def test_writes_the_whole_path_most_specific_first
+    rows = Seaports::Builder.new(SOURCE, subdivisions: iso).rows
+
+    assert_equal "ES-V ES-VC", rows.find { |row| row.first == "ESVLC" }[6]
+    assert_equal "AU-QLD", rows.find { |row| row.first == "AUBNE" }[6]
+  end
+
+  # Valencia's province is filed under a community the list does not hold.
+  # A code with no trustworthy top is dropped rather than shipped half-placed.
+  def test_drops_a_code_whose_chain_breaks
+    broken = Seaports::Subdivisions.parse(JSON.dump("3166-2" => [
+      { "code" => "ES-V", "name" => "Valencia", "type" => "Province", "parent" => "ES-VC" }
+    ]))
+    rows = Seaports::Builder.new(SOURCE, subdivisions: broken).rows
+
+    assert_equal [nil, nil, nil, nil], rows.find { |row| row.first == "ESVLC" }.last(4)
+  end
+
   def test_leaves_subdivisions_empty_without_the_iso_list
-    assert(@rows.all? { |row| row.last(3) == [nil, nil, nil] })
+    assert(@rows.all? { |row| row.last(4) == [nil, nil, nil, nil] })
   end
 
   AMSTERDAM = <<~CSV
@@ -171,11 +189,59 @@ class BuilderTest < Minitest::Test
     assert_includes error.message, "AUBNE"
   end
 
-  def test_every_shipped_override_is_a_valid_row
+  # The shipped table was built with the shipped overrides, so every override
+  # must show up in it, as the port's subdivision, from that source. This is
+  # also what proves each override is a valid ISO code without fetching the
+  # ISO list in a test.
+  def test_every_shipped_override_is_in_the_shipped_table
     overrides = Seaports::Builder.overrides
+    table = CSV.read(Seaports::TABLE_PATH, headers: true).to_h { |row| [row["locode"], row] }
 
     assert_operator overrides.size, :>=, 100
-    assert(overrides.all? { |locode, code| locode.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/) && code.start_with?("#{locode[0, 2]}-") })
+    overrides.each do |locode, code|
+      assert_equal [code, "override"], table.fetch(locode).values_at("subdivision", "subdivision_source"), locode
+    end
+  end
+
+  def overrides_file(body)
+    path = File.join(Dir.mktmpdir, "overrides.csv")
+    File.write(path, "locode,subdivision,note\n#{body}")
+    path
+  end
+
+  def test_reads_an_overrides_file
+    assert_equal({ "ESVLC" => "ES-V" }, Seaports::Builder.overrides(overrides_file("esvlc, es-v ,reviewed\n")))
+  end
+
+  def test_refuses_an_override_row_with_no_subdivision
+    error = assert_raises(ArgumentError) { Seaports::Builder.overrides(overrides_file("ESVLC,,forgot\n")) }
+    assert_match(/:2: ESVLC has no subdivision/, error.message)
+  end
+
+  def test_refuses_a_port_listed_twice
+    error = assert_raises(ArgumentError) { Seaports::Builder.overrides(overrides_file("ESVLC,ES-V,\nESVLC,ES-A,\n")) }
+    assert_match(/:3: ESVLC is listed twice/, error.message)
+  end
+
+  def test_refuses_a_row_that_is_not_a_locode
+    assert_raises(ArgumentError) { Seaports::Builder.overrides(overrides_file("Valencia,ES-V,\n")) }
+  end
+
+  # An override wins over everything, so one that has outlived its reason
+  # must be pointed out rather than left to mask better data.
+  def test_reports_overrides_that_have_outlived_their_reason
+    overrides = { "AUBNE" => "AU-QLD", "NZTRG" => "NZ-BOP", "ZZGNE" => "AU-NSW" }
+    report = Seaports::Builder.new(SOURCE, subdivisions: iso, overrides:).override_report
+
+    assert_includes report, "`ZZGNE` is overridden but no longer a UN/LOCODE sea port: remove its row."
+    assert_includes report, "`AUBNE` now has a UN/LOCODE subdivision (the same code): its override can go."
+    assert_equal 3, report.size
+  end
+
+  def test_reports_an_override_unlocode_now_contradicts
+    report = Seaports::Builder.new(SOURCE, subdivisions: iso, overrides: { "AUBNE" => "AU-NSW" }).override_report
+
+    assert_equal ["`AUBNE` now has a UN/LOCODE subdivision (AU-QLD, not AU-NSW): its override can go."], report
   end
 
   # The shipped table must be exactly what the builder produces from the

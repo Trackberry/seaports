@@ -71,7 +71,34 @@ class SeaportsTest < Minitest::Test
 
   def test_a_port_nothing_places_has_no_subdivision
     assert_nil Seaports.principal_subdivision("GBCUR") # Curlew, a North Sea field
+    assert_empty Seaports.subdivision_path("GBCUR")
     assert_nil Seaports.principal_subdivision("not a locode")
+    assert_empty Seaports.subdivision_path("not a locode")
+  end
+
+  # Alsace-Moselle has holidays the rest of Grand Est does not, so a holiday
+  # calendar needs the middle of Strasbourg's chain, not just its top.
+  def test_answers_the_whole_subdivision_path
+    assert_equal %w[FR-67 FR-6AE FR-GES], Seaports.subdivision_path("FRSXB")
+    assert_equal %w[GB-SFK GB-ENG], Seaports.subdivision_path("GBFXT")
+    assert_equal %w[DE-HH], Seaports.subdivision_path("DEHAM")
+  end
+
+  def test_the_path_runs_from_subdivision_to_principal
+    port = Seaports.find("ITGOA")
+
+    assert_equal port.subdivision, port.subdivision_path.first
+    assert_equal port.principal_subdivision, port.subdivision_path.last
+  end
+
+  # 1.2.0 added three members to Port. A caller that built one from the
+  # original three, as a test double say, must not break on a minor release.
+  def test_a_port_can_still_be_built_from_its_original_members
+    port = Seaports::Port.new(locode: "ZZZZZ", name: "Nowhere", coordinates: nil)
+
+    assert_nil port.subdivision
+    assert_nil port.principal_subdivision
+    assert_empty port.subdivision_path
   end
 
   # UNECE files the Panama Canal as a road terminal with status RL —

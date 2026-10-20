@@ -128,20 +128,33 @@ class DiffTest < Minitest::Test
     refute_predicate diff, :changed?
   end
 
-  def test_names_a_port_whose_principal_subdivision_changed
-    before = healthy("AAAAA" => port("Felixstowe", region: ""), "BBBBB" => port("Hamburg", region: "DE-HH"))
-    after = healthy("AAAAA" => port("Felixstowe", region: "GB-ENG"), "BBBBB" => port("Hamburg", region: "DE-HH"))
+  def test_names_a_port_whose_subdivision_changed
+    before = healthy("AAAAA" => port("Felixstowe", path: ""), "BBBBB" => port("Hamburg", path: "DE-HH"))
+    after = healthy("AAAAA" => port("Felixstowe", path: "GB-SFK GB-ENG"), "BBBBB" => port("Hamburg", path: "DE-HH"))
     diff = Seaports::Diff.new(before, after)
 
-    assert_equal [["AAAAA", "Felixstowe", "", "GB-ENG"]], diff.reregioned
+    assert_equal [["AAAAA", "Felixstowe", "", "GB-SFK GB-ENG"]], diff.resubdivided
+    assert_empty diff.reassigned, "gaining a code is not moving"
     assert_predicate diff, :changed?
     assert_predicate diff, :ok?
-    assert_includes diff.summary, "`AAAAA` Felixstowe: none → GB-ENG"
+    assert_includes diff.summary, "`AAAAA` Felixstowe: none → GB-SFK › GB-ENG"
+  end
+
+  # Suffolk to Norfolk leaves England in place. Seaports.subdivision still
+  # changed, so the refresh must ship it rather than call the table current.
+  def test_a_change_below_the_principal_subdivision_still_ships
+    before = healthy("AAAAA" => port("Felixstowe", path: "GB-SFK GB-ENG"))
+    after = healthy("AAAAA" => port("Felixstowe", path: "GB-NFK GB-ENG"))
+    diff = Seaports::Diff.new(before, after)
+
+    assert_predicate diff, :changed?
+    assert_equal 1, diff.resubdivided.size
+    assert_empty diff.reassigned
   end
 
   # The first table with subdivisions follows one with none: nothing to lose.
   def test_a_table_gaining_subdivisions_for_the_first_time_passes
-    after = healthy.transform_values { |entry| entry.merge(region: "ZZ-A") }
+    after = healthy.transform_values { |entry| entry.merge(path: "ZZ-A") }
 
     assert_predicate Seaports::Diff.new(healthy, after), :ok?
   end
@@ -149,15 +162,35 @@ class DiffTest < Minitest::Test
   # Losing them in bulk means the ISO list failed to load, not that ports
   # changed country.
   def test_refuses_a_table_that_lost_its_subdivisions
-    before = healthy.transform_values { |entry| entry.merge(region: "ZZ-A") }
+    before = healthy.transform_values { |entry| entry.merge(path: "ZZ-A") }
     diff = Seaports::Diff.new(before, healthy)
 
     assert(diff.failures.any? { |line| line.start_with?("Ports with a principal subdivision fell") })
   end
 
+  # Every port keeps a code, so the count gate sees nothing, but they all
+  # moved: a source reshuffled its codes.
+  def test_refuses_a_table_whose_ports_moved_region_en_masse
+    before = healthy.transform_values { |entry| entry.merge(path: "ZZ-SFK ZZ-ENG") }
+    after = healthy.transform_values { |entry| entry.merge(path: "ZZ-SFK") }
+    diff = Seaports::Diff.new(before, after)
+
+    assert(diff.failures.any? { |line| line.include?("moved to another principal subdivision") })
+  end
+
+  def test_a_few_ports_moving_region_passes
+    placed = ->(table) { table.transform_values { |entry| { path: "ZZ-B" }.merge(entry) } }
+    before = placed.call(healthy("AAAAA" => port("Moved", path: "ZZ-A")))
+    after = placed.call(healthy("AAAAA" => port("Moved", path: "ZZ-C")))
+    diff = Seaports::Diff.new(before, after)
+
+    assert_equal ["AAAAA"], diff.reassigned.map(&:first)
+    assert_predicate diff, :ok?
+  end
+
   private
 
-  def port(name, point = [1.0, 2.0], region: "")
-    { name: name, point: point, region: region }
+  def port(name, point = [1.0, 2.0], path: "")
+    { name: name, point: point, path: path }
   end
 end

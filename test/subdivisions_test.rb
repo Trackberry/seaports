@@ -52,5 +52,35 @@ class SubdivisionsTest < Minitest::Test
 
   def test_nil_in_nil_out
     assert_nil @subdivisions.principal(nil)
+    assert_empty @subdivisions.path(nil)
+  end
+
+  # Alsace-Moselle sits between Bas-Rhin and Grand Est and has holidays the
+  # rest of Grand Est does not, so the middle of the chain matters.
+  def test_path_keeps_every_level_most_specific_first
+    alsace = Seaports::Subdivisions.parse(JSON.dump("3166-2" => [
+      { "code" => "FR-GES", "name" => "Grand-Est", "type" => "Metropolitan region" },
+      { "code" => "FR-6AE", "name" => "Alsace", "type" => "European collectivity", "parent" => "FR-GES" },
+      { "code" => "FR-67", "name" => "Bas-Rhin", "type" => "Metropolitan department", "parent" => "FR-6AE" }
+    ]))
+
+    assert_equal %w[FR-67 FR-6AE FR-GES], alsace.path("FR-67")
+    assert_equal "FR-GES", alsace.principal("FR-67")
+    assert_equal %w[DE-HH], @subdivisions.path("DE-HH")
+  end
+
+  # A parent the list does not hold means the list is broken. Calling the
+  # child the top would be believed.
+  def test_a_broken_chain_has_no_path_and_no_principal
+    broken = Seaports::Subdivisions.parse(JSON.dump("3166-2" => [
+      { "code" => "GB-SFK", "name" => "Suffolk", "type" => "Two-tier county", "parent" => "GB-ENG" }
+    ]))
+
+    assert_empty broken.path("GB-SFK")
+    assert_nil broken.principal("GB-SFK")
+  end
+
+  def test_a_loop_has_no_path
+    assert_empty @subdivisions.path("XX-A")
   end
 end

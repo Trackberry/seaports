@@ -21,10 +21,32 @@ class BoundariesTest < Minitest::Test
         feature({ "iso_3166_2" => "ES-V", "region_cod" => "ES.VC" }, [square(0.0, 39.0), square(0.3, 39.3, 0.4)]),
         feature({ "iso_3166_2" => "ES-CS", "region_cod" => "ES.VC" }, [square(1.0, 39.0)]),
         feature({ "iso_3166_2" => "GB-LRN", "gu_a3" => "NIR" }, [square(-6.0, 54.8)]),
-        feature({ "iso_3166_2" => "-99" }, [square(10.0, 10.0)])
+        feature({ "iso_3166_2" => "-99" }, [square(10.0, 10.0)]),
+        feature({ "iso_3166_2" => "NO-55" }, [square(20.0, 69.5)]),
+        { "type" => "Feature", "properties" => { "iso_3166_2" => "ES-PM" },
+          "geometry" => { "type" => "MultiPolygon", "coordinates" => [[square(2.5, 39.5, 0.5)], [square(4.0, 39.8, 0.3)]] } }
       ]
     }
     @boundaries = Seaports::Boundaries.parse(JSON.dump(geojson))
+  end
+
+  # Mallorca and Menorca are one area drawn as two polygons.
+  def test_finds_a_point_on_any_polygon_of_a_multipolygon
+    assert_equal %w[ES-PM], @boundaries.codes_at("ES", 39.7, 2.7)
+    assert_equal %w[ES-PM], @boundaries.codes_at("ES", 39.95, 4.15)
+  end
+
+  # Just south of where Valencia and Castellón meet: about 4 km from
+  # Valencia's edge and 6 km from Castellón's corner.
+  def test_an_offshore_point_goes_to_the_nearer_of_two_areas
+    assert_equal "ES-V", @boundaries.codes_at("ES", 38.96, 0.95).first
+  end
+
+  # At 70°N a degree of longitude is 38 km, so 8 km east of the coast is
+  # 0.21° away: further than a margin sized for latitude would look.
+  def test_honours_the_ten_kilometres_in_the_far_north
+    assert_equal %w[NO-55], @boundaries.codes_at("NO", 70.0, 21.21)
+    assert_empty @boundaries.codes_at("NO", 70.0, 21.4), "15 km out is too far"
   end
 
   def test_finds_the_subdivision_a_point_is_in
@@ -32,7 +54,7 @@ class BoundariesTest < Minitest::Test
     assert_equal %w[ES-CS ES-VC], @boundaries.codes_at("ES", 39.2, 1.5)
   end
 
-  # The middle of the hole is about 20 km from any edge, past the offshore
+  # The middle of the hole is about 17 km from any edge, past the offshore
   # allowance, so nothing claims it.
   def test_a_point_in_a_hole_is_not_in_the_area
     assert_empty @boundaries.codes_at("ES", 39.5, 0.5)

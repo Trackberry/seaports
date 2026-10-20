@@ -1,7 +1,6 @@
 locode,subdivision,note
 ATFG7,AT-3,"Nominatim: Achau, Bezirk Mödling, Lower Austria, 2481, Austria [boundary/administrative]"
 ATRTV,AT-3,"Nominatim: Gallbrunn, Trautmannsdorf an der Leitha, Bezirk Bruck an der Leitha, Lower Austria, 2463, Austria [place/village]"
-AUCRS,AU-QLD,"Nominatim: Coral Sea, Queensland, Australia [boundary/administrative]"
 AUDIT,AU-QLD,"Nominatim: Dalrymple Islet, Coral Sea, Queensland, 4800, Australia [place/islet]"
 BAZNK,BA-SRP,"Nominatim: Zvornik, City of Zvornik, Republika Srpska, 75400, Bosnia and Herzegovina [boundary/administrative]"
 CHJJO,CH-TI,"Nominatim: Melide, Circolo di Carona, Distretto di Lugano, Ticino, 6815, Switzerland [boundary/administrative]"
@@ -86,7 +85,6 @@ GBNFR,GB-DBY,"Nominatim: Friden, Hartington Nether Quarter CP, Biggin, Derbyshir
 GBNRY,GB-NIR,"Nominatim: Newry, County Down, Northern Ireland, BT34 1BT, United Kingdom [place/city]"
 GBPTR,GB-NIR,"Nominatim: Portrush, Causeway Coast and Glens District, County Antrim, Northern Ireland, BT56 8DX, United Kingdom [place/town]"
 GBSUH,GB-ERY,"Nominatim: Spurn Head, Easington, East Riding of Yorkshire, Hull and East Yorkshire, England, United Kingdom [place/hamlet]"
-GBUCN,GB-ABD,"Nominatim: Buchan Ness, Stirling Village, Boddam, Aberdeenshire, Scotland, AB42 3NF, United Kingdom [place/locality]"
 GBWPT,GB-NIR,"Nominatim: Warrenpoint, County Down, Northern Ireland, BT34 8NU, United Kingdom [place/town]"
 GBYLL,GB-DEV,"Nominatim: Yelland, North Devon, Devon, Devon and Torbay, England, EX31 3EQ, United Kingdom [place/village]"
 ITALI,IT-ME,"Nominatim: Alicudi, Lipari, Messina, Sicily, Italy [place/island]"
