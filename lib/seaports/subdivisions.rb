@@ -46,10 +46,12 @@ module Seaports
     # ["FR-67", "FR-6AE", "FR-GES"] for Bas-Rhin, ["DE-HH"] for Hamburg.
     #
     # The whole chain rather than just its top, because ISO's top level is not
-    # always the one that matters. Alsace-Moselle (FR-6AE) has holidays the
-    # rest of Grand Est (FR-GES) does not, and Indonesia's top level is island
-    # groups, above the provinces that run anything. A caller matches on
-    # whichever level its own data uses.
+    # always the one that matters. Alsace (FR-6AE) and Moselle (FR-57) keep
+    # two holidays the rest of Grand Est (FR-GES) does not, and sit at
+    # different levels: Moselle's parent is Grand Est itself, since ISO has
+    # no Alsace-Moselle code. Indonesia's top level is island groups, above
+    # the provinces that run anything. A caller matches on whichever level
+    # its own data uses.
     #
     # Empty for nil, and for a chain that breaks (a parent the list does not
     # hold) or loops: a guessed top would be believed.

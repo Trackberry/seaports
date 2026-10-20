@@ -76,10 +76,13 @@ class SeaportsTest < Minitest::Test
     assert_empty Seaports.subdivision_path("not a locode")
   end
 
-  # Alsace-Moselle has holidays the rest of Grand Est does not, so a holiday
-  # calendar needs the middle of Strasbourg's chain, not just its top.
+  # Alsace and Moselle keep holidays the rest of Grand Est does not, so a
+  # holiday calendar needs the middle of Strasbourg's chain, not just its top.
+  # Metz, in Moselle, has no middle: ISO has no Alsace-Moselle code, and
+  # FR-6AE is Alsace alone.
   def test_answers_the_whole_subdivision_path
     assert_equal %w[FR-67 FR-6AE FR-GES], Seaports.subdivision_path("FRSXB")
+    assert_equal %w[FR-57 FR-GES], Seaports.subdivision_path("FRMZM")
     assert_equal %w[GB-SFK GB-ENG], Seaports.subdivision_path("GBFXT")
     assert_equal %w[DE-HH], Seaports.subdivision_path("DEHAM")
   end

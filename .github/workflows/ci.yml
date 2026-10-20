@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   pull_request:
+  # The refresh job starts it on its own pull request: one opened with
+  # GITHUB_TOKEN does not trigger pull_request workflows, but a dispatch on
+  # the branch reports its checks on the same commit.
+  workflow_dispatch:
 
 jobs:
   test:

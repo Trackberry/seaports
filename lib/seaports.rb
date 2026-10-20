@@ -47,9 +47,11 @@ module Seaports
   #
   # To join a port to other data, match on whichever level of the path that
   # data uses. The top is usually right (German states, UK nations, Spanish
-  # communities) but not always: Alsace-Moselle (FR-6AE) has its own
-  # holidays inside Grand Est, and Indonesia's top level is island groups,
-  # above its provinces.
+  # communities) but not always. Alsace (FR-6AE, inside Grand Est) and
+  # Moselle (FR-57, directly in Grand Est) share two holidays the rest of
+  # France does not, so a calendar keys them on those two codes, below the
+  # top; ISO has no Alsace-Moselle code. Indonesia's top level is island
+  # groups, above its provinces.
   #
   # The code comes from UN/LOCODE where it gives one, from the port's
   # coordinates on Natural Earth's map where it does not, and from a reviewed

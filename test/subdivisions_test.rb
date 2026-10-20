@@ -55,8 +55,9 @@ class SubdivisionsTest < Minitest::Test
     assert_empty @subdivisions.path(nil)
   end
 
-  # Alsace-Moselle sits between Bas-Rhin and Grand Est and has holidays the
-  # rest of Grand Est does not, so the middle of the chain matters.
+  # The European Collectivity of Alsace sits between Bas-Rhin and Grand Est
+  # and keeps holidays the rest of Grand Est does not, so the middle of the
+  # chain matters.
   def test_path_keeps_every_level_most_specific_first
     alsace = Seaports::Subdivisions.parse(JSON.dump("3166-2" => [
       { "code" => "FR-GES", "name" => "Grand-Est", "type" => "Metropolitan region" },
