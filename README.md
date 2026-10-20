@@ -74,8 +74,10 @@ Seaports.principal_subdivision("ESVLC")  # => "ES-VC"   Comunitat Valenciana
 To join a port to other data, a public holiday calendar say, match on
 whichever level of the path that data uses. The principal subdivision is
 usually the one (German states, UK nations, Spanish communities), but ISO's
-top level is not always where things are decided: Alsace-Moselle (`FR-6AE`)
-keeps holidays the rest of Grand Est does not, Ireland's top level is its four
+top level is not always where things are decided: Alsace (`FR-6AE`) and
+Moselle (`FR-57`) keep two holidays the rest of Grand Est does not, and sit at
+different levels, since ISO has no Alsace-Moselle code (Metz's path is
+`["FR-57", "FR-GES"]`). Ireland's top level is its four
 provinces rather than its counties, and Indonesia's is island groups (`ID-JW`
 Java) rather than provinces (`ID-JK` Jakarta). The path carries every level, so
 matching on any of it is always safe.
