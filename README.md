@@ -6,9 +6,10 @@
 A locode in, a port name and a position out.
 
 ```ruby
-Seaports.name("CNXMG")         # => "Xiamen Pt"
-Seaports.coordinates("AUBNE")  # => { "lat" => -27.4667, "lng" => 153.0167 }
-Seaports.find("KRPUS")         # => #<data Seaports::Port locode="KRPUS", name="Busan", ...>
+Seaports.name("CNXMG")                   # => "Xiamen Pt"
+Seaports.coordinates("AUBNE")            # => { "lat" => -27.4667, "lng" => 153.0167 }
+Seaports.principal_subdivision("DEHAM")  # => "DE-HH"
+Seaports.find("KRPUS")                   # => #<data Seaports::Port locode="KRPUS", name="Busan", ...>
 ```
 
 Tracking feeds speak in codes. An AIS provider names some port calls and sends
@@ -29,11 +30,12 @@ out of the default gems.
 
 ## What is in it
 
-Every entry UN/LOCODE classifies as a sea port: **17,520 ports**, 11,762 of them
-with published coordinates, built from **UN/LOCODE 2024-2**.
+Every entry UN/LOCODE classifies as a sea port: **17,527 ports**, 11,820 of them
+with published coordinates and 13,149 with a subdivision, built from
+**UN/LOCODE 2024-2**.
 
 ```ruby
-Seaports.count          # => 17520
+Seaports.count          # => 17527
 Seaports.all            # => [#<data Seaports::Port ...>, ...]
 Seaports.data_release   # => "2024-2"
 ```
@@ -52,6 +54,30 @@ unknown code is the ordinary case rather than an error.
 Roughly a third of the table has no position published. That is a fact about
 the source, not a failure — the name is still worth having, and a map simply
 draws no marker.
+
+### Subdivisions
+
+UN/LOCODE files each place under a subdivision of its country, which joined to
+the country is an ISO 3166-2 code. It picks whatever level suits the country:
+a state for Hamburg, a county for Felixstowe. Each port carries both that code
+and the **principal subdivision** above it, the top level that public holiday
+calendars and address geocoders work at:
+
+```ruby
+Seaports.subdivision("GBFXT")            # => "GB-SFK"  Suffolk
+Seaports.principal_subdivision("GBFXT")  # => "GB-ENG"  England
+Seaports.principal_subdivision("DEHAM")  # => "DE-HH"   Hamburg, already top level
+Seaports.principal_subdivision("ITGOA")  # => "IT-42"   Liguria, above Genova
+Seaports.principal_subdivision("ESVLC")  # => nil       UN/LOCODE gives none
+```
+
+The climb from county to nation follows ISO's own hierarchy, taken from
+[Debian's iso-codes](https://salsa.debian.org/iso-codes-team/iso-codes) when the
+table is built; nothing is fetched at runtime. A UN/LOCODE subdivision that is
+not an ISO 3166-2 code is left out rather than passed on. About a quarter of
+ports have none, including some large ones (Valencia, Algeciras, Barcelona,
+Amsterdam), so a caller that needs a region for every port should fall back to
+geocoding its coordinates.
 
 ### What is deliberately not in it
 

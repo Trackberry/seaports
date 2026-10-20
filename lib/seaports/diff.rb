@@ -41,7 +41,7 @@ module Seaports
         locode = row["locode"].to_s.strip.upcase
         next if locode.empty?
 
-        ports[locode] = { name: row["name"].to_s.strip, point: point(row) }
+        ports[locode] = { name: row["name"].to_s.strip, point: point(row), region: row["principal_subdivision"].to_s.strip }
       end
     end
 
@@ -59,7 +59,7 @@ module Seaports
     end
 
     def changed?
-      !(added.empty? && removed.empty? && renamed.empty? && repositioned.empty?)
+      !(added.empty? && removed.empty? && renamed.empty? && repositioned.empty? && reregioned.empty?)
     end
 
     def added
@@ -93,10 +93,21 @@ module Seaports
       end
     end
 
+    # [locode, name, was, now] for a port whose principal subdivision changed.
+    # It decides which holiday calendar the port's free time is counted on, so
+    # every change is worth a look, though none is a failure on its own.
+    def reregioned
+      @reregioned ||= common.filter_map do |locode|
+        was = @before[locode][:region].to_s
+        now = @after[locode][:region].to_s
+        [locode, @after[locode][:name], was, now] if was != now
+      end
+    end
+
     # Empty means the refresh may ship. Anything here is a reason it may not,
     # written the way it should read in an issue.
     def failures
-      [count_failure, shrinkage_failure, *anchor_failures, *excluded_failures].compact
+      [count_failure, shrinkage_failure, region_failure, *anchor_failures, *excluded_failures].compact
     end
 
     def ok?
@@ -110,7 +121,8 @@ module Seaports
         section("Removed", removed.map { |locode| "`#{locode}` #{@before[locode][:name]}" }, limit: nil),
         section("Added", added.map { |locode| "`#{locode}` #{@after[locode][:name]}" }),
         section("Renamed", renamed.map { |locode, was, now| "`#{locode}` #{was} → #{now}" }),
-        section("Coordinates", repositioned.map { |locode, name, kind| "`#{locode}` #{name} — #{POSITION_WORDS.fetch(kind)}" })
+        section("Coordinates", repositioned.map { |locode, name, kind| "`#{locode}` #{name} — #{POSITION_WORDS.fetch(kind)}" }),
+        section("Principal subdivision", reregioned.map { |locode, name, was, now| "`#{locode}` #{name}: #{was.empty? ? 'none' : was} → #{now.empty? ? 'none' : now}" })
       ].compact.join("\n\n")
     end
 
@@ -125,7 +137,8 @@ module Seaports
     def headline
       "#{@after.size} sea ports (#{@before.size} before): " \
         "#{added.size} added, #{removed.size} removed, " \
-        "#{renamed.size} renamed, #{repositioned.size} repositioned."
+        "#{renamed.size} renamed, #{repositioned.size} repositioned, " \
+        "#{reregioned.size} with a new principal subdivision."
     end
 
     private
@@ -147,6 +160,25 @@ module Seaports
       return nil if shrinkage <= MAXIMUM_SHRINKAGE
 
       "The table shrank by #{(shrinkage * 100).round(1)}%, past the #{(MAXIMUM_SHRINKAGE * 100).round}% limit."
+    end
+
+    # Losing subdivisions in bulk means the ISO 3166-2 list failed to load or
+    # UNECE dropped the column, not that ports moved country. A table that
+    # had none before (every table before this column existed) has nothing
+    # to lose.
+    def region_failure
+      was = regioned_count(@before)
+      return nil if was.zero?
+
+      now = regioned_count(@after)
+      shrinkage = (was - now).to_f / was
+      return nil if shrinkage <= MAXIMUM_SHRINKAGE
+
+      "Ports with a principal subdivision fell from #{was} to #{now}, past the #{(MAXIMUM_SHRINKAGE * 100).round}% limit."
+    end
+
+    def regioned_count(ports)
+      ports.count { |_, port| !port[:region].to_s.empty? }
     end
 
     def anchor_failures

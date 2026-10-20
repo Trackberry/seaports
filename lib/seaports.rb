@@ -38,7 +38,13 @@ require_relative "seaports/version"
 module Seaports
   TABLE_PATH = File.expand_path("../data/un_locode_seaports.csv", __dir__)
 
-  Port = Data.define(:locode, :name, :coordinates)
+  # +subdivision+ is the ISO 3166-2 code UN/LOCODE files the port under, at
+  # whatever level UNECE chose: "DE-HH" for Hamburg, "GB-SFK" (Suffolk) for
+  # Felixstowe. +principal_subdivision+ is the top-level one it sits in,
+  # "DE-HH" and "GB-ENG": the level public holiday calendars and address
+  # geocoders work at, so it is the one to join on. Both nil where UN/LOCODE
+  # gives none, as it does for Valencia and Amsterdam.
+  Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision)
 
   class << self
     # Nil for anything the table does not hold, which callers must handle:
@@ -60,6 +66,17 @@ module Seaports
     # no coordinates published, so a named port with no position is normal.
     def coordinates(locode)
       find(locode)&.coordinates
+    end
+
+    # "GB-SFK" for Felixstowe, or nil. See Port.
+    def subdivision(locode)
+      find(locode)&.subdivision
+    end
+
+    # "GB-ENG" for Felixstowe, "DE-HH" for Hamburg, or nil. The code to hand a
+    # holiday calendar: Trackberry::Holidays.holiday?(date, "DE-HH").
+    def principal_subdivision(locode)
+      find(locode)&.principal_subdivision
     end
 
     # Every port in the table, ordered by locode. Materialised on each call
@@ -104,7 +121,8 @@ module Seaports
         locode = normalize(row["locode"])
         next if locode.nil? || blank?(row["name"])
 
-        ports[locode] = Port.new(locode: locode, name: row["name"], coordinates: point(row))
+        ports[locode] = Port.new(locode: locode, name: row["name"], coordinates: point(row),
+          subdivision: presence(row["subdivision"]), principal_subdivision: presence(row["principal_subdivision"]))
       end
     end
 
@@ -116,6 +134,10 @@ module Seaports
 
     def blank?(value)
       value.to_s.strip.empty?
+    end
+
+    def presence(value)
+      blank?(value) ? nil : value.strip
     end
   end
 end

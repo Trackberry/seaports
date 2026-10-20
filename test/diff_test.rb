@@ -128,9 +128,36 @@ class DiffTest < Minitest::Test
     refute_predicate diff, :changed?
   end
 
+  def test_names_a_port_whose_principal_subdivision_changed
+    before = healthy("AAAAA" => port("Felixstowe", region: ""), "BBBBB" => port("Hamburg", region: "DE-HH"))
+    after = healthy("AAAAA" => port("Felixstowe", region: "GB-ENG"), "BBBBB" => port("Hamburg", region: "DE-HH"))
+    diff = Seaports::Diff.new(before, after)
+
+    assert_equal [["AAAAA", "Felixstowe", "", "GB-ENG"]], diff.reregioned
+    assert_predicate diff, :changed?
+    assert_predicate diff, :ok?
+    assert_includes diff.summary, "`AAAAA` Felixstowe: none → GB-ENG"
+  end
+
+  # The first table with subdivisions follows one with none: nothing to lose.
+  def test_a_table_gaining_subdivisions_for_the_first_time_passes
+    after = healthy.transform_values { |entry| entry.merge(region: "ZZ-A") }
+
+    assert_predicate Seaports::Diff.new(healthy, after), :ok?
+  end
+
+  # Losing them in bulk means the ISO list failed to load, not that ports
+  # changed country.
+  def test_refuses_a_table_that_lost_its_subdivisions
+    before = healthy.transform_values { |entry| entry.merge(region: "ZZ-A") }
+    diff = Seaports::Diff.new(before, healthy)
+
+    assert(diff.failures.any? { |line| line.start_with?("Ports with a principal subdivision fell") })
+  end
+
   private
 
-  def port(name, point = [1.0, 2.0])
-    { name: name, point: point }
+  def port(name, point = [1.0, 2.0], region: "")
+    { name: name, point: point, region: region }
   end
 end

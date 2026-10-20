@@ -50,6 +50,22 @@ class SeaportsTest < Minitest::Test
     assert_in_delta 35.1, port.coordinates["lat"], 0.1
   end
 
+  # The principal subdivision is what a holiday calendar is joined on, so the
+  # ports Trackberry's customers ship through are pinned here.
+  def test_answers_the_principal_subdivision_a_holiday_calendar_reads
+    assert_equal "DE-HH", Seaports.principal_subdivision("DEHAM")
+    assert_equal "DE-HB", Seaports.principal_subdivision("DEBRV")
+    assert_equal "GB-ENG", Seaports.principal_subdivision("GBFXT")
+    assert_equal "GB-SFK", Seaports.subdivision("GBFXT")
+    assert_equal "US-CA", Seaports.principal_subdivision("USLAX")
+  end
+
+  def test_a_port_unlocode_gives_no_subdivision_has_none
+    assert_nil Seaports.subdivision("ESVLC")
+    assert_nil Seaports.principal_subdivision("ESVLC")
+    assert_nil Seaports.principal_subdivision("not a locode")
+  end
+
   # UNECE files the Panama Canal as a road terminal with status RL —
   # unverified — so it is not in a sea-port table and a caller falls back to
   # naming the country. A canal is a waterway rather than a port, and its

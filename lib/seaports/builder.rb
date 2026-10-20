@@ -24,7 +24,7 @@ module Seaports
     SOURCE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/data/code-list.csv"
     DATAPACKAGE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/datapackage.json"
 
-    HEADERS = %w[locode name lat lng].freeze
+    HEADERS = %w[locode name lat lng subdivision principal_subdivision].freeze
 
     # The published list, straight off the network — or off disk, if what was
     # handed over is a path. Both, because a rebuild from an already-downloaded
@@ -50,11 +50,17 @@ module Seaports
       nil
     end
 
-    def initialize(source)
+    # +subdivisions+ is the ISO 3166-2 list (see Seaports::Subdivisions) that
+    # turns UN/LOCODE's subdivision column into codes. Without it the two
+    # subdivision columns are left empty, which keeps a test about something
+    # else from needing the list.
+    def initialize(source, subdivisions: nil)
       @source = source
+      @subdivisions = subdivisions
     end
 
-    # [locode, name, lat, lng] per port, deduplicated and sorted by locode.
+    # [locode, name, lat, lng, subdivision, principal_subdivision] per port,
+    # deduplicated and sorted by locode.
     # Sorted because the file is committed: a stable order means a refresh
     # diff shows what changed rather than the whole table moving.
     def rows
@@ -77,6 +83,10 @@ module Seaports
       rows.count { |row| !row[2].nil? }
     end
 
+    def subdivided_count
+      rows.count { |row| !row[5].nil? }
+    end
+
     private
 
     # UNECE classifies every entry by function, and position 1 of that string
@@ -95,7 +105,9 @@ module Seaports
 
     def port_row(row)
       lat, lng = decimal_degrees(row["Coordinates"])
-      ["#{row['Country']}#{row['Location']}".upcase, row["Name"].strip, lat, lng]
+      subdivision = @subdivisions&.code(row["Country"], row["Subdivision"])
+      ["#{row['Country']}#{row['Location']}".upcase, row["Name"].strip, lat, lng,
+        subdivision, @subdivisions&.principal(subdivision)]
     end
 
     # UNECE writes coordinates as "2421N 11812E" — degrees and whole minutes,

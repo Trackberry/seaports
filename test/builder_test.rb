@@ -84,8 +84,30 @@ class BuilderTest < Minitest::Test
     path = File.join(Dir.mktmpdir, "ports.csv")
     Seaports::Builder.new(SOURCE).write(path)
 
-    assert_equal %w[locode name lat lng], CSV.readlines(path).first
+    assert_equal %w[locode name lat lng subdivision principal_subdivision], CSV.readlines(path).first
     assert_equal @locodes, CSV.readlines(path).drop(1).map(&:first)
+  end
+
+  ISO = {
+    "3166-2" => [
+      { "code" => "NZ-BOP", "name" => "Bay of Plenty", "type" => "Region" },
+      { "code" => "AU-QLD", "name" => "Queensland", "type" => "State" },
+      { "code" => "ES-VC", "name" => "Valenciana, Comunidad", "type" => "Autonomous community" },
+      { "code" => "ES-V", "name" => "Valencia", "type" => "Province", "parent" => "ES-VC" }
+    ]
+  }.freeze
+
+  def test_resolves_each_port_s_subdivision_and_the_principal_one_above_it
+    rows = Seaports::Builder.new(SOURCE, subdivisions: Seaports::Subdivisions.parse(JSON.dump(ISO))).rows
+    by_locode = rows.to_h { |row| [row.first, row.last(2)] }
+
+    assert_equal ["AU-QLD", "AU-QLD"], by_locode["AUBNE"]
+    assert_equal ["ES-V", "ES-VC"], by_locode["ESVLC"]
+    assert_equal ["NZ-BOP", "NZ-BOP"], by_locode["NZTRG"]
+  end
+
+  def test_leaves_subdivisions_empty_without_the_iso_list
+    assert(@rows.all? { |row| row.last(2) == [nil, nil] })
   end
 
   # The shipped table must be exactly what the builder produces from the
