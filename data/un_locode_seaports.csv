@@ -1317,11 +1317,12 @@ BQSAB,Saba,17.6333,-63.2333,,,,
 BRAAR,Acará,-1.95,-48.2,BR-PA,BR-PA,BR-PA,unlocode
 BRABZ,Armação dos Búzios,-22.75,-41.8833,BR-RJ,BR-RJ,BR-RJ,unlocode
 BRACT,Alcântara,-2.4,-44.4167,BR-MA,BR-MA,BR-MA,unlocode
-BRACX,Açu Pt / São João da Barra,-21.8167,-41.0167,BR-RJ,BR-RJ,BR-RJ,unlocode
+BRACX,Açu Pt / São João da Barra,-21.8667,-41.0,BR-RJ,BR-RJ,BR-RJ,unlocode
 BRADR,Angra dos Reis,-23.0,-44.3167,BR-RJ,BR-RJ,BR-RJ,unlocode
 BRAFU,Afuá,-0.15,-50.3833,BR-PA,BR-PA,BR-PA,unlocode
 BRAJU,Aracaju,-10.9,-37.0333,BR-SE,BR-SE,BR-SE,unlocode
 BRALT,Alenquer,-1.95,-54.7333,BR-PA,BR-PA,BR-PA,unlocode
+BRALU,Alumar Pt / São Luís,-2.6833,-44.3667,BR-MA,BR-MA,BR-MA,unlocode
 BRAMM,Almeirim,-1.5167,-52.5667,BR-PA,BR-PA,BR-PA,unlocode
 BRANA,Ananindeua,-1.3667,-48.3667,BR-PA,BR-PA,BR-PA,unlocode
 BRANH,Anhembi,-22.7833,-48.1167,BR-SP,BR-SP,BR-SP,unlocode
@@ -1399,7 +1400,7 @@ BRIMP,Imperatriz,-5.5167,-47.4667,BR-MA,BR-MA,BR-MA,unlocode
 BRIOA,Itapoá,-26.0,-48.6,BR-SC,BR-SC,BR-SC,unlocode
 BRIOS,Ilhéus,-14.7833,-39.0333,BR-BA,BR-BA,BR-BA,unlocode
 BRIPG,Itapiranga,-2.7333,-58.0333,BR-AM,BR-AM,BR-AM,unlocode
-BRIQI,Itaqui Pt / São Luís,-2.5667,-44.3667,BR-MA,BR-MA,BR-MA,unlocode
+BRIQI,Itaqui Pt / São Luís,-2.5833,-44.3667,BR-MA,BR-MA,BR-MA,unlocode
 BRIRB,Iranduba,-3.2667,-60.1833,BR-AM,BR-AM,BR-AM,unlocode
 BRISA,Ilha Solteira,-20.4167,-51.3333,BR-SP,BR-SP,BR-SP,unlocode
 BRITB,Itaituba,-4.25,-55.9833,BR-PA,BR-PA,BR-PA,unlocode
@@ -1417,7 +1418,7 @@ BRMAB,Marabá,-5.35,-49.1333,BR-PA,BR-PA,BR-PA,unlocode
 BRMAO,Manaus,-3.1333,-60.0167,BR-AM,BR-AM,BR-AM,unlocode
 BRMAR,Maragogipe,-12.7667,-38.9167,BR-BA,BR-BA,BR-BA,unlocode
 BRMAS,Maués,-3.3833,-57.7,BR-AM,BR-AM,BR-AM,unlocode
-BRMCP,Santana Pt / Macapá,-0.05,-51.1667,BR-AP,BR-AP,BR-AP,unlocode
+BRMCP,Santana Pt / Macapá,-0.0667,-51.1667,BR-AP,BR-AP,BR-AP,unlocode
 BRMCU,Macau,-5.1,-36.6333,BR-RN,BR-RN,BR-RN,unlocode
 BRMCZ,Maceió,-9.65,-35.7,BR-AL,BR-AL,BR-AL,unlocode
 BRMDD,Madre de Deus,-12.7333,-38.6,BR-BA,BR-BA,BR-BA,unlocode
@@ -1440,17 +1441,16 @@ BRNTR,Niterói,-22.8833,-43.0667,BR-RJ,BR-RJ,BR-RJ,unlocode
 BRNVP,Novo Aripuanã,-5.1167,-60.3667,BR-AM,BR-AM,BR-AM,unlocode
 BRNVT,Navegantes,-26.8833,-48.6333,BR-SC,BR-SC,BR-SC,unlocode
 BROBI,Óbidos,-1.9,-55.5,BR-PA,BR-PA,BR-PA,unlocode
-BRORX,Oriximiná,-1.75,-55.85,BR-PA,BR-PA,BR-PA,unlocode
 BRPBD,Pato Bragado,-24.6167,-54.2167,BR-PR,BR-PR,BR-PR,unlocode
 BRPBO,Porto Belo,-27.1333,-48.6,BR-SC,BR-SC,BR-SC,unlocode
 BRPDM,Porto de Moz,-1.7333,-52.2333,BR-PA,BR-PA,BR-PA,unlocode
-BRPEC,Pecém Pt / São Gonçalo do Amarante,-3.5167,-38.8667,BR-CE,BR-CE,BR-CE,unlocode
+BRPEC,Pecém Pt / São Gonçalo do Amarante,-3.55,-38.8167,BR-CE,BR-CE,BR-CE,unlocode
 BRPEO,Presidente Epitácio,-21.7667,-52.1,BR-SP,BR-SP,BR-SP,unlocode
 BRPET,Pelotas,-31.7167,-52.3333,BR-RS,BR-RS,BR-RS,unlocode
 BRPIN,Parintins,-2.6167,-56.7333,BR-AM,BR-AM,BR-AM,unlocode
 BRPIP,Pirapora,-17.3333,-44.95,BR-MG,BR-MG,BR-MG,unlocode
 BRPKY,Presidente Kennedy,-21.1,-41.05,BR-ES,BR-ES,BR-ES,unlocode
-BRPMA,Ponta da Madeira Pt / São Luís,-2.5333,-44.35,BR-MA,BR-MA,BR-MA,unlocode
+BRPMA,Ponta da Madeira Pt / São Luís,-2.5667,-44.3833,BR-MA,BR-MA,BR-MA,unlocode
 BRPMH,Porto Murtinho,-21.7,-57.8833,BR-MS,BR-MS,BR-MS,unlocode
 BRPNG,Paranaguá,-25.5,-48.5167,BR-PR,BR-PR,BR-PR,unlocode
 BRPNS,Pederneiras,-22.35,-48.7667,BR-SP,BR-SP,BR-SP,unlocode
@@ -1458,16 +1458,16 @@ BRPNX,Panorama,-21.35,-51.85,BR-SP,BR-SP,BR-SP,unlocode
 BRPNZ,Petrolina,-9.3833,-40.4833,BR-PE,BR-PE,BR-PE,unlocode
 BRPOA,Porto Alegre,-30.0167,-51.2167,BR-RS,BR-RS,BR-RS,unlocode
 BRPOL,Portel,-1.9333,-50.8167,BR-PA,BR-PA,BR-PA,unlocode
-BRPOU,Ponta do Ubu Pt / Anchieta,-20.7667,-40.5667,BR-ES,BR-ES,BR-ES,unlocode
+BRPOU,Ponta Ubú Pt / Anchieta,-20.7833,-40.5667,BR-ES,BR-ES,BR-ES,unlocode
 BRPPN,Pontal do Paraná,-25.5833,-48.4333,BR-PR,BR-PR,BR-PR,unlocode
 BRPRH,Prainha,-1.8,-53.4667,BR-PA,BR-PA,BR-PA,unlocode
-BRPRM,Praia Mole Pt / Vitória,-20.3,-40.2167,BR-ES,BR-ES,BR-ES,unlocode
+BRPRM,Praia Mole Pt / Vitória,-20.3,-40.2333,BR-ES,BR-ES,BR-ES,unlocode
 BRPRU,Paracuru,-3.4,-39.0167,BR-CE,BR-CE,BR-CE,unlocode
 BRPVH,Porto Velho,-8.7667,-63.8167,BR-RO,BR-RO,BR-RO,unlocode
 BRPWA,Porto Acre,-9.6,-67.5333,BR-AC,BR-AC,BR-AC,unlocode
 BRPWR,Porto Walter,-8.25,-72.7333,BR-AC,BR-AC,BR-AC,unlocode
 BRRBR,Rio Branco,-9.9667,-67.8,BR-AC,BR-AC,BR-AC,unlocode
-BRRCH,Barra do Riacho Pt / Aracruz,-19.85,-40.0333,BR-ES,BR-ES,BR-ES,unlocode
+BRRCH,Barra do Riacho Pt / Aracruz,-19.85,-40.0667,BR-ES,BR-ES,BR-ES,unlocode
 BRREC,Recife,-8.05,-34.8833,BR-PE,BR-PE,BR-PE,unlocode
 BRRGC,Araguacema,-8.8,-49.55,BR-TO,BR-TO,BR-TO,unlocode
 BRRIG,Rio Grande,-32.05,-52.0833,BR-RS,BR-RS,BR-RS,unlocode
@@ -1482,7 +1482,7 @@ BRSIR,Santa Isabel do Rio Negro,-0.4167,-65.0167,BR-AM,BR-AM,BR-AM,unlocode
 BRSLV,Salvaterra,-0.75,-48.5,BR-PA,BR-PA,BR-PA,unlocode
 BRSMS,São Mateus,-18.7167,-39.85,BR-ES,BR-ES,BR-ES,unlocode
 BRSNH,Santa Helena,-24.85,-54.3333,BR-PR,BR-PR,BR-PR,unlocode
-BRSPB,Itaguaí Pt = Sepetiba Pt / Itaguaí,-22.8667,-43.7667,BR-RJ,BR-RJ,BR-RJ,unlocode
+BRSPB,Itaguaí Pt = Sepetiba Pt,-22.9333,-43.8333,BR-RJ,BR-RJ,BR-RJ,unlocode
 BRSPD,São Pedro,-22.5333,-47.9,BR-SP,BR-SP,BR-SP,unlocode
 BRSPV,São Paulo de Olivença,-3.45,-68.9333,BR-AM,BR-AM,BR-AM,unlocode
 BRSSA,Salvador,-13.0,-38.4833,BR-BA,BR-BA,BR-BA,unlocode
@@ -1508,10 +1508,10 @@ BRTPW,Tapauá,-5.6167,-63.1833,BR-AM,BR-AM,BR-AM,unlocode
 BRTRM,Tramandaí,-29.9833,-50.1167,BR-RS,BR-RS,BR-RS,unlocode
 BRTRO,Terra Roxa,-24.1667,-54.0833,BR-PR,BR-PR,BR-PR,unlocode
 BRTST,Terra Santa,-2.1,-56.4833,BR-PA,BR-PA,BR-PA,unlocode
-BRTUB,Tubarão Pt / Vitória,-20.2667,-40.2167,BR-ES,BR-ES,BR-ES,unlocode
+BRTUB,Tubarão Pt / Vitória,-20.2833,-40.25,BR-ES,BR-ES,BR-ES,unlocode
 BRUBT,Ubatuba,-23.4333,-45.0667,BR-SP,BR-SP,BR-SP,unlocode
 BRURT,Urucurituba,-3.1333,-58.15,BR-AM,BR-AM,BR-AM,unlocode
-BRVDC,Vila do Conde Pt / Barcarena,-1.5167,-48.7167,BR-PA,BR-PA,BR-PA,unlocode
+BRVDC,Vila do Conde Pt / Barcarena,-1.5333,-48.75,BR-PA,BR-PA,BR-PA,unlocode
 BRVDX,Vitória do Xingu,-2.8833,-52.0,BR-PA,BR-PA,BR-PA,unlocode
 BRVGR,Várzea Grande,-15.65,-56.1333,BR-MT,BR-MT,BR-MT,unlocode
 BRVIE,Vila Bela da Santíssima Trindade,-15.0,-59.95,BR-MT,BR-MT,BR-MT,unlocode
@@ -1621,6 +1621,7 @@ CABLL,Beloeil,,,CA-QC,CA-QC,CA-QC,unlocode
 CABLR,Blind River,,,CA-ON,CA-ON,CA-ON,unlocode
 CABLV,Belleville,,,CA-ON,CA-ON,CA-ON,unlocode
 CABNI,Bowen Island,49.3667,-123.3333,CA-BC,CA-BC,CA-BC,unlocode
+CABOA,Bonavista,48.6333,-53.1,CA-NL,CA-NL,CA-NL,unlocode
 CABOB,Bobcaygeon,44.5333,-78.55,CA-ON,CA-ON,CA-ON,unlocode
 CABOJ,Saint-Bruno-Lac-Saint-Jean,48.4667,-71.6667,CA-QC,CA-QC,CA-QC,boundaries
 CABOR,Borden,46.25,-63.7,CA-PE,CA-PE,CA-PE,unlocode
@@ -2391,7 +2392,7 @@ CNBLI,Bali,,,CN-HB,CN-HB,CN-HB,unlocode
 CNBLO,Bailuo,,,CN-HB,CN-HB,CN-HB,unlocode
 CNBLX,Honghai Pt,23.1667,114.2667,CN-GD,CN-GD,CN-GD,unlocode
 CNBMJ,Baimajing,19.7,109.2167,CN-HI,CN-HI,CN-HI,unlocode
-CNBOA,Boao,,,CN-HI,CN-HI,CN-HI,unlocode
+CNBOA,Boao,19.1667,110.5833,CN-HI,CN-HI,CN-HI,unlocode
 CNBSD,Baoshan Pt,31.4167,121.4833,CN-SH,CN-SH,CN-SH,unlocode
 CNBSE,Baise,,,CN-GX,CN-GX,CN-GX,unlocode
 CNBSI,Baishi,,,CN-HL,CN-HL,CN-HL,unlocode
@@ -2484,7 +2485,7 @@ CNDMX,Xinhuan,,,CN-GD,CN-GD,CN-GD,unlocode
 CNDMY,Damaiyu,28.0833,121.15,CN-ZJ,CN-ZJ,CN-ZJ,unlocode
 CNDNG,Donghai,22.95,115.6333,CN-GD,CN-GD,CN-GD,unlocode
 CNDNT,Dantu,,,CN-JS,CN-JS,CN-JS,unlocode
-CNDOP,Donglian Port,23.25,115.0167,CN-GD,CN-GD,CN-GD,unlocode
+CNDOP,Donglian Port,22.75,114.6167,CN-GD,CN-GD,CN-GD,unlocode
 CNDOU,Doumen Pt,22.2,113.2833,CN-GD,CN-GD,CN-GD,unlocode
 CNDOX,Dongxing,21.4833,107.9833,CN-GX,CN-GX,CN-GX,unlocode
 CNDOZ,Dongzhang,,,CN-JS,CN-JS,CN-JS,unlocode
@@ -2562,7 +2563,7 @@ CNGYN,Nanan,,,CN-GD,CN-GD,CN-GD,unlocode
 CNGYO,Guanyao,,,CN-HB,CN-HB,CN-HB,unlocode
 CNGZC,Guangzhouchuanchang,,,CN-GD,CN-GD,CN-GD,unlocode
 CNGZE,Guzhen,22.6,113.1667,CN-GD,CN-GD,CN-GD,unlocode
-CNGZG,Guangzhou Pt,23.1333,113.2333,CN-GD,CN-GD,CN-GD,unlocode
+CNGZG,Guangzhou Pt,23.1167,113.2833,CN-GD,CN-GD,CN-GD,unlocode
 CNHAQ,Huangqi/Nanhai,,,CN-GD,CN-GD,CN-GD,unlocode
 CNHAS,Heshan,,,CN-GX,CN-GX,CN-GX,unlocode
 CNHBG,Harbin Pt,,,CN-HL,CN-HL,CN-HL,unlocode
@@ -2646,10 +2647,12 @@ CNJIZ,Jiazi,22.8667,116.05,CN-GD,CN-GD,CN-GD,unlocode
 CNJKO,Jiangkou,,,CN-HB,CN-HB,CN-HB,unlocode
 CNJLI,Jianli,,,CN-HB,CN-HB,CN-HB,unlocode
 CNJLP,Jiulongpo Pt,,,CN-CQ,CN-CQ,CN-CQ,unlocode
+CNJLY,Luoyuanwan,26.4667,119.55,CN-FJ,CN-FJ,CN-FJ,unlocode
 CNJMN,Jiangmen,22.5833,113.0667,CN-GD,CN-GD,CN-GD,unlocode
 CNJMS,Jiamusi Pt,,,CN-HL,CN-HL,CN-HL,unlocode
 CNJMU,Jimusi,,,CN-HL,CN-HL,CN-HL,unlocode
 CNJMY,Jimiya,,,CN-SD,CN-SD,CN-SD,unlocode
+CNJNG,Jining,35.3833,116.55,CN-SD,CN-SD,CN-SD,unlocode
 CNJNH,Jinhaian,,,CN-GD,CN-GD,CN-GD,unlocode
 CNJNL,Jinli,,,CN-GD,CN-GD,CN-GD,unlocode
 CNJNZ,Jinzhou Pt,41.1167,121.15,CN-LN,CN-LN,CN-LN,unlocode
@@ -2714,6 +2717,7 @@ CNLUH,Lü-hua Shan,30.8167,122.6167,CN-ZJ,CN-ZJ,CN-ZJ,unlocode
 CNLUI,Lisui,40.0667,116.75,CN-BJ,CN-BJ,CN-BJ,unlocode
 CNLUN,Lu'an,31.7333,116.4833,CN-AH,CN-AH,CN-AH,unlocode
 CNLUS,Lusi,32.05,121.6167,CN-JS,CN-JS,CN-JS,unlocode
+CNLUU,Leliu,22.8333,113.1167,CN-GD,CN-GD,CN-GD,unlocode
 CNLUZ,Luzhou,28.9,105.4,CN-SC,CN-SC,CN-SC,unlocode
 CNLXH,Laoxiahe,,,CN-AH,CN-AH,CN-AH,unlocode
 CNLXI,Lanxi,29.2,119.4667,CN-ZJ,CN-ZJ,CN-ZJ,unlocode
@@ -2796,7 +2800,7 @@ CNPSH,Pingsha,,,CN-GD,CN-GD,CN-GD,unlocode
 CNPTJ,Jinjing,25.5,119.7833,CN-FJ,CN-FJ,CN-FJ,unlocode
 CNPTN,Pingtan,25.5,119.7167,CN-FJ,CN-FJ,CN-FJ,unlocode
 CNPTS,Sanjiangkou,,,CN-FJ,CN-FJ,CN-FJ,unlocode
-CNPUT,Putian,24.4333,119.0167,CN-FJ,CN-FJ,CN-FJ,unlocode
+CNPUT,Putian,25.4333,119.0167,CN-FJ,CN-FJ,CN-FJ,unlocode
 CNPXI,Puxi,,,CN-ZJ,CN-ZJ,CN-ZJ,unlocode
 CNPXM,Pingshaxinmatou,22.1,113.1667,CN-GD,CN-GD,CN-GD,unlocode
 CNPYG,Puyang,35.7,115.0,CN-HA,CN-HA,CN-HA,boundaries
@@ -2809,6 +2813,7 @@ CNQGG,Qingge,,,CN-HI,CN-HI,CN-HI,unlocode
 CNQGS,Qingshi,41.3667,126.5167,CN-JL,CN-JL,CN-JL,unlocode
 CNQGY,Qingyuan,23.7,113.0167,CN-GD,CN-GD,CN-GD,unlocode
 CNQHE,Qinghe,,,CN-HL,CN-HL,CN-HL,unlocode
+CNQID,Qidong,31.8,121.65,CN-JS,CN-JS,CN-JS,unlocode
 CNQIG,Qingguji / Shangqiu,34.6833,115.7667,CN-SD,CN-SD,CN-SD,boundaries
 CNQIN,Qingdao,36.05,120.3167,CN-SD,CN-SD,CN-SD,unlocode
 CNQJG,Qinjiang,,,CN-GX,CN-GX,CN-GX,unlocode
@@ -2929,7 +2934,7 @@ CNTAZ,Taizhou Pt,,,CN-ZJ,CN-ZJ,CN-ZJ,unlocode
 CNTBS,Tianjinbaoshuiqu,,,CN-TJ,CN-TJ,CN-TJ,unlocode
 CNTFG,Tuanfeng,,,CN-HB,CN-HB,CN-HB,unlocode
 CNTGG,Tanggu,39.0167,117.65,CN-TJ,CN-TJ,CN-TJ,unlocode
-CNTGS,Tangshan Pt,39.6,118.1833,CN-HE,CN-HE,CN-HE,unlocode
+CNTGS,Tangshan,39.6,118.1833,CN-HE,CN-HE,CN-HE,unlocode
 CNTID,Tiandong,,,CN-GX,CN-GX,CN-GX,unlocode
 CNTIS,Taishan,,,CN-GD,CN-GD,CN-GD,unlocode
 CNTIY,Tianyang,,,CN-GX,CN-GX,CN-GX,unlocode
@@ -3329,7 +3334,7 @@ CZJAB,Jablonné nad Orlicí,50.0333,16.6,,,,
 CZJEN,Jencice,50.4833,14.0167,,,,
 CZJIE,Jevisovice,48.9833,16.0,,,,
 CZJK6,Sakvice,48.9,16.7,,,,
-CZKAD,Kadan,50.3833,13.2667,,,,
+CZKAD,Kadaň,50.3833,13.2667,,,,
 CZKKA,Kyselka,50.0667,12.7833,,,,
 CZKNV,Kralupy nad Vltavou,50.2333,14.3167,,,,
 CZKOQ,Kosor,49.9833,140.3333,,,,
@@ -3614,7 +3619,7 @@ DEERX,Biere,51.9667,11.65,DE-ST,DE-ST,DE-ST,unlocode
 DEERY,Ering,48.3,14.5167,DE-BY,DE-BY,DE-BY,unlocode
 DEESF,Estorf/Weser,,,DE-NI,DE-NI,DE-NI,unlocode
 DEESS,Essen,,,DE-NW,DE-NW,DE-NW,unlocode
-DEESU,Emmelsum,51.6,6.6,DE-NW,DE-NW,DE-NW,unlocode
+DEESU,Emmelsum,51.6167,6.6167,DE-NW,DE-NW,DE-NW,unlocode
 DEETN,Elten,51.8667,6.15,DE-NW,DE-NW,DE-NW,unlocode
 DEETY,Ettal,47.5667,11.1,DE-BY,DE-BY,DE-BY,unlocode
 DEEUT,Eutin,,,DE-SH,DE-SH,DE-SH,unlocode
@@ -3773,7 +3778,7 @@ DEJSN,Jössen,52.4,9.0,DE-NW,DE-NW,DE-NW,unlocode
 DEJTN,Jettingen,48.3833,10.4167,DE-BY,DE-BY,DE-BY,unlocode
 DEJUI,Juist,53.6833,7.0,DE-NI,DE-NI,DE-NI,unlocode
 DEJUY,Hohenau,,,DE-BY,DE-BY,DE-BY,unlocode
-DEKAE,Karlsruhe,,,DE-BW,DE-BW,DE-BW,unlocode
+DEKAE,Karlsruhe,49.0,8.4,DE-BW,DE-BW,DE-BW,unlocode
 DEKAM,Kahl am Main,,,DE-BY,DE-BY,DE-BY,unlocode
 DEKAP,Kappeln,,,DE-SH,DE-SH,DE-SH,unlocode
 DEKAR,Karnin,54.3,12.8,DE-MV,DE-MV,DE-MV,unlocode
@@ -3793,7 +3798,7 @@ DEKGU,Kriegenbrunn,49.55,10.95,DE-BY,DE-BY,DE-BY,unlocode
 DEKHN,Kellinghusen,,,DE-SH,DE-SH,DE-SH,unlocode
 DEKHO,Kochendorf,49.2,9.2,DE-BW,DE-BW,DE-BW,unlocode
 DEKHU,Karthaus,51.8667,7.3,DE-NW,DE-NW,DE-NW,unlocode
-DEKIE,Kietz,52.5667,14.6167,DE-BB,DE-BB,DE-BB,unlocode
+DEKIE,Küstrin-Kietz,52.5667,14.6167,DE-BB,DE-BB,DE-BB,unlocode
 DEKIT,Kitzingen,,,DE-BY,DE-BY,DE-BY,unlocode
 DEKKU,Kunkemühle,52.4,7.3667,DE-NI,DE-NI,DE-NI,unlocode
 DEKLS,Kesselstadt,50.1167,8.8833,DE-HE,DE-HE,DE-HE,unlocode
@@ -3899,13 +3904,14 @@ DEMOZ,Motzen,53.1667,8.5667,DE-NI,DE-NI,DE-NI,unlocode
 DEMRM,Marcardsmoor,53.45,7.7167,DE-NI,DE-NI,DE-NI,unlocode
 DEMRS,Mariensiel,53.5,8.05,DE-NI,DE-NI,DE-NI,unlocode
 DEMRU,Mehrum,52.3,10.1,DE-NI,DE-NI,DE-NI,unlocode
+DEMRY,Marktsteft,49.7,10.1333,DE-BY,DE-BY,DE-BY,unlocode
 DEMSB,Mittelsbüren,53.1333,8.6667,DE-HB,DE-HB,DE-HB,unlocode
 DEMSH,Mescherin,53.25,14.4333,DE-BB,DE-BB,DE-BB,unlocode
 DEMSK,Martinskirchen,51.4667,13.1833,DE-BB,DE-BB,DE-BB,unlocode
 DEMSR,Münster,51.9667,7.6333,DE-NW,DE-NW,DE-NW,unlocode
 DEMTD,Marktrodach,,,DE-BY,DE-BY,DE-BY,unlocode
 DEMUH,Mülheim an der Ruhr,51.4333,6.8833,DE-NW,DE-NW,DE-NW,unlocode
-DEMUK,Mukran,,,DE-MV,DE-MV,DE-MV,unlocode
+DEMUK,Mukran,54.4833,13.5833,DE-MV,DE-MV,DE-MV,unlocode
 DEMUN,Munster,52.9833,10.0833,DE-NI,DE-NI,DE-NI,unlocode
 DEMV5,Ferdinandshof,53.6667,13.8833,DE-MV,DE-MV,DE-MV,unlocode
 DEMVD,Dassow,53.9167,10.9833,DE-MV,DE-MV,DE-MV,unlocode
@@ -4067,6 +4073,7 @@ DERUM,Rüsselsheim,49.9833,8.4333,DE-HE,DE-HE,DE-HE,unlocode
 DERZB,Rettenbach / Gunzburg,,,DE-BY,DE-BY,DE-BY,unlocode
 DERZE,Wriezen,52.7167,14.1333,DE-BB,DE-BB,DE-BB,unlocode
 DES3B,Schechingen,48.8667,9.9167,DE-BW,DE-BW,DE-BW,unlocode
+DESA3,Seebad Ahlbeck,53.9333,14.2,DE-MV,DE-MV,DE-MV,unlocode
 DESAA,Saarlouis,,,DE-SL,DE-SL,DE-SL,unlocode
 DESAG,Saarburg,,,DE-RP,DE-RP,DE-RP,unlocode
 DESAR,Salzgitter,52.15,10.3167,DE-NI,DE-NI,DE-NI,unlocode
@@ -4113,7 +4120,7 @@ DESSL,Hesselte,52.4167,7.3833,DE-NI,DE-NI,DE-NI,unlocode
 DESTA,Stade,53.6,9.4833,DE-NI,DE-NI,DE-NI,unlocode
 DESTB,Straubing,,,DE-BY,DE-BY,DE-BY,unlocode
 DESTD,Strande,,,DE-SH,DE-SH,DE-SH,unlocode
-DESTL,Stralsund,,,DE-MV,DE-MV,DE-MV,unlocode
+DESTL,Stralsund,54.3,13.0833,DE-MV,DE-MV,DE-MV,unlocode
 DESTS,Stader Sand,53.6333,9.5167,DE-NI,DE-NI,DE-NI,unlocode
 DESUD,Süderstapel,,,DE-SH,DE-SH,DE-SH,unlocode
 DESWF,Schwaigern,49.15,9.0667,DE-BW,DE-BW,DE-BW,unlocode
@@ -4402,6 +4409,7 @@ DKLYO,Lyngs Odde Havn,,,,,,
 DKMAS,Masnedø,,,,,,
 DKMID,Middelfart,,,,,,
 DKMKH,Masnedovaerkets Havn/Vordingborg,54.9667,11.8833,DK-85,DK-85,DK-85,unlocode
+DKMNK,Munkebo,55.45,10.55,DK-83,DK-83,DK-83,boundaries
 DKMNS,Masnedsund,55.0,11.8667,DK-85,DK-85,DK-85,unlocode
 DKMOM,Mommark,,,,,,
 DKMRB,Marbæk Havn,,,,,,
@@ -4675,6 +4683,7 @@ EELIN,Lindi,58.3333,24.2833,EE-68,EE-68,EE-68,unlocode
 EELIU,Liu,58.2833,24.2667,EE-68,EE-68,EE-68,unlocode
 EELKS,Laaksaare,58.3333,27.4167,EE-79,EE-79,EE-79,unlocode
 EELMA,Lõmala,58.1667,22.1167,EE-74,EE-74,EE-74,unlocode
+EELNJ,Luunja,58.35,26.8667,EE-79,EE-79,EE-79,unlocode
 EELNR,Lõunaranna,58.5333,23.3167,EE-74,EE-74,EE-74,unlocode
 EELPN,Leppneeme Kalasadam,59.55,24.8667,EE-37,EE-37,EE-37,unlocode
 EELPS,Lõpesuu,58.4833,23.2667,EE-74,EE-74,EE-74,unlocode
@@ -4977,6 +4986,7 @@ ESDBO,Playa Den Bossa,38.8833,1.4167,ES-PM,ES-IB,ES-PM ES-IB,unlocode
 ESDEJ,Valdetorres de Jarama,40.7,-3.5,ES-M,ES-MD,ES-M ES-MD,unlocode
 ESDGS,Villandangos,,,ES-A,ES-VC,ES-A ES-VC,unlocode
 ESDNA,Denia,,,ES-A,ES-VC,ES-A ES-VC,override
+ESDPQ,Dársena Pesquera,28.5,-16.2,ES-TF,ES-CN,ES-TF ES-CN,unlocode
 ESDRI,Derio,,,ES-BI,ES-PV,ES-BI ES-PV,override
 ESEAS,San Sebastian,,,ES-SS,ES-PV,ES-SS ES-PV,override
 ESEBO,Cebolla,39.95,-4.5667,ES-TO,ES-CM,ES-TO ES-CM,boundaries
@@ -5481,6 +5491,7 @@ FIZBQ,Perttula,60.45,24.7,FI-18,FI-18,FI-18,unlocode
 FJDEN,Denarau,-17.7667,177.3833,FJ-11,FJ-W,FJ-11 FJ-W,unlocode
 FJELL,Ellington Wharf,-17.35,178.2167,FJ-W,FJ-W,FJ-W,boundaries
 FJLBS,Labasa,-16.4167,179.3833,FJ-07,FJ-N,FJ-07 FJ-N,unlocode
+FJLEV,Levuka,-17.6833,178.8333,FJ-06,FJ-E,FJ-06 FJ-E,unlocode
 FJLTK,Lautoka,-17.6167,177.45,FJ-01,FJ-W,FJ-01 FJ-W,unlocode
 FJMAL,Malau (Labasa),-16.3667,179.3833,FJ-N,FJ-N,FJ-N,boundaries
 FJMOM,Momi,-17.9167,177.2833,FJ-W,FJ-W,FJ-W,boundaries
@@ -5563,6 +5574,7 @@ FRAGF,Agen,44.2,0.6167,FR-47,FR-NAQ,FR-47 FR-NAQ,unlocode
 FRAGK,Le Cap-d'Agde,43.2833,3.5167,FR-34,FR-OCC,FR-34 FR-OCC,unlocode
 FRAIQ,Audruicq,50.8667,2.0667,FR-62,FR-HDF,FR-62 FR-HDF,unlocode
 FRAJA,Ajaccio,41.9333,8.7333,FR-2A,FR-20R,FR-2A FR-20R,unlocode
+FRAJB,Saint-Jouin-Bruneval,49.65,0.1667,FR-76,FR-NOR,FR-76 FR-NOR,unlocode
 FRAJK,Brasles,49.05,3.4333,FR-02,FR-HDF,FR-02 FR-HDF,unlocode
 FRAJR,Argeliers,43.3,2.9,FR-11,FR-OCC,FR-11 FR-OCC,unlocode
 FRAMI,Amiens,49.9,2.3,FR-80,FR-HDF,FR-80 FR-HDF,unlocode
@@ -5575,6 +5587,7 @@ FRAQX,Redessan,43.8333,4.5,FR-30,FR-OCC,FR-30 FR-OCC,unlocode
 FRARC,Arcachon,44.65,-1.1833,FR-33,FR-NAQ,FR-33 FR-NAQ,unlocode
 FRARD,Ardres,50.85,1.9833,FR-62,FR-HDF,FR-62 FR-HDF,unlocode
 FRARJ,Puyricard,43.8333,5.4167,FR-13,FR-PAC,FR-13 FR-PAC,unlocode
+FRARL,Arles,43.6833,4.6333,FR-13,FR-PAC,FR-13 FR-PAC,unlocode
 FRARR,Arras,50.2833,2.7833,FR-62,FR-HDF,FR-62 FR-HDF,unlocode
 FRAUD,Audierne,48.0167,-4.5667,FR-29,FR-BRE,FR-29 FR-BRE,unlocode
 FRAUF,Auxerre,47.8,3.5667,FR-89,FR-BFC,FR-89 FR-BFC,unlocode
@@ -5741,6 +5754,7 @@ FRESM,Étalondes,50.0333,1.3833,FR-76,FR-NOR,FR-76 FR-NOR,unlocode
 FRET2,Etretat,49.7,0.2,FR-76,FR-NOR,FR-76 FR-NOR,unlocode
 FRETA,Étalans,47.15,6.2667,FR-25,FR-BFC,FR-25 FR-BFC,unlocode
 FRETB,Berre-l'Étang,43.4667,5.1667,FR-13,FR-PAC,FR-13 FR-PAC,unlocode
+FRETN,Menton,43.7833,7.5,FR-06,FR-PAC,FR-06 FR-PAC,unlocode
 FREUI,Lérouville,48.7833,5.5333,FR-55,FR-GES,FR-55 FR-GES,unlocode
 FREVD,Pléneuf-Val-André,48.6,-2.55,FR-22,FR-BRE,FR-22 FR-BRE,unlocode
 FREVR,Évry,48.6167,2.4333,FR-91,FR-IDF,FR-91 FR-IDF,unlocode
@@ -5760,6 +5774,7 @@ FRFDR,Fraissé-des-Corbières,42.9667,2.8667,FR-11,FR-OCC,FR-11 FR-OCC,unlocode
 FRFEC,Fécamp,49.75,0.3833,FR-76,FR-NOR,FR-76 FR-NOR,unlocode
 FRFEY,Feyzin,45.6667,4.8667,FR-69,FR-ARA,FR-69 FR-ARA,unlocode
 FRFIE,Fontafie,45.8667,0.5333,FR-16,FR-NAQ,FR-16 FR-NAQ,unlocode
+FRFL9,Flamanville,49.5333,-1.8667,FR-50,FR-NOR,FR-50 FR-NOR,unlocode
 FRFMA,Fumay,49.9667,4.6833,FR-08,FR-GES,FR-08 FR-GES,unlocode
 FRFNS,Flins,48.9667,1.8667,FR-78,FR-IDF,FR-78 FR-IDF,unlocode
 FRFOP,Fontaine-le-Port,48.4833,2.7667,FR-77,FR-IDF,FR-77 FR-IDF,unlocode
@@ -5773,7 +5788,6 @@ FRG2X,Groix,47.6333,-3.4667,FR-56,FR-BRE,FR-56 FR-BRE,unlocode
 FRG33,La Rivière,44.9333,-0.3167,FR-33,FR-NAQ,FR-33 FR-NAQ,unlocode
 FRG63,Pérignat-lès-Sarliève,45.7333,3.1333,FR-63,FR-ARA,FR-63 FR-ARA,unlocode
 FRG8R,Chusclan,44.15,4.6833,FR-30,FR-OCC,FR-30 FR-OCC,unlocode
-FRG8V,Glaire-et-Villette,49.7167,4.9167,FR-08,FR-GES,FR-08 FR-GES,unlocode
 FRGAO,Gigny-sur-Saône,46.6667,4.9167,FR-71,FR-BFC,FR-71 FR-BFC,unlocode
 FRGB2,Guéthary,43.4167,-1.6,FR-64,FR-NAQ,FR-64 FR-NAQ,unlocode
 FRGBQ,Guarbecque,50.6167,2.4833,FR-62,FR-HDF,FR-62 FR-HDF,unlocode
@@ -5827,7 +5841,6 @@ FRHRN,Harnes,50.45,2.9,FR-62,FR-HDF,FR-62 FR-HDF,unlocode
 FRHS2,Haisnes,50.5167,2.8,FR-62,FR-HDF,FR-62 FR-HDF,unlocode
 FRHSA,Hauteville-sur-Mer,48.9833,-1.5333,FR-50,FR-NOR,FR-50 FR-NOR,unlocode
 FRHSG,Hossegor,43.6667,-1.4333,FR-40,FR-NAQ,FR-40 FR-NAQ,unlocode
-FRHSN,Le Theil-sur-Huisne,48.2667,0.7,FR-61,FR-NOR,FR-61 FR-NOR,unlocode
 FRHTI,Taden,48.4833,-2.0167,FR-22,FR-BRE,FR-22 FR-BRE,unlocode
 FRHUN,Huningue,47.6,7.5833,FR-68,FR-GES,FR-68 FR-6AE FR-GES,unlocode
 FRHV2,Hautvillers,49.0833,3.95,FR-51,FR-GES,FR-51 FR-GES,unlocode
@@ -6051,6 +6064,7 @@ FRPJU,Pujaut,44.0,4.7667,FR-30,FR-OCC,FR-30 FR-OCC,unlocode
 FRPKL,Pouillé,47.3167,1.2833,FR-41,FR-CVL,FR-41 FR-CVL,unlocode
 FRPKM,Monnières,47.1333,-1.35,FR-44,FR-PDL,FR-44 FR-PDL,unlocode
 FRPKS,Pouilly-sur-Loire,47.2833,2.95,FR-58,FR-BFC,FR-58 FR-BFC,unlocode
+FRPLR,Plérin,48.5333,-2.7833,FR-22,FR-BRE,FR-22 FR-BRE,unlocode
 FRPM6,Port Manec'h,47.8167,-3.7833,FR-29,FR-BRE,FR-29 FR-BRE,unlocode
 FRPNF,Port-Navalo,47.55,-2.9,FR-56,FR-BRE,FR-56 FR-BRE,unlocode
 FRPNH,Pont-d'Ouche,47.1667,4.6833,FR-21,FR-BFC,FR-21 FR-BFC,unlocode
@@ -6119,6 +6133,7 @@ FRRMO,Larmor-Baden,47.5833,-2.9,FR-56,FR-BRE,FR-56 FR-BRE,unlocode
 FRRN3,Rions,44.65,-0.35,FR-33,FR-NAQ,FR-33 FR-NAQ,unlocode
 FRRNY,Frangy,46.0167,5.9333,FR-74,FR-ARA,FR-74 FR-ARA,unlocode
 FRRON,Roncq,50.75,3.1167,FR-59,FR-HDF,FR-59 FR-HDF,unlocode
+FRROS,Roscoff,48.7333,-3.9833,FR-29,FR-BRE,FR-29 FR-BRE,unlocode
 FRROU,Roubaix,50.6833,3.1833,FR-59,FR-HDF,FR-59 FR-HDF,unlocode
 FRRQE,Rech,48.9833,7.0167,FR-57,FR-GES,FR-57 FR-GES,unlocode
 FRRRB,Sarralbe,49.0,7.0167,FR-57,FR-GES,FR-57 FR-GES,unlocode
@@ -6144,6 +6159,7 @@ FRS4P,Santa-Maria-Poggio,42.3333,9.5,FR-2B,FR-20R,FR-2B FR-20R,unlocode
 FRS5M,Saâcy-sur-Marne,48.9667,3.2167,FR-77,FR-IDF,FR-77 FR-IDF,unlocode
 FRS8C,Sercus,50.7,2.45,FR-59,FR-HDF,FR-59 FR-HDF,unlocode
 FRSAR,Sarreguemines,49.1167,7.0667,FR-57,FR-GES,FR-57 FR-GES,unlocode
+FRSB5,Sablons,45.3333,4.7833,FR-38,FR-ARA,FR-38 FR-ARA,unlocode
 FRSBK,Saint-Brieuc,48.5167,-2.7833,FR-22,FR-BRE,FR-22 FR-BRE,unlocode
 FRSET,Sète,43.4,3.7,FR-34,FR-OCC,FR-34 FR-OCC,unlocode
 FRSGT,Sainte-Gemmes-sur-Loire,47.4167,-0.5667,FR-49,FR-PDL,FR-49 FR-PDL,unlocode
@@ -6244,6 +6260,7 @@ FRV88,Charmes,48.3667,6.2833,FR-88,FR-GES,FR-88 FR-GES,unlocode
 FRVA5,Saint-Vallier,46.65,4.3667,FR-71,FR-BFC,FR-71 FR-BFC,unlocode
 FRVAF,Valence,44.9333,4.8833,FR-26,FR-ARA,FR-26 FR-ARA,unlocode
 FRVAL,Valenciennes,50.3667,3.5333,FR-59,FR-HDF,FR-59 FR-HDF,unlocode
+FRVAU,Vallauris,43.5833,7.05,FR-06,FR-PAC,FR-06 FR-PAC,unlocode
 FRVC4,Villers-sous-Châtillon,49.1,3.8,FR-51,FR-GES,FR-51 FR-GES,unlocode
 FRVCS,Carnas,43.8333,3.9833,FR-30,FR-OCC,FR-30 FR-OCC,unlocode
 FRVEJ,Verjux,46.8833,4.9667,FR-71,FR-BFC,FR-71 FR-BFC,boundaries
@@ -6320,6 +6337,7 @@ FRYYO,Yport,49.7333,0.3167,FR-76,FR-NOR,FR-76 FR-NOR,unlocode
 FRZAN,Saint-Genis-de-Saintonge,45.4833,-0.5833,FR-17,FR-NAQ,FR-17 FR-NAQ,unlocode
 FRZCY,Luzancy,48.9667,3.1667,FR-77,FR-IDF,FR-77 FR-IDF,unlocode
 FRZEV,Plozévet,47.9833,-4.4333,FR-29,FR-BRE,FR-29 FR-BRE,unlocode
+FRZFB,Saint-Florent,42.6833,9.3,FR-2B,FR-20R,FR-2B FR-20R,unlocode
 FRZHA,Rochefort-du-Gard,43.9833,4.6833,FR-30,FR-OCC,FR-30 FR-OCC,unlocode
 FRZIC,Pouldreuzic,47.95,-4.3667,FR-29,FR-BRE,FR-29 FR-BRE,unlocode
 FRZLE,Azille,43.2833,2.6667,FR-11,FR-OCC,FR-11 FR-OCC,unlocode
@@ -7037,6 +7055,7 @@ GBLFF,Llansteffan,51.7667,-4.3833,GB-CMN,GB-WLS,GB-CMN GB-WLS,unlocode
 GBLGO,Largo,56.2167,-2.95,GB-FIF,GB-SCT,GB-FIF GB-SCT,unlocode
 GBLGP,London Gateway Port,51.5,0.4833,GB-ESS,GB-ENG,GB-ESS GB-ENG,unlocode
 GBLGS,Largs,55.7833,-4.85,GB-NAY,GB-SCT,GB-NAY GB-SCT,unlocode
+GBLHE,Limehouse,51.5,-0.0333,GB-TWH,GB-ENG,GB-TWH GB-ENG,unlocode
 GBLHO,"Longhope, Hoy",58.8,-3.2,GB-ORK,GB-SCT,GB-ORK GB-SCT,unlocode
 GBLHP,Longhope,,,GB-GLS,GB-ENG,GB-GLS GB-ENG,unlocode
 GBLHS,Loch Striven,55.9333,-5.0667,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode
@@ -8268,7 +8287,7 @@ HRLSZ,Mali Losinj,44.5333,14.4667,HR-08,HR-08,HR-08,boundaries
 HRMAK,Makarska,43.3,17.0167,HR-17,HR-17,HR-17,unlocode
 HRMAL,Malinska,45.1167,14.5333,HR-08,HR-08,HR-08,boundaries
 HRMAS,Maslenica,44.2167,15.5333,HR-17,HR-17,HR-17,unlocode
-HRMET,Metkovic,43.05,17.6333,HR-19,HR-19,HR-19,boundaries
+HRMET,Metković,43.05,17.6333,HR-19,HR-19,HR-19,boundaries
 HRMHV,Mohovo,45.25,19.2167,HR-16,HR-16,HR-16,boundaries
 HRMIL,Milna,43.3167,16.45,HR-17,HR-17,HR-17,boundaries
 HRMIZ,Mali Iz,44.0333,15.1333,HR-13,HR-13,HR-13,unlocode
@@ -8400,6 +8419,7 @@ HUAKT,Andornaktálya,47.8333,20.4167,HU-HE,HU-HE,HU-HE,boundaries
 HUALS,Alsóörs,46.9833,17.9833,HU-VE,HU-VE,HU-VE,boundaries
 HUASZ,Alsozsolca,48.0667,20.8833,HU-BZ,HU-BZ,HU-BZ,unlocode
 HUBDA,Berhida,47.1167,18.1333,HU-VE,HU-VE,HU-VE,unlocode
+HUBFU,Balatonfüred,46.95,17.8833,HU-VE,HU-VE,HU-VE,unlocode
 HUBRS,Badacsonyörs,46.8,17.5333,HU-VE,HU-VE,HU-VE,unlocode
 HUBUD,Budapest,47.5,19.0833,HU-BU,HU-BU,HU-BU,unlocode
 HUBZE,Berzence,46.2,17.15,HU-SO,HU-SO,HU-SO,boundaries
@@ -8479,11 +8499,13 @@ IDBEN,Benete,-8.8667,116.7167,ID-NB,ID-NU,ID-NB ID-NU,unlocode
 IDBET,Belida Terminal,4.1333,105.1333,ID-RI,ID-SM,ID-RI ID-SM,unlocode
 IDBGD,Bagendang,-2.7333,112.55,ID-KT,ID-KA,ID-KT ID-KA,unlocode
 IDBGG,Banggai,,,,,,
+IDBHI,Bakuheni,-5.8667,105.75,ID-LA,ID-SM,ID-LA ID-SM,unlocode
 IDBIK,"Biak, Irian Jaya",,,,,,
 IDBIR,Biringkassi,-4.8167,119.4833,ID-SN,ID-SL,ID-SN ID-SL,boundaries
 IDBIT,"Bitung, Sulawesi",,,,,,
 IDBJU,"Banjuwangi, Java",,,,,,
 IDBKS,"Bengkulu, Sumatra",,,,,,
+IDBLG,Belang-Belang,-2.4833,119.1167,ID-SB,ID-SM,ID-SB ID-SM,unlocode
 IDBLH,Balohan,5.8167,95.3333,ID-AC,ID-SM,ID-AC ID-SM,unlocode
 IDBLI,"Blinju, Banka",,,,,,
 IDBLL,"Blang Lancang, St",,,,,,
@@ -8493,15 +8515,18 @@ IDBLW,"Belawan, Sumatra",,,,,,
 IDBMT,"Bima Terminal, Jv",,,,,,
 IDBMU,"Bima, Sb",,,,,,
 IDBNG,Bonggala,,,,,,
+IDBNI,Banyuwangi,-8.2,114.35,ID-JI,ID-JW,ID-JI ID-JW,unlocode
 IDBNT,Belanak Terminal,4.1667,106.2333,ID-RI,ID-SM,ID-RI ID-SM,unlocode
 IDBOA,Benoa,-8.7667,115.2167,ID-BA,ID-NU,ID-BA ID-NU,unlocode
 IDBPN,Balikpapan,-1.2833,116.8333,ID-KI,ID-KA,ID-KI ID-KA,unlocode
+IDBRT,Teluk Kabung,-1.0667,100.4167,ID-SB,ID-SM,ID-SB ID-SM,unlocode
 IDBTM,Batam Island,1.0833,104.0333,ID-KR,ID-SM,ID-KR ID-SM,unlocode
 IDBTN,Banten,,,,,,
 IDBTW,Batulicin,-3.45,115.9833,ID-KS,ID-KA,ID-KS ID-KA,unlocode
 IDBUA,Bula,,,,,,
 IDBUG,"Buleleng, Bali",,,,,,
 IDBUR,Batu Ampar,1.1667,104.0167,ID-KR,ID-SM,ID-KR ID-SM,unlocode
+IDBUW,Baubau,-5.45,122.6167,ID-SG,ID-SL,ID-SG ID-SL,boundaries
 IDBXT,"Bontang, Kl",,,,,,
 IDBYQ,Bunyu,3.5,117.8,ID-KI,ID-KA,ID-KI ID-KA,unlocode
 IDCBN,Cirebon (Tjeribon),-6.7333,108.5667,ID-JB,ID-JW,ID-JB ID-JW,boundaries
@@ -8527,6 +8552,7 @@ IDFKQ,"Fak Fak, Irian Jaya",,,,,,
 IDFTG,Pelabuhan Futong Terminal,0.8167,102.4,ID-RI,ID-SM,ID-RI ID-SM,unlocode
 IDGEE,Gee Island,0.8333,128.3167,ID-MA,ID-ML,ID-MA ID-ML,unlocode
 IDGIL,"Gilimanuk, Bali",,,,,,
+IDGKG,Garong Kong,-4.3667,119.6167,ID-SN,ID-SL,ID-SN ID-SL,unlocode
 IDGNS,"Gunung Sitoli, St",,,,,,
 IDGRE,"Gresik, Java",-7.15,112.65,ID-JI,ID-JW,ID-JI ID-JW,unlocode
 IDGTO,"Gorontalo, Sulawesi",,,,,,
@@ -8565,10 +8591,11 @@ IDKOL,Kolaka,-4.05,121.5667,ID-SG,ID-SL,ID-SG ID-SL,unlocode
 IDKPL,Kampung Laut,-0.9,103.8,ID-JA,ID-SM,ID-JA ID-SM,unlocode
 IDKPN,"Kotapinang, Baru",,,,,,
 IDKRG,Kariangau,-1.1667,116.7833,ID-KI,ID-KA,ID-KI ID-KA,boundaries
+IDKRY,Krueng Raya,5.5833,95.5167,ID-AC,ID-SM,ID-AC ID-SM,unlocode
 IDKSE,Kassue,-6.9833,139.2167,ID-PA,ID-PP,ID-PA ID-PP,unlocode
 IDKSO,Kalbut Situbondo,-7.6167,113.8833,ID-JI,ID-JW,ID-JI ID-JW,unlocode
 IDKTG,"Ketapang, Kl",,,,,,
-IDKTJ,Kualatanjung,3.35,99.4833,ID-SU,ID-SM,ID-SU ID-SM,unlocode
+IDKTJ,Kuala Tanjung,3.35,99.4833,ID-SU,ID-SM,ID-SU ID-SM,unlocode
 IDKUA,Kualalangsa,4.5333,98.0167,ID-AC,ID-SM,ID-AC ID-SM,unlocode
 IDKUM,Kumai,-2.7333,111.7167,ID-KT,ID-KA,ID-KT ID-KA,unlocode
 IDLAH,"Labuha, Molucas",-0.6167,127.4833,ID-MU,ID-ML,ID-MU ID-ML,boundaries
@@ -8606,6 +8633,7 @@ IDMOF,"Maumere, Flores",,,,,,
 IDMOR,Mornopo,0.7833,128.2167,ID-MA,ID-ML,ID-MA ID-ML,unlocode
 IDMOW,Morowali,-1.8667,121.5,ID-ST,ID-SL,ID-ST ID-SL,unlocode
 IDMPN,Muara Pantai,,,,,,
+IDMPU,Mekar Putih,-4.0167,116.0333,ID-KS,ID-KA,ID-KS ID-KA,unlocode
 IDMRB,"Merantibunting, Sumatra",,,,,,
 IDMRI,"Musi River, Sumatra",,,,,,
 IDMRK,"Merak, Java",,,,,,
@@ -8623,10 +8651,12 @@ IDNPL,North Pulau Laut,-3.2167,116.2667,ID-KS,ID-KA,ID-KS ID-KA,boundaries
 IDOBI,Obi Island,,,,,,
 IDOJA,Olah Jasa Andal/Jakarta,,,ID-JK,ID-JW,ID-JK ID-JW,unlocode
 IDOLO,Olee Lheue,,,,,,
+IDOST,Ogan Komering Ilir,-2.8167,105.7333,ID-SS,ID-SM,ID-SS ID-SM,unlocode
 IDPAC,Paciran,-6.8667,112.3333,ID-JI,ID-JW,ID-JI ID-JW,unlocode
 IDPAG,"Pagatan, Kalimantan",,,,,,
 IDPAL,Palu,-0.8833,119.85,ID-ST,ID-SL,ID-ST ID-SL,boundaries
-IDPAS,Pasir Panjang,,,,,,
+IDPAM,Pamenang,-8.4,116.1,ID-NB,ID-NU,ID-NB ID-NU,unlocode
+IDPAS,Pasir Panjang,1.0833,103.3167,ID-RI,ID-SM,ID-RI ID-SM,unlocode
 IDPAZ,"Pasuruan, Java",-7.6333,112.9,ID-JI,ID-JW,ID-JI ID-JW,boundaries
 IDPBB,Pelabuhan Badas,-8.45,117.3667,ID-NB,ID-NU,ID-NB ID-NU,unlocode
 IDPBJ,Pulau Bunyu,-0.3,115.8667,ID-KI,ID-KA,ID-KI ID-KA,boundaries
@@ -8643,8 +8673,10 @@ IDPJM,Pandjung Mani,,,,,,
 IDPKN,Pangkalanbuun,,,,,,
 IDPKR,"Pangkalan Brandan, Sumatra",,,,,,
 IDPKS,"Pangkalan Susu, Sumatra",,,,,,
+IDPKU,Pekanbaru,0.5,101.4333,ID-RI,ID-SM,ID-RI ID-SM,unlocode
 IDPLA,"Plaju, Sumatra",-2.9833,104.8,ID-SS,ID-SM,ID-SS ID-SM,boundaries
 IDPLM,"Palembang, Sumatra",,,,,,
+IDPMB,Patimban,-6.2333,107.9,ID-JB,ID-JW,ID-JB ID-JW,unlocode
 IDPMG,Port Meneng,,,,,,
 IDPMK,Pomako,-4.8,136.7667,ID-PA,ID-PP,ID-PA ID-PP,unlocode
 IDPNG,Penuba,,,,,,
@@ -8668,6 +8700,9 @@ IDREO,Reo,-8.3167,120.5,ID-NT,ID-NU,ID-NT ID-NU,unlocode
 IDRGT,"Rengat, Sumatra",,,,,,
 IDRNI,Ranai,3.9167,108.3833,ID-RI,ID-SM,ID-RI ID-SM,unlocode
 IDSAD,"Sadau, Borneo",,,,,,
+IDSAE,Sangir,2.6,125.5,ID-NB,ID-NU,ID-NB ID-NU,unlocode
+IDSAG,Sangkapura,-5.85,112.65,ID-JI,ID-JW,ID-JI ID-JW,unlocode
+IDSAH,Tanjung Sauh,1.0667,104.1667,ID-RI,ID-SM,ID-RI ID-SM,unlocode
 IDSAN,"Sanang, Celebes",,,,,,
 IDSAP,Sape,-8.5667,118.9833,ID-NB,ID-NU,ID-NB ID-NU,unlocode
 IDSAS,Sasayap,,,,,,
@@ -8682,6 +8717,7 @@ IDSEP,Sepanjang Terminal,-7.1833,115.7833,ID-JI,ID-JW,ID-JI ID-JW,boundaries
 IDSEQ,"Sungai Pakning, Sumatra",,,,,,
 IDSGG,Senggigi,-8.5,116.05,ID-NB,ID-NU,ID-NB ID-NU,unlocode
 IDSGO,Port Segoro Fajar Satryo/Jakarta,,,ID-JK,ID-JW,ID-JK ID-JW,unlocode
+IDSGQ,Sanggata,0.3667,117.5667,ID-KI,ID-KA,ID-KI ID-KA,unlocode
 IDSGU,Sanggau,0.1167,110.6,ID-KB,ID-KA,ID-KB ID-KA,unlocode
 IDSIA,"Siak Yechil, Riau",,,,,,
 IDSID,Sidangoli,0.9,127.4833,ID-MU,ID-ML,ID-MU ID-ML,unlocode
@@ -8699,6 +8735,7 @@ IDSPH,Senipah Terminal,,,,,,
 IDSRG,Semarang,-6.9667,110.4833,ID-JT,ID-JW,ID-JT ID-JW,unlocode
 IDSRI,"Samarinda, Kalimantan",,,,,,
 IDSSO,Susu,,,,,,
+IDSTA,Selat Lampa,3.6667,108.1333,ID-KR,ID-SM,ID-KR ID-SM,unlocode
 IDSTN,Setagin,-3.2833,116.1667,ID-KS,ID-KA,ID-KS ID-KA,boundaries
 IDSTU,Satui,,,,,,
 IDSUA,Suaran,2.05,117.7,ID-KI,ID-KA,ID-KI ID-KA,unlocode
@@ -8970,7 +9007,7 @@ INCOO,Coondapur (Ganguly),,,IN-KA,IN-KA,IN-KA,unlocode
 INCRN,Cornwallis,,,IN-AN,IN-AN,IN-AN,unlocode
 INCTI,Chetlat Is,,,IN-LD,IN-LD,IN-LD,unlocode
 INDAH,Dahej,,,IN-GJ,IN-GJ,IN-GJ,unlocode
-INDAM,Daman,,,,,,
+INDAM,Daman,20.4,72.8333,IN-DH,IN-DH,IN-DH,unlocode
 INDEG,Deogad,,,IN-MH,IN-MH,IN-MH,unlocode
 INDHP,Dabhol Port,,,IN-MH,IN-MH,IN-MH,unlocode
 INDHR,Dholera,,,IN-GJ,IN-GJ,IN-GJ,unlocode
@@ -10606,7 +10643,6 @@ JPNSR,Noshiro,,,JP-05,JP-05,JP-05,unlocode
 JPNST,Nishikata,,,JP-46,JP-46,JP-46,unlocode
 JPNSU,"Nagasu, Oita",,,JP-44,JP-44,JP-44,unlocode
 JPNSX,Nasa,,,JP-36,JP-36,JP-36,unlocode
-JPNTO,Nishitokyo,34.7333,139.5333,JP-13,JP-13,JP-13,unlocode
 JPNTX,"Nakata, Kumamoto",,,JP-43,JP-43,JP-43,unlocode
 JPNTY,Nanatsuyama,,,JP-46,JP-46,JP-46,unlocode
 JPNUM,Numazu,,,JP-22,JP-22,JP-22,unlocode
@@ -10762,7 +10798,6 @@ JPRHK,Reihoku,,,JP-43,JP-43,JP-43,unlocode
 JPRKO,Rokko Island,,,JP-28,JP-28,JP-28,unlocode
 JPRMI,Rumoi,,,JP-01,JP-01,JP-01,unlocode
 JPRND,Ronden,,,JP-32,JP-32,JP-32,unlocode
-JPRYA,Ryuo,35.6667,16.6167,JP-25,JP-25,JP-25,unlocode
 JPRYG,Ryugamizu,,,JP-46,JP-46,JP-46,unlocode
 JPRYO,Ryotsu,,,JP-15,JP-15,JP-15,unlocode
 JPRYS,Ryohshida,,,JP-34,JP-34,JP-34,unlocode
@@ -11011,7 +11046,7 @@ JPTKK,Takaoka,,,JP-16,JP-16,JP-16,unlocode
 JPTKM,Takuma,,,JP-37,JP-37,JP-37,unlocode
 JPTKO,Tokonami,,,JP-42,JP-42,JP-42,unlocode
 JPTKR,Tokoro,,,JP-01,JP-01,JP-01,unlocode
-JPTKS,Tokushima,,,JP-36,JP-36,JP-36,unlocode
+JPTKS,Tokushima,34.0667,134.55,JP-36,JP-36,JP-36,unlocode
 JPTKT,Taketoyo,,,JP-23,JP-23,JP-23,unlocode
 JPTKU,Takuno,,,JP-32,JP-32,JP-32,unlocode
 JPTKW,Tainokawa,,,JP-46,JP-46,JP-46,unlocode
@@ -11507,10 +11542,12 @@ MAESS,Essaouira,31.4167,-9.5,MA-ESI,MA-07,MA-ESI MA-07,unlocode
 MAEUN,Laayoune (El Aaiun),,,,,,
 MAJFL,Jorf Lasfar,,,,,,
 MALAR,Larache,,,,,,
+MAMDI,M'dig,35.6833,-5.3333,MA-MDF,MA-01,MA-MDF MA-01,unlocode
 MAMOH,Mohammedia,,,,,,
 MANDR,Nador,,,,,,
 MANNA,Kenitra (ex Port Lyautey),,,,,,
 MANPS,"Nouveau Port Safi, Sidi Boudenyan",32.1667,-9.2667,MA-SAF,MA-07,MA-SAF MA-07,unlocode
+MANWM,Nador West Med,35.25,-3.15,MA-NAD,MA-02,MA-NAD MA-02,unlocode
 MAPTM,Tanger Med,,,MA-TNG,MA-01,MA-TNG MA-01,unlocode
 MARBA,Rabat,,,,,,
 MAREM,Ras El Ma,35.1167,-2.4,MA-NAD,MA-02,MA-NAD MA-02,unlocode
@@ -11740,6 +11777,7 @@ MXSBS,San Blas,,,MX-NAY,MX-NAY,MX-NAY,unlocode
 MXSCR,San Carlos,,,MX-BCS,MX-BCS,MX-BCS,unlocode
 MXSCX,Salina Cruz,16.1667,-95.1833,MX-OAX,MX-OAX,MX-OAX,unlocode
 MXSEY,Seybaplaya,19.65,-90.7,MX-CAM,MX-CAM,MX-CAM,unlocode
+MXSFE,San Felipe,31.0333,-114.8333,MX-BCN,MX-BCN,MX-BCN,unlocode
 MXSGX,San Miguel Xoxtla,19.1833,-98.3,MX-PUE,MX-PUE,MX-PUE,unlocode
 MXSJC,San Juan de la Costa,,,,,,
 MXSLO,San Lorenzo,,,,,,
@@ -11929,7 +11967,6 @@ MYTGE,Tanjung Gelang,3.9833,103.4167,MY-06,MY-06,MY-06,unlocode
 MYTGG,Kuala Terengganu,,,,,,
 MYTJH,Batu Gajah,4.4667,101.05,MY-08,MY-08,MY-08,unlocode
 MYTKI,Tanjong Kidurong,,,,,,
-MYTKP,Kampong Tanjong Kupang,1.35,103.5833,MY-01,MY-01,MY-01,unlocode
 MYTLA,Kampung Tanjung Langsat,1.4667,104.0167,MY-01,MY-01,MY-01,unlocode
 MYTMB,Tumbum,,,,,,
 MYTMG,Tomanggong,,,,,,
@@ -13449,6 +13486,7 @@ PEPAI,Paita,,,,,,
 PEPAM,Paramonga,,,,,,
 PEPCH,Puerto Chicama,,,,,,
 PEPCL,Pucallpa,,,,,,
+PEPCS,Pucusana,-12.4833,-76.7833,PE-LIM,PE-LIM,PE-LIM,unlocode
 PEPEM,Puerto Maldonado,-12.5833,-69.2,PE-MDD,PE-MDD,PE-MDD,unlocode
 PEPIO,Pisco,,,,,,
 PEPLO,Punta Lobitos,-10.0833,-78.1833,PE-ANC,PE-ANC,PE-ANC,unlocode
@@ -14034,6 +14072,7 @@ PNPCN,Pitcairn Is,,,,,,
 PRARE,Arecibo,,,,,,
 PRARR,Arroyo,17.9667,-66.0667,,,,
 PRBQN,Aguadilla,,,,,,
+PRCEI,Ceiba,18.2333,-65.6167,,,,
 PRGUX,Guanica,17.9667,-66.9167,,,,
 PRGUY,Guayanilla,17.9667,-66.8167,,,,
 PRLAM,Las Mareas (Guayama),,,,,,
@@ -15256,7 +15295,7 @@ TRIGN,Igneada,41.8833,28.0167,TR-39,TR-39,TR-39,unlocode
 TRINE,Inebolu,41.9667,33.7667,TR-37,TR-37,TR-37,unlocode
 TRISK,Iskenderun,36.5833,36.1667,TR-31,TR-31,TR-31,unlocode
 TRIST,Istanbul,41.0167,28.9667,TR-34,TR-34,TR-34,unlocode
-TRIZM,Izmir,38.4167,27.15,TR-35,TR-35,TR-35,unlocode
+TRIZM,İzmir,38.4167,27.15,TR-35,TR-35,TR-35,unlocode
 TRIZT,Izmit,40.7833,29.95,TR-41,TR-41,TR-41,unlocode
 TRKAR,Kartal,,,TR-34,TR-34,TR-34,unlocode
 TRKAS,Kas,36.1833,29.6333,TR-07,TR-07,TR-07,unlocode
@@ -17354,6 +17393,7 @@ VNOCL,Cat Lai Oil Port,10.7333,106.7667,VN-SG,VN-SG,VN-SG,unlocode
 VNONB,Nha Be Oil Port,10.7,106.7333,VN-SG,VN-SG,VN-SG,unlocode
 VNOSP,Saigon Petro Oil Terminal,10.75,106.7833,VN-SG,VN-SG,VN-SG,unlocode
 VNOTW,B12 Oil Terminal,20.95,103.05,VN-13,VN-13,VN-13,unlocode
+VNPAP,Phuoc An,10.6167,106.9833,VN-39,VN-39,VN-39,unlocode
 VNPHA,Phan Rang,,,,,,
 VNPHB,Phú Bai,16.3667,107.7333,VN-26,VN-26,VN-26,unlocode
 VNPHG,Phuóc Long,10.7167,106.95,VN-39,VN-39,VN-39,boundaries
@@ -17394,7 +17434,7 @@ VNTRE,Ben Tre,10.2333,106.3833,VN-50,VN-50,VN-50,unlocode
 VNTTD,Tân Thuan Dông,10.7333,106.7167,VN-SG,VN-SG,VN-SG,unlocode
 VNTVN,Transvina Terminal,20.8667,106.6833,VN-HP,VN-HP,VN-HP,unlocode
 VNUIH,Quy Nhon,13.7667,109.2167,VN-31,VN-31,VN-31,unlocode
-VNVAG,Vung Áng,18.0667,106.4333,VN-23,VN-23,VN-23,boundaries
+VNVAG,Vũng Áng,18.0667,106.4333,VN-23,VN-23,VN-23,boundaries
 VNVCA,Can Tho,10.0333,105.7833,VN-CT,VN-CT,VN-CT,unlocode
 VNVCH,Vat Cach,20.8833,106.6,VN-HP,VN-HP,VN-HP,boundaries
 VNVHG,Vinalines Hau Giang Port,9.15,105.1333,VN-73,VN-73,VN-73,unlocode
