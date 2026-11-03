@@ -3,6 +3,12 @@
 Every entry below the first is a UN/LOCODE refresh, opened as a pull request by
 `.github/workflows/refresh.yml` and merged by a person.
 
+## 1.3.0 — 2026-11-02
+
+UN/LOCODE release unknown. 17567 sea ports (17527 before): 46 added, 6 removed, 9 renamed, 22 repositioned, 2 with a new subdivision (0 moved to another principal one).
+
+Removed: BRORX, FRG8V, FRHSN, JPNTO, JPRYA, MYTKP.
+
 ## 1.2.0 — 2026-10-20
 
 Each port now carries its ISO 3166-2 subdivision, the path of every subdivision above it, and the principal (top-level) one: `Seaports.subdivision("GBFXT")` is `"GB-SFK"` (Suffolk), `Seaports.subdivision_path("FRSXB")` is `["FR-67", "FR-6AE", "FR-GES"]`, `Seaports.principal_subdivision("GBFXT")` is `"GB-ENG"`. Match on whichever level of the path other data uses: the principal one usually, but not for Alsace (`FR-6AE`) and Moselle (`FR-57`), Irish counties or Indonesian provinces.
