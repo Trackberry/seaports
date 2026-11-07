@@ -53,7 +53,8 @@ jobs:
           gh issue create \
             --title "UN/LOCODE refresh refused on $(date -u +%Y-%m-%d)" \
             --body-file tmp/refresh/summary.md \
-            --label "refresh-blocked"
+            --label "refresh-blocked" \
+            --assignee edouard
 
       - name: Open the refresh for review
         id: pull_request
@@ -66,6 +67,8 @@ jobs:
           title: "Refresh the UN/LOCODE sea-port table (${{ steps.refresh.outputs.version }})"
           body-path: tmp/refresh/summary.md
           labels: data-refresh
+          reviewers: edouard
+          assignees: edouard
           add-paths: |
             data/un_locode_seaports.csv
             lib/seaports/version.rb
