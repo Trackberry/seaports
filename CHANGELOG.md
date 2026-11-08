@@ -3,6 +3,14 @@
 Every entry below the first is a UN/LOCODE refresh, opened as a pull request by
 `.github/workflows/refresh.yml` and merged by a person.
 
+## 1.3.1 — 2026-11-08
+
+`Seaports.data_release` no longer claims an edition the table did not come from. The mirror stopped publishing a release number, so refreshes kept the old "2024-2" label on newer data. It is now nil when the source names no edition, and a refresh clears it rather than leaving the previous value.
+
+Adds `Seaports.data_refreshed_on`, the Date a refresh last changed the table. Use it instead of `data_release` to check how old the data is, and handle nil if you call `data_release`.
+
+Same ports, names and positions as 1.3.0.
+
 ## 1.3.0 — 2026-11-02
 
 UN/LOCODE release unknown. 17567 sea ports (17527 before): 46 added, 6 removed, 9 renamed, 22 repositioned, 2 with a new subdivision (0 moved to another principal one).

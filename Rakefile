@@ -85,9 +85,7 @@ namespace :seaports do
     major, minor, = Seaports::VERSION.split(".").map(&:to_i)
     version = "#{major}.#{minor + 1}.0"
 
-    content = File.read(path).sub(/VERSION = "[^"]*"/, %(VERSION = "#{version}"))
-    content = content.sub(/DATA_RELEASE = "[^"]*"/, %(DATA_RELEASE = "#{release}")) if release
-    File.write(path, content)
+    File.write(path, Seaports::Builder.stamp_version(File.read(path), version:, release:, refreshed_on: Date.today.iso8601))
 
     File.write(File.join(REFRESH_DIR, "version"), "#{version}\n")
     version

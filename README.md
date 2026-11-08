@@ -31,13 +31,14 @@ out of the default gems.
 ## What is in it
 
 Every entry UN/LOCODE classifies as a sea port: **17,527 ports**, 11,820 of them
-with published coordinates and 14,567 with a subdivision, built from
-**UN/LOCODE 2024-2**.
+with published coordinates and 14,567 with a subdivision, rebuilt from UNECE's
+latest published list whenever it changes.
 
 ```ruby
-Seaports.count          # => 17527
-Seaports.all            # => [#<data Seaports::Port ...>, ...]
-Seaports.data_release   # => "2024-2"
+Seaports.count              # => 17527
+Seaports.all                # => [#<data Seaports::Port ...>, ...]
+Seaports.data_refreshed_on  # => #<Date: 2026-11-02>
+Seaports.data_release       # => nil, or "2024-2" when the source names an edition
 ```
 
 The table ships inside the gem as a CSV. It is reference data that changes
@@ -182,8 +183,9 @@ rake seaports:refresh[path/to/code-list.csv,2025-1]
 ```
 
 The source is the [datasets/un-locode][mirror] distribution, which republishes
-UNECE's list with headers, UTF-8 and a machine-readable release number; UNECE's
-own download is a zip of headerless latin-1 files.
+UNECE's list with headers and UTF-8; UNECE's own download is a zip of headerless
+latin-1 files. The mirror builds from UNECE's latest pre-release file, which has
+no edition number, so a table can be newer than any named release.
 
 That mirror is a third party, which is the whole reason the refresh does not
 simply commit what it downloads. Seventeen thousand rows are not reviewable by
@@ -198,8 +200,9 @@ if:
   someone makes rather than a row that appears quietly.
 
 A refusal leaves the working tree exactly as it was and opens an issue. A pass
-bumps the minor version, records the new UN/LOCODE release, writes the
-changelog entry, and puts the whole diff in the pull request body — every
+bumps the minor version, records the refresh date and any UN/LOCODE edition the
+source names, writes the changelog entry, and puts the whole diff in the pull
+request body — every
 removal listed in full, because those are the changes that break a caller, and
 position changes called out separately, because they move markers on a map.
 
@@ -217,8 +220,9 @@ Semver, where the data is the product:
 | **minor** | a UN/LOCODE refresh — ports added, renamed, repositioned |
 | **major** | an API change, or a refresh that removes ports known to be load-bearing |
 
-`Seaports.data_release` tells you which UN/LOCODE edition your copy carries,
-which is the question a gem version cannot answer.
+`Seaports.data_refreshed_on` tells you the day your copy's table last changed,
+which is the question a gem version cannot answer. `Seaports.data_release` names
+the UN/LOCODE edition when the source gave one, and is nil otherwise.
 
 ## Licence
 

@@ -138,7 +138,14 @@ class SeaportsTest < Minitest::Test
     assert_operator Seaports.count, :>, 15_000
   end
 
-  def test_reports_which_unece_edition_it_carries
-    assert_match(/\A\d{4}-[12]\z/, Seaports.data_release)
+  def test_names_a_unece_edition_only_in_unece_format
+    release = Seaports.data_release
+
+    assert_match(/\A\d{4}-[12]\z/, release) unless release.nil?
+  end
+
+  def test_reports_when_the_table_last_changed
+    assert_kind_of Date, Seaports.data_refreshed_on
+    assert_operator Seaports.data_refreshed_on, :<=, Date.today
   end
 end

@@ -14,9 +14,8 @@ module Seaports
   #
   # UNECE's own distribution is a zip of headerless latin-1 CSVs, so the source
   # here is the datasets/un-locode mirror, which republishes the same list with
-  # headers, UTF-8 and a machine-readable release number. It is a third party,
-  # which is why every refresh runs through Seaports::Diff before anything
-  # ships.
+  # headers and UTF-8. It is a third party, which is why every refresh runs
+  # through Seaports::Diff before anything ships.
   #
   # Nothing breaks if a release is skipped: a port missing from our copy falls
   # back to whatever the caller rendered before the table existed.
@@ -54,6 +53,16 @@ module Seaports
       match && "#{match[1]}-#{match[2]}"
     rescue StandardError
       nil
+    end
+
+    # The text of version.rb with a refresh's facts written in. The release is
+    # replaced even when it is nil: keeping the previous one would label a new
+    # table with an edition it did not come from.
+    def self.stamp_version(content, version:, release:, refreshed_on:)
+      content
+        .sub(/VERSION = "[^"]*"/, %(VERSION = "#{version}"))
+        .sub(/DATA_RELEASE = (?:"[^"]*"|nil)/, "DATA_RELEASE = #{release.inspect}")
+        .sub(/DATA_REFRESHED_ON = "[^"]*"/, %(DATA_REFRESHED_ON = "#{refreshed_on}"))
     end
 
     # Reads OVERRIDES_PATH (or +path+) into { locode => ISO 3166-2 code }.
