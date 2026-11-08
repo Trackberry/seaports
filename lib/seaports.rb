@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "csv"
+require "date"
 
 require_relative "seaports/version"
 
@@ -118,10 +119,16 @@ module Seaports
       table.size
     end
 
-    # Which UN/LOCODE edition the shipped table came from, for a caller that
-    # wants to assert its data is not years old.
+    # Which UN/LOCODE edition the shipped table came from, or nil when its
+    # source did not name one. Use data_refreshed_on to ask how old the data is.
     def data_release
       DATA_RELEASE
+    end
+
+    # The Date a refresh last changed the shipped table, for a caller that
+    # wants to assert its data is not years old.
+    def data_refreshed_on
+      Date.iso8601(DATA_REFRESHED_ON)
     end
 
     private

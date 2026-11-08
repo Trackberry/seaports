@@ -267,4 +267,51 @@ class BuilderTest < Minitest::Test
 
     assert_nil Seaports::Builder.published_release(package)
   end
+
+  def test_answers_nothing_when_the_datapackage_has_no_version
+    package = File.join(Dir.mktmpdir, "datapackage.json")
+    File.write(package, JSON.dump("name" => "un-locode"))
+
+    assert_nil Seaports::Builder.published_release(package)
+  end
+
+  VERSION_FILE = <<~RUBY
+    VERSION = "1.3.0"
+    DATA_RELEASE = "2024-2"
+    DATA_REFRESHED_ON = "2026-11-02"
+  RUBY
+
+  def test_stamps_a_refresh_into_the_version_file
+    stamped = Seaports::Builder.stamp_version(VERSION_FILE, version: "1.4.0", release: "2026-1", refreshed_on: "2026-12-01")
+
+    assert_equal <<~RUBY, stamped
+      VERSION = "1.4.0"
+      DATA_RELEASE = "2026-1"
+      DATA_REFRESHED_ON = "2026-12-01"
+    RUBY
+  end
+
+  # The bug this guards: a refresh with no edition used to leave the last one
+  # in place, labelling new data with a release it did not come from.
+  def test_a_refresh_with_no_edition_clears_the_previous_one
+    stamped = Seaports::Builder.stamp_version(VERSION_FILE, version: "1.4.0", release: nil, refreshed_on: "2026-12-01")
+
+    assert_includes stamped, "DATA_RELEASE = nil"
+  end
+
+  def test_a_named_edition_replaces_an_empty_one
+    empty = VERSION_FILE.sub('"2024-2"', "nil")
+    stamped = Seaports::Builder.stamp_version(empty, version: "1.4.0", release: "2026-1", refreshed_on: "2026-12-01")
+
+    assert_includes stamped, 'DATA_RELEASE = "2026-1"'
+  end
+
+  def test_the_real_version_file_can_be_stamped
+    path = File.expand_path("../lib/seaports/version.rb", __dir__)
+    stamped = Seaports::Builder.stamp_version(File.read(path), version: "9.9.0", release: "2030-1", refreshed_on: "2030-01-01")
+
+    assert_includes stamped, 'VERSION = "9.9.0"'
+    assert_includes stamped, 'DATA_RELEASE = "2030-1"'
+    assert_includes stamped, 'DATA_REFRESHED_ON = "2030-01-01"'
+  end
 end
