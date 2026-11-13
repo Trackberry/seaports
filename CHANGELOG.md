@@ -3,6 +3,11 @@
 Every entry below the first is a UN/LOCODE refresh, opened as a pull request by
 `.github/workflows/refresh.yml` and merged by a person.
 
+
+## Unreleased
+
+Requires Ruby 3.3 or newer. Ruby 3.2 reached end of life on 2026-03-31 and is no longer tested.
+
 ## 1.3.1 — 2026-11-08
 
 `Seaports.data_release` no longer claims an edition the table did not come from. The mirror stopped publishing a release number, so refreshes kept the old "2024-2" label on newer data. It is now nil when the source names no edition, and a refresh clears it rather than leaving the previous value.
