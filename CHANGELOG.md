@@ -3,7 +3,6 @@
 Every entry below the first is a UN/LOCODE refresh, opened as a pull request by
 `.github/workflows/refresh.yml` and merged by a person.
 
-
 ## Unreleased
 
 Requires Ruby 3.3 or newer. Ruby 3.2 reached end of life on 2026-03-31 and is no longer tested.
