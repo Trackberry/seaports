@@ -30,12 +30,12 @@ out of the default gems.
 
 ## What is in it
 
-Every entry UN/LOCODE classifies as a sea port: **17,527 ports**, 11,820 of them
-with published coordinates and 14,567 with a subdivision, rebuilt from UNECE's
+Every entry UN/LOCODE classifies as a sea port: **17,567 ports**, 11,933 of them
+with coordinates and 14,608 with a subdivision, rebuilt from UNECE's
 latest published list whenever it changes.
 
 ```ruby
-Seaports.count              # => 17527
+Seaports.count              # => 17567
 Seaports.all                # => [#<data Seaports::Port ...>, ...]
 Seaports.data_refreshed_on  # => #<Date: 2026-11-02>
 Seaports.data_release       # => nil, or "2024-2" when the source names an edition
@@ -53,8 +53,51 @@ hold: seventeen thousand ports is most of the world's, not all of it, so an
 unknown code is the ordinary case rather than an error.
 
 Roughly a third of the table has no position published. That is a fact about
-the source, not a failure — the name is still worth having, and a map simply
-draws no marker.
+the source, not a failure: UN/LOCODE's coordinates column is optional, and each
+country's national focal point decides whether to fill it when it registers or
+updates a location. Many old entries were never given one, among them some of
+the busiest ports in Spain. The name is still worth having, and a map simply
+draws no marker. For the ports that matter most to a map or an arrival check,
+a [reviewed list](#coordinates) fills the gap.
+
+### Coordinates
+
+A port's position comes from UN/LOCODE where it publishes one, which is
+degrees and whole minutes, so about a mile. For ports it leaves blank, a
+reviewed list, `data/sources/coordinate_overrides.csv`, supplies the position
+of the **port area**, the harbour or terminals rather than the city centre,
+to at most four decimal places, most to about a kilometre. Valencia, Algeciras, Barcelona and Gibraltar have no
+position in UN/LOCODE, and are filled this way, with 62 other ports of the
+busiest produce and container trades.
+
+A coordinate override only ever fills a gap. If UN/LOCODE publishes a position
+for the port, that one ships and the override is reported for removal, so the
+source of record stays in charge and a stale row cannot mask better data. CI
+holds the refresh pull request until the row is removed. Each
+row names its `source`, and a `note` says how sure the placement is.
+
+The rows were placed by hand, to roughly a kilometre, then each was checked by
+reverse geocoding it on [OpenStreetMap](https://www.openstreetmap.org/copyright):
+the positions are checked, and three corrected, against OpenStreetMap data,
+© OpenStreetMap contributors, ODbL. The point must land in the port's own
+town, on or by its harbour. Three did not, and were moved:
+
+- **Salerno** (`ITSAL`) was about a kilometre out in the gulf, at sea: now on
+  the harbour front.
+- **Santander** (`ESSDR`) was across the bay, at Pedreña: now at the Raos
+  cargo terminals.
+- **Avilés** (`ESAVS`) was across the ría, in Castrillón: now in the port area.
+
+A point a kilometre off is harmless on a world map, but not for a check that
+asks whether a ship is at the port, which is why the check is part of adding a
+row. It is not a survey of berths: a row is only as precise as its note says. A port with no row, such as Bremen or Seville, stays unlocated.
+
+`rake seaports:refresh` merges the file into the rebuilt table, and the
+reviewed position also places the port on the boundaries map for its
+subdivision, from the next refresh on (`apply_coordinates` writes positions
+only, so a port placed between refreshes has no subdivision until then). Between
+refreshes, `rake seaports:apply_coordinates` writes new
+rows into the shipped table without a download.
 
 ### Subdivisions
 
@@ -109,7 +152,9 @@ overrides file are © OpenStreetMap contributors, under the
 [ODbL](https://www.openstreetmap.org/copyright).
 
 Each refresh lists, for review, overrides that have outlived their reason: a
-port that left UN/LOCODE, or one UN/LOCODE now places itself.
+port that left UN/LOCODE, or one UN/LOCODE now places itself. That goes for
+coordinate overrides too: a port that left, or one UN/LOCODE now gives a
+position.
 
 `Seaports::Port` gained `subdivision`, `principal_subdivision` and
 `subdivision_path` in 1.2.0, all optional, so a `Port` built from locode, name

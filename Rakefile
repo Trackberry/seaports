@@ -43,7 +43,8 @@ namespace :seaports do
       boundaries = Seaports::Boundaries.parse(
         Seaports::Builder.fetch(args[:boundaries] || Seaports::Boundaries::SOURCE_URL)
       )
-      builder = Seaports::Builder.new(source, subdivisions:, boundaries:, overrides: Seaports::Builder.overrides)
+      builder = Seaports::Builder.new(source, subdivisions:, boundaries:, overrides: Seaports::Builder.overrides,
+        coordinate_overrides: Seaports::Builder.coordinate_overrides)
       builder.write(Seaports::TABLE_PATH)
     rescue StandardError => e
       FileUtils.cp(before, Seaports::TABLE_PATH)
@@ -71,6 +72,17 @@ namespace :seaports do
       write_changelog(version, release, diff)
       record "ok", "#{diff.headline}\nVersion #{version}, UN/LOCODE #{release || 'release unknown'}."
     end
+  end
+
+  # Recurring: run it after adding rows to data/sources/coordinate_overrides.csv
+  # when a refresh is not due. Offline, and it only fills ports the table has
+  # no position for; the next refresh rebuilds the same positions itself.
+  desc "Write the reviewed coordinate overrides into the shipped table, without a download"
+  task :apply_coordinates do
+    require_relative "lib/seaports/builder"
+
+    filled = Seaports::Builder.apply_coordinates
+    puts "Filled #{filled.size} ports: #{filled.join(', ')}"
   end
 
   def record(status, message)

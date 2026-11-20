@@ -26,8 +26,8 @@ class SeaportsTest < Minitest::Test
   # about the source, not a failure: the name is still worth having, and a map
   # simply draws no marker.
   def test_a_port_with_no_published_position_still_has_a_name
-    assert_equal "Valencia", Seaports.name("ESVLC")
-    assert_nil Seaports.coordinates("ESVLC")
+    assert_equal "Bremen", Seaports.name("DEBRE")
+    assert_nil Seaports.coordinates("DEBRE")
   end
 
   def test_is_case_and_whitespace_insensitive
