@@ -13,11 +13,11 @@ DKFRC,Fredericia,55.57,9.77,"port area, placed by hand and checked by reverse ge
 EGPSD,Port Said,31.26,32.3,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",high: Port Said East and West
 ESALC,Alicante,38.34,-0.48,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",high: Puerto de Alicante
 ESALG,Algeciras,36.13,-5.437,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","high: Bahia de Algeciras, Isla Verde terminals"
-ESAVS,Aviles,43.565,-5.92,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","medium: Área Portuaria, Avilés (corrected after the check)"
+ESAVS,Aviles,43.565,-5.92,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","medium: Área Portuaria, Avilés (first placed across the ría in Castrillón; moved after the OpenStreetMap check)"
 ESBCN,Barcelona,41.346,2.166,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","high: Port de Barcelona, Moll Prat and Port Vell area"
 ESCAD,Cadiz,36.53,-6.28,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",medium: Puerto de Cadiz
 ESSCT,Santa Cruz de Tenerife,28.47,-16.24,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",medium: Puerto de Santa Cruz de Tenerife
-ESSDR,Santander,43.44,-3.819,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","medium: Puerto de Santander, Raos (corrected after the check)"
+ESSDR,Santander,43.44,-3.819,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","medium: Puerto de Santander, Raos terminals (first placed across the bay at Pedreña; moved after the OpenStreetMap check)"
 ESTAR,Tarragona,41.095,1.24,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",high: Port de Tarragona
 ESVGO,Vigo,42.238,-8.73,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","medium: Puerto de Vigo, Bouzas and Guixar"
 ESVLC,Valencia,39.445,-0.318,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",high: Puerto de Valencia terminals
@@ -33,7 +33,7 @@ HNPCR,Puerto Cortés,15.84,-87.94,"port area, placed by hand and checked by reve
 IEDUB,Dublin,53.347,-6.2,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",high: Dublin Port
 IEGWY,Galway,53.27,-9.045,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",medium: Galway docks
 ILASH,Ashdod,31.82,34.64,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",high: Ashdod port
-ITSAL,Salerno,40.6735,14.747,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","high: Porto di Salerno (corrected after the check)"
+ITSAL,Salerno,40.6735,14.747,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20","high: Porto di Salerno (first placed at sea in the gulf; moved after the OpenStreetMap check)"
 ITTRS,Trieste,45.645,13.76,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",high: Porto di Trieste
 JMKIN,Kingston,17.95,-76.82,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",medium: Kingston Container Terminal
 LTKLJ,Klaipeda,55.71,21.12,"port area, placed by hand and checked by reverse geocoding on OpenStreetMap (© OpenStreetMap contributors, ODbL), 2026-11-20",medium: Klaipeda seaport

@@ -53,7 +53,10 @@ hold: seventeen thousand ports is most of the world's, not all of it, so an
 unknown code is the ordinary case rather than an error.
 
 Roughly a third of the table has no position published. That is a fact about
-the source, not a failure — the name is still worth having, and a map simply
+the source, not a failure: UN/LOCODE's coordinates column is optional, and each
+country's national focal point decides whether to fill it when it registers or
+updates a location. Many old entries were never given one, among them some of
+the busiest ports in Spain. The name is still worth having, and a map simply
 draws no marker. For the ports that matter most to a map or an arrival check,
 a [reviewed list](#coordinates) fills the gap.
 
@@ -70,11 +73,22 @@ busiest produce and container trades.
 A coordinate override only ever fills a gap. If UN/LOCODE publishes a position
 for the port, that one ships and the override is reported for removal, so the
 source of record stays in charge and a stale row cannot mask better data. Each
-row names its `source`, and a `note` says how sure the placement is. The rows
-were placed by hand to roughly a kilometre and should be checked against
-[OpenStreetMap](https://www.openstreetmap.org/copyright) harbour and terminal
-outlines (© OpenStreetMap contributors, ODbL) before anything depends on a
-berth. A port with no row, such as Bremen or Seville, stays unlocated.
+row names its `source`, and a `note` says how sure the placement is.
+
+The rows were placed by hand, to roughly a kilometre, then each was checked by
+reverse geocoding it on [OpenStreetMap](https://www.openstreetmap.org/copyright)
+(© OpenStreetMap contributors, ODbL): the point must land in the port's own
+town, on or by its harbour. Three did not, and were moved:
+
+- **Salerno** (`ITSAL`) was about a kilometre out in the gulf, at sea: now on
+  the harbour front.
+- **Santander** (`ESSDR`) was across the bay, at Pedreña: now at the Raos
+  cargo terminals.
+- **Avilés** (`ESAVS`) was across the ría, in Castrillón: now in the port area.
+
+A point a kilometre off is harmless on a world map, but not for a check that
+asks whether a ship is at the port, which is why the check is part of adding a
+row. It is not a survey of berths: a row is only as precise as its note says. A port with no row, such as Bremen or Seville, stays unlocated.
 
 `rake seaports:refresh` merges the file into the rebuilt table, and the
 reviewed position also places the port on the boundaries map for its
