@@ -66,18 +66,20 @@ A port's position comes from UN/LOCODE where it publishes one, which is
 degrees and whole minutes, so about a mile. For ports it leaves blank, a
 reviewed list, `data/sources/coordinate_overrides.csv`, supplies the position
 of the **port area**, the harbour or terminals rather than the city centre,
-rounded to four places. Valencia, Algeciras, Barcelona and Gibraltar have no
+to at most four decimal places, most to about a kilometre. Valencia, Algeciras, Barcelona and Gibraltar have no
 position in UN/LOCODE, and are filled this way, with 62 other ports of the
 busiest produce and container trades.
 
 A coordinate override only ever fills a gap. If UN/LOCODE publishes a position
 for the port, that one ships and the override is reported for removal, so the
-source of record stays in charge and a stale row cannot mask better data. Each
+source of record stays in charge and a stale row cannot mask better data. CI
+holds the refresh pull request until the row is removed. Each
 row names its `source`, and a `note` says how sure the placement is.
 
 The rows were placed by hand, to roughly a kilometre, then each was checked by
-reverse geocoding it on [OpenStreetMap](https://www.openstreetmap.org/copyright)
-(© OpenStreetMap contributors, ODbL): the point must land in the port's own
+reverse geocoding it on [OpenStreetMap](https://www.openstreetmap.org/copyright):
+the positions are checked, and three corrected, against OpenStreetMap data,
+© OpenStreetMap contributors, ODbL. The point must land in the port's own
 town, on or by its harbour. Three did not, and were moved:
 
 - **Salerno** (`ITSAL`) was about a kilometre out in the gulf, at sea: now on
@@ -92,7 +94,9 @@ row. It is not a survey of berths: a row is only as precise as its note says. A 
 
 `rake seaports:refresh` merges the file into the rebuilt table, and the
 reviewed position also places the port on the boundaries map for its
-subdivision. Between refreshes, `rake seaports:apply_coordinates` writes new
+subdivision, from the next refresh on (`apply_coordinates` writes positions
+only, so a port placed between refreshes has no subdivision until then). Between
+refreshes, `rake seaports:apply_coordinates` writes new
 rows into the shipped table without a download.
 
 ### Subdivisions

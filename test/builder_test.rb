@@ -329,6 +329,8 @@ class BuilderTest < Minitest::Test
 
   # The shipped table must carry every reviewed position that has a gap to
   # fill, so a row added without running seaports:apply_coordinates fails here.
+  # Strict on purpose: when a refresh brings a UN/LOCODE position for an overridden port, or drops the port, this
+  # fails on the refresh pull request, so the person merging it removes the row the report names.
   def test_every_shipped_coordinate_override_is_in_the_shipped_table
     overrides = Seaports::Builder.coordinate_overrides
     table = CSV.read(Seaports::TABLE_PATH, headers: true).to_h { |row| [row["locode"], row] }
