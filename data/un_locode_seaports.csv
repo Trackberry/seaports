@@ -24,7 +24,7 @@ AEHTL,Hulaylah Terminal,25.9833,55.9333,,,,
 AEHYR,Al Hiyar,24.6,55.75,AE-AZ,AE-AZ,AE-AZ,unlocode
 AEHZP,Hamriya Free Zone Port,25.3,55.3167,AE-DU,AE-DU,AE-DU,unlocode
 AEJAZ,Al Jazeera Port,25.7167,55.8,AE-RK,AE-RK,AE-RK,unlocode
-AEJEA,Jebel Ali,,,,,,
+AEJEA,Jebel Ali,25.01,55.06,,,,
 AEJED,Jebel Dhanna,,,,,,
 AEKHL,Mina Khalifa/Abu Dhabi,24.8333,54.6667,AE-AZ,AE-AZ,AE-AZ,boundaries
 AEKLB,Kalba,25.0667,56.35,AE-SH,AE-SH,AE-SH,boundaries
@@ -1768,7 +1768,7 @@ CAGPE,Gaspé,48.8333,-64.4833,CA-QC,CA-QC,CA-QC,unlocode
 CAGRB,Grand Bank,47.1,-55.7833,CA-NL,CA-NL,CA-NL,unlocode
 CAGRS,Grindstone,,,CA-QC,CA-QC,CA-QC,unlocode
 CAHAB,Hall Beach,,,CA-NU,CA-NU,CA-NU,unlocode
-CAHAL,Halifax,,,CA-NS,CA-NS,CA-NS,unlocode
+CAHAL,Halifax,44.635,-63.565,CA-NS,CA-NS,CA-NS,unlocode
 CAHAM,Hamilton,,,CA-ON,CA-ON,CA-ON,unlocode
 CAHAR,Harriet Harbour,52.3,-131.4,CA-BC,CA-BC,CA-BC,unlocode
 CAHBN,Hebron,58.2,-62.6333,CA-NL,CA-NL,CA-NL,unlocode
@@ -1880,7 +1880,7 @@ CAMTI,Malartic,48.1333,-78.1167,CA-QC,CA-QC,CA-QC,unlocode
 CAMTN,Marystown,47.1667,-55.1667,CA-NL,CA-NL,CA-NL,unlocode
 CAMTO,Minto,46.0833,-66.0667,CA-NB,CA-NB,CA-NB,unlocode
 CAMTQ,Mactaquac,,,CA-NB,CA-NB,CA-NB,unlocode
-CAMTR,Montreal,,,CA-QC,CA-QC,CA-QC,unlocode
+CAMTR,Montreal,45.52,-73.53,CA-QC,CA-QC,CA-QC,unlocode
 CAMUL,Mulgrave,,,CA-NS,CA-NS,CA-NS,unlocode
 CAMUS,Musquodoboit Harbour,44.7833,-63.1333,CA-NS,CA-NS,CA-NS,unlocode
 CAMYO,Mindemoya,45.7333,-82.1667,CA-ON,CA-ON,CA-ON,unlocode
@@ -1960,7 +1960,7 @@ CAPPT,Prospect,44.4667,-63.7833,CA-NS,CA-NS,CA-NS,unlocode
 CAPRE,Prescott,,,CA-ON,CA-ON,CA-ON,unlocode
 CAPRG,Prince George,,,CA-BC,CA-BC,CA-BC,unlocode
 CAPRP,Port Perry,,,CA-ON,CA-ON,CA-ON,unlocode
-CAPRR,Prince Rupert,,,CA-BC,CA-BC,CA-BC,unlocode
+CAPRR,Prince Rupert,54.3,-130.33,CA-BC,CA-BC,CA-BC,unlocode
 CAPRS,Parry Sound,,,CA-ON,CA-ON,CA-ON,unlocode
 CAPSI,Port Simpson,,,CA-BC,CA-BC,CA-BC,unlocode
 CAPST,Port Stanley,,,CA-ON,CA-ON,CA-ON,unlocode
@@ -1980,7 +1980,7 @@ CAQCH,Queen Charlotte,53.25,-132.0667,CA-BC,CA-BC,CA-BC,unlocode
 CAQCS,Saint-Bernard-de-Michaudville,,,CA-QC,CA-QC,CA-QC,unlocode
 CAQLE,Les Escoumins,48.35,-69.4167,CA-QC,CA-QC,CA-QC,unlocode
 CAQTS,Quatsino,,,CA-BC,CA-BC,CA-BC,unlocode
-CAQUE,Quebec,,,CA-QC,CA-QC,CA-QC,unlocode
+CAQUE,Quebec,46.825,-71.2,CA-QC,CA-QC,CA-QC,unlocode
 CARAM,Ramea,47.5167,-57.4167,CA-NL,CA-NL,CA-NL,unlocode
 CARBN,Robinsons,48.25,-58.7833,CA-NL,CA-NL,CA-NL,unlocode
 CARBY,Red Bay,51.7333,-56.4167,CA-NL,CA-NL,CA-NL,unlocode
@@ -2091,7 +2091,7 @@ CATHU,Thunder Bay,,,CA-ON,CA-ON,CA-ON,unlocode
 CATJN,Tring Jonction,46.2667,-71.0,CA-QC,CA-QC,CA-QC,unlocode
 CATLB,Tilbury Is,,,CA-BC,CA-BC,CA-BC,unlocode
 CATNG,Tingwick,,,CA-QC,CA-QC,CA-QC,unlocode
-CATOR,Toronto,,,CA-ON,CA-ON,CA-ON,unlocode
+CATOR,Toronto,43.64,-79.35,CA-ON,CA-ON,CA-ON,unlocode
 CATRB,Trinity Bay,,,CA-NL,CA-NL,CA-NL,unlocode
 CATRC,Tracy,,,CA-QC,CA-QC,CA-QC,unlocode
 CATRO,Trochu,51.8333,-113.2333,CA-AB,CA-AB,CA-AB,unlocode
@@ -2103,7 +2103,7 @@ CATWI,Twillingate,49.65,-54.75,CA-NL,CA-NL,CA-NL,unlocode
 CATWN,Thawwassen,49.0,-123.0667,CA-BC,CA-BC,CA-BC,unlocode
 CAUCL,Ucluelet,48.9333,-125.5167,CA-BC,CA-BC,CA-BC,boundaries
 CAUPT,Upton,45.6333,-72.6833,CA-QC,CA-QC,CA-QC,unlocode
-CAVAN,Vancouver,,,CA-BC,CA-BC,CA-BC,unlocode
+CAVAN,Vancouver,49.29,-123.09,CA-BC,CA-BC,CA-BC,unlocode
 CAVCH,Verchères,45.7667,-73.35,CA-QC,CA-QC,CA-QC,unlocode
 CAVIC,Victoria,48.4333,-123.35,CA-BC,CA-BC,CA-BC,unlocode
 CAVIH,Victoria Harbour,44.75,-79.7667,CA-ON,CA-ON,CA-ON,unlocode
@@ -3138,11 +3138,11 @@ CNZZU,Zhangzhou,24.5167,117.65,CN-FJ,CN-FJ,CN-FJ,unlocode
 COACM,Arica,-2.1167,-71.7333,CO-AMA,CO-AMA,CO-AMA,boundaries
 COBAL,Balboa,2.0333,-77.2167,CO-CAU,CO-CAU,CO-CAU,unlocode
 COBAQ,Barranquilla,,,,,,
-COBUN,Buenaventura,,,,,,
+COBUN,Buenaventura,3.88,-77.08,,,,
 COCNR,Contecar,10.3833,-75.5167,CO-BOL,CO-BOL,CO-BOL,unlocode
 COCOV,Covenas Offshore Terminal,9.5,-75.7333,CO-SUC,CO-SUC,CO-SUC,unlocode
 COCRC,Cartago,,,,,,
-COCTG,Cartagena,,,,,,
+COCTG,Cartagena,10.39,-75.52,,,,
 COEBQ,El Bosque,,,,,,
 COEJA,Barrancabermeja,,,,,,
 COENV,Envigado,,,CO-ANT,CO-ANT,CO-ANT,unlocode
@@ -3162,7 +3162,7 @@ COPUU,Puerto Asís,0.5167,-76.5,CO-PUT,CO-PUT,CO-PUT,unlocode
 COPYA,Puerto Boyaca,5.75,-74.4,CO-BOY,CO-BOY,CO-BOY,unlocode
 CORCH,Riohacha,,,,,,
 CORCO,Rio Cordoba,8.9167,-76.3667,CO-COR,CO-COR,CO-COR,boundaries
-COSMR,Santa Marta,,,,,,
+COSMR,Santa Marta,11.24,-74.22,,,,
 COSPC,Sociedad Portuaria Regional Cartagena,10.4,-75.5333,CO-BOL,CO-BOL,CO-BOL,unlocode
 COTCO,Tumaco,,,,,,
 COTLU,Tolú,9.5333,-75.5833,CO-SUC,CO-SUC,CO-SUC,unlocode
@@ -4338,7 +4338,7 @@ DKFEJ,Fejø,,,,,,
 DKFER,Ferritslev,55.3,10.5833,DK-83,DK-83,DK-83,boundaries
 DKFGS,Feggesund,,,,,,
 DKFMO,Femø,,,,,,
-DKFRC,Fredericia,,,,,,
+DKFRC,Fredericia,55.57,9.77,,,,
 DKFRK,Føvling,55.45,8.95,DK-83,DK-83,DK-83,unlocode
 DKFUH,Fur,,,,,,
 DKFYH,Fynshav,54.9667,9.9667,DK-83,DK-83,DK-83,boundaries
@@ -4856,7 +4856,7 @@ EGMEA,Porto Marina El Alamein,30.8167,28.9833,EG-MT,EG-MT,EG-MT,unlocode
 EGNUW,Nuwaiba,28.9667,34.65,EG-JS,EG-JS,EG-JS,unlocode
 EGOPT,Marsa Oriental Petrochemicals,29.6833,32.35,EG-SUZ,EG-SUZ,EG-SUZ,unlocode
 EGPIB,Port Ibrahim,,,,,,
-EGPSD,Port Said,,,,,,
+EGPSD,Port Said,31.26,32.3,,,,
 EGPSE,Port Said East,31.2167,32.35,EG-SUZ,EG-SUZ,EG-SUZ,unlocode
 EGPTK,Port Tewfik,,,,,,
 EGRAB,Ras Budran,28.9333,33.1167,EG-JS,EG-JS,EG-JS,boundaries
@@ -4895,8 +4895,8 @@ ESAGG,Argelaguer,42.2167,2.65,ES-GI,ES-CT,ES-GI ES-CT,unlocode
 ESAGP,Málaga,36.7167,-4.4167,ES-MA,ES-AN,ES-MA ES-AN,unlocode
 ESAGU,Aguilas,37.4,-1.5833,ES-MU,ES-MC,ES-MU ES-MC,boundaries
 ESALA,Villarreal de Álava,42.9833,-2.6333,ES-VI,ES-PV,ES-VI ES-PV,unlocode
-ESALC,Alicante,,,ES-A,ES-VC,ES-A ES-VC,override
-ESALG,Algeciras,,,ES-CA,ES-AN,ES-CA ES-AN,override
+ESALC,Alicante,38.34,-0.48,ES-A,ES-VC,ES-A ES-VC,override
+ESALG,Algeciras,36.13,-5.437,ES-CA,ES-AN,ES-CA ES-AN,override
 ESALT,Algorta,43.35,-3.0167,ES-BI,ES-PV,ES-BI ES-PV,unlocode
 ESALX,Almendricos,37.4667,-1.7833,ES-MU,ES-MC,ES-MU ES-MC,unlocode
 ESAMP,Ampuero,43.35,-3.4167,ES-S,ES-CB,ES-S ES-CB,boundaries
@@ -4908,14 +4908,14 @@ ESAS8,Cabueñes,43.5167,-5.6,ES-O,ES-AS,ES-O ES-AS,unlocode
 ESASL,Andosilla,42.3833,-1.95,ES-NA,ES-NC,ES-NA ES-NC,boundaries
 ESATO,El Astillero,43.4,-3.8167,ES-S,ES-CB,ES-S ES-CB,boundaries
 ESATQ,Ataquines,41.1833,-4.8,ES-VA,ES-CL,ES-VA ES-CL,boundaries
-ESAVS,Aviles,,,ES-O,ES-AS,ES-O ES-AS,override
+ESAVS,Aviles,43.58,-5.93,ES-O,ES-AS,ES-O ES-AS,override
 ESAXO,A Baiuca,43.3,-8.5,ES-C,ES-GA,ES-C ES-GA,boundaries
 ESAYA,Ayamonte,,,ES-H,ES-AN,ES-H ES-AN,override
 ESAYR,Ayora,39.0667,-1.05,ES-V,ES-VC,ES-V ES-VC,boundaries
 ESB8C,Bacáicoa,42.8833,-2.1,ES-NA,ES-NC,ES-NA ES-NC,unlocode
 ESBAT,La Batlloria,41.7167,2.55,ES-B,ES-CT,ES-B ES-CT,unlocode
 ESBBJ,Breña Baja,28.6333,-17.75,ES-TF,ES-CN,ES-TF ES-CN,boundaries
-ESBCN,Barcelona,,,ES-B,ES-CT,ES-B ES-CT,override
+ESBCN,Barcelona,41.346,2.166,ES-B,ES-CT,ES-B ES-CT,override
 ESBDA,Benegida,39.0667,-0.55,ES-V,ES-VC,ES-V ES-VC,boundaries
 ESBDF,Barbate,36.1833,-5.9167,ES-CA,ES-AN,ES-CA ES-AN,unlocode
 ESBDP,Banyeres del Penedes,41.1,1.5167,ES-T,ES-CT,ES-T ES-CT,unlocode
@@ -4937,7 +4937,7 @@ ESBSL,Bermiyo Sallago,41.3667,-6.1,ES-ZA,ES-CL,ES-ZA ES-CL,boundaries
 ESBU3,Benicull,39.1833,-0.3833,ES-V,ES-VC,ES-V ES-VC,unlocode
 ESBVN,Buenavista del Norte,28.3667,-16.9,ES-TF,ES-CN,ES-TF ES-CN,unlocode
 ESC9A,Calles,39.7333,-0.9667,ES-V,ES-VC,ES-V ES-VC,unlocode
-ESCAD,Cadiz,,,ES-CA,ES-AN,ES-CA ES-AN,override
+ESCAD,Cadiz,36.53,-6.28,ES-CA,ES-AN,ES-CA ES-AN,override
 ESCAQ,Riudecanyes,41.1167,0.95,ES-T,ES-CT,ES-T ES-CT,unlocode
 ESCAR,Cartagena,37.6,-0.9833,ES-MU,ES-MC,ES-MU ES-MC,unlocode
 ESCAS,Castellón de la Plana,39.9833,-0.0333,ES-V,ES-VC,ES-V ES-VC,unlocode
@@ -5213,9 +5213,9 @@ ESSAT,Salinetas,,,ES-GC,ES-CN,ES-GC ES-CN,override
 ESSBT,San Bartolomé de Tirajana,29.0,-13.6,ES-GC,ES-CN,ES-GC ES-CN,unlocode
 ESSCI,San Ciprian,,,ES-LU,ES-GA,ES-LU ES-GA,override
 ESSCR,San Carlos de la Rápita,40.6167,0.6,ES-T,ES-CT,ES-T ES-CT,unlocode
-ESSCT,Santa Cruz de Tenerife,,,ES-TF,ES-CN,ES-TF ES-CN,override
+ESSCT,Santa Cruz de Tenerife,28.47,-16.24,ES-TF,ES-CN,ES-TF ES-CN,override
 ESSDG,Sallent de Gallego,42.7667,-0.3333,ES-HU,ES-AR,ES-HU ES-AR,unlocode
-ESSDR,Santander,,,ES-S,ES-CB,ES-S ES-CB,override
+ESSDR,Santander,43.432,-3.79,ES-S,ES-CB,ES-S ES-CB,override
 ESSEO,San Esteban de Pravia,,,ES-O,ES-AS,ES-O ES-AS,override
 ESSER,Serra,39.6833,-0.4333,ES-V,ES-VC,ES-V ES-VC,unlocode
 ESSEW,Seña,,,ES-S,ES-CB,ES-S ES-CB,unlocode
@@ -5253,7 +5253,7 @@ ESSVI,San Vicente,42.45,-7.0667,ES-OR,ES-GA,ES-OR ES-GA,unlocode
 ESSVQ,Sevilla,,,ES-SE,ES-AN,ES-SE ES-AN,override
 ESSXX,Sangenjo,42.4,-8.8167,ES-PO,ES-GA,ES-PO ES-GA,unlocode
 ESTAL,El Tarajal,,,ES-CO,ES-AN,ES-CO ES-AN,unlocode
-ESTAR,Tarragona,,,ES-T,ES-CT,ES-T ES-CT,override
+ESTAR,Tarragona,41.095,1.24,ES-T,ES-CT,ES-T ES-CT,override
 ESTAZ,Tazacorte,28.6333,-17.9333,ES-TF,ES-CN,ES-TF ES-CN,unlocode
 ESTBR,Tabara,41.8167,-5.95,ES-ZA,ES-CL,ES-ZA ES-CL,unlocode
 ESTBZ,Tabuenca,41.7,-1.55,ES-Z,ES-AR,ES-Z ES-AR,unlocode
@@ -5289,13 +5289,13 @@ ESV8M,Villasana De Mena,43.1,-3.2833,ES-BU,ES-CL,ES-BU ES-CL,unlocode
 ESVBN,Villabona,43.1833,-2.05,ES-SS,ES-PV,ES-SS ES-PV,unlocode
 ESVCC,Vallcarca,41.2333,1.8667,ES-B,ES-CT,ES-B ES-CT,unlocode
 ESVEZ,Rossburgh,,,ES-CL,ES-CL,ES-CL,unlocode
-ESVGO,Vigo,,,ES-PO,ES-GA,ES-PO ES-GA,override
+ESVGO,Vigo,42.238,-8.73,ES-PO,ES-GA,ES-PO ES-GA,override
 ESVGR,Valle Gran Rey,,,ES-TF,ES-CN,ES-TF ES-CN,override
 ESVIL,Villagarcía de Arosa,42.6,-8.75,ES-PO,ES-GA,ES-PO ES-GA,unlocode
 ESVIT,Vitoria-Gasteiz,42.85,-2.6667,ES-VI,ES-PV,ES-VI ES-PV,boundaries
 ESVIV,Viveiro,43.6667,-7.6,ES-LU,ES-GA,ES-LU ES-GA,unlocode
 ESVJO,Valera de Abajo,39.7667,-2.15,ES-CU,ES-CM,ES-CU ES-CM,unlocode
-ESVLC,Valencia,,,ES-V,ES-VC,ES-V ES-VC,override
+ESVLC,Valencia,39.445,-0.318,ES-V,ES-VC,ES-V ES-VC,override
 ESVLG,Villanueva y Geltrú (Vilanova i la Geltrú),41.2167,1.7333,ES-B,ES-CT,ES-B ES-CT,unlocode
 ESVVR,Vivares,,,ES-EX,ES-EX,ES-EX,unlocode
 ESVZM,Vizmalo,42.1667,-4.1,ES-BU,ES-CL,ES-BU ES-CL,unlocode
@@ -5331,7 +5331,7 @@ FIHAL,Halonen,66.6833,27.5,FI-10,FI-10,FI-10,unlocode
 FIHAO,Hailuoto,65.0,24.8333,FI-14,FI-14,FI-14,unlocode
 FIHAR,Harvaluoto,60.3667,20.4667,FI-01,FI-01,FI-01,unlocode
 FIHAU,Haukipudas,,,FI-14,FI-14,FI-14,unlocode
-FIHEL,Helsingfors (Helsinki),,,FI-18,FI-18,FI-18,unlocode
+FIHEL,Helsingfors (Helsinki),60.21,25.19,FI-18,FI-18,FI-18,unlocode
 FIHIM,Himanka,64.0667,23.65,FI-07,FI-07,FI-07,boundaries
 FIHIT,Hiitinen,59.8833,22.5,FI-19,FI-19,FI-19,boundaries
 FIHKO,Hangö (Hanko),,,FI-18,FI-18,FI-18,unlocode
@@ -6824,7 +6824,7 @@ GBFUR,Furnace,56.15,-5.1667,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode
 GBFUU,Thurnscoe,53.5333,-1.3,GB-BNS,GB-ENG,GB-BNS GB-ENG,unlocode
 GBFWE,Freshwater East,51.65,-4.8667,GB-PEM,GB-WLS,GB-PEM GB-WLS,unlocode
 GBFWM,Fort William,56.8167,-5.1167,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode
-GBFXT,Felixstowe,,,GB-SFK,GB-ENG,GB-SFK GB-ENG,unlocode
+GBFXT,Felixstowe,51.954,1.318,GB-SFK,GB-ENG,GB-SFK GB-ENG,unlocode
 GBFYD,Ferryside,51.7667,-4.3667,GB-CMN,GB-WLS,GB-CMN GB-WLS,unlocode
 GBGAD,Garelochhead,56.0833,-4.8333,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode
 GBGAE,Graemsay,58.9167,-3.2667,GB-ORK,GB-SCT,GB-ORK GB-SCT,unlocode
@@ -7302,7 +7302,7 @@ GBPLR,Polruan,50.3167,-4.6167,GB-CON,GB-ENG,GB-CON GB-ENG,boundaries
 GBPLV,Porthleven,50.0833,-5.3167,GB-CON,GB-ENG,GB-CON GB-ENG,unlocode
 GBPLY,Plymouth,50.4,-4.1167,GB-PLY,GB-ENG,GB-PLY GB-ENG,boundaries
 GBPMD,Portmadoc,,,GB-GWN,GB-WLS,GB-GWN GB-WLS,unlocode
-GBPME,Portsmouth,,,GB-HAM,GB-ENG,GB-HAM GB-ENG,unlocode
+GBPME,Portsmouth,50.808,-1.11,GB-HAM,GB-ENG,GB-HAM GB-ENG,unlocode
 GBPMK,Portmahomack,57.8333,-3.8167,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode
 GBPMM,Penmaenmawr,,,GB-GWN,GB-WLS,GB-GWN GB-WLS,unlocode
 GBPMR,"Port Mor, Muck",56.8333,-6.2333,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode
@@ -7515,7 +7515,7 @@ GBSNW,St Andrews,56.3333,-2.7833,GB-FIF,GB-SCT,GB-FIF GB-SCT,unlocode
 GBSOA,Stroma,58.6833,-3.1167,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode
 GBSOQ,South Queensferry,55.9833,-3.4,GB-EDH,GB-SCT,GB-EDH GB-SCT,unlocode
 GBSOT,Stoke on Trent,53.0,-2.1833,GB-STS,GB-ENG,GB-STS GB-ENG,unlocode
-GBSOU,Southampton,,,GB-HAM,GB-ENG,GB-HAM GB-ENG,unlocode
+GBSOU,Southampton,50.895,-1.435,GB-HAM,GB-ENG,GB-HAM GB-ENG,unlocode
 GBSOW,Stanlow,52.5833,-2.3,GB-SHR,GB-ENG,GB-SHR GB-ENG,unlocode
 GBSPI,Sandhaven and Pitullie,57.6833,-2.0333,GB-ABD,GB-SCT,GB-ABD GB-SCT,unlocode
 GBSPQ,Stackpole Quay,51.6167,-4.9,GB-PEM,GB-WLS,GB-PEM GB-WLS,unlocode
@@ -7589,7 +7589,7 @@ GBTHR,Thurso,58.5833,-3.5167,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode
 GBTHS,Thames Haven,,,GB-ESS,GB-ENG,GB-ESS GB-ENG,unlocode
 GBTHT,South Uist and Eriskay,57.0667,-7.2667,GB-ELS,GB-SCT,GB-ELS GB-SCT,unlocode
 GBTIG,Tighnabruaich,55.9,-5.2333,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode
-GBTIL,Tilbury,,,GB-ESS,GB-ENG,GB-ESS GB-ENG,unlocode
+GBTIL,Tilbury,51.452,0.36,GB-ESS,GB-ENG,GB-ESS GB-ENG,unlocode
 GBTLD,Shetland,60.5333,-1.2167,GB-ZET,GB-SCT,GB-ZET GB-SCT,unlocode
 GBTLE,Saint Helens,50.6833,-1.1,GB-IOW,GB-ENG,GB-IOW GB-ENG,unlocode
 GBTLI,Tayvallich,56.0167,-5.6167,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode
@@ -7749,10 +7749,10 @@ GHKIT,Keta,,,,,,
 GHSEK,Sekondi,,,,,,
 GHSHA,Shama,,,,,,
 GHSPD,Saltpond,,,,,,
-GHTEM,Tema,,,,,,
-GHTKD,Takoradi,,,,,,
+GHTEM,Tema,5.63,0.02,,,,
+GHTKD,Takoradi,4.88,-1.75,,,,
 GHWEA,Winneba,,,,,,
-GIGIB,Gibraltar,,,,,,
+GIGIB,Gibraltar,36.14,-5.355,,,,
 GLAGM,Tasiilaq,65.6,-37.6333,GL-SM,GL-SM,GL-SM,boundaries
 GLDAN,Daneborg,,,,,,
 GLFHN,Kangerdluarssoruseg (Færingehavn,,,,,,
@@ -8221,7 +8221,7 @@ HNHNN,Henecan,,,,,,
 HNLCE,La Ceiba,,,,,,
 HNOMO,Omoa,15.7667,-88.0333,HN-CR,HN-CR,HN-CR,unlocode
 HNPCA,Puerto Castilla,,,,,,
-HNPCR,Puerto Cortés,,,,,,
+HNPCR,Puerto Cortés,15.84,-87.94,,,,
 HNRTB,Roatán,16.3,-86.55,HN-IB,HN-IB,HN-IB,boundaries
 HNRTM,Mahogany Bay,16.3333,-86.5,HN-IB,HN-IB,HN-IB,unlocode
 HNSAP,San Pedro Sula,,,,,,
@@ -8837,7 +8837,7 @@ IEDMF,Drogheda Maxol Facility,53.7167,-6.3333,IE-LH,IE-L,IE-LH IE-L,unlocode
 IEDNM,Dunmore East,,,,,,
 IEDPP,Drogheda Premiere Periclase,53.7167,-62.5167,IE-LH,IE-L,IE-LH IE-L,unlocode
 IEDRO,Drogheda,,,,,,
-IEDUB,Dublin,,,,,,
+IEDUB,Dublin,53.347,-6.2,,,,
 IEDWE,Ennistymon,52.9333,-9.2833,IE-CE,IE-M,IE-CE IE-M,unlocode
 IEEBF,Broadford,,,IE-CW,IE-L,IE-CW IE-L,unlocode
 IEEKY,Easkey/Rathlee,54.2833,-8.9667,IE-SO,IE-C,IE-SO IE-C,unlocode
@@ -8856,7 +8856,7 @@ IEGOW,Gowran,57.6167,-7.4,,,,
 IEGRE,Greencastle,55.2,-6.9833,IE-DL,IE-U,IE-DL IE-U,unlocode
 IEGRN,Greenore,,,,,,
 IEGRT,Gortahork,55.1167,-8.1333,IE-DL,IE-U,IE-DL IE-U,unlocode
-IEGWY,Galway,,,,,,
+IEGWY,Galway,53.27,-9.045,,,,
 IEHAU,Haulbowline,,,,,,
 IEHOW,Howth,,,,,,
 IEKBS,Killybegs,,,,,,
@@ -8925,7 +8925,7 @@ ILACR,Acre,,,,,,
 ILAKK,Akko,32.9167,35.0667,IL-Z,IL-Z,IL-Z,unlocode
 ILAKL,Ashkelon,,,,,,
 ILAS2,Mishor Adumim,31.7833,35.3167,IL-M,IL-M,IL-M,unlocode
-ILASH,Ashdod,,,,,,
+ILASH,Ashdod,31.82,34.64,,,,
 ILAST,Ashdod Southport,31.8167,34.65,IL-D,IL-D,IL-D,unlocode
 ILBGV,Binyamina-Giv'at Ada,32.5167,34.9333,IL-HA,IL-HA,IL-HA,boundaries
 ILETH,Elat (Eilath),,,,,,
@@ -9627,7 +9627,7 @@ ITRRV,Sferracavallo,38.2,13.2333,IT-PA,IT-82,IT-PA IT-82,boundaries
 ITRSM,Monterosso al Mare,44.15,9.65,IT-SP,IT-42,IT-SP IT-42,unlocode
 ITRTS,Riva Trigoso,44.2667,9.4167,IT-GE,IT-42,IT-GE IT-42,boundaries
 ITRTT,Marotta,43.7667,13.1333,IT-PU,IT-57,IT-PU IT-57,boundaries
-ITSAL,Salerno,,,IT-SA,IT-72,IT-SA IT-72,override
+ITSAL,Salerno,40.67,14.76,IT-SA,IT-72,IT-SA IT-72,override
 ITSAT,Sant' Antioco,39.0667,8.45,IT-88,IT-88,IT-88,boundaries
 ITSCK,Sciacca,37.5167,13.05,IT-AG,IT-82,IT-AG IT-82,boundaries
 ITSCO,Scoglitti,36.8833,14.4333,IT-RG,IT-82,IT-RG IT-82,unlocode
@@ -9675,7 +9675,7 @@ ITTPS,Trapani,38.0167,12.4833,IT-TP,IT-82,IT-TP IT-82,unlocode
 ITTRC,Terracina,,,IT-LT,IT-62,IT-LT IT-62,override
 ITTRH,Torre Faro,38.25,15.6333,IT-ME,IT-82,IT-ME IT-82,boundaries
 ITTRI,Termini Imerese,37.9833,13.7,IT-PA,IT-82,IT-PA IT-82,unlocode
-ITTRS,Trieste,,,IT-TS,IT-36,IT-TS IT-36,override
+ITTRS,Trieste,45.645,13.76,IT-TS,IT-36,IT-TS IT-36,override
 ITTRU,Torre San Giovanni d'Ugento,39.9167,18.15,IT-LE,IT-75,IT-LE IT-75,unlocode
 ITTTN,Stintino,40.9333,8.2167,IT-SS,IT-88,IT-SS IT-88,boundaries
 ITTVC,Torviscosa,45.8167,13.2667,IT-UD,IT-36,IT-UD IT-36,unlocode
@@ -9706,7 +9706,7 @@ JMALP,Alligator Pond,,,,,,
 JMBLR,Black River,,,,,,
 JMBWN,Bowden,,,,,,
 JMFMH,Falmouth,,,,,,
-JMKIN,Kingston,,,,,,
+JMKIN,Kingston,17.95,-76.82,,,,
 JMMBJ,Montego Bay,,,,,,
 JMOCJ,Ocho Rios,,,,,,
 JMORC,Oracabessa,18.4,-76.95,JM-05,JM-05,JM-05,boundaries
@@ -11477,7 +11477,7 @@ LRSNI,Sinoe,,,,,,
 LRTRT,Trade Town,,,,,,
 LRUCN,Buchanan,,,,,,
 LTBOT,Botingé,56.0667,21.1167,LT-KL,LT-KL,LT-KL,boundaries
-LTKLJ,Klaipeda,,,,,,
+LTKLJ,Klaipeda,55.71,21.12,,,,
 LTMLM,Malku ilankos juru uosto PVP/Klaipeda,55.7167,21.1167,LT-KL,LT-KL,LT-KL,unlocode
 LTMOM,Molo juru uosto PVP/Klaipeda,55.7167,21.1,LT-KL,LT-KL,LT-KL,unlocode
 LTPLM,Pilies juru uosto PVP/Klaipeda,55.7167,21.0833,LT-KL,LT-KL,LT-KL,unlocode
@@ -11494,7 +11494,7 @@ LVEGE,Engure,57.1667,23.2167,,,,
 LVLPX,Liepaja,56.5167,21.0167,LV-LPX,LV-LPX,LV-LPX,unlocode
 LVMRX,Mersrags,57.3333,23.1,,,,
 LVPVT,Pavilosta,56.8833,21.1833,,,,
-LVRIX,Riga,,,LV-RIX,LV-RIX,LV-RIX,unlocode
+LVRIX,Riga,56.99,24.09,LV-RIX,LV-RIX,LV-RIX,unlocode
 LVROJ,Roja,57.5,22.8,,,,
 LVSAL,Salacgriva,57.75,24.35,LV-054,LV-054,LV-054,unlocode
 LVSKU,Skulte,57.3167,24.4333,LV-054,LV-054,LV-054,unlocode
@@ -11529,7 +11529,7 @@ LYZAW,Az Zawiyah,32.75,12.7167,LY-ZA,LY-ZA,LY-ZA,boundaries
 LYZLI,Zliten,,,,,,
 LYZUA,Zuara,,,,,,
 MA6KN,Souq Larb'A Al Gharb,34.6667,-5.9667,MA-KEN,MA-04,MA-KEN MA-04,unlocode
-MAAGA,Agadir,,,,,,
+MAAGA,Agadir,30.42,-9.62,,,,
 MAAHU,Al Hoceïma,35.25,-3.9333,MA-03,MA-03,MA-03,boundaries
 MAANZ,Anza,30.45,-9.65,MA-AGD,MA-09,MA-AGD MA-09,unlocode
 MAASI,Asilah,,,,,,
@@ -11548,7 +11548,7 @@ MANDR,Nador,,,,,,
 MANNA,Kenitra (ex Port Lyautey),,,,,,
 MANPS,"Nouveau Port Safi, Sidi Boudenyan",32.1667,-9.2667,MA-SAF,MA-07,MA-SAF MA-07,unlocode
 MANWM,Nador West Med,35.25,-3.15,MA-NAD,MA-02,MA-NAD MA-02,unlocode
-MAPTM,Tanger Med,,,MA-TNG,MA-01,MA-TNG MA-01,unlocode
+MAPTM,Tanger Med,35.89,-5.5,MA-TNG,MA-01,MA-TNG MA-01,unlocode
 MARBA,Rabat,,,,,,
 MAREM,Ras El Ma,35.1167,-2.4,MA-NAD,MA-02,MA-NAD MA-02,unlocode
 MARNA,Roches Noires,33.6,-7.5667,MA-MOH,MA-06,MA-MOH MA-06,unlocode
@@ -13426,7 +13426,7 @@ PAAGD,Aguadulce,,,,,,
 PAAML,Puerto Armuelles,,,PA-4,PA-4,PA-4,unlocode
 PABAY,Bayano,7.6333,-80.3833,PA-7,PA-7,PA-7,unlocode
 PABCC,Boca Chica,8.2167,-82.2167,PA-4,PA-4,PA-4,unlocode
-PABLB,Balboa,,,,,,
+PABLB,Balboa,8.95,-79.565,,,,
 PABOC,Bocas del Toro,9.3333,-82.2333,PA-1,PA-1,PA-1,unlocode
 PACHA,Charco Azul,,,,,,
 PACHG,Chiriquí Grande,8.95,-82.1167,PA-1,PA-1,PA-1,boundaries
@@ -13441,7 +13441,7 @@ PAGTN,Gatun,,,,,,
 PAHER,Herrera,7.8333,-80.6667,PA-7,PA-7,PA-7,unlocode
 PAMEL,Melones,8.8,-79.6,PA-8,PA-8,PA-8,unlocode
 PAMFS,Miraflores,,,,,,
-PAMIT,Manzanillo,,,,,,
+PAMIT,Manzanillo,9.36,-79.88,,,,
 PAMNP,Las Minas,,,PA-6,PA-6,PA-6,unlocode
 PAONX,Colón,9.35,-79.8667,PA-3,PA-3,PA-3,unlocode
 PAPAI,Paraiso,,,,,,
@@ -13479,10 +13479,10 @@ PELOB,Lobitos,,,,,,
 PELOO,Los Organos,-4.1833,-81.1167,PE-PIU,PE-PIU,PE-PIU,boundaries
 PELPP,La Pampilla,,,,,,
 PEMLQ,Mollendo,,,,,,
-PEMRI,Matarani,,,,,,
+PEMRI,Matarani,-17.0,-72.11,,,,
 PENGS,Negritos,,,,,,
 PEPAC,Pacasmayo,,,,,,
-PEPAI,Paita,,,,,,
+PEPAI,Paita,-5.09,-81.11,,,,
 PEPAM,Paramonga,,,,,,
 PEPCH,Puerto Chicama,,,,,,
 PEPCL,Pucallpa,,,,,,
@@ -14003,7 +14003,7 @@ PLDCZ,Duczki,52.3667,21.2833,PL-14,PL-14,PL-14,unlocode
 PLDZN,Dziwnow,54.0333,14.75,PL-32,PL-32,PL-32,unlocode
 PLELB,Elblag,54.1667,19.3833,,,,
 PLFBK,Frombork,54.35,19.6833,PL-28,PL-28,PL-28,unlocode
-PLGDN,Gdansk,,,,,,
+PLGDN,Gdansk,54.398,18.67,,,,
 PLGDY,Gdynia,54.5,18.55,PL-22,PL-22,PL-22,unlocode
 PLGKI,Glinki,,,,,,
 PLGKZ,Górki Zachodnie,54.3667,18.7667,PL-22,PL-22,PL-22,unlocode
@@ -14738,7 +14738,7 @@ SEHAN,Hargshamn,60.1667,18.4667,SE-C,SE-C,SE-C,unlocode
 SEHAS,Hallstanäs,,,SE-Y,SE-Y,SE-Y,unlocode
 SEHBG,Hamburgsund,,,SE-O,SE-O,SE-O,unlocode
 SEHBV,Hässelbyverket/Stockholm,59.35,17.4833,SE-AB,SE-AB,SE-AB,unlocode
-SEHEL,Helsingborg,,,SE-M,SE-M,SE-M,unlocode
+SEHEL,Helsingborg,56.045,12.69,SE-M,SE-M,SE-M,unlocode
 SEHER,Herräng,,,SE-AB,SE-AB,SE-AB,unlocode
 SEHGS,Högsjö,,,SE-Y,SE-Y,SE-Y,unlocode
 SEHLD,Holmsund,,,SE-AC,SE-AC,SE-AC,unlocode
@@ -15227,7 +15227,7 @@ TRAKC,Akcansa,40.1,26.3833,TR-17,TR-17,TR-17,unlocode
 TRAKD,Akdeniz,36.8667,34.7,TR-33,TR-33,TR-33,boundaries
 TRAKY,Akçay,39.5833,26.9333,TR-10,TR-10,TR-10,unlocode
 TRALA,Alanya,36.5333,31.9833,TR-07,TR-07,TR-07,unlocode
-TRALI,Aliaga,,,TR-35,TR-35,TR-35,unlocode
+TRALI,Aliaga,38.8,26.96,TR-35,TR-35,TR-35,unlocode
 TRAMA,Amasra,,,TR-67,TR-67,TR-67,unlocode
 TRAMR,Ambarli,40.9667,28.7,TR-34,TR-34,TR-34,unlocode
 TRANA,Anamur,36.0667,32.85,TR-33,TR-33,TR-33,unlocode
@@ -15610,7 +15610,7 @@ USBNH,Burnham,44.6833,-69.4333,US-ME,US-ME,US-ME,unlocode
 USBNI,Burnsville,35.9167,-82.3,US-NC,US-NC,US-NC,unlocode
 USBNP,Brayton Point,41.7,-71.1833,US-MA,US-MA,US-MA,unlocode
 USBOC,Brooklyn,41.7833,-71.95,US-CT,US-CT,US-CT,unlocode
-USBOS,Boston,,,US-MA,US-MA,US-MA,unlocode
+USBOS,Boston,42.34,-71.03,US-MA,US-MA,US-MA,unlocode
 USBOY,Brooklyn/New York,40.7333,-73.9333,US-NY,US-NY,US-NY,unlocode
 USBPT,Beaumont,,,US-TX,US-TX,US-TX,unlocode
 USBPV,Belhaven,35.5333,-76.6167,US-NC,US-NC,US-NC,unlocode
@@ -15673,7 +15673,7 @@ USCGP,Capitola,36.9667,-121.95,US-CA,US-CA,US-CA,unlocode
 USCGW,Chickasaw,30.7667,-88.0667,US-AL,US-AL,US-AL,unlocode
 USCGX,Carthage,36.25,-85.95,US-TN,US-TN,US-TN,unlocode
 USCHI,Chicago,,,US-IL,US-IL,US-IL,unlocode
-USCHS,Charleston,,,US-SC,US-SC,US-SC,unlocode
+USCHS,Charleston,32.78,-79.92,US-SC,US-SC,US-SC,unlocode
 USCHT,Chester,,,US-PA,US-PA,US-PA,unlocode
 USCI6,Chimayo,36.0,-105.9333,US-NM,US-NM,US-NM,unlocode
 USCIB,Casselberry,28.6833,-81.3333,US-FL,US-FL,US-FL,unlocode
@@ -15938,7 +15938,7 @@ USGON,Groton-New London Apt,,,US-CT,US-CT,US-CT,unlocode
 USGOP,Good Hope,29.9833,-90.4,US-LA,US-LA,US-LA,unlocode
 USGP2,Gosport,39.35,-86.6667,US-IN,US-IN,US-IN,unlocode
 USGP4,Greenport,41.1,-72.3667,US-NY,US-NY,US-NY,unlocode
-USGPT,Gulfport,,,US-MS,US-MS,US-MS,unlocode
+USGPT,Gulfport,30.36,-89.09,US-MS,US-MS,US-MS,unlocode
 USGPW,Grosse Point Woods,42.4333,-82.9,US-MI,US-MI,US-MI,unlocode
 USGQJ,Big Stone City,45.2833,-96.45,US-SD,US-SD,US-SD,unlocode
 USGQQ,Galion,40.7333,-82.7833,US-OH,US-OH,US-OH,unlocode
@@ -16066,7 +16066,7 @@ USIZK,Renick,37.4667,-80.3167,US-WV,US-WV,US-WV,unlocode
 USJ3C,Jacksonville,42.3,-122.95,US-OR,US-OR,US-OR,unlocode
 USJA2,Jamaica,37.7,-76.6833,US-VA,US-VA,US-VA,unlocode
 USJAM,Jackman,45.6167,-70.2333,US-ME,US-ME,US-ME,unlocode
-USJAX,Jacksonville,,,US-FL,US-FL,US-FL,unlocode
+USJAX,Jacksonville,30.39,-81.52,US-FL,US-FL,US-FL,unlocode
 USJAY,Jay,44.5,-70.2167,US-ME,US-ME,US-ME,unlocode
 USJBG,Johnsburg,42.3833,-88.25,US-IL,US-IL,US-IL,unlocode
 USJBK,Berkeley,,,US-CA,US-CA,US-CA,unlocode
@@ -16227,7 +16227,7 @@ USMGQ,Mount Gilead,35.2,-80.0,US-NC,US-NC,US-NC,unlocode
 USMH2,Marblehead,42.5,-70.85,US-MA,US-MA,US-MA,unlocode
 USMH8,Manhasset,40.8,-73.7,US-NY,US-NY,US-NY,unlocode
 USMI3,Calcite,45.4,-83.7833,US-MI,US-MI,US-MI,unlocode
-USMIA,Miami,,,US-FL,US-FL,US-FL,unlocode
+USMIA,Miami,25.778,-80.17,US-FL,US-FL,US-FL,unlocode
 USMKC,Kansas City,39.1,-94.5667,US-MO,US-MO,US-MO,unlocode
 USMKE,Milwaukee,,,US-WI,US-WI,US-WI,unlocode
 USMKG,Muskegon,43.2167,-86.2333,US-MI,US-MI,US-MI,unlocode
@@ -16237,7 +16237,7 @@ USMKW,Mill Creek,47.85,-122.2,US-WA,US-WA,US-WA,unlocode
 USMKZ,Mukwonago,42.8667,-88.3333,US-WI,US-WI,US-WI,unlocode
 USMN5,Menemsha,41.35,-70.7667,US-MA,US-MA,US-MA,unlocode
 USMNH,Manhattan/New York,40.7833,-73.9667,US-NY,US-NY,US-NY,unlocode
-USMOB,Mobile,,,US-AL,US-AL,US-AL,unlocode
+USMOB,Mobile,30.69,-88.04,US-AL,US-AL,US-AL,unlocode
 USMP2,Mauckport,38.0167,-86.2,US-IN,US-IN,US-IN,unlocode
 USMP5,Machesney Park,42.3333,-89.05,US-IL,US-IL,US-IL,unlocode
 USMP7,Mediapolis,41.0,-91.15,US-IA,US-IA,US-IA,unlocode
@@ -16247,7 +16247,7 @@ USMRH,Morehead City,,,US-NC,US-NC,US-NC,unlocode
 USMRQ,Milford,39.1667,-84.2833,US-OH,US-OH,US-OH,unlocode
 USMRT,Morristown,,,US-NY,US-NY,US-NY,unlocode
 USMS6,Mims,28.6667,-80.85,US-FL,US-FL,US-FL,unlocode
-USMSY,New Orleans,,,US-LA,US-LA,US-LA,unlocode
+USMSY,New Orleans,29.94,-90.05,US-LA,US-LA,US-LA,unlocode
 USMT5,Milton,44.6333,-73.1167,US-VT,US-VT,US-VT,unlocode
 USMT6,Mentone,34.5667,-85.5833,US-AL,US-AL,US-AL,unlocode
 USMTK,Mount Carmel,40.7833,-76.4,US-PA,US-PA,US-PA,unlocode
@@ -16334,7 +16334,7 @@ USNYU,Nassau,42.5,-73.6,US-NY,US-NY,US-NY,unlocode
 USNYX,Nyack,41.0833,-73.9167,US-NY,US-NY,US-NY,unlocode
 USNZQ,Needmore,39.8333,-78.1333,US-PA,US-PA,US-PA,unlocode
 USO82,Odessa,45.25,-96.3167,US-MN,US-MN,US-MN,unlocode
-USOAK,Oakland,,,US-CA,US-CA,US-CA,unlocode
+USOAK,Oakland,37.8,-122.32,US-CA,US-CA,US-CA,unlocode
 USOAM,Ocean Gate,39.9167,-74.1333,US-NJ,US-NJ,US-NJ,unlocode
 USOAX,Asotin,46.3333,-117.05,US-WA,US-WA,US-WA,unlocode
 USOB2,Oak Bluffs,41.45,-70.5667,US-MA,US-MA,US-MA,unlocode
@@ -16372,7 +16372,7 @@ USOO9,Monmouth,44.8333,-123.2167,US-OR,US-OR,US-OR,unlocode
 USOOM,Bloomer,45.1,-91.4833,US-WI,US-WI,US-WI,unlocode
 USOPB,Copan,36.9,-95.9333,US-OK,US-OK,US-OK,unlocode
 USOR8,Glendale,42.7333,-123.4167,US-OR,US-OR,US-OR,unlocode
-USORF,Norfolk,,,US-VA,US-VA,US-VA,unlocode
+USORF,Norfolk,36.93,-76.33,US-VA,US-VA,US-VA,unlocode
 USORH,Worcester,,,US-MA,US-MA,US-MA,unlocode
 USOS3,Oskaloosa,39.2,-95.3,US-KS,US-KS,US-KS,unlocode
 USOSM,Selma,42.2667,-123.6,US-OR,US-OR,US-OR,unlocode
@@ -16411,7 +16411,7 @@ USPBI,West Palm Beach,,,US-FL,US-FL,US-FL,unlocode
 USPCP,Patchogue,40.7667,-73.0167,US-NY,US-NY,US-NY,unlocode
 USPCV,Port Canaveral,28.4,-80.6,US-FL,US-FL,US-FL,unlocode
 USPDI,Port Madison,47.7,-122.5667,US-WA,US-WA,US-WA,unlocode
-USPDX,Portland,,,US-OR,US-OR,US-OR,unlocode
+USPDX,Portland,45.62,-122.76,US-OR,US-OR,US-OR,unlocode
 USPE2,Port Ewen,41.9,-73.9833,US-NY,US-NY,US-NY,unlocode
 USPEA,Pearl Harbor,,,US-HI,US-HI,US-HI,unlocode
 USPEB,Port Elizabeth,39.3,-74.9667,US-NJ,US-NJ,US-NJ,unlocode
@@ -16425,7 +16425,7 @@ USPGQ,Puget Sound,47.8167,-122.4333,US-WA,US-WA,US-WA,unlocode
 USPGX,Pillager,46.3333,-94.4667,US-MN,US-MN,US-MN,unlocode
 USPGY,"Spring Valley, San Diego",32.7333,-116.9833,US-CA,US-CA,US-CA,unlocode
 USPGZ,Palo Pinto,32.7667,-98.2833,US-TX,US-TX,US-TX,unlocode
-USPHL,Philadelphia,,,US-PA,US-PA,US-PA,unlocode
+USPHL,Philadelphia,39.91,-75.14,US-PA,US-PA,US-PA,unlocode
 USPHN,Port Huron,42.9667,-82.4167,US-MI,US-MI,US-MI,unlocode
 USPI7,Pleasant Island,58.35,-135.6333,US-AK,US-AK,US-AK,unlocode
 USPIE,Saint Petersburg,27.7667,-82.6833,US-FL,US-FL,US-FL,unlocode
@@ -16659,15 +16659,15 @@ USSA6,Santee,33.4667,-80.4833,US-SC,US-SC,US-SC,unlocode
 USSAB,Sabine,,,US-TX,US-TX,US-TX,unlocode
 USSAC,Sacramento,38.5667,-121.4833,US-CA,US-CA,US-CA,unlocode
 USSAN,San Diego,32.7,-117.15,US-CA,US-CA,US-CA,unlocode
-USSAV,Savannah,,,US-GA,US-GA,US-GA,unlocode
+USSAV,Savannah,32.126,-81.14,US-GA,US-GA,US-GA,unlocode
 USSBA,Santa Barbara,,,US-CA,US-CA,US-CA,unlocode
 USSBB,Sabina,39.4833,-83.6333,US-OH,US-OH,US-OH,unlocode
 USSBQ,Ship Bottom,39.65,-74.1833,US-NJ,US-NJ,US-NJ,unlocode
 USSCK,Stockton,37.95,-121.2833,US-CA,US-CA,US-CA,unlocode
 USSE3,Soap Lake,47.3833,-119.4833,US-WA,US-WA,US-WA,unlocode
 USSE4,Sedan,37.1167,-96.1833,US-KS,US-KS,US-KS,unlocode
-USSEA,Seattle,,,US-WA,US-WA,US-WA,unlocode
-USSFO,San Francisco,,,US-CA,US-CA,US-CA,unlocode
+USSEA,Seattle,47.58,-122.35,US-WA,US-WA,US-WA,unlocode
+USSFO,San Francisco,37.81,-122.37,US-CA,US-CA,US-CA,unlocode
 USSFY,Springfield,,,US-MA,US-MA,US-MA,unlocode
 USSG3,Spring Grove,42.4333,-88.1833,US-IL,US-IL,US-IL,unlocode
 USSGI,Sterling,41.7833,-89.6833,US-IL,US-IL,US-IL,unlocode
@@ -16738,7 +16738,7 @@ USTHN,Athena,45.8,-118.4833,US-OR,US-OR,US-OR,unlocode
 USTHU,Croton-on-Hudson,41.2,-73.8833,US-NY,US-NY,US-NY,unlocode
 USTIE,Wolcottville,41.5167,-85.3667,US-IN,US-IN,US-IN,unlocode
 USTIS,Stillwater,45.05,-92.8,US-MN,US-MN,US-MN,unlocode
-USTIW,Tacoma,,,US-WA,US-WA,US-WA,unlocode
+USTIW,Tacoma,47.27,-122.41,US-WA,US-WA,US-WA,unlocode
 USTJB,Brilliant,40.25,-81.2167,US-OH,US-OH,US-OH,unlocode
 USTJJ,Platte,39.35,-94.7667,US-MO,US-MO,US-MO,unlocode
 USTK9,Stockett,47.35,-111.1667,US-MT,US-MT,US-MT,unlocode
@@ -17218,7 +17218,7 @@ UYJIT,Jose Ignacio Terminal,,,,,,
 UYJLC,Juan L. Lacaze,-34.4333,-57.45,UY-CO,UY-CO,UY-CO,unlocode
 UYLAP,La Paloma/Rocha,,,,,,
 UYMER,Mercedes,,,,,,
-UYMVD,Montevideo,,,,,,
+UYMVD,Montevideo,-34.905,-56.21,,,,
 UYNVP,Nueva Palmira,,,,,,
 UYPDP,Punta del Este,,,,,,
 UYPDU,Paysandu,,,,,,
@@ -17258,7 +17258,7 @@ VEGUB,Guaranao Bay,,,,,,
 VEGUI,Guiria,,,,,,
 VEGUT,Guanta,,,,,,
 VEJOT,Jose Terminal,10.1,-64.85,VE-B,VE-B,VE-B,unlocode
-VELAG,La Guaira,,,,,,
+VELAG,La Guaira,10.6,-66.94,,,,
 VELCV,La Ceiba/Maracaibo L,,,,,,
 VELEC,La Estacada,,,,,,
 VELGY,Lagunillas,,,,,,
@@ -17270,7 +17270,7 @@ VEMIV,Puerto Miranda/Maracaibo L.,,,,,,
 VEMOR,Morón,10.4833,-68.2,VE-G,VE-G,VE-G,unlocode
 VEMTV,Matanzas,,,,,,
 VEPAR,Paradero,,,,,,
-VEPBL,Puerto Cabello,,,,,,
+VEPBL,Puerto Cabello,10.48,-68.01,,,,
 VEPCA,Punta Camacho,,,,,,
 VEPCN,Punta Cardón,11.65,-70.2167,VE-I,VE-I,VE-I,unlocode
 VEPCO,Puerto Carenero,10.4833,-64.1667,VE-R,VE-R,VE-R,unlocode

@@ -1,0 +1,67 @@
+locode,name,lat,lng,source,note
+AEJEA,Jebel Ali,25.01,55.06,"port area, placed by hand: verify on OpenStreetMap",high: Jebel Ali port
+CAHAL,Halifax,44.635,-63.565,"port area, placed by hand: verify on OpenStreetMap","high: Halterm, Halifax"
+CAMTR,Montreal,45.52,-73.53,"port area, placed by hand: verify on OpenStreetMap",high: Port of Montreal
+CAPRR,Prince Rupert,54.3,-130.33,"port area, placed by hand: verify on OpenStreetMap",medium: Fairview container terminal
+CAQUE,Quebec,46.825,-71.2,"port area, placed by hand: verify on OpenStreetMap",medium: Beauport terminals
+CATOR,Toronto,43.64,-79.35,"port area, placed by hand: verify on OpenStreetMap","medium: Port of Toronto, Ship Channel"
+CAVAN,Vancouver,49.29,-123.09,"port area, placed by hand: verify on OpenStreetMap","high: Centerm and Vanterm, Burrard Inlet"
+COBUN,Buenaventura,3.88,-77.08,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto de Buenaventura
+COCTG,Cartagena,10.39,-75.52,"port area, placed by hand: verify on OpenStreetMap",medium: Bay of Cartagena; Contecar is about 6 km south-east
+COSMR,Santa Marta,11.24,-74.22,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto de Santa Marta
+DKFRC,Fredericia,55.57,9.77,"port area, placed by hand: verify on OpenStreetMap",medium: Fredericia port
+EGPSD,Port Said,31.26,32.3,"port area, placed by hand: verify on OpenStreetMap",high: Port Said East and West
+ESALC,Alicante,38.34,-0.48,"port area, placed by hand: verify on OpenStreetMap",high: Puerto de Alicante
+ESALG,Algeciras,36.13,-5.437,"port area, placed by hand: verify on OpenStreetMap","high: Bahia de Algeciras, Isla Verde terminals"
+ESAVS,Aviles,43.58,-5.93,"port area, placed by hand: verify on OpenStreetMap","medium: San Juan de Nieva, Aviles"
+ESBCN,Barcelona,41.346,2.166,"port area, placed by hand: verify on OpenStreetMap","high: Port de Barcelona, Moll Prat and Port Vell area"
+ESCAD,Cadiz,36.53,-6.28,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto de Cadiz
+ESSCT,Santa Cruz de Tenerife,28.47,-16.24,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto de Santa Cruz de Tenerife
+ESSDR,Santander,43.432,-3.79,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto de Santander
+ESTAR,Tarragona,41.095,1.24,"port area, placed by hand: verify on OpenStreetMap",high: Port de Tarragona
+ESVGO,Vigo,42.238,-8.73,"port area, placed by hand: verify on OpenStreetMap","medium: Puerto de Vigo, Bouzas and Guixar"
+ESVLC,Valencia,39.445,-0.318,"port area, placed by hand: verify on OpenStreetMap",high: Puerto de Valencia terminals
+FIHEL,Helsingfors (Helsinki),60.21,25.19,"port area, placed by hand: verify on OpenStreetMap",medium: Vuosaari harbour; South Harbour is 60.16 N 24.96 E
+GBFXT,Felixstowe,51.954,1.318,"port area, placed by hand: verify on OpenStreetMap",high: Port of Felixstowe container terminals
+GBPME,Portsmouth,50.808,-1.11,"port area, placed by hand: verify on OpenStreetMap",medium: Portsmouth Commercial Port
+GBSOU,Southampton,50.895,-1.435,"port area, placed by hand: verify on OpenStreetMap",high: Southampton Western Docks and container terminal
+GBTIL,Tilbury,51.452,0.36,"port area, placed by hand: verify on OpenStreetMap",high: Port of Tilbury
+GHTEM,Tema,5.63,0.02,"port area, placed by hand: verify on OpenStreetMap",high: Tema port
+GHTKD,Takoradi,4.88,-1.75,"port area, placed by hand: verify on OpenStreetMap",medium: Takoradi port
+GIGIB,Gibraltar,36.14,-5.355,"port area, placed by hand: verify on OpenStreetMap",high: Gibraltar harbour
+HNPCR,Puerto Cortés,15.84,-87.94,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto Cortes
+IEDUB,Dublin,53.347,-6.2,"port area, placed by hand: verify on OpenStreetMap",high: Dublin Port
+IEGWY,Galway,53.27,-9.045,"port area, placed by hand: verify on OpenStreetMap",medium: Galway docks
+ILASH,Ashdod,31.82,34.64,"port area, placed by hand: verify on OpenStreetMap",high: Ashdod port
+ITSAL,Salerno,40.67,14.76,"port area, placed by hand: verify on OpenStreetMap",high: Porto di Salerno
+ITTRS,Trieste,45.645,13.76,"port area, placed by hand: verify on OpenStreetMap",high: Porto di Trieste
+JMKIN,Kingston,17.95,-76.82,"port area, placed by hand: verify on OpenStreetMap",medium: Kingston Container Terminal
+LTKLJ,Klaipeda,55.71,21.12,"port area, placed by hand: verify on OpenStreetMap",medium: Klaipeda seaport
+LVRIX,Riga,56.99,24.09,"port area, placed by hand: verify on OpenStreetMap",medium: Freeport of Riga
+MAAGA,Agadir,30.42,-9.62,"port area, placed by hand: verify on OpenStreetMap",medium: Port d'Agadir
+MAPTM,Tanger Med,35.89,-5.5,"port area, placed by hand: verify on OpenStreetMap",high: Tanger Med port complex
+PABLB,Balboa,8.95,-79.565,"port area, placed by hand: verify on OpenStreetMap","high: Balboa, Pacific entrance of the Canal"
+PAMIT,Manzanillo,9.36,-79.88,"port area, placed by hand: verify on OpenStreetMap","high: Manzanillo International Terminal, Colon"
+PEMRI,Matarani,-17.0,-72.11,"port area, placed by hand: verify on OpenStreetMap",medium: Terminal Portuario de Matarani
+PEPAI,Paita,-5.09,-81.11,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto de Paita
+PLGDN,Gdansk,54.398,18.67,"port area, placed by hand: verify on OpenStreetMap",medium: Gdansk deep-water container terminal; Port Polnocny is nearby
+SEHEL,Helsingborg,56.045,12.69,"port area, placed by hand: verify on OpenStreetMap",high: Port of Helsingborg
+TRALI,Aliaga,38.8,26.96,"port area, placed by hand: verify on OpenStreetMap",medium: Aliaga port area
+USBOS,Boston,42.34,-71.03,"port area, placed by hand: verify on OpenStreetMap",high: Conley container terminal
+USCHS,Charleston,32.78,-79.92,"port area, placed by hand: verify on OpenStreetMap",medium: Union Pier area; Wando Welch terminal is about 5 km north-east
+USGPT,Gulfport,30.36,-89.09,"port area, placed by hand: verify on OpenStreetMap",medium: Port of Gulfport
+USJAX,Jacksonville,30.39,-81.52,"port area, placed by hand: verify on OpenStreetMap",medium: Blount Island Marine Terminal
+USMIA,Miami,25.778,-80.17,"port area, placed by hand: verify on OpenStreetMap",high: PortMiami
+USMOB,Mobile,30.69,-88.04,"port area, placed by hand: verify on OpenStreetMap","medium: Port of Mobile, Alabama"
+USMSY,New Orleans,29.94,-90.05,"port area, placed by hand: verify on OpenStreetMap",medium: Industrial Canal area; the river wharves run upstream
+USOAK,Oakland,37.8,-122.32,"port area, placed by hand: verify on OpenStreetMap",high: Port of Oakland
+USORF,Norfolk,36.93,-76.33,"port area, placed by hand: verify on OpenStreetMap",high: Norfolk International Terminals
+USPDX,Portland,45.62,-122.76,"port area, placed by hand: verify on OpenStreetMap","medium: Terminal 6, Portland Oregon"
+USPHL,Philadelphia,39.91,-75.14,"port area, placed by hand: verify on OpenStreetMap",medium: Packer Avenue marine terminal
+USSAV,Savannah,32.126,-81.14,"port area, placed by hand: verify on OpenStreetMap",high: Garden City Terminal
+USSEA,Seattle,47.58,-122.35,"port area, placed by hand: verify on OpenStreetMap",high: Harbor Island terminals
+USSFO,San Francisco,37.81,-122.37,"port area, placed by hand: verify on OpenStreetMap",medium: Embarcadero piers
+USTIW,Tacoma,47.27,-122.41,"port area, placed by hand: verify on OpenStreetMap",high: Commencement Bay terminals
+UYMVD,Montevideo,-34.905,-56.21,"port area, placed by hand: verify on OpenStreetMap",high: Puerto de Montevideo
+VELAG,La Guaira,10.6,-66.94,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto de La Guaira
+VEPBL,Puerto Cabello,10.48,-68.01,"port area, placed by hand: verify on OpenStreetMap",medium: Puerto Cabello

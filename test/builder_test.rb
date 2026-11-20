@@ -244,6 +244,106 @@ class BuilderTest < Minitest::Test
     assert_equal ["`AUBNE` now has a UN/LOCODE subdivision (AU-QLD, not AU-NSW): its override can go."], report
   end
 
+  def coordinate_file(body)
+    path = File.join(Dir.mktmpdir, "coordinates.csv")
+    File.write(path, "locode,name,lat,lng,source,note\n#{body}")
+    path
+  end
+
+  def test_a_coordinate_override_fills_a_missing_position
+    builder = Seaports::Builder.new(SOURCE, coordinate_overrides: { "ESVLC" => [39.445, -0.318] })
+    _, _, lat, lng = builder.rows.find { |row| row.first == "ESVLC" }
+
+    assert_equal [39.445, -0.318], [lat, lng]
+    assert_equal 3, builder.located_count
+    assert_empty builder.override_report
+  end
+
+  # UN/LOCODE is the source of record: a position it publishes is not replaced,
+  # and the override is pointed out for removal instead.
+  def test_a_coordinate_override_never_replaces_a_unlocode_position
+    builder = Seaports::Builder.new(SOURCE, coordinate_overrides: { "AUBNE" => [-27.4, 153.1] })
+    _, _, lat, lng = builder.rows.find { |row| row.first == "AUBNE" }
+
+    assert_in_delta(-27.4667, lat, 0.0001)
+    assert_in_delta 153.0167, lng, 0.0001
+    assert_equal ["`AUBNE` now has UN/LOCODE coordinates (-27.4667, 153.0167, not -27.4, 153.1): its coordinate override can go."], builder.override_report
+  end
+
+  def test_reports_a_coordinate_override_for_a_port_that_left_unlocode
+    report = Seaports::Builder.new(SOURCE, coordinate_overrides: { "ZZGNE" => [1.0, 2.0] }).override_report
+
+    assert_equal ["`ZZGNE` has a coordinate override but is no longer a UN/LOCODE sea port: remove its row."], report
+  end
+
+  # A reviewed position can place a port on the boundaries map.
+  def test_an_overridden_position_places_the_port_on_the_boundaries_map
+    boundaries = FakeBoundaries.new(%w[ES-V])
+    builder = Seaports::Builder.new(SOURCE.sub(",ES,VLC,Valencia,Valencia,V,", ",ES,VLC,Valencia,Valencia,,"),
+      subdivisions: iso, boundaries:, coordinate_overrides: { "ESVLC" => [39.445, -0.318] })
+
+    assert_equal ["ES-V", "ES-VC", "boundaries"], subdivisions_by_locode(builder)["ESVLC"]
+    assert_equal [["ES", 39.445, -0.318]], boundaries.asked
+  end
+
+  def test_reads_a_coordinate_overrides_file
+    path = coordinate_file("esvlc,Valencia,39.44504,-0.3180,port area,\n")
+
+    assert_equal({ "ESVLC" => [39.445, -0.318] }, Seaports::Builder.coordinate_overrides(path))
+  end
+
+  def test_refuses_a_coordinate_row_with_no_source
+    error = assert_raises(ArgumentError) { Seaports::Builder.coordinate_overrides(coordinate_file("ESVLC,Valencia,39.445,-0.318,,\n")) }
+    assert_match(/:2: ESVLC has no source/, error.message)
+  end
+
+  def test_refuses_a_coordinate_row_off_the_globe
+    ["91,0", "10,181", "x,1", ",1"].each do |pair|
+      error = assert_raises(ArgumentError, pair) { Seaports::Builder.coordinate_overrides(coordinate_file("ESVLC,Valencia,#{pair},port area,\n")) }
+      assert_match(/:2: ESVLC has no valid lat and lng/, error.message)
+    end
+  end
+
+  def test_refuses_a_coordinate_port_listed_twice
+    rows = "ESVLC,Valencia,39.4,-0.3,a,\nESVLC,Valencia,39.5,-0.3,b,\n"
+    error = assert_raises(ArgumentError) { Seaports::Builder.coordinate_overrides(coordinate_file(rows)) }
+    assert_match(/:3: ESVLC is listed twice/, error.message)
+  end
+
+  def test_refuses_a_coordinate_row_that_is_not_a_locode
+    assert_raises(ArgumentError) { Seaports::Builder.coordinate_overrides(coordinate_file("Valencia,Valencia,39.4,-0.3,a,\n")) }
+  end
+
+  def test_applies_overrides_to_a_table_without_a_download
+    path = File.join(Dir.mktmpdir, "ports.csv")
+    Seaports::Builder.new(SOURCE).write(path)
+
+    filled = Seaports::Builder.apply_coordinates(path, { "ESVLC" => [39.445, -0.318], "AUBNE" => [1.0, 2.0] })
+    table = CSV.read(path, headers: true).to_h { |row| [row["locode"], row] }
+
+    assert_equal ["ESVLC"], filled
+    assert_equal %w[39.445 -0.318], table["ESVLC"].values_at("lat", "lng")
+    assert_equal "-27.4667", table["AUBNE"]["lat"], "a UN/LOCODE position is left alone"
+    assert_equal Seaports::Builder::HEADERS, CSV.readlines(path).first
+  end
+
+  # The shipped table must carry every reviewed position that has a gap to
+  # fill, so a row added without running seaports:apply_coordinates fails here.
+  def test_every_shipped_coordinate_override_is_in_the_shipped_table
+    overrides = Seaports::Builder.coordinate_overrides
+    table = CSV.read(Seaports::TABLE_PATH, headers: true).to_h { |row| [row["locode"], row] }
+
+    assert_operator overrides.size, :>=, 4
+    overrides.each do |locode, (lat, lng)|
+      assert_equal [lat, lng], table.fetch(locode).values_at("lat", "lng").map(&:to_f), locode
+    end
+    %w[ESVLC ESALG ESBCN GIGIB].each { |locode| assert_includes overrides, locode }
+  end
+
+  def test_the_lookup_answers_with_an_overridden_position
+    assert_equal({ "lat" => 39.445, "lng" => -0.318 }, Seaports.coordinates("ESVLC"))
+  end
+
   # The shipped table must be exactly what the builder produces from the
   # release it claims, or the file has been edited by hand and the next
   # refresh will quietly undo it.

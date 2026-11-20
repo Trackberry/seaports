@@ -7,6 +7,14 @@ Every entry below the first is a UN/LOCODE refresh, opened as a pull request by
 
 Requires Ruby 3.3 or newer. Ruby 3.2 reached end of life on 2026-03-31 and is no longer tested.
 
+## 1.4.0 — 2026-11-20
+
+Fills in positions for ports UN/LOCODE publishes none for. A reviewed list, `data/sources/coordinate_overrides.csv`, places 66 ports by their harbour or terminals, among them Valencia, Algeciras, Barcelona, Gibraltar, Felixstowe, Southampton, Dublin, Savannah and Vancouver, so `Seaports.coordinates` answers for them instead of `nil`. A position only fills a gap: one UN/LOCODE publishes always wins, and the refresh reports an override that UN/LOCODE has since made redundant.
+
+The rows are placed by hand to about a kilometre; each says how sure it is. Adds `rake seaports:apply_coordinates` to write new rows into the shipped table without a download.
+
+Same ports and names as 1.3.1.
+
 ## 1.3.1 — 2026-11-08
 
 `Seaports.data_release` no longer claims an edition the table did not come from. The mirror stopped publishing a release number, so refreshes kept the old "2024-2" label on newer data. It is now nil when the source names no edition, and a refresh clears it rather than leaving the previous value.

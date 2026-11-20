@@ -31,6 +31,12 @@ module Seaports
     # is.
     OVERRIDES_PATH = File.expand_path("../../data/sources/subdivision_overrides.csv", __dir__)
 
+    # Reviewed positions for ports UN/LOCODE publishes none for: about a third
+    # of the table, Valencia, Algeciras and Barcelona among them. Same rules as
+    # the subdivision overrides, with one more: a position only ever fills a
+    # gap. See Builder.coordinate_overrides.
+    COORDINATE_OVERRIDES_PATH = File.expand_path("../../data/sources/coordinate_overrides.csv", __dir__)
+
     # The published list, straight off the network — or off disk, if what was
     # handed over is a path. Both, because a rebuild from an already-downloaded
     # release is how this is debugged, and it should not need a different
@@ -84,6 +90,53 @@ module Seaports
       end
     end
 
+    # Reads COORDINATE_OVERRIDES_PATH (or +path+) into { locode => [lat, lng] }.
+    #
+    # A position is typed by a person, so a malformed locode, a coordinate that
+    # is not a number on the globe, a missing source or a port listed twice
+    # stops the build with the line to fix. The source is required because a
+    # position nobody can check is worse than none: a map would draw it.
+    # Rounded to four places, as the UN/LOCODE positions are.
+    def self.coordinate_overrides(path = COORDINATE_OVERRIDES_PATH)
+      return {} unless File.exist?(path)
+
+      CSV.foreach(path, headers: true).with_index(2).each_with_object({}) do |(row, line), overrides|
+        locode = row["locode"].to_s.strip.upcase
+        raise ArgumentError, "#{path}:#{line}: #{locode.inspect} is not a locode" unless locode.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/)
+        raise ArgumentError, "#{path}:#{line}: #{locode} has no source" if row["source"].to_s.strip.empty?
+        raise ArgumentError, "#{path}:#{line}: #{locode} is listed twice" if overrides.key?(locode)
+
+        lat = Float(row["lat"].to_s.strip, exception: false)
+        lng = Float(row["lng"].to_s.strip, exception: false)
+        unless lat && lng && lat.between?(-90, 90) && lng.between?(-180, 180)
+          raise ArgumentError, "#{path}:#{line}: #{locode} has no valid lat and lng"
+        end
+
+        overrides[locode] = [lat.round(4), lng.round(4)]
+      end
+    end
+
+    # Writes +overrides+ ({ locode => [lat, lng] }) into the shipped table at
+    # +path+ for the ports that have no position there, without a download:
+    # how a reviewed row reaches the table between refreshes. A refresh gets
+    # the same result by itself, and also places the port on the boundaries
+    # map, which this does not. Returns the locodes it filled.
+    def self.apply_coordinates(path = Seaports::TABLE_PATH, overrides = coordinate_overrides)
+      filled = []
+      rows = CSV.read(path, headers: true).map do |row|
+        if row["lat"].to_s.strip.empty? && (point = overrides[row["locode"]])
+          row["lat"], row["lng"] = point
+          filled << row["locode"]
+        end
+        row.fields
+      end
+      CSV.open(path, "w") do |csv|
+        csv << HEADERS
+        rows.each { |row| csv << row }
+      end
+      filled
+    end
+
     # Where a port's subdivision comes from, best first:
     #
     # - +overrides+, { locode => code }, reviewed by a person;
@@ -95,12 +148,21 @@ module Seaports
     # Seaports::Subdivisions), which also gives the principal subdivision
     # above it. Without that list the subdivision columns stay empty, which
     # keeps a test about something else from needing it.
-    def initialize(source, subdivisions: nil, boundaries: nil, overrides: {})
+    #
+    # +coordinate_overrides+, { locode => [lat, lng] }, fills ports UN/LOCODE
+    # has no position for, and never replaces one it has: a conflict is
+    # reported, not applied. That keeps the source of record in charge, and
+    # makes an override that has outlived its reason harmless rather than
+    # masking. Filled before the subdivision is looked up, so the boundaries
+    # map can place a port on its reviewed position.
+    def initialize(source, subdivisions: nil, boundaries: nil, overrides: {}, coordinate_overrides: {})
       @source = source
       @subdivisions = subdivisions
       @boundaries = boundaries
       @overrides = overrides
+      @coordinate_overrides = coordinate_overrides
       @superseded = []
+      @coordinates_superseded = []
     end
 
     # [locode, name, lat, lng, subdivision, principal_subdivision,
@@ -138,7 +200,9 @@ module Seaports
     # has outlived its reason keeps masking better data until someone looks:
     #
     # - its port is no longer in UN/LOCODE's sea-port list;
-    # - UN/LOCODE now gives the port a subdivision of its own.
+    # - UN/LOCODE now gives the port a subdivision of its own;
+    # - UN/LOCODE now gives the port a position of its own, which is the one
+    #   shipped: the coordinate override is not applied and can go.
     def override_report
       rows # the report is a by-product of building them
       stale = (@overrides.keys - rows.map(&:first)).sort
@@ -147,7 +211,13 @@ module Seaports
         same = own == override ? "the same code" : "#{own}, not #{override}"
         "`#{locode}` now has a UN/LOCODE subdivision (#{same}): its override can go."
       end
-      stale + superseded
+      stale_points = (@coordinate_overrides.keys - rows.map(&:first)).sort.map do |locode|
+        "`#{locode}` has a coordinate override but is no longer a UN/LOCODE sea port: remove its row."
+      end
+      superseded_points = @coordinates_superseded.uniq.sort.map do |locode, own, override|
+        "`#{locode}` now has UN/LOCODE coordinates (#{own.join(', ')}, not #{override.join(', ')}): its coordinate override can go."
+      end
+      stale + superseded + stale_points + superseded_points
     end
 
     private
@@ -168,12 +238,26 @@ module Seaports
 
     def port_row(row)
       locode = "#{row['Country']}#{row['Location']}".upcase
-      lat, lng = decimal_degrees(row["Coordinates"])
+      lat, lng = coordinates_for(locode, row)
       subdivision, source = subdivision_for(locode, row, lat, lng)
       path = @subdivisions&.path(subdivision) || []
       # A code whose chain breaks has no trustworthy top, so it is not kept.
       subdivision = source = nil if path.empty?
       [locode, row["Name"].strip, lat, lng, subdivision, path.last, path.empty? ? nil : path.join(" "), source]
+    end
+
+    # UN/LOCODE's own position when it has one, else the reviewed override.
+    def coordinates_for(locode, row)
+      own = decimal_degrees(row["Coordinates"])
+      override = @coordinate_overrides[locode]
+      return own if override.nil?
+
+      if own.first.nil?
+        override
+      else
+        @coordinates_superseded << [locode, own, override]
+        own
+      end
     end
 
     # [code, source], or [nil, nil] when no source has a valid one.
