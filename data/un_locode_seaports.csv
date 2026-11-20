@@ -4908,7 +4908,7 @@ ESAS8,Cabueñes,43.5167,-5.6,ES-O,ES-AS,ES-O ES-AS,unlocode
 ESASL,Andosilla,42.3833,-1.95,ES-NA,ES-NC,ES-NA ES-NC,boundaries
 ESATO,El Astillero,43.4,-3.8167,ES-S,ES-CB,ES-S ES-CB,boundaries
 ESATQ,Ataquines,41.1833,-4.8,ES-VA,ES-CL,ES-VA ES-CL,boundaries
-ESAVS,Aviles,43.58,-5.93,ES-O,ES-AS,ES-O ES-AS,override
+ESAVS,Aviles,43.565,-5.92,ES-O,ES-AS,ES-O ES-AS,override
 ESAXO,A Baiuca,43.3,-8.5,ES-C,ES-GA,ES-C ES-GA,boundaries
 ESAYA,Ayamonte,,,ES-H,ES-AN,ES-H ES-AN,override
 ESAYR,Ayora,39.0667,-1.05,ES-V,ES-VC,ES-V ES-VC,boundaries
@@ -5215,7 +5215,7 @@ ESSCI,San Ciprian,,,ES-LU,ES-GA,ES-LU ES-GA,override
 ESSCR,San Carlos de la Rápita,40.6167,0.6,ES-T,ES-CT,ES-T ES-CT,unlocode
 ESSCT,Santa Cruz de Tenerife,28.47,-16.24,ES-TF,ES-CN,ES-TF ES-CN,override
 ESSDG,Sallent de Gallego,42.7667,-0.3333,ES-HU,ES-AR,ES-HU ES-AR,unlocode
-ESSDR,Santander,43.432,-3.79,ES-S,ES-CB,ES-S ES-CB,override
+ESSDR,Santander,43.44,-3.819,ES-S,ES-CB,ES-S ES-CB,override
 ESSEO,San Esteban de Pravia,,,ES-O,ES-AS,ES-O ES-AS,override
 ESSER,Serra,39.6833,-0.4333,ES-V,ES-VC,ES-V ES-VC,unlocode
 ESSEW,Seña,,,ES-S,ES-CB,ES-S ES-CB,unlocode
@@ -9627,7 +9627,7 @@ ITRRV,Sferracavallo,38.2,13.2333,IT-PA,IT-82,IT-PA IT-82,boundaries
 ITRSM,Monterosso al Mare,44.15,9.65,IT-SP,IT-42,IT-SP IT-42,unlocode
 ITRTS,Riva Trigoso,44.2667,9.4167,IT-GE,IT-42,IT-GE IT-42,boundaries
 ITRTT,Marotta,43.7667,13.1333,IT-PU,IT-57,IT-PU IT-57,boundaries
-ITSAL,Salerno,40.67,14.76,IT-SA,IT-72,IT-SA IT-72,override
+ITSAL,Salerno,40.6735,14.747,IT-SA,IT-72,IT-SA IT-72,override
 ITSAT,Sant' Antioco,39.0667,8.45,IT-88,IT-88,IT-88,boundaries
 ITSCK,Sciacca,37.5167,13.05,IT-AG,IT-82,IT-AG IT-82,boundaries
 ITSCO,Scoglitti,36.8833,14.4333,IT-RG,IT-82,IT-RG IT-82,unlocode
