@@ -90,8 +90,8 @@ module Seaports
     # has none, so every name is an addition.
     def renamed_alternates
       @renamed_alternates ||= common.filter_map do |locode|
-        was = @before[locode][:alternates].to_a
-        now = @after[locode][:alternates].to_a
+        was = @before[locode][:alternates].to_a.sort
+        now = @after[locode][:alternates].to_a.sort
         [locode, @after[locode][:name], now - was, was - now] if was != now
       end
     end

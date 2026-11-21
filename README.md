@@ -168,7 +168,7 @@ Seaports.alternate_names("BEANR")       # => ["Antwerp", "Anvers"]
 Seaports.alternate_names("NLRTM")       # => []
 ```
 
-Never the port's own `name`, and `[]` when there are none. 690 ports have at
+Never the port's own `name`, and `[]` when there are none. 662 ports have at
 least one. Sources, best first:
 
 1. **A reviewed list**, `data/sources/alternate_names.csv` (`locode`, `name`,
@@ -264,7 +264,10 @@ position.
 
 `Seaports::Port` gained `subdivision`, `principal_subdivision` and
 `subdivision_path` in 1.2.0, all optional, so a `Port` built from locode, name
-and coordinates as before still works.
+and coordinates as before still works. 1.6.0 added `alternate_names` the same
+way, optional and defaulting to a shared empty list. Because it is a new member,
+`Port#to_h`, `Port.members` and `deconstruct`/`deconstruct_keys` gain a key, and
+a `Port` serialised with `Marshal` by 1.5.0 will not load in 1.6.0.
 
 ### What is deliberately not in it
 

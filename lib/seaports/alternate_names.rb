@@ -83,14 +83,26 @@ module Seaports
     def self.resolve(ports)
       ports.group_by { |locode, _, _| locode[0, 2] }.each_value.with_object({}) do |country, resolved|
         mains = country.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |(locode, name, _), index|
-          [name, name.to_s.sub(PARENTHESIZED, "")].each { |spelling| index[key(spelling)] << locode }
+          main_spellings(name).each { |spelling| index[spelling] << locode }
         end
         kept = country.to_h do |locode, _, candidates|
-          [locode, candidates.reject { |candidate| mains[key(candidate)].any? { |other| other != locode } }]
+          [locode, candidates.reject { |candidate| mains.key?(key(candidate)) }]
         end
         shared = kept.values.flat_map { |names| names.map { |name| key(name) }.uniq }.tally.select { |_, n| n > 1 }.keys
         kept.each { |locode, names| resolved[locode] = names.reject { |name| shared.include?(key(name)) } }
       end
+    end
+
+    # Every comparable spelling of a port's own name, for the comparison in
+    # resolve: the whole, outside its parentheses, each part split on "/" and
+    # ",", and each of those without a trailing Pt, Port or Harbour/Harbor
+    # ("Jingtang Pt" is also "Jingtang", "Ibiza/Eivissa" is also "Eivissa").
+    # An alternate that is any of them names a port already.
+    def self.main_spellings(name)
+      wholes = [name.to_s, name.to_s.sub(PARENTHESIZED, "")]
+      parts = wholes.flat_map { |whole| [whole] + whole.split(%r{[/,]}) }
+      keys = parts.map { |part| key(part) }.reject(&:empty?)
+      (keys + keys.map { |each| each.sub(/ (?:pt|port|harbou?r)\z/, "") }).reject(&:empty?).uniq
     end
 
     # The table cell for +names+.

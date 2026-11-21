@@ -69,7 +69,7 @@ module Seaports
   # in the same country, and never one that several ports of a country share.
   NO_NAMES = [].freeze
 
-  Port =Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision, :subdivision_path, :alternate_names) do
+  Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision, :subdivision_path, :alternate_names) do
     def initialize(locode:, name:, coordinates:, subdivision: nil, principal_subdivision: nil, subdivision_path: [], alternate_names: NO_NAMES)
       super
     end

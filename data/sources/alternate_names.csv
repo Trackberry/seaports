@@ -10,3 +10,6 @@ INCCU,Calcutta,"Former name of Kolkata, which shippers still write; UN/LOCODE ha
 BDCGP,Chittagong,"Former name of Chattogram; World Port Index main port name Chittagong"
 ZAPLZ,Port Elizabeth,"Former name of Gqeberha; World Port Index main port name Port Elizabeth"
 MMRGN,Rangoon,"Former name of Yangon; World Port Index main port name Rangoon"
+INCCJ,Calicut,"Former name of Kozhikode, which shippers still write; UN/LOCODE has it as (ex Calicut), World Port Index as Calicut (Kozhikode)"
+INTRV,Trivandrum,"Former name of Thiruvananthapuram, which shippers still write; UN/LOCODE has it as (ex Trivandrum), World Port Index main port name Trivandrum"
+RULED,Leningrad,"Former name of Saint Petersburg; UN/LOCODE has it as (ex Leningrad), and the World Port Index lists it on a second row for the code, which the import skips"
