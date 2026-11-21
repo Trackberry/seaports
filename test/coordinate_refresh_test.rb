@@ -28,7 +28,8 @@ class CoordinateRefreshTest < Minitest::Test
     @dir = Dir.mktmpdir
     {
       csv_path: File.join(@dir, "wpi", "UpdatedPub150.csv"), provenance_path: File.join(@dir, "wpi", "provenance.json"),
-      coordinates_path: File.join(@dir, "coordinates_wpi.csv"), table: table, held: [], today: Date.new(2026, 11, 21)
+      coordinates_path: File.join(@dir, "coordinates_wpi.csv"), alternate_names_path: File.join(@dir, "alternate_names_wpi.csv"),
+      table: table, held: [], today: Date.new(2026, 11, 21)
     }
   end
 
@@ -47,6 +48,30 @@ class CoordinateRefreshTest < Minitest::Test
     assert_equal "2026-11-21", JSON.parse(provenance)["retrieved_on"]
     assert_includes coordinates, "IEORK,Cork,51.85,-8.2667,\"NGA World Port Index (Pub. 150), snapshot 2026-09-29\""
     assert_match(/101 ports placed \(101 added/, outcome.line)
+  end
+
+  # A table port with two names, a port the table lacks, and a code on two
+  # index rows: only the first is written, and the others are counted.
+  def test_the_alternate_names_are_regenerated_with_the_coordinates_under_the_same_guards
+    options = sandbox
+    options[:table] = table.merge("BEANR" => ["Antwerpen", nil, nil, nil], "SEGOT" => ["Göteborg", nil, nil, nil])
+    text = csv.sub(/\z/, <<~ROWS)
+      1001,1001,Region,Antwerpen,Antwerp; Anvers; antwerpen,BE ANR,Belgium,51.2,4.4
+      1002,1002,Region,Goteborg, ,SE GOT,Sweden,57.7,11.9
+      1003,1003,Region,Nowhere,Nowhereland,XX NWR,Nowhere,1.0,1.0
+      1004,1004,Region,Port Dup,Dup A,ZZ001,Zedland,1.0,1.0
+    ROWS
+    outcome = Refresh.refresh_wpi(download: download(text), **options)
+
+    assert_equal "changed", outcome.status
+    rows = CSV.read(options[:alternate_names_path], headers: true).map { |row| row.fields(0, 1) }
+    # The index's own spelling of the port stays; the build drops what equals the table's name.
+    assert_equal [%w[BEANR Antwerp], %w[BEANR antwerpen], %w[BEANR Anvers]], rows
+    assert_includes outcome.line, "Alternate names: 1 ports, skipped: 1 not in table, 1 duplicate"
+
+    before = File.read(options[:alternate_names_path])
+    assert_equal "unchanged", Refresh.refresh_wpi(download: download(text), **options).status
+    assert_equal before, File.read(options[:alternate_names_path])
   end
 
   def test_an_unchanged_sha_is_a_no_op

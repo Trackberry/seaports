@@ -44,7 +44,8 @@ namespace :seaports do
       boundaries = coordinate_boundaries(args[:boundaries])
       builder = Seaports::Builder.new(source, subdivisions:, boundaries:, overrides: Seaports::Builder.overrides,
         coordinate_overrides: Seaports::Builder.coordinate_overrides,
-        fallback_coordinates: Seaports::Builder.fallback_coordinates)
+        fallback_coordinates: Seaports::Builder.fallback_coordinates,
+        alternate_names: Seaports::Builder.alternate_name_layers)
       builder.write(Seaports::TABLE_PATH)
     rescue StandardError => e
       FileUtils.cp(before, Seaports::TABLE_PATH)
@@ -93,14 +94,25 @@ namespace :seaports do
     puts "Changed #{changed.size} ports: #{changed.first(40).join(', ')}#{changed.size > 40 ? ', ...' : ''}"
   end
 
+  # Recurring: run it after adding rows to data/sources/alternate_names.csv when
+  # a refresh is not due. Offline; the next refresh rebuilds the same names.
+  desc "Write the alternate-name files into the shipped table, without a download"
+  task :apply_alternate_names do
+    require_relative "lib/seaports/builder"
+
+    changed = Seaports::Builder.apply_alternate_names
+    puts "Changed #{changed.size} ports: #{changed.first(40).join(', ')}#{changed.size > 40 ? ', ...' : ''}"
+  end
+
   # Recurring: the weekly refresh runs it before seaports:refresh, and a person
   # can run it by hand with the path of a World Port Index CSV already
   # downloaded (and its snapshot date) when NGA and the Internet Archive are
   # both out of reach.
   #
   # Looks for a newer World Port Index (NGA, else the Internet Archive),
-  # validates it, and moves the vendored copy, its provenance note and
-  # data/sources/coordinates_wpi.csv into place together, or none of them.
+  # validates it, and moves the vendored copy, its provenance note,
+  # data/sources/coordinates_wpi.csv and data/sources/alternate_names_wpi.csv
+  # into place together, or none of them.
   # Does not touch the table: seaports:refresh merges the file next.
   desc "Fetch the newest NGA World Port Index and regenerate its coordinates"
   task :refresh_wpi, [:file, :snapshot] do |_task, args|

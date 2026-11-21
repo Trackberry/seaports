@@ -61,8 +61,13 @@ module Seaports
   #
   # The three were added in 1.2.0 with defaults, so a Port built from
   # locode, name and coordinates alone, as before, still works.
-  Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision, :subdivision_path) do
-    def initialize(locode:, name:, coordinates:, subdivision: nil, principal_subdivision: nil, subdivision_path: [])
+  #
+  # +alternate_names+ (added in 1.6.0) are the other names the port is called
+  # by, in English or another language: ["Antwerp", "Anvers"] for BEANR, whose
+  # +name+ is "Antwerpen". Never the +name+ itself; [] when there are none.
+  # Their sources are in the README.
+  Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision, :subdivision_path, :alternate_names) do
+    def initialize(locode:, name:, coordinates:, subdivision: nil, principal_subdivision: nil, subdivision_path: [], alternate_names: [])
       super
     end
   end
@@ -104,6 +109,12 @@ module Seaports
     # matches on any level: Trackberry::Holidays.holiday?(date, path).
     def subdivision_path(locode)
       find(locode)&.subdivision_path || []
+    end
+
+    # ["Antwerp", "Anvers"] for BEANR, [] for a port with no other name or a
+    # code the table does not hold. See Port.
+    def alternate_names(locode)
+      find(locode)&.alternate_names || []
     end
 
     # Every port in the table, ordered by locode. Materialised on each call
@@ -156,7 +167,8 @@ module Seaports
 
         ports[locode] = Port.new(locode: locode, name: row["name"], coordinates: point(row),
           subdivision: presence(row["subdivision"]), principal_subdivision: presence(row["principal_subdivision"]),
-          subdivision_path: row["subdivision_path"].to_s.split.freeze)
+          subdivision_path: row["subdivision_path"].to_s.split.freeze,
+          alternate_names: row["alternate_names"].to_s.split("|").map(&:strip).reject(&:empty?).freeze)
       end
     end
 

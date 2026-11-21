@@ -1,0 +1,12 @@
+locode,name,source
+ITGOA,Genoa,"English name of Genova; the World Port Index lists Genova with no alternate"
+FRMRS,Marseilles,"English spelling of Marseille; the World Port Index lists no alternate"
+FRDKK,Dunkirk,"English name of Dunkerque; the World Port Index lists no alternate"
+ESLCG,Corunna,"English name of La Coruña (A Coruña); the World Port Index lists no alternate"
+PTOPO,Oporto,"English name of Porto, the city; the World Port Index has no row for PTOPO"
+INBOM,Bombay,"Former name of Mumbai, which shippers still write; UN/LOCODE has it as (ex Bombay), World Port Index as Mumbai (Bombay)"
+INMAA,Madras,"Former name of Chennai, which shippers still write; UN/LOCODE has it as (ex Madras), World Port Index as Chennai (Madras)"
+INCCU,Calcutta,"Former name of Kolkata, which shippers still write; UN/LOCODE has it as (ex Calcutta), World Port Index main name Calcutta"
+BDCGP,Chittagong,"Former name of Chattogram; World Port Index main port name Chittagong"
+ZAPLZ,Port Elizabeth,"Former name of Gqeberha; World Port Index main port name Port Elizabeth"
+MMRGN,Rangoon,"Former name of Yangon; World Port Index main port name Rangoon"

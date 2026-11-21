@@ -10,6 +10,7 @@ require "timeout"
 require "uri"
 require "zlib"
 
+require_relative "alternate_names"
 require_relative "coordinate_sources"
 require_relative "http"
 
@@ -150,6 +151,15 @@ module Seaports
       rows(text).map do |row|
         CoordinateSources::Candidate.new(locode: locode_of(row), name: row["Main Port Name"], lat: row["Latitude"],
           lng: row["Longitude"], source:)
+      end
+    end
+
+    # [locode, "Antwerp; Anvers"] per row with a valid-looking locode, for
+    # AlternateNames.select. A row without a locode cannot be placed.
+    def self.alternate_candidates(text)
+      rows(text).filter_map do |row|
+        locode = locode_of(row)
+        [locode, row["Alternate Port Name"]] if locode.match?(AlternateNames::LOCODE)
       end
     end
 

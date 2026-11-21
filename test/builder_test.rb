@@ -84,7 +84,7 @@ class BuilderTest < Minitest::Test
     path = File.join(Dir.mktmpdir, "ports.csv")
     Seaports::Builder.new(SOURCE).write(path)
 
-    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source coordinate_source], CSV.readlines(path).first
+    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source coordinate_source alternate_names], CSV.readlines(path).first
     assert_equal @locodes, CSV.readlines(path).drop(1).map(&:first)
   end
 
@@ -490,9 +490,59 @@ class BuilderTest < Minitest::Test
   def test_the_builder_records_the_source_of_each_position
     source = SOURCE.sub(/\n\z/, "\n,IE,ORK,Cork,Cork,,AI,1-------,0001,,,\n")
     builder = Seaports::Builder.new(source, coordinate_overrides: { "ESVLC" => [7.0, 7.0] }, fallback_coordinates: [{ "IEORK" => [1.0, 1.0] }, {}])
-    sources = builder.rows.to_h { |row| [row.first, row.last] }
+    sources = builder.rows.to_h { |row| [row.first, row[8]] }
 
     assert_equal({ "AUBNE" => "unlocode", "ESVLC" => "override", "IEORK" => "wpi", "NZTRG" => "unlocode" }, sources.compact)
+  end
+
+  def alternates(builder)
+    builder.rows.to_h { |row| [row.first, row.last] }
+  end
+
+  def test_the_builder_writes_alternate_names_best_source_first_without_the_ports_own_name
+    layers = [{ "ESVLC" => ["Valence", "Valencia"] }, { "ESVLC" => ["Valenz", "valence", "València"], "AUBNE" => ["Brisbane", "Brizzy"] }]
+    builder = Seaports::Builder.new(SOURCE, alternate_names: layers)
+
+    assert_equal "Valence|Valenz", alternates(builder)["ESVLC"], "deduplicated, the main name dropped even with an accent"
+    assert_equal "Brizzy", alternates(builder)["AUBNE"]
+    assert_nil alternates(builder)["NZTRG"]
+  end
+
+  def test_the_builder_reads_a_parenthesized_english_name_only_for_a_port_with_a_position
+    source = SOURCE.sub(/\n\z/, "\n,EG,ALY,El Iskandariya (Alexandria),El Iskandariya (Alexandria),,AI,1-------,0001,,3112N 02954E,\n" \
+      ",RU,ARM,Arman (Magadan),Arman (Magadan),,AI,1-------,0001,,,\n" \
+      ",IN,BOM,Mumbai (ex Bombay),Mumbai (ex Bombay),,AI,1-------,0001,,1857N 07250E,\n")
+    names = alternates(Seaports::Builder.new(source))
+
+    assert_equal "Alexandria", names["EGALY"]
+    assert_nil names["RUARM"], "a parenthesis can name a place the port is near"
+    assert_nil names["INBOM"], "a former name is not read from a parenthesis"
+  end
+
+  def test_applies_alternate_names_without_a_download_and_reports_what_changed
+    path = File.join(Dir.mktmpdir, "ports.csv")
+    Seaports::Builder.new(SOURCE).write(path)
+
+    assert_equal ["ESVLC"], Seaports::Builder.apply_alternate_names(path, [{ "ESVLC" => ["Valence"] }])
+    table = CSV.read(path, headers: true).to_h { |row| [row["locode"], row] }
+    assert_equal "Valence", table["ESVLC"]["alternate_names"]
+    assert_equal "-27.4667", table["AUBNE"]["lat"], "the other columns are kept"
+    assert_equal [], Seaports::Builder.apply_alternate_names(path, [{ "ESVLC" => ["Valence"] }])
+    assert_equal ["ESVLC"], Seaports::Builder.apply_alternate_names(path, [{}]), "a name that left its file leaves the table"
+  end
+
+  def test_the_shipped_table_holds_what_the_alternate_name_files_say
+    layers = Seaports::Builder.alternate_name_layers
+    table = CSV.read(Seaports::TABLE_PATH, headers: true).to_h { |row| [row["locode"], row] }
+
+    assert_operator layers.last.size, :>, 500
+    layers.each do |names_by_locode|
+      names_by_locode.each_key do |locode|
+        row = table.fetch(locode) { flunk "#{locode} is not in the shipped table" }
+        expected = Seaports::AlternateNames.for(locode:, name: row["name"], located: !row["lat"].to_s.empty?, layers:)
+        assert_equal expected.join("|"), row["alternate_names"].to_s, locode
+      end
+    end
   end
 
   def test_every_generated_position_file_is_valid_and_in_the_shipped_table

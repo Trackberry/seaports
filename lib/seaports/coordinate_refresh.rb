@@ -5,6 +5,9 @@ require "fileutils"
 require "json"
 require "tmpdir"
 
+require "set"
+
+require_relative "alternate_names"
 require_relative "builder"
 require_relative "coordinate_sources"
 require_relative "wikidata"
@@ -111,8 +114,8 @@ module Seaports
 
     def self.wpi(download, boundaries: nil, table: CoordinateSources.table, held: Builder.coordinate_overrides.keys,
       csv_path: Wpi::CSV_PATH, provenance_path: Wpi::PROVENANCE_PATH, coordinates_path: Builder::WPI_COORDINATES_PATH,
-      today: Date.today)
-      vendored = File.exist?(csv_path) ? File.read(csv_path) : nil
+      alternate_names_path: Builder::WPI_ALTERNATE_NAMES_PATH, today: Date.today)
+      vendored =File.exist?(csv_path) ? File.read(csv_path) : nil
       Wpi.validate!(download.text, vendored:)
 
       # An older copy than the one vendored (an archive snapshot, after NGA
@@ -132,21 +135,33 @@ module Seaports
       change = CoordinateSources.change(CoordinateSources.points(coordinates_path), result.rows.to_h { |row| [row[0], row.values_at(2, 3)] })
       guard!("World Port Index", change, maximum_lost: MAXIMUM_LOST, reasons: result.reasons)
 
+      # The alternate names come from the same file under the same checks: the
+      # port must be in the table, and a locode on several index rows is
+      # skipped. A names file is not a position, so it has no move or loss
+      # guard; the table diff and the pull request show what changed.
+      alternate_rows, alternate_counts = AlternateNames.select(Wpi.alternate_candidates(text), ports: table.keys.to_set,
+        source: Wpi.source_label(provenance.fetch("snapshot")))
+
       Dir.mktmpdir("seaports-wpi") do |stage|
         staged = { csv: File.join(stage, "UpdatedPub150.csv"), provenance: File.join(stage, "provenance.json"),
-                   coordinates: File.join(stage, "coordinates_wpi.csv") }
+                   coordinates: File.join(stage, "coordinates_wpi.csv"), alternate_names: File.join(stage, "alternate_names_wpi.csv") }
         File.write(staged[:csv], text)
         File.write(staged[:provenance], "#{JSON.pretty_generate(provenance)}\n")
         CoordinateSources.write(staged[:coordinates], result.rows)
+        AlternateNames.write(staged[:alternate_names], alternate_rows)
 
         moves = {}
         moves[staged[:csv]] = csv_path if replaced
         moves[staged[:provenance]] = provenance_path if replaced
         coordinates_changed = !File.exist?(coordinates_path) || File.read(coordinates_path) != File.read(staged[:coordinates])
         moves[staged[:coordinates]] = coordinates_path if coordinates_changed
+        names_changed = !File.exist?(alternate_names_path) || File.read(alternate_names_path) != File.read(staged[:alternate_names])
+        moves[staged[:alternate_names]] = alternate_names_path if names_changed
         install(stage, moves) unless moves.empty?
 
         line = CoordinateSources.summary("World Port Index (snapshot #{provenance['snapshot']})", change, result.rows.size, result.counts)
+        skipped = alternate_counts.except(:ports).map { |reason, n| "#{n} #{reason.to_s.tr('_', ' ')}" }
+        line += " Alternate names: #{alternate_counts.fetch(:ports, 0)} ports, skipped: #{skipped.empty? ? 'none' : skipped.join(', ')}."
         line += " The vendored index was replaced (#{download.via}, #{download.url})." if replaced
         Outcome.new(moves.empty? ? "unchanged" : "changed", line, name_report(result.mismatches))
       end
