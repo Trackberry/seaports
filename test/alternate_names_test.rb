@@ -101,7 +101,7 @@ class AlternateNamesTest < Minitest::Test
   def test_the_rejected_file_is_valid_and_its_names_are_gone
     rejected = Seaports::Builder.rejected_alternate_names
 
-    assert_equal 16, rejected.values.sum(&:size)
+    assert_equal 26, rejected.values.sum(&:size)
     rejected.each do |locode, names|
       names.each { |name| refute_includes Seaports.alternate_names(locode).map { |n| Names.key(n) }, Names.key(name), "#{locode} #{name}" }
     end

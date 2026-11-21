@@ -5,7 +5,7 @@ pull request, or by hand for a code change; a person merges both.
 
 ## 1.6.0 — 2026-11-21
 
-Ports now carry their other names. `Seaports.find("BEANR").alternate_names` is `["Antwerp", "Anvers"]`, where `name` is UN/LOCODE's `Antwerpen`; `Seaports.alternate_names(locode)` is the shortcut, and `[]` answers for a port with none. 698 of 17,567 ports have at least one.
+Ports now carry their other names. `Seaports.find("BEANR").alternate_names` is `["Antwerp", "Anvers"]`, where `name` is UN/LOCODE's `Antwerpen`; `Seaports.alternate_names(locode)` is the shortcut, and `[]` answers for a port with none. 690 of 17,567 ports have at least one.
 
 The names come from three places, best first: a reviewed list, `data/sources/alternate_names.csv` (Genoa, Dunkirk, Bombay, Rangoon and 7 more the other sources lack); the [NGA World Port Index](https://msi.nga.mil/Publications/WPI)'s "Alternate Port Name" column, split on `;` and `,` (public domain, credited as NGA asks), skipping a locode that is not in the table or is on more than one index row, and filtering vessel, terminal, base, company and country names and fragments; and the name in the parentheses of UN/LOCODE's name (`El Iskandariya (Alexandria)`), for ports with a position, when it is one plain name. Spellings that differ only in case, accents or punctuation count as one, and a name equal to the port's own is dropped.
 
