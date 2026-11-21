@@ -5206,7 +5206,7 @@ ESS8C,Santervas De Campos,42.2167,-5.1,ES-VA,ES-CL,ES-VA ES-CL,unlocode,unlocode
 ESS9S,Salinas de Oro,42.7833,-1.8833,ES-NA,ES-NC,ES-NA ES-NC,unlocode,unlocode,
 ESSAA,San Antonio,,,,,,,,
 ESSAD,Sada,,,ES-C,ES-GA,ES-C ES-GA,override,,
-ESSAG,Sagunto,39.6833,-0.2667,ES-V,ES-VC,ES-V ES-VC,unlocode,unlocode,El Puerto|El Puerto De Sagunto|Murveidro
+ESSAG,Sagunto,39.6833,-0.2667,ES-V,ES-VC,ES-V ES-VC,unlocode,unlocode,El Puerto De Sagunto|Murveidro
 ESSAP,San Pedro Pescador,42.1833,3.0833,ES-GI,ES-CT,ES-GI ES-CT,unlocode,unlocode,
 ESSAS,San Asensio,42.5,-2.75,ES-LO,ES-RI,ES-LO ES-RI,boundaries,unlocode,
 ESSAT,Salinetas,27.9763,-15.3774,ES-GC,ES-CN,ES-GC ES-CN,override,wikidata,
@@ -7477,7 +7477,7 @@ GBSHE,Sheffield,53.3667,-1.5,GB-SHF,GB-ENG,GB-SHF GB-ENG,unlocode,unlocode,
 GBSHG,South Hayling,50.7833,-0.9667,GB-HAM,GB-ENG,GB-HAM GB-ENG,unlocode,unlocode,
 GBSHK,Southwick,50.8333,-0.2333,GB-WSX,GB-ENG,GB-WSX GB-ENG,unlocode,unlocode,
 GBSHN,Shandon,56.05,-4.8,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode,unlocode,
-GBSHO,Shoreham,51.3167,0.1833,GB-KEN,GB-ENG,GB-KEN GB-ENG,unlocode,unlocode,New Shoreham
+GBSHO,Shoreham,51.3167,0.1833,GB-KEN,GB-ENG,GB-KEN GB-ENG,unlocode,unlocode,
 GBSHS,Sheerness,51.45,0.75,GB-KEN,GB-ENG,GB-KEN GB-ENG,unlocode,wpi,
 GBSHT,Shotton,,,GB-DUR,GB-ENG,GB-DUR GB-ENG,unlocode,,
 GBSHU,Seahouses,55.5833,-1.6667,GB-NBL,GB-ENG,GB-NBL GB-ENG,unlocode,unlocode,
@@ -11163,7 +11163,7 @@ JPUKN,Uken,,,JP-46,JP-46,JP-46,unlocode,,
 JPUKT,Ukitsu,,,JP-46,JP-46,JP-46,unlocode,,
 JPUMG,Umagoe,,,JP-37,JP-37,JP-37,unlocode,,
 JPUNM,Uranomae,,,JP-46,JP-46,JP-46,unlocode,,
-JPUNO,Uno,34.4833,133.95,JP-33,JP-33,JP-33,unlocode,wpi,Tama
+JPUNO,Uno,34.4833,133.95,JP-33,JP-33,JP-33,unlocode,wpi,
 JPUNS,Unoshima,,,JP-40,JP-40,JP-40,unlocode,,
 JPUNT,Unten,,,JP-47,JP-47,JP-47,unlocode,,
 JPUNU,Uchinourahetsuka,,,JP-46,JP-46,JP-46,unlocode,,
@@ -15203,7 +15203,7 @@ TNJAR,Jarjis,33.5,11.1,TN-82,TN-82,TN-82,boundaries,unlocode,
 TNKEB,Kebili,33.7,8.9667,TN-73,TN-73,TN-73,unlocode,unlocode,
 TNKEM,Ksibet el Médiouni,35.6667,10.8333,TN-52,TN-52,TN-52,unlocode,unlocode,
 TNLGN,La Goulette Nord (Halqueloued),36.8,10.3,TN-13,TN-13,TN-13,boundaries,wpi,Halqueloued
-TNLSK,La Skhirra,34.2833,10.1,TN-61,TN-61,TN-61,boundaries,wpi,Cekhira|La Skira|Qabes
+TNLSK,La Skhirra,34.2833,10.1,TN-61,TN-61,TN-61,boundaries,wpi,Cekhira|La Skira
 TNMAD,Mahdia,35.5,11.05,TN-53,TN-53,TN-53,unlocode,unlocode,
 TNMBA,Menzel Bourguiba,37.15,9.8,TN-23,TN-23,TN-23,boundaries,wpi,
 TNOUD,Oudna,36.2667,11.65,,,,,unlocode,
@@ -16622,7 +16622,7 @@ USRLT,Roosevelt,45.7333,-120.2,US-WA,US-WA,US-WA,unlocode,unlocode,
 USRMA,Hermann,38.7,-91.4333,US-MO,US-MO,US-MO,unlocode,unlocode,
 USRNN,Clarendon,34.6833,-91.3,US-AR,US-AR,US-AR,unlocode,unlocode,
 USRO2,Santa Rosa Island,33.95,-120.1,US-CA,US-CA,US-CA,unlocode,unlocode,
-USROC,Rochester,43.2667,-77.6,US-NY,US-NY,US-NY,unlocode,wpi,Charlotte
+USROC,Rochester,43.2667,-77.6,US-NY,US-NY,US-NY,unlocode,wpi,
 USROJ,Ronks,40.0167,-76.1667,US-PA,US-PA,US-PA,unlocode,unlocode,
 USRP3,Rockport,44.1833,-69.0833,US-ME,US-ME,US-ME,unlocode,unlocode,
 USRR6,Redwood Valley,39.25,-123.2,US-CA,US-CA,US-CA,unlocode,unlocode,
