@@ -3,6 +3,10 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## 1.6.1 — 2026-11-21
+
+Six more wrong alternate names are refused, so 658 of 17,567 ports have alternate names, down from 662: USROC no longer answers to "Charlotte" (an inland city in North Carolina), TNLSK to "Qabes" (the name of Gabès, TNGAE), ESSAG to "El Puerto", JPUNO to "Tama", AUPBY to "Stony Point" (a different place, in Victoria) or GBSHO to "New Shoreham" (Rhode Island). Same ports, names and positions otherwise.
+
 ## 1.6.0 — 2026-11-21
 
 Ports now carry their other names. `Seaports.find("BEANR").alternate_names` is `["Antwerp", "Anvers"]`, where `name` is UN/LOCODE's `Antwerpen`; `Seaports.alternate_names(locode)` is the shortcut, and `[]` answers for a port with none. 662 of 17,567 ports have at least one.
