@@ -1,4 +1,4 @@
-name: Refresh the UN/LOCODE table
+name: Refresh the UN/LOCODE table and its coordinates
 
 # UNECE republishes twice a year and never announces it, so this looks weekly
 # and almost always finds nothing. A refresh opens a pull request rather than
@@ -6,6 +6,17 @@ name: Refresh the UN/LOCODE table
 # and CI runs against the new table before anyone merges it (started by the
 # last step, since a pull request opened with GITHUB_TOKEN starts no
 # workflows by itself).
+#
+# The same run refreshes the ports' positions from two open datasets: the NGA
+# World Port Index (NGA, else the Internet Archive's copy of it) and Wikidata.
+# They run first, each in its own step, and neither can fail the run: an
+# unreachable source is a warning and the files it feeds stay as they were.
+# The UN/LOCODE rebuild runs last and merges whatever they wrote, so its gates
+# judge the coordinate changes with everything else. The pull request opens
+# when the shipped table changed (a release, with a version bump and a
+# changelog entry) or only the generated source files did (a pull request to
+# review, no release). A source that answers with something its gates refuse
+# also raises an issue.
 on:
   schedule:
     - cron: "17 6 * * 1"
@@ -27,15 +38,34 @@ jobs:
           ruby-version: "3.4"
           bundler-cache: true
 
+      # Each of these reports its own failure as a warning and exits 0, and
+      # keeps its three files together or leaves them alone; continue-on-error
+      # covers what the tasks cannot, such as a gem failing to load.
+      - name: Refresh the World Port Index coordinates
+        continue-on-error: true
+        run: bundle exec rake seaports:refresh_wpi
+
+      - name: Refresh the Wikidata coordinates
+        continue-on-error: true
+        run: bundle exec rake seaports:refresh_wikidata
+
+      # Last, so that the table diff, its gates and the version bump all see
+      # the coordinates. Reads the Natural Earth copy the steps above saved.
       - name: Rebuild from the published release
         run: bundle exec rake seaports:refresh
 
-      - name: Read what the rebuild decided
+      - name: Read what the refresh decided
         id: refresh
         run: |
           echo "status=$(cat tmp/refresh/status)" >> "$GITHUB_OUTPUT"
           if [ -f tmp/refresh/version ]; then
             echo "version=$(cat tmp/refresh/version)" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -f tmp/refresh/refused ]; then
+            echo "refused=true" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -f tmp/refresh/coordinates.md ]; then
+            grep -E "not refreshed|refused" tmp/refresh/coordinates.md | while read -r line; do echo "::warning::$line"; done || true
           fi
 
       - name: Nothing to do
@@ -45,32 +75,58 @@ jobs:
       # A refusal is not a failed build — the gates did their job and the table
       # in main is still good. It needs a person, so it gets an issue.
       - name: Raise the refusal for a person to read
-        if: steps.refresh.outputs.status == 'failed'
+        if: steps.refresh.outputs.status == 'failed' || steps.refresh.outputs.refused == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh label create refresh-blocked --color D93F0B --force
-          gh issue create \
-            --title "UN/LOCODE refresh refused on $(date -u +%Y-%m-%d)" \
-            --body-file tmp/refresh/summary.md \
-            --label "refresh-blocked" \
-            --assignee edouard
+          # One open issue at a time: a refusal that persists for weeks
+          # comments on the first issue instead of opening a new one weekly.
+          existing=$(gh issue list --label refresh-blocked --state open --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file tmp/refresh/summary.md
+          else
+            gh issue create \
+              --title "Sea-port refresh refused on $(date -u +%Y-%m-%d)" \
+              --body-file tmp/refresh/summary.md \
+              --label "refresh-blocked" \
+              --assignee edouard
+          fi
+
+      # An earlier week's refresh pull request that is still open describes
+      # data this run no longer produces (a source reverted, or this week's
+      # rebuild was refused). Closing it risks losing a review in progress, so
+      # it gets a comment saying it is stale instead.
+      - name: Mark an earlier refresh pull request stale
+        if: steps.refresh.outputs.status == 'unchanged' || steps.refresh.outputs.status == 'failed'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pr=$(gh pr list --head refresh/un-locode --state open --json number --jq '.[0].number // empty')
+          if [ -n "$pr" ]; then
+            gh pr comment "$pr" --body "Stale: this week's run on $(date -u +%Y-%m-%d) found ${{ steps.refresh.outputs.status }} against main, so this branch no longer matches what the sources produce. Close it, or wait for the next run to update it."
+          fi
 
       - name: Open the refresh for review
         id: pull_request
-        if: steps.refresh.outputs.status == 'ok'
+        if: steps.refresh.outputs.status == 'ok' || steps.refresh.outputs.status == 'sources'
         uses: peter-evans/create-pull-request@v7
         with:
           branch: refresh/un-locode
           base: main
-          commit-message: "chore(data): refresh the UN/LOCODE sea-port table"
-          title: "Refresh the UN/LOCODE sea-port table (${{ steps.refresh.outputs.version }})"
+          commit-message: "chore(data): refresh the UN/LOCODE sea-port table and its coordinates"
+          title: ${{ steps.refresh.outputs.status == 'ok' && format('Refresh the sea-port table ({0})', steps.refresh.outputs.version) || 'Refresh the coordinate sources (no release)' }}
           body-path: tmp/refresh/summary.md
           labels: data-refresh
           reviewers: edouard
           assignees: edouard
           add-paths: |
             data/un_locode_seaports.csv
+            data/sources/coordinates_wpi.csv
+            data/sources/coordinates_wikidata.csv
+            data/sources/wpi/UpdatedPub150.csv
+            data/sources/wpi/provenance.json
+            data/sources/wikidata_provenance.json
             lib/seaports/version.rb
             CHANGELOG.md
 

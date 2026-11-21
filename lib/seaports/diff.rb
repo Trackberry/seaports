@@ -2,6 +2,8 @@
 
 require "csv"
 
+require_relative "coordinate_sources"
+
 module Seaports
   # What a refresh actually changed, and whether it is safe to ship.
   #
@@ -41,7 +43,7 @@ module Seaports
         locode = row["locode"].to_s.strip.upcase
         next if locode.empty?
 
-        ports[locode] = { name: row["name"].to_s.strip, point: point(row), path: path(row) }
+        ports[locode] = { name: row["name"].to_s.strip, point: point(row), path: path(row), source: row["coordinate_source"].to_s.strip }
       end
     end
 
@@ -58,6 +60,20 @@ module Seaports
 
       [lat.to_f, lng.to_f]
     end
+
+    # A position that moves less than this is a rounding or a re-survey of the
+    # same quay, not a change worth a release.
+    NEGLIGIBLE_KM = 0.1
+
+    # More than this share of the ports that had a position moving over
+    # MOVED_KM in one refresh is a source that reshuffled its coordinates.
+    MAXIMUM_MOVED = 0.05
+    MOVED_KM = 1
+
+    # More than this share of the ports that had a position losing it in one
+    # refresh is a source that vanished or was refused wholesale, not ports
+    # whose coordinates were withdrawn.
+    MAXIMUM_LOST_POSITIONS = 0.02
 
     def initialize(before, after)
       @before = before
@@ -94,6 +110,7 @@ module Seaports
         was = @before[locode][:point]
         now = @after[locode][:point]
         next if was == now
+        next if was && now && CoordinateSources.km(was, now) < NEGLIGIBLE_KM
 
         [locode, @after[locode][:name], (was.nil? ? :located : (now.nil? ? :unlocated : :moved))]
       end
@@ -125,7 +142,7 @@ module Seaports
     # Empty means the refresh may ship. Anything here is a reason it may not,
     # written the way it should read in an issue.
     def failures
-      [count_failure, shrinkage_failure, region_failure, reassignment_failure, *anchor_failures, *excluded_failures].compact
+      [count_failure, shrinkage_failure, region_failure, reassignment_failure, moved_failure, positions_failure, *anchor_failures, *excluded_failures].compact
     end
 
     def ok?
@@ -139,6 +156,7 @@ module Seaports
         section("Removed", removed.map { |locode| "`#{locode}` #{@before[locode][:name]}" }, limit: nil),
         section("Added", added.map { |locode| "`#{locode}` #{@after[locode][:name]}" }),
         section("Renamed", renamed.map { |locode, was, now| "`#{locode}` #{was} → #{now}" }),
+        by_source_line,
         section("Coordinates", repositioned.map { |locode, name, kind| "`#{locode}` #{name} — #{POSITION_WORDS.fetch(kind)}" }),
         section("Subdivision", resubdivided.map { |locode, name, was, now| "`#{locode}` #{name}: #{path_words(was)} → #{path_words(now)}" })
       ].compact.join("\n\n")
@@ -164,7 +182,48 @@ module Seaports
     # of the placed ports at once means a source reshuffled its codes.
     MAXIMUM_REASSIGNMENT = 0.02
 
+    # How many ports each source gained, lost or moved a position for, so a
+    # reviewer sees which source a coordinate change came from.
+    def by_source_line
+      return nil if repositioned.empty?
+
+      counts = repositioned.each_with_object(Hash.new { |hash, key| hash[key] = Hash.new(0) }) do |(locode, _, kind), tally|
+        source = (kind == :unlocated ? @before : @after)[locode][:source].to_s
+        tally[source.empty? ? "unknown" : source][kind] += 1
+      end
+      lines = counts.sort.map do |source, kinds|
+        "#{source}: " + kinds.sort.map { |kind, n| "#{n} #{kind}" }.join(", ")
+      end
+      "**Coordinates by source**\n\n#{lines.map { |line| "- #{line}" }.join("\n")}"
+    end
+
     private
+
+    def positions_failure
+      placed = @before.count { |_, port| port[:point] }
+      return nil if placed.zero?
+
+      lost = common.count { |locode| @before[locode][:point] && @after[locode][:point].nil? }
+      lost += removed.count { |locode| @before[locode][:point] }
+      return nil if lost.to_f / placed <= MAXIMUM_LOST_POSITIONS
+
+      "#{lost} of #{placed} positioned ports lost their position, past the #{(MAXIMUM_LOST_POSITIONS * 100).round}% limit: " \
+        "a coordinate source disappeared."
+    end
+
+    def moved_failure
+      placed = @before.count { |_, port| port[:point] }
+      return nil if placed.zero?
+
+      far = common.count do |locode|
+        was = @before[locode][:point]
+        now = @after[locode][:point]
+        was && now && CoordinateSources.km(was, now) > MOVED_KM
+      end
+      return nil if far.to_f / placed <= MAXIMUM_MOVED
+
+      "#{far} of #{placed} positions moved over #{MOVED_KM} km, past the #{(MAXIMUM_MOVED * 100).round}% limit: a source reshuffled its coordinates."
+    end
 
     def path_words(path)
       path.empty? ? "none" : path.split.join(" › ")

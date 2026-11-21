@@ -1,0 +1,11 @@
+{
+  "source": "NGA World Port Index (Pub. 150), UpdatedPub150.csv",
+  "licence": "Public domain (a work of the US government); attribution to NGA recommended",
+  "nga_url": "https://msi.nga.mil/api/publications/download?type=view&key=16920959%2FSFH00000%2FUpdatedPub150.csv",
+  "retrieved_from": "https://web.archive.org/web/20260929232408id_/https://msi.nga.mil/api/publications/download?type=view&key=16920959%2FSFH00000%2FUpdatedPub150.csv",
+  "retrieved_via": "the Internet Archive",
+  "snapshot": "2026-09-29",
+  "retrieved_on": "2026-11-21",
+  "sha256": "473341bb6b8871cb93ba329584900138cb52692708469e68510be518739535e1",
+  "rows": 3807
+}

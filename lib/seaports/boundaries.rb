@@ -40,6 +40,18 @@ module Seaports
       end
     end
 
+    # Territories that UN/LOCODE gives a country code of their own and Natural
+    # Earth may fold into the state that governs them.
+    PARENTS = {
+      "PR" => "US", "GU" => "US", "VI" => "US", "AS" => "US", "MP" => "US",
+      "RE" => "FR", "GP" => "FR", "MQ" => "FR", "GF" => "FR", "YT" => "FR", "PF" => "FR", "NC" => "FR", "PM" => "FR", "WF" => "FR",
+      "FO" => "DK", "GL" => "DK",
+      "AW" => "NL", "CW" => "NL", "SX" => "NL", "BQ" => "NL",
+      "HK" => "CN", "MO" => "CN",
+      "BM" => "GB", "VG" => "GB", "TC" => "GB", "KY" => "GB", "AI" => "GB", "MS" => "GB", "GI" => "GB", "FK" => "GB",
+      "CK" => "NZ", "NU" => "NZ"
+    }.freeze
+
     CODE = /\A[A-Z]{2}-[A-Z0-9]{1,3}\z/
 
     def self.parse(geojson)
@@ -104,6 +116,33 @@ module Seaports
 
       containing = areas.find { |area| within_bbox?(area, lat, lng, 0) && contains?(area, lat, lng) }
       (containing || nearest(areas, lat, lng))&.codes || []
+    end
+
+    # Whether the point is inside +country+ or within +km+ of it: true or false,
+    # or nil when the map has no area for the country at all (a few islands
+    # and city states), where nothing can be said either way. Used to refuse a
+    # supplementary position that landed in the wrong place, so the distance
+    # is generous: ports sit on a coast the map drew a little differently.
+    #
+    # A territory the map does not draw as a country is judged against its
+    # parent (PARENTS), where the parent's areas include it: Puerto Rico against
+    # the United States. Most of them lie far from the state that governs them
+    # and the parent's map does not cover them (Aruba, the Falklands, Guam), and
+    # there a point outside the parent proves nothing, so the answer is nil, not
+    # false.
+    def near_country?(country, lat, lng, km = 50)
+      areas = @by_country.fetch(country.to_s.upcase, [])
+      territory = areas.empty?
+      areas = @by_country.fetch(PARENTS[country.to_s.upcase].to_s, []) if territory
+      return nil if areas.empty?
+
+      lat_margin = km / KM_PER_DEGREE_LAT
+      lng_margin = km / (KM_PER_DEGREE_LNG * [Math.cos(lat * Math::PI / 180), 0.01].max)
+      close = areas.select { |area| within_bbox?(area, lat, lng, lat_margin, lng_margin) }
+      return true if close.any? { |area| within_bbox?(area, lat, lng, 0) && contains?(area, lat, lng) }
+
+      near = close.any? { |area| distance_km(area, lat, lng) <= km }
+      territory && !near ? nil : near
     end
 
     private

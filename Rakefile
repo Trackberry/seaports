@@ -23,6 +23,7 @@ namespace :seaports do
   desc "Rebuild the table from a UN/LOCODE release and report what changed"
   task :refresh, [:source, :release, :subdivisions, :boundaries] do |_task, args|
     require_relative "lib/seaports/builder"
+    require_relative "lib/seaports/coordinate_refresh"
     require_relative "lib/seaports/diff"
     require_relative "lib/seaports/subdivisions"
     require_relative "lib/seaports/boundaries"
@@ -40,11 +41,10 @@ namespace :seaports do
       subdivisions = Seaports::Subdivisions.parse(
         Seaports::Builder.fetch(args[:subdivisions] || Seaports::Subdivisions::SOURCE_URL)
       )
-      boundaries = Seaports::Boundaries.parse(
-        Seaports::Builder.fetch(args[:boundaries] || Seaports::Boundaries::SOURCE_URL)
-      )
+      boundaries = coordinate_boundaries(args[:boundaries])
       builder = Seaports::Builder.new(source, subdivisions:, boundaries:, overrides: Seaports::Builder.overrides,
-        coordinate_overrides: Seaports::Builder.coordinate_overrides)
+        coordinate_overrides: Seaports::Builder.coordinate_overrides,
+        fallback_coordinates: Seaports::Builder.fallback_coordinates)
       builder.write(Seaports::TABLE_PATH)
     rescue StandardError => e
       FileUtils.cp(before, Seaports::TABLE_PATH)
@@ -55,17 +55,24 @@ namespace :seaports do
 
     diff = Seaports::Diff.between(before, Seaports::TABLE_PATH)
     overrides = builder.override_report
-    summary = [diff.summary, overrides.empty? ? nil : "**Overrides to review**\n\n#{overrides.map { |line| "- #{line}" }.join("\n")}"]
+    coordinates = coordinate_notes
+    summary = [diff.summary, overrides.empty? ? nil : "**Overrides to review**\n\n#{overrides.map { |line| "- #{line}" }.join("\n")}", coordinates]
     File.write(File.join(REFRESH_DIR, "summary.md"), "#{summary.compact.join("\n\n")}\n")
     puts overrides unless overrides.empty?
 
-    if !diff.changed?
+    status = Seaports::CoordinateRefresh.release_status(diff, sources_changed: coordinate_statuses.include?("changed"))
+    case status
+    when "unchanged"
       record "unchanged", "The table is already current: #{diff.headline}"
-    elsif !diff.ok?
+    when "failed"
       # Put the good table back. A refresh that fails its gates must leave no
       # trace in the working tree, so a later step cannot pick up half of it.
       FileUtils.cp(before, Seaports::TABLE_PATH)
       record "failed", "Refused the rebuilt table:\n#{diff.failures.map { |line| "  - #{line}" }.join("\n")}"
+    when "sources"
+      # The generated files moved and no port's position did, or not by 100 m:
+      # worth a pull request to review, not a release.
+      record "sources", "The coordinate sources changed and the table did not: no release.\n#{diff.headline}"
     else
       release = args[:release] || Seaports::Builder.published_release
       version = bump_version(release)
@@ -75,14 +82,104 @@ namespace :seaports do
   end
 
   # Recurring: run it after adding rows to data/sources/coordinate_overrides.csv
-  # when a refresh is not due. Offline, and it only fills ports the table has
-  # no position for; the next refresh rebuilds the same positions itself.
-  desc "Write the reviewed coordinate overrides into the shipped table, without a download"
+  # when a refresh is not due. Offline, and it never replaces a position
+  # UN/LOCODE published (the table records which are); the next refresh
+  # rebuilds the same positions itself.
+  desc "Write the coordinate files into the shipped table, without a download"
   task :apply_coordinates do
     require_relative "lib/seaports/builder"
 
-    filled = Seaports::Builder.apply_coordinates
-    puts "Filled #{filled.size} ports: #{filled.join(', ')}"
+    changed = Seaports::Builder.apply_coordinates
+    puts "Changed #{changed.size} ports: #{changed.first(40).join(', ')}#{changed.size > 40 ? ', ...' : ''}"
+  end
+
+  # Recurring: the weekly refresh runs it before seaports:refresh, and a person
+  # can run it by hand with the path of a World Port Index CSV already
+  # downloaded (and its snapshot date) when NGA and the Internet Archive are
+  # both out of reach.
+  #
+  # Looks for a newer World Port Index (NGA, else the Internet Archive),
+  # validates it, and moves the vendored copy, its provenance note and
+  # data/sources/coordinates_wpi.csv into place together, or none of them.
+  # Does not touch the table: seaports:refresh merges the file next.
+  desc "Fetch the newest NGA World Port Index and regenerate its coordinates"
+  task :refresh_wpi, [:file, :snapshot] do |_task, args|
+    require_relative "lib/seaports/builder"
+    require_relative "lib/seaports/coordinate_refresh"
+    require "fileutils"
+    FileUtils.mkdir_p(REFRESH_DIR)
+
+    download =
+      if args[:file]
+        raise ArgumentError, "give the snapshot date too: refresh_wpi[file,YYYY-MM-DD]" if args[:snapshot].to_s.empty?
+
+        Seaports::Wpi::Download.new(text: File.read(args[:file], encoding: "UTF-8"), url: File.basename(args[:file]),
+          snapshot: args[:snapshot], via: "a local file")
+      end
+    record_coordinates("wpi", Seaports::CoordinateRefresh.refresh_wpi(download:, boundaries: -> { coordinate_boundaries }))
+  end
+
+  # Recurring: the weekly refresh runs it, after refresh_wpi. Wikidata is
+  # queried live, one letter of the locode at a time. The table is not
+  # touched; seaports:refresh merges the file next.
+  desc "Query Wikidata for positions and regenerate its coordinates"
+  task :refresh_wikidata do
+    require_relative "lib/seaports/builder"
+    require_relative "lib/seaports/coordinate_refresh"
+    require "fileutils"
+    FileUtils.mkdir_p(REFRESH_DIR)
+
+    record_coordinates("wikidata", Seaports::CoordinateRefresh.refresh_wikidata(boundaries: -> { coordinate_boundaries }))
+  end
+
+  # Natural Earth is 40 MB, and the two coordinate steps and the rebuild all
+  # want it, so the first to need it downloads it and the rest read the copy.
+  # An explicit +source+ (a path or URL) is read directly.
+  def coordinate_boundaries(source = nil)
+    require "fileutils"
+    require_relative "lib/seaports/boundaries"
+    require_relative "lib/seaports/builder"
+    require_relative "lib/seaports/http"
+    return Seaports::Boundaries.parse(Seaports::Builder.fetch(source)) if source
+
+    FileUtils.mkdir_p(REFRESH_DIR)
+    cache = File.join(REFRESH_DIR, "boundaries.geojson")
+    unless File.exist?(cache)
+      # Through Seaports::Http, for its User-Agent and its size cap.
+      status, body, = Seaports::Http.get(Seaports::Boundaries::SOURCE_URL)
+      raise "Natural Earth answered HTTP #{status}" unless status == 200
+
+      File.binwrite(cache, body)
+    end
+    Seaports::Boundaries.parse(File.read(cache))
+  end
+
+  def record_coordinates(name, outcome)
+    File.write(File.join(REFRESH_DIR, "#{name}_status"), "#{outcome.status}\n")
+    File.write(File.join(REFRESH_DIR, "coordinates.md"), "#{outcome.line}\n", mode: "a")
+    File.write(File.join(REFRESH_DIR, "coordinate_names.md"), "#{outcome.names}\n\n", mode: "a") unless outcome.names.empty?
+    puts outcome.line
+    warn outcome.line if %w[failed refused].include?(outcome.status)
+  end
+
+  def coordinate_statuses
+    %w[wpi wikidata].filter_map do |name|
+      path = File.join(REFRESH_DIR, "#{name}_status")
+      File.read(path).strip if File.exist?(path)
+    end
+  end
+
+  # The coordinate sources' part of the pull request body: what each did, what
+  # was refused, and the names that differ. Also flags a refusal for the
+  # workflow, which raises an issue for it.
+  def coordinate_notes
+    path = File.join(REFRESH_DIR, "coordinates.md")
+    return nil unless File.exist?(path)
+
+    File.write(File.join(REFRESH_DIR, "refused"), "yes\n") if coordinate_statuses.include?("refused")
+    names = File.join(REFRESH_DIR, "coordinate_names.md")
+    notes = File.readlines(path, chomp: true).map { |line| "- #{line}" }.join("\n")
+    ["**Coordinate sources**\n\n#{notes}", File.exist?(names) ? File.read(names).strip : nil].compact.join("\n\n")
   end
 
   def record(status, message)
