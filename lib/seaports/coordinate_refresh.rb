@@ -70,6 +70,27 @@ module Seaports
       raise Refused, "#{lost.size} of #{change.before_size} #{label} rows would be lost by the dataset, past the #{(maximum_lost * 100).round}% limit"
     end
 
+    # More than this share of the World Port Index names already in
+    # alternate_names_wpi.csv disappearing in one run is a truncated or
+    # reorganised column, not ports whose names were edited.
+    MAXIMUM_LOST_NAMES = 0.05
+
+    # +before+ is { locode => [names] } as in the file, +rows+ the new
+    # [locode, name, source] rows. A name of a port that left the table is not
+    # the index's loss.
+    def self.guard_names!(before, rows, ports)
+      kept = rows.to_set { |locode, name, _| [locode, AlternateNames.key(name)] }
+      total = before.sum { |_, names| names.size }
+      return if total.zero?
+
+      lost = before.sum do |locode, names|
+        ports.include?(locode) ? names.count { |name| !kept.include?([locode, AlternateNames.key(name)]) } : 0
+      end
+      return unless lost.to_f / total > MAXIMUM_LOST_NAMES
+
+      raise Refused, "#{lost} of #{total} World Port Index alternate names would be lost, past the #{(MAXIMUM_LOST_NAMES * 100).round}% limit"
+    end
+
     # Moves each staged file over its destination, and puts back whatever it
     # replaced if one of the moves fails.
     def self.install(stage, moves)
@@ -115,7 +136,7 @@ module Seaports
     def self.wpi(download, boundaries: nil, table: CoordinateSources.table, held: Builder.coordinate_overrides.keys,
       csv_path: Wpi::CSV_PATH, provenance_path: Wpi::PROVENANCE_PATH, coordinates_path: Builder::WPI_COORDINATES_PATH,
       alternate_names_path: Builder::WPI_ALTERNATE_NAMES_PATH, today: Date.today)
-      vendored =File.exist?(csv_path) ? File.read(csv_path) : nil
+      vendored = File.exist?(csv_path) ? File.read(csv_path) : nil
       Wpi.validate!(download.text, vendored:)
 
       # An older copy than the one vendored (an archive snapshot, after NGA
@@ -137,10 +158,12 @@ module Seaports
 
       # The alternate names come from the same file under the same checks: the
       # port must be in the table, and a locode on several index rows is
-      # skipped. A names file is not a position, so it has no move or loss
-      # guard; the table diff and the pull request show what changed.
+      # skipped. A names file has no positions to move, but an index that loses
+      # more than MAXIMUM_LOST_NAMES of the names already used is refused, as
+      # for positions; the table diff shows the rest.
       alternate_rows, alternate_counts = AlternateNames.select(Wpi.alternate_candidates(text), ports: table.keys.to_set,
-        source: Wpi.source_label(provenance.fetch("snapshot")))
+        source: Wpi.source_label(provenance.fetch("snapshot")), countries: Wpi.country_keys(text))
+      guard_names!(AlternateNames.read(alternate_names_path), alternate_rows, table.keys.to_set)
 
       Dir.mktmpdir("seaports-wpi") do |stage|
         staged = { csv: File.join(stage, "UpdatedPub150.csv"), provenance: File.join(stage, "provenance.json"),

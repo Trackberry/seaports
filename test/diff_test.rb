@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "seaports/coordinate_refresh"
 
 class DiffTest < Minitest::Test
   # A table that passes every gate, so each test can break exactly one thing
@@ -188,10 +189,50 @@ class DiffTest < Minitest::Test
     assert_predicate diff, :ok?
   end
 
-  private
+  def port(name, point = [1.0, 2.0], path: "", alternates: [])
+    { name: name, point: point, path: path, alternates: alternates }
+  end
 
-  def port(name, point = [1.0, 2.0], path: "")
-    { name: name, point: point, path: path }
+  # A change to the alternate names alone is a change to the table: it ships,
+  # and the summary and the changelog say how many.
+  def test_a_change_to_the_alternate_names_is_a_table_change
+    before = healthy("AAAAA" => port("Antwerpen", alternates: %w[Antwerp Anvers]), "BBBBB" => port("Genova"), "CCCCC" => port("Same", alternates: %w[One]))
+    after = healthy("AAAAA" => port("Antwerpen", alternates: %w[Antwerp Antwerpen2]), "BBBBB" => port("Genova", alternates: %w[Genoa]),
+      "CCCCC" => port("Same", alternates: %w[One]))
+    diff = Seaports::Diff.new(before, after)
+
+    assert_predicate diff, :changed?
+    assert_predicate diff, :ok?
+    assert_equal [["AAAAA", "Antwerpen", ["Antwerpen2"], ["Anvers"]], ["BBBBB", "Genova", ["Genoa"], []]], diff.renamed_alternates
+    assert_equal "Alternate names: 2 ports changed (2 names added, 1 removed).", diff.names_headline
+    assert_includes diff.summary, "**Names** (2)"
+    assert_includes diff.summary, "`BBBBB` Genova: +Genoa"
+    assert_includes diff.summary, "`AAAAA` Antwerpen: +Antwerpen2, −Anvers"
+  end
+
+  def test_no_names_section_without_a_change_to_them
+    diff = Seaports::Diff.new(healthy("AAAAA" => port("A", alternates: %w[x])), healthy("AAAAA" => port("A", alternates: %w[x])))
+
+    assert_nil diff.names_headline
+    refute_includes diff.summary, "**Names**"
+  end
+
+  # Read from the files a refresh compares, a table from before the column
+  # existed has no names, so every name in the new one is an addition, and a
+  # names-only change is a release, not "sources".
+  def test_the_column_is_read_from_the_table_and_a_names_only_change_is_a_release
+    dir = Dir.mktmpdir
+    before = File.join(dir, "before.csv")
+    after = File.join(dir, "after.csv")
+    File.write(before, "locode,name,lat,lng\nBEANR,Antwerpen,,\n")
+    File.write(after, "locode,name,lat,lng,alternate_names\nBEANR,Antwerpen,,,Antwerp|Anvers\n")
+    diff = Seaports::Diff.between(before, after)
+
+    assert_equal [["BEANR", "Antwerpen", %w[Antwerp Anvers], []]], diff.renamed_alternates
+    assert_predicate diff, :changed?
+
+    names_only = Seaports::Diff.new(healthy("AAAAA" => port("A")), healthy("AAAAA" => port("A", alternates: %w[x])))
+    assert_equal "ok", Seaports::CoordinateRefresh.release_status(names_only, sources_changed: true)
   end
 
   # About 50 m: a re-survey of the same quay, not a change worth a release.

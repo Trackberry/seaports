@@ -32,7 +32,7 @@ AEKLF,Khor al Fakkan,25.3333,56.35,AE-SH,AE-SH,AE-SH,boundaries,unlocode,Khor Fa
 AEMBS,Mubarras Island,24.5833,53.3167,,,,,unlocode,
 AEMKH,Mina Khalid,25.35,55.3667,AE-SH,AE-SH,AE-SH,unlocode,unlocode,
 AEMRP,Mina Rashid Port,25.2667,55.2833,AE-AZ,AE-AZ,AE-AZ,unlocode,unlocode,
-AEMSA,Mina Saqr,25.9667,56.0667,AE-RK,AE-RK,AE-RK,unlocode,unlocode,Ras Al Khaimah
+AEMSA,Mina Saqr,25.9667,56.0667,AE-RK,AE-RK,AE-RK,unlocode,unlocode,
 AEMUB,Mubarek Terminal,,,,,,,,
 AEMZD,Mina Zayed/Abu Dhabi,24.5167,54.3667,AE-AZ,AE-AZ,AE-AZ,unlocode,unlocode,
 AEPRA,Port Rashid,,,,,,,,
@@ -44,7 +44,7 @@ AERKT,Ras al Khaimah,25.7833,55.95,AE-RK,AE-RK,AE-RK,boundaries,unlocode,
 AERMC,Rak Maritime City,25.95,56.05,AE-RK,AE-RK,AE-RK,unlocode,unlocode,
 AERUW,Ar Ruways,24.1167,52.7333,AE-AZ,AE-AZ,AE-AZ,boundaries,unlocode,
 AERWP,Ruwais,24.1,52.7167,AE-AZ,AE-AZ,AE-AZ,unlocode,unlocode,
-AESHJ,Sharjah,25.35,55.3833,AE-SH,AE-SH,AE-SH,unlocode,unlocode,Mina Khalid
+AESHJ,Sharjah,25.35,55.3833,AE-SH,AE-SH,AE-SH,unlocode,unlocode,
 AESID,Sadiyat Island,24.5333,54.4,AE-AZ,AE-AZ,AE-AZ,boundaries,unlocode,
 AESIL,Al Sila,24.0667,51.75,AE-AZ,AE-AZ,AE-AZ,unlocode,unlocode,
 AEULR,Umm Al Nar,24.4333,54.5,AE-AZ,AE-AZ,AE-AZ,boundaries,unlocode,Sas an Nakhl
@@ -208,7 +208,7 @@ ARPUB,Puerto Borghi,,,,,,,,
 ARPUD,Puerto Deseado,-47.75,-65.9,AR-Z,AR-Z,AR-Z,unlocode,unlocode,
 ARPWA,Puerto Wanda,-25.9667,-54.6,AR-N,AR-N,AR-N,unlocode,unlocode,
 ARQBR,Quebracho/San Lorenzo,-32.65,-60.7167,AR-S,AR-S,AR-S,unlocode,unlocode,
-ARQQN,Quequén,-38.5333,-58.7,AR-B,AR-B,AR-B,unlocode,unlocode,Necochea
+ARQQN,Quequén,-38.5333,-58.7,AR-B,AR-B,AR-B,unlocode,unlocode,
 ARRAM,Ramallo,-33.4833,-60.0167,AR-B,AR-B,AR-B,unlocode,wpi,
 ARRFO,Rosario de la Frontera,-25.8,-64.9667,AR-A,AR-A,AR-A,unlocode,unlocode,
 ARRGA,Río Grande,-53.7833,-67.7,AR-V,AR-V,AR-V,unlocode,unlocode,
@@ -410,7 +410,7 @@ AUBPO,Bridport,-41.0,147.4,AU-TAS,AU-TAS,AU-TAS,unlocode,unlocode,
 AUBRR,Berrys Creek,-38.4167,146.0667,AU-VIC,AU-VIC,AU-VIC,unlocode,unlocode,
 AUBRT,Bathurst Island,,,AU-NT,AU-NT,AU-NT,unlocode,,
 AUBSA,Brighton-Le-Sands,-33.95,151.15,AU-NSW,AU-NSW,AU-NSW,unlocode,unlocode,
-AUBTB,Botany Bay,-34.0,151.2333,AU-NSW,AU-NSW,AU-NSW,unlocode,wpi,Port Botany
+AUBTB,Botany Bay,-34.0,151.2333,AU-NSW,AU-NSW,AU-NSW,unlocode,wpi,
 AUBUC,Burketown,-17.7333,139.5333,AU-QLD,AU-QLD,AU-QLD,unlocode,unlocode,
 AUBUL,Bulli,-34.3,150.9167,AU-NSW,AU-NSW,AU-NSW,unlocode,unlocode,
 AUBUS,Busselton,,,AU-WA,AU-WA,AU-WA,unlocode,,
@@ -510,7 +510,7 @@ AUGEM,Gembrook,-37.95,145.55,AU-VIC,AU-VIC,AU-VIC,unlocode,unlocode,
 AUGET,Geraldton,-28.7833,114.6,AU-WA,AU-WA,AU-WA,unlocode,wpi,
 AUGEX,Geelong,-38.15,144.3667,AU-VIC,AU-VIC,AU-VIC,unlocode,wpi,
 AUGLL,Glebe Island,,,AU-NSW,AU-NSW,AU-NSW,unlocode,,
-AUGLT,Gladstone,-23.85,151.25,AU-QLD,AU-QLD,AU-QLD,unlocode,wpi,Port Curtis
+AUGLT,Gladstone,-23.85,151.25,AU-QLD,AU-QLD,AU-QLD,unlocode,wpi,
 AUGOA,Goolwa,-35.5,138.7833,AU-SA,AU-SA,AU-SA,unlocode,unlocode,
 AUGOH,Gove Harbour,-12.2167,136.6667,AU-NT,AU-NT,AU-NT,unlocode,unlocode,
 AUGOI,Goods Is,,,AU-QLD,AU-QLD,AU-QLD,unlocode,,
@@ -717,7 +717,7 @@ AUWAL,Wallaroo,-33.9333,137.6167,AU-SA,AU-SA,AU-SA,unlocode,wpi,
 AUWAZ,Warwick,,,AU-QLD,AU-QLD,AU-QLD,unlocode,,
 AUWBT,Woollybutt (Oil facility),-21.05,114.8667,AU-WA,AU-WA,AU-WA,unlocode,unlocode,
 AUWEI,Weipa,-12.6667,141.8667,AU-QLD,AU-QLD,AU-QLD,unlocode,wpi,
-AUWEP,Westernport,-38.35,145.2333,AU-VIC,AU-VIC,AU-VIC,unlocode,wpi,Hastings
+AUWEP,Westernport,-38.35,145.2333,AU-VIC,AU-VIC,AU-VIC,unlocode,wpi,
 AUWHL,Welshpool,-38.6667,146.4333,AU-VIC,AU-VIC,AU-VIC,unlocode,unlocode,Port Wellshpool
 AUWIH,Wingham,-31.8667,152.3667,AU-NSW,AU-NSW,AU-NSW,unlocode,unlocode,
 AUWMB,Warrnambool,-38.4,142.4833,AU-VIC,AU-VIC,AU-VIC,unlocode,wpi,
@@ -830,7 +830,7 @@ BEBOO,Boorsem,50.9333,5.7167,BE-VLI,BE-VLG,BE-VLI BE-VLG,unlocode,unlocode,
 BEBRE,Bree,51.1333,5.6,BE-VLI,BE-VLG,BE-VLI BE-VLG,unlocode,unlocode,
 BEBRM,Beernem,51.15,3.3333,BE-VWV,BE-VLG,BE-VWV BE-VLG,unlocode,unlocode,
 BEBRT,Berendrecht,51.3333,4.3167,BE-VAN,BE-VLG,BE-VAN BE-VLG,unlocode,unlocode,
-BEBRU,Brussel (Bruxelles),50.8333,4.3333,BE-BRU,BE-BRU,BE-BRU,unlocode,unlocode,Brussels|Bruxelles
+BEBRU,Brussel (Bruxelles),50.8333,4.3333,BE-BRU,BE-BRU,BE-BRU,unlocode,unlocode,Brussels
 BEBRY,Bruyelle,50.55,3.4167,BE-WHT,BE-WAL,BE-WHT BE-WAL,unlocode,unlocode,
 BEBSE,Bissegem,50.8167,3.2167,BE-VWV,BE-VLG,BE-VWV BE-VLG,unlocode,unlocode,
 BEBSI,Labuissière,50.3167,4.1667,BE-WHT,BE-WAL,BE-WHT BE-WAL,unlocode,unlocode,
@@ -1040,7 +1040,7 @@ BEMRL,Merelbeke,51.0,3.75,BE-VOV,BE-VLG,BE-VOV BE-VLG,unlocode,unlocode,
 BEMRM,Merkem,50.95,2.85,BE-VWV,BE-VLG,BE-VWV BE-VLG,unlocode,unlocode,
 BEMRO,Mornimont,50.45,4.7,BE-WNA,BE-WAL,BE-WNA BE-WAL,unlocode,unlocode,
 BEMSI,Monsin,50.6667,5.6333,BE-WLG,BE-WAL,BE-WLG BE-WAL,unlocode,unlocode,
-BEMSJ,Molenbeek-Saint-Jean (Sint-Jans-Molenbeek)/Brussel (Bruxelles),50.85,4.3167,BE-BRU,BE-BRU,BE-BRU,unlocode,unlocode,Sint-Jans-Molenbeek|Bruxelles
+BEMSJ,Molenbeek-Saint-Jean (Sint-Jans-Molenbeek)/Brussel (Bruxelles),50.85,4.3167,BE-BRU,BE-BRU,BE-BRU,unlocode,unlocode,Sint-Jans-Molenbeek
 BEMSK,Maaseik,51.1,5.8,BE-VLI,BE-VLG,BE-VLI BE-VLG,unlocode,unlocode,
 BEMSP,Mespelare,51.0,4.0667,BE-VOV,BE-VLG,BE-VOV BE-VLG,unlocode,unlocode,
 BEMSR,Maisières,50.4833,3.95,BE-WHT,BE-WAL,BE-WHT BE-WAL,unlocode,unlocode,
@@ -1066,7 +1066,7 @@ BENYL,Nijlen,51.1667,4.65,BE-VAN,BE-VLG,BE-VAN BE-VLG,unlocode,unlocode,
 BEOBG,Oudenburg,51.1833,3.0,BE-VWV,BE-VLG,BE-VWV BE-VLG,unlocode,unlocode,
 BEOBR,Obourg,50.4667,4.0,BE-WHT,BE-WAL,BE-WHT BE-WAL,unlocode,unlocode,
 BEOBT,Ombret-Rawsa,50.55,5.3333,BE-WLG,BE-WAL,BE-WLG BE-WAL,unlocode,unlocode,
-BEODE,Auderghem (Oudergem)/Brussel (Bruxelles),50.8167,4.4333,BE-BRU,BE-BRU,BE-BRU,unlocode,unlocode,Oudergem|Bruxelles
+BEODE,Auderghem (Oudergem)/Brussel (Bruxelles),50.8167,4.4333,BE-BRU,BE-BRU,BE-BRU,unlocode,unlocode,Oudergem
 BEOEL,Oelegem,51.2167,4.5833,BE-VAN,BE-VLG,BE-VAN BE-VLG,unlocode,unlocode,
 BEOEV,Oevel,51.1333,4.8833,BE-VAN,BE-VLG,BE-VAN BE-VLG,unlocode,unlocode,
 BEOGS,Ollignies,50.6833,3.85,BE-WHT,BE-WAL,BE-WHT BE-WAL,unlocode,unlocode,
@@ -1311,7 +1311,7 @@ BOTDD,Trinidad,-14.8333,-64.9,BO-B,BO-B,BO-B,unlocode,unlocode,
 BQBON,Bonaire,12.1167,-68.2667,,,,,unlocode,
 BQEUX,Sint Eustatius,17.4833,-62.9667,,,,,unlocode,
 BQGOT,Goto,12.2167,-68.3833,,,,,unlocode,
-BQKRA,Kralendijk,12.15,-68.2667,,,,,unlocode,Bonaise|Bopec Terminal
+BQKRA,Kralendijk,12.15,-68.2667,,,,,unlocode,Bonaise
 BQRIN,Dorp Rincón,12.2333,-68.3333,,,,,unlocode,
 BQSAB,Saba,17.6333,-63.2333,,,,,unlocode,
 BRAAR,Acará,-1.95,-48.2,BR-PA,BR-PA,BR-PA,unlocode,unlocode,
@@ -1341,7 +1341,7 @@ BRBCE,Bacabeira,-2.9833,-44.3,BR-MA,BR-MA,BR-MA,unlocode,unlocode,
 BRBCT,Benjamin Constant,-4.3667,-70.0167,BR-AM,BR-AM,BR-AM,unlocode,unlocode,
 BRBEA,Barreirinha,-2.7833,-57.0667,BR-AM,BR-AM,BR-AM,unlocode,unlocode,
 BRBEI,Beruri,-3.8833,-61.3667,BR-AM,BR-AM,BR-AM,unlocode,unlocode,
-BRBEL,Belém,-1.45,-48.4833,BR-PA,BR-PA,BR-PA,unlocode,unlocode,Para
+BRBEL,Belém,-1.45,-48.4833,BR-PA,BR-PA,BR-PA,unlocode,unlocode,
 BRBIR,Bariri,-22.0667,-48.7333,BR-SP,BR-SP,BR-SP,unlocode,unlocode,
 BRBLE,Belmonte,-15.85,-38.8667,BR-BA,BR-BA,BR-BA,unlocode,unlocode,
 BRBOB,Borba,-4.3833,-59.5833,BR-AM,BR-AM,BR-AM,unlocode,unlocode,
@@ -1468,7 +1468,7 @@ BRPWA,Porto Acre,-9.6,-67.5333,BR-AC,BR-AC,BR-AC,unlocode,unlocode,
 BRPWR,Porto Walter,-8.25,-72.7333,BR-AC,BR-AC,BR-AC,unlocode,unlocode,
 BRRBR,Rio Branco,-9.9667,-67.8,BR-AC,BR-AC,BR-AC,unlocode,unlocode,
 BRRCH,Barra do Riacho Pt / Aracruz,-19.85,-40.0667,BR-ES,BR-ES,BR-ES,unlocode,unlocode,
-BRREC,Recife,-8.05,-34.8833,BR-PE,BR-PE,BR-PE,unlocode,unlocode,Pernambuco
+BRREC,Recife,-8.05,-34.8833,BR-PE,BR-PE,BR-PE,unlocode,unlocode,
 BRRGC,Araguacema,-8.8,-49.55,BR-TO,BR-TO,BR-TO,unlocode,unlocode,
 BRRIG,Rio Grande,-32.05,-52.0833,BR-RS,BR-RS,BR-RS,unlocode,unlocode,San Pedro Do Sul|Sao Pedro Do Sul
 BRRIO,Rio de Janeiro,-22.8667,-43.2167,BR-RJ,BR-RJ,BR-RJ,unlocode,unlocode,
@@ -1688,7 +1688,7 @@ CACOR,Corunna,,,CA-ON,CA-ON,CA-ON,unlocode,,
 CACOU,Courtenay,,,CA-BC,CA-BC,CA-BC,unlocode,,
 CACOX,Comox,49.6667,-124.9167,CA-BC,CA-BC,CA-BC,unlocode,wpi,
 CACPB,Campobello,,,CA-NB,CA-NB,CA-NB,unlocode,,
-CACPT,Canaport,45.2,-65.9833,CA-NB,CA-NB,CA-NB,unlocode,wpi,St. John
+CACPT,Canaport,45.2,-65.9833,CA-NB,CA-NB,CA-NB,unlocode,wpi,
 CACPY,Cape Ray,47.6333,-59.3,CA-NL,CA-NL,CA-NL,unlocode,unlocode,
 CACQ5,Preissac,48.4,-78.3667,CA-QC,CA-QC,CA-QC,unlocode,unlocode,
 CACQA,Coteau du Lac,45.25,-74.2,CA-QC,CA-QC,CA-QC,unlocode,wpi,
@@ -2087,7 +2087,7 @@ CATHA,Thamesford,43.05,-80.9833,CA-ON,CA-ON,CA-ON,unlocode,unlocode,
 CATHD,Thorold,43.0833,-79.7167,CA-ON,CA-ON,CA-ON,unlocode,wpi,
 CATHH,Three Hills,51.7,-113.2667,CA-AB,CA-AB,CA-AB,unlocode,unlocode,
 CATHL,Thornhill,,,CA-ON,CA-ON,CA-ON,unlocode,,
-CATHU,Thunder Bay,48.4,-89.2333,CA-ON,CA-ON,CA-ON,unlocode,wpi,Fort William|Port Arthur
+CATHU,Thunder Bay,48.4,-89.2333,CA-ON,CA-ON,CA-ON,unlocode,wpi,
 CATJN,Tring Jonction,46.2667,-71.0,CA-QC,CA-QC,CA-QC,unlocode,unlocode,
 CATLB,Tilbury Is,,,CA-BC,CA-BC,CA-BC,unlocode,,
 CATNG,Tingwick,,,CA-QC,CA-QC,CA-QC,unlocode,,
@@ -2160,11 +2160,11 @@ CDMKL,Makala,2.8167,24.7167,,,,,unlocode,
 CFTOG,Togo,5.5,21.7167,CF-BK,CF-BK,CF-BK,boundaries,unlocode,
 CGDJE,Djeno Terminal,-4.9333,11.9,CG-5,CG-5,CG-5,boundaries,wpi,
 CGMOS,Mossaka,-1.2167,16.8,CG-8,CG-8,CG-8,boundaries,unlocode,
-CGNKO,N'Kossa Terminal,-5.2333,11.6,,,,,unlocode,FSO Nkossa II
+CGNKO,N'Kossa Terminal,-5.2333,11.6,,,,,unlocode,
 CGOUE,Ouesso,,,,,,,,
 CGOYO,Oyo,-1.1667,15.9667,CG-8,CG-8,CG-8,boundaries,unlocode,
 CGPNR,Pointe Noire,-4.8,11.85,CG-16,CG-16,CG-16,unlocode,unlocode,Balck Point Bay
-CGYOM,Yombo,-2.9333,12.7,CG-9,CG-9,CG-9,unlocode,unlocode,FPSO La Noumbi
+CGYOM,Yombo,-2.9333,12.7,CG-9,CG-9,CG-9,unlocode,unlocode,
 CHBA8,Ballwil,47.15,8.3167,CH-LU,CH-LU,CH-LU,unlocode,unlocode,
 CHBIB,Biberist,47.1833,7.5667,CH-SO,CH-SO,CH-SO,unlocode,unlocode,
 CHBIR,Birrwil,47.2833,8.2,CH-AG,CH-AG,CH-AG,unlocode,unlocode,
@@ -2253,7 +2253,7 @@ CKMGS,Mangaia,,,,,,,,
 CKMOI,Mitiaro Island,,,,,,,,
 CKRAR,Rarotonga,,,,,,,,
 CLACH,Achao,-42.45,-73.5167,CL-LL,CL-LL,CL-LL,unlocode,unlocode,
-CLANF,Antofagasta,-23.6333,-70.3833,CL-AN,CL-AN,CL-AN,unlocode,unlocode,Mejillones
+CLANF,Antofagasta,-23.6333,-70.3833,CL-AN,CL-AN,CL-AN,unlocode,unlocode,
 CLARA,Arauco,-37.25,-73.3167,CL-BI,CL-BI,CL-BI,unlocode,unlocode,
 CLARI,Arica,-18.4833,-70.3167,CL-AP,CL-AP,CL-AP,unlocode,unlocode,
 CLAYA,Ayacara,-42.3,-72.7833,CL-LL,CL-LL,CL-LL,unlocode,unlocode,
@@ -2315,7 +2315,7 @@ CLPAN,Panguipulli,-39.6333,-72.3333,CL-LL,CL-LL,CL-LL,unlocode,unlocode,
 CLPAT,Puerto Patache,-20.8,-70.2,CL-TA,CL-TA,CL-TA,unlocode,unlocode,
 CLPCH,Puerto Chacabuco,-45.4833,-72.8333,CL-AI,CL-AI,CL-AI,unlocode,unlocode,
 CLPCK,Pecket,-52.95,-71.1833,CL-MA,CL-MA,CL-MA,unlocode,unlocode,
-CLPEO,Penco,-36.7167,-72.9833,CL-BI,CL-BI,CL-BI,unlocode,unlocode,Tome
+CLPEO,Penco,-36.7167,-72.9833,CL-BI,CL-BI,CL-BI,unlocode,unlocode,
 CLPGA,Pargua,-41.8,-73.4333,CL-LL,CL-LL,CL-LL,unlocode,unlocode,
 CLPIS,Pisagua,-19.6,-70.2,CL-TA,CL-TA,CL-TA,unlocode,unlocode,
 CLPMC,Puerto Montt,-41.4667,-72.95,CL-LL,CL-LL,CL-LL,unlocode,unlocode,
@@ -2360,7 +2360,7 @@ CLZUD,Ancud,-41.85,-73.8333,CL-LL,CL-LL,CL-LL,unlocode,unlocode,
 CMDLA,Douala,4.05,9.6833,CM-LT,CM-LT,CM-LT,boundaries,wpi,Duala
 CMGOU,Garoua,9.3,13.4,CM-NO,CM-NO,CM-NO,unlocode,unlocode,
 CMKBI,Kribi,,,,,,,,
-CMKOL,Kole Terminal,4.25,8.55,,,,,wpi,FPSO Massango
+CMKOL,Kole Terminal,4.25,8.55,,,,,wpi,
 CMKUM,Kumba,4.6333,9.4333,CM-SW,CM-SW,CM-SW,unlocode,unlocode,
 CMLIM,Limbe,4.0167,9.2167,CM-SW,CM-SW,CM-SW,boundaries,unlocode,
 CMLIT,Limboh Terminal,3.9833,9.15,CM-SW,CM-SW,CM-SW,boundaries,wpi,
@@ -2430,7 +2430,7 @@ CNCJI,Chengjiang,,,CN-JS,CN-JS,CN-JS,unlocode,,
 CNCLJ,Chenglingji Pt,29.4333,113.15,CN-HN,CN-HN,CN-HN,unlocode,unlocode,
 CNCNG,Chengde,40.9667,117.9333,CN-HE,CN-HE,CN-HE,unlocode,unlocode,
 CNCNX,Xinxu,,,CN-GD,CN-GD,CN-GD,unlocode,,
-CNCOZ,Chaozhou,23.6667,116.6333,CN-GD,CN-GD,CN-GD,unlocode,unlocode,Sanbaimen
+CNCOZ,Chaozhou,23.6667,116.6333,CN-GD,CN-GD,CN-GD,unlocode,unlocode,
 CNCQI,Chongqing,29.5833,106.55,CN-CQ,CN-CQ,CN-CQ,unlocode,unlocode,
 CNCSH,Changsha,28.2,112.9833,CN-HN,CN-HN,CN-HN,unlocode,unlocode,
 CNCSJ,Changshou,,,CN-JS,CN-JS,CN-JS,unlocode,,
@@ -2532,7 +2532,7 @@ CNFZG,Fuzhou Pt,26.0833,119.3,CN-FJ,CN-FJ,CN-FJ,unlocode,wpi,Foochou|Foochow
 CNFZH,Fuzhou,26.0833,119.3,CN-FJ,CN-FJ,CN-FJ,unlocode,unlocode,
 CNFZL,Dantou,,,CN-FJ,CN-FJ,CN-FJ,unlocode,,
 CNFZX,Fuzhouxingang,,,CN-FJ,CN-FJ,CN-FJ,unlocode,,
-CNGAO,Gaogang,32.3,119.85,CN-JS,CN-JS,CN-JS,unlocode,unlocode,Taizhou
+CNGAO,Gaogang,32.3,119.85,CN-JS,CN-JS,CN-JS,unlocode,unlocode,
 CNGBG,Guanbu Pt,,,CN-GD,CN-GD,CN-GD,unlocode,,
 CNGBT,Guangbaotong,,,CN-GD,CN-GD,CN-GD,unlocode,,
 CNGCH,Guancheng,,,CN-GD,CN-GD,CN-GD,unlocode,,
@@ -2588,7 +2588,7 @@ CNHLE,Hulan Ergi,,,CN-HL,CN-HL,CN-HL,unlocode,,
 CNHLI,Huailai,40.3667,115.5,CN-HE,CN-HE,CN-HE,unlocode,unlocode,
 CNHLJ,Jinghai,23.0333,116.3,CN-GD,CN-GD,CN-GD,unlocode,unlocode,
 CNHLW,Heliwei,,,CN-GD,CN-GD,CN-GD,unlocode,,
-CNHME,Haimen,28.6667,121.4333,CN-ZJ,CN-ZJ,CN-ZJ,unlocode,unlocode,Taizhou
+CNHME,Haimen,28.6667,121.4333,CN-ZJ,CN-ZJ,CN-ZJ,unlocode,unlocode,
 CNHMN,Humen Pt,22.8333,113.6667,CN-GD,CN-GD,CN-GD,unlocode,unlocode,
 CNHNH,Huanghua,,,CN-ZJ,CN-ZJ,CN-ZJ,unlocode,,
 CNHNI,Hengli,23.1667,114.6167,CN-GD,CN-GD,CN-GD,unlocode,unlocode,
@@ -3120,7 +3120,7 @@ CNZPG,zhengpugang Pt,31.6333,118.3833,CN-AH,CN-AH,CN-AH,unlocode,unlocode,
 CNZPI,Zhaoping,,,CN-GD,CN-GD,CN-GD,unlocode,,
 CNZPK,Zhapoyouku,,,CN-GD,CN-GD,CN-GD,unlocode,,
 CNZPO,Zhapo,21.5667,111.85,CN-GD,CN-GD,CN-GD,unlocode,unlocode,
-CNZPU,Zhapu Pt,30.5833,121.0833,CN-ZJ,CN-ZJ,CN-ZJ,unlocode,unlocode,Chapu|Hangzhou
+CNZPU,Zhapu Pt,30.5833,121.0833,CN-ZJ,CN-ZJ,CN-ZJ,unlocode,unlocode,Chapu
 CNZQG,Zhaoqing,23.05,112.45,CN-GD,CN-GD,CN-GD,unlocode,unlocode,
 CNZQJ,Zhouqujia,,,CN-AH,CN-AH,CN-AH,unlocode,,
 CNZSM,Shima,,,CN-FJ,CN-FJ,CN-FJ,unlocode,,
@@ -3189,7 +3189,7 @@ CRGUA,Guatuso,10.6667,-84.8167,CR-C,CR-C,CR-C,unlocode,unlocode,
 CRHSA,Horluetas/Sarapiqui,10.4833,-84.0167,CR-H,CR-H,CR-H,unlocode,unlocode,
 CRJIC,Jicaral,9.9667,-85.1167,CR-P,CR-P,CR-P,unlocode,unlocode,
 CRLAF,La Fortuna,10.4833,-84.65,CR-A,CR-A,CR-A,unlocode,unlocode,
-CRLIO,Puerto Limón,10.0,-83.0333,CR-L,CR-L,CR-L,unlocode,unlocode,Limon|Puerto Moin
+CRLIO,Puerto Limón,10.0,-83.0333,CR-L,CR-L,CR-L,unlocode,unlocode,Limon
 CRMAT,Matina,,,CR-L,CR-L,CR-L,unlocode,,
 CRMOB,Moín,10.0,-83.0833,CR-L,CR-L,CR-L,unlocode,unlocode,
 CRMTZ,San Marcos de Tarrazu,9.6667,-84.0333,CR-SJ,CR-SJ,CR-SJ,unlocode,unlocode,
@@ -3202,7 +3202,7 @@ CRPAR,Parrita,9.5167,-84.3167,CR-P,CR-P,CR-P,unlocode,unlocode,
 CRPAS,Puntarenas,9.9667,-84.8333,CR-P,CR-P,CR-P,unlocode,unlocode,Punta Arenas
 CRPEN,Penshurst,,,CR-L,CR-L,CR-L,unlocode,,
 CRPIT,Pital,9.7333,-85.45,CR-P,CR-P,CR-P,unlocode,unlocode,
-CRPMN,Puerto Moin,10.0,-83.0833,CR-L,CR-L,CR-L,unlocode,wpi,Puerto Limon
+CRPMN,Puerto Moin,10.0,-83.0833,CR-L,CR-L,CR-L,unlocode,wpi,
 CRPOA,Poas,10.0333,-84.3333,CR-A,CR-A,CR-A,unlocode,unlocode,
 CRPTC,Puerto Caldera,9.95,-84.7167,CR-P,CR-P,CR-P,unlocode,unlocode,
 CRPUM,Punta Morales,10.0667,-84.9667,CR-P,CR-P,CR-P,unlocode,unlocode,
@@ -3245,17 +3245,17 @@ CUGUB,Guantanamo Bay,19.9833,-75.1333,CU-14,CU-14,CU-14,boundaries,wpi,Deseo|El 
 CUGYB,Guayabal,20.7,-77.6167,CU-10,CU-10,CU-10,boundaries,wpi,
 CUHAV,La Habana,23.1167,-82.35,CU-03,CU-03,CU-03,unlocode,unlocode,Havana
 CUICR,Nicaro,20.7167,-75.55,CU-11,CU-11,CU-11,boundaries,wpi,
-CUIDS,Isabela de Sagua,22.95,-80.0,CU-05,CU-05,CU-05,boundaries,wpi,Isabela|La Isabella|Sagua La Grande
+CUIDS,Isabela de Sagua,22.95,-80.0,CU-05,CU-05,CU-05,boundaries,wpi,Isabela|La Isabella
 CUJUC,Júcaro,21.6333,-78.85,CU-08,CU-08,CU-08,boundaries,unlocode,
 CUMAR,Mariel,23.0,-82.75,CU-15,CU-15,CU-15,boundaries,unlocode,Boca Del Mariel
 CUMEL,Media Luna,20.15,-77.4333,CU-12,CU-12,CU-12,boundaries,unlocode,
 CUMNT,Puerto Manatí,21.3667,-76.8333,CU-10,CU-10,CU-10,boundaries,unlocode,
 CUMZO,Manzanillo,20.35,-77.1167,CU-12,CU-12,CU-12,boundaries,wpi,
 CUNIQ,Niquero,20.05,-77.5833,CU-12,CU-12,CU-12,boundaries,unlocode,
-CUNVT,Nuevitas,21.55,-77.2667,CU-09,CU-09,CU-09,boundaries,unlocode,Pastelillo|Puerto Tarafa
+CUNVT,Nuevitas,21.55,-77.2667,CU-09,CU-09,CU-09,boundaries,unlocode,Pastelillo
 CUPAL,Palo Alto,21.6,-78.9667,CU-07,CU-07,CU-07,boundaries,unlocode,
 CUPAS,Puerto de Pastelillo,21.55,-77.2167,CU-09,CU-09,CU-09,boundaries,unlocode,
-CUPPA,Puerto Padre,21.2,-76.6,CU-10,CU-10,CU-10,boundaries,unlocode,Bahia De Manati|Cayo Juan Claro|Puerto Manati
+CUPPA,Puerto Padre,21.2,-76.6,CU-10,CU-10,CU-10,boundaries,unlocode,Bahia De Manati|Cayo Juan Claro
 CUPTA,Puerto Tarafa,21.5667,-77.25,CU-09,CU-09,CU-09,boundaries,unlocode,
 CUQCO,Colon,,,,,,,,
 CUQMA,Matanzas,23.05,-81.55,CU-04,CU-04,CU-04,boundaries,wpi,
@@ -3266,11 +3266,11 @@ CUSDT,Sagua de Tánamo,20.5833,-75.2333,CU-11,CU-11,CU-11,unlocode,unlocode,Cayo
 CUSNU,Santa Clara,,,,,,,,
 CUTDZ,Tunas de Zaza,21.6333,-79.55,CU-07,CU-07,CU-07,boundaries,unlocode,
 CUVIT,Puerto da Vita,21.0833,-75.9667,CU-11,CU-11,CU-11,boundaries,unlocode,
-CVGRA,Porto Grande,16.8667,-25.0,CV-SV,CV-B,CV-SV CV-B,unlocode,unlocode,Mindelo
+CVGRA,Porto Grande,16.8667,-25.0,CV-SV,CV-B,CV-SV CV-B,unlocode,unlocode,
 CVMIN,Mindelo,16.8833,-25.0,CV-SV,CV-B,CV-SV CV-B,unlocode,unlocode,
 CVRAI,Praia,14.9167,-23.5167,CV-PR,CV-S,CV-PR CV-S,boundaries,wpi,
 CVVXE,Sao Vicente,,,,,,,,
-CWBUB,Bullenbaai,12.1667,-69.0,,,,,unlocode,Curacao Oil Terminal
+CWBUB,Bullenbaai,12.1667,-69.0,,,,,unlocode,
 CWCRB,Caracas Baai,12.0667,-68.85,,,,,unlocode,Caracas Bay
 CWCUR,Curaçao,12.1667,-69.0,,,,,unlocode,
 CWFUI,Fuikbaai,12.05,-68.8167,,,,,unlocode,
@@ -4430,7 +4430,7 @@ DKNTD,Nysted,54.6667,11.7333,DK-85,DK-85,DK-85,boundaries,wpi,
 DKNUD,Næssund,,,,,,,,
 DKNVD,Næstved,55.2333,11.7667,DK-85,DK-85,DK-85,unlocode,unlocode,
 DKNYB,Nyborg Lystbådehavn,55.3,10.7833,DK-83,DK-83,DK-83,unlocode,unlocode,
-DKNYF,Nykøbing Falster,54.7667,11.8833,DK-85,DK-85,DK-85,unlocode,unlocode,Falster
+DKNYF,Nykøbing Falster,54.7667,11.8833,DK-85,DK-85,DK-85,unlocode,unlocode,
 DKNYM,Nykøbing Mors,56.7833,8.85,DK-81,DK-81,DK-81,unlocode,unlocode,
 DKODE,Odense,55.4167,10.3833,DK-83,DK-83,DK-83,boundaries,wpi,
 DKOMO,Omø,,,,,,,,
@@ -4462,7 +4462,7 @@ DKSEO,Sejerø,,,,,,,,
 DKSF2,Store Fuglede,55.5833,11.25,DK-85,DK-85,DK-85,unlocode,unlocode,
 DKSGD,Sønderborg,54.9,9.7833,DK-83,DK-83,DK-83,unlocode,unlocode,
 DKSH6,Store Heddinge,55.3167,12.4167,DK-85,DK-85,DK-85,unlocode,unlocode,
-DKSIT,Stigsnaes Inter Terminal,55.2,11.2333,DK-85,DK-85,DK-85,unlocode,unlocode,Stigsnaes
+DKSIT,Stigsnaes Inter Terminal,55.2,11.2333,DK-85,DK-85,DK-85,unlocode,unlocode,
 DKSK3,Skodsborg,55.8167,12.5667,DK-84,DK-84,DK-84,unlocode,unlocode,
 DKSKA,Skagen,57.7167,10.6,DK-81,DK-81,DK-81,boundaries,wpi,
 DKSKH,Skovshoved,55.7667,12.6,DK-84,DK-84,DK-84,unlocode,unlocode,
@@ -4538,7 +4538,7 @@ DOCBJ,Cabo Rojo,17.9167,-71.65,DO-16,DO-38,DO-16 DO-38,boundaries,wpi,
 DOCDC,Casa de Campo,18.4,-68.9,DO-12,DO-42,DO-12 DO-42,unlocode,unlocode,
 DOHAI,Rio Haina,,,,,,,,
 DOHIG,Higüey,18.45,-70.2667,DO-21,DO-41,DO-21 DO-41,unlocode,unlocode,
-DOINA,Bajos de Haina,18.4167,-70.0333,DO-21,DO-41,DO-21 DO-41,unlocode,unlocode,Haina|Rio Haina
+DOINA,Bajos de Haina,18.4167,-70.0333,DO-21,DO-41,DO-21 DO-41,unlocode,unlocode,Haina
 DOLRM,La Romana,18.4167,-68.9667,DO-12,DO-42,DO-12 DO-42,boundaries,wpi,
 DOMAN,Manzanillo,19.7,-71.75,DO-15,DO-34,DO-15 DO-34,boundaries,unlocode,
 DOOCO,Ocoa Bay,18.6167,-71.0833,DO-02,DO-41,DO-02 DO-41,boundaries,unlocode,
@@ -4546,7 +4546,7 @@ DOPAL,Puerto Palenque,18.2333,-70.15,DO-21,DO-41,DO-21 DO-41,boundaries,unlocode
 DOPDR,Pedernales,,,,,,,,
 DOPOP,Puerto Plata,19.8,-70.7,DO-18,DO-35,DO-18 DO-35,boundaries,wpi,
 DOPUO,Puerto Libertador,,,,,,,,
-DOPVA,Puerto Viejo de Azua,18.3333,-70.8333,DO-02,DO-41,DO-02 DO-41,boundaries,unlocode,Azua|Tortuguero
+DOPVA,Puerto Viejo de Azua,18.3333,-70.8333,DO-02,DO-41,DO-02 DO-41,boundaries,unlocode,Tortuguero
 DOSDQ,Santo Domingo,18.4667,-69.9,DO-01,DO-40,DO-01 DO-40,unlocode,unlocode,Ciudad Trujillo
 DOSFN,San Francisco de Macorís,19.3,-70.25,DO-06,DO-33,DO-06 DO-33,boundaries,unlocode,
 DOSNX,Sabana de la Mar,19.0667,-69.3833,DO-30,DO-39,DO-30 DO-39,boundaries,unlocode,
@@ -4701,7 +4701,7 @@ EEMNV,Mõntu Väikelaevade Sadam,57.95,22.1167,EE-74,EE-74,EE-74,unlocode,unloco
 EEMRL,Merelaiu,58.3,24.0167,EE-68,EE-68,EE-68,unlocode,unlocode,
 EEMRS,Meeruse,59.45,24.6667,EE-37,EE-37,EE-37,unlocode,unlocode,
 EEMTV,Mustvee,58.85,26.95,EE-50,EE-50,EE-50,unlocode,unlocode,
-EEMUG,Muuga,59.5,24.9667,EE-37,EE-37,EE-37,unlocode,unlocode,"Muuga Sadam, Novotallinsky"
+EEMUG,Muuga,59.5,24.9667,EE-37,EE-37,EE-37,unlocode,unlocode,Muuga Sadam|Novotallinsky
 EEMUN,Munalaiu,58.2333,24.1167,EE-68,EE-68,EE-68,unlocode,unlocode,
 EEMUR,Muratsi Sadam,58.2333,22.5833,EE-74,EE-74,EE-74,unlocode,unlocode,
 EENAI,Naissaare,59.55,24.55,EE-37,EE-37,EE-37,unlocode,unlocode,
@@ -4727,7 +4727,7 @@ EEPAR,Patareisadam,59.45,24.75,EE-37,EE-37,EE-37,unlocode,unlocode,
 EEPAS,Paljassaare,59.45,24.7,EE-37,EE-37,EE-37,unlocode,unlocode,
 EEPHL,Pihelgalaiu,58.45,23.6667,EE-68,EE-68,EE-68,unlocode,unlocode,
 EEPIR,Pirita,59.4667,24.8167,EE-37,EE-37,EE-37,unlocode,unlocode,
-EEPLN,Paldiski Põhjasadam,59.35,24.05,EE-37,EE-37,EE-37,unlocode,unlocode,"Paldiski Pohjasadam,  Paldiski Sadamate AS"
+EEPLN,Paldiski Põhjasadam,59.35,24.05,EE-37,EE-37,EE-37,unlocode,unlocode,
 EEPLS,Paldiski Lõunasadam,59.3333,24.0833,EE-37,EE-37,EE-37,unlocode,unlocode,
 EEPRE,Piirissaare Sadam,58.3833,27.5167,EE-79,EE-79,EE-79,unlocode,unlocode,
 EEPRI,Peerni,58.25,24.1333,EE-68,EE-68,EE-68,unlocode,unlocode,
@@ -5016,7 +5016,7 @@ ESFUE,Puerto del Rosario-Fuerteventura,28.5,-13.85,ES-GC,ES-CN,ES-GC ES-CN,overr
 ESGAN,Gandía,38.9667,-0.1833,ES-V,ES-VC,ES-V ES-VC,unlocode,unlocode,
 ESGAR,Garrucha,37.1833,-1.8167,ES-AL,ES-AN,ES-AL ES-AN,override,wpi,
 ESGCR,Santa Maria de Guia de Gran Canaria,,,ES-GC,ES-CN,ES-GC ES-CN,unlocode,,
-ESGCS,El Grao,39.9667,0.0167,ES-CS,ES-VC,ES-CS ES-VC,unlocode,unlocode,Castellon De La Plana
+ESGCS,El Grao,39.9667,0.0167,ES-CS,ES-VC,ES-CS ES-VC,unlocode,unlocode,
 ESGDL,Godella,,,ES-V,ES-VC,ES-V ES-VC,unlocode,,
 ESGDM,Salvaterra de Mino,,,ES-PO,ES-GA,ES-PO ES-GA,override,,
 ESGDR,Grajal de Ribera,42.1833,-5.6167,ES-LE,ES-CL,ES-LE ES-CL,unlocode,unlocode,
@@ -5353,7 +5353,7 @@ FIJUS,Jussaro,59.8167,23.5667,,,,,unlocode,Stor Jussaro
 FIJYV,Jyväskylä,62.25,25.7333,FI-08,FI-08,FI-08,unlocode,unlocode,
 FIKAN,Kantlax (Kaitalahti),61.75,23.7167,FI-12,FI-12,FI-12,unlocode,unlocode,Kaitalahti
 FIKAS,Kaskinen (Kaskö),60.6167,21.8833,FI-19,FI-19,FI-19,unlocode,unlocode,Kasko
-FIKEM,Kemi/Torneå (Kemi/Tornio),65.7333,24.5667,FI-10,FI-10,FI-10,unlocode,unlocode,Kemi/Tornio
+FIKEM,Kemi/Torneå (Kemi/Tornio),65.7333,24.5667,FI-10,FI-10,FI-10,unlocode,unlocode,
 FIKES,Kesälahti,61.8833,29.8333,FI-13,FI-13,FI-13,unlocode,unlocode,
 FIKIM,Kemiö (Kimito),60.1667,22.75,FI-19,FI-19,FI-19,unlocode,unlocode,Kimito
 FIKIR,Kirkniemi,60.1667,23.95,FI-18,FI-18,FI-18,unlocode,unlocode,
@@ -5443,7 +5443,7 @@ FISIP,Sibbo (Sipoo),60.3667,25.2667,FI-18,FI-18,FI-18,unlocode,unlocode,Sipoo
 FISKB,Skogby,,,FI-18,FI-18,FI-18,unlocode,,
 FISKI,Skinnarvik,60.1333,22.4667,FI-19,FI-19,FI-19,unlocode,unlocode,
 FISKU,Skutviken,59.9333,23.3833,FI-18,FI-18,FI-18,boundaries,unlocode,
-FISKV,Kilpilahti (Sköldvik),60.3,25.55,FI-18,FI-18,FI-18,unlocode,unlocode,Borga|Skoldvik
+FISKV,Kilpilahti (Sköldvik),60.3,25.55,FI-18,FI-18,FI-18,unlocode,unlocode,Skoldvik
 FISLY,Siltakylä (Broby),60.5,26.75,FI-09,FI-09,FI-09,unlocode,unlocode,Broby
 FISMA,Summa,60.5333,27.1167,FI-09,FI-09,FI-09,unlocode,unlocode,
 FISNA,Snappertuna,60.0,23.65,FI-18,FI-18,FI-18,unlocode,unlocode,
@@ -5457,11 +5457,11 @@ FITEI,Teijo,,,FI-19,FI-19,FI-19,unlocode,,
 FITES,Tessvär,60.05,22.9,FI-19,FI-19,FI-19,unlocode,unlocode,
 FITHK,Tahkoluoto,61.6333,21.4167,FI-17,FI-17,FI-17,boundaries,unlocode,
 FITJO,Tessjö (Tesjoki),60.4667,26.3167,FI-18,FI-18,FI-18,unlocode,unlocode,Tesjoki
-FITKU,Turku (Åbo),60.45,22.2833,FI-19,FI-19,FI-19,unlocode,unlocode,Åbo
+FITKU,Turku (Åbo),60.45,22.2833,FI-19,FI-19,FI-19,unlocode,unlocode,
 FITMP,Tammerfors (Tampere),61.5,23.75,FI-17,FI-17,FI-17,unlocode,unlocode,Tampere
 FITOJ,Töjby,62.65,21.1667,FI-12,FI-12,FI-12,unlocode,unlocode,
 FITOK,Tolkis (Tolkkinen),60.3333,25.5833,FI-18,FI-18,FI-18,unlocode,unlocode,Tolkkinen
-FITOR,Torneå (Tornio),65.85,24.1833,FI-10,FI-10,FI-10,unlocode,unlocode,Roytta|Tornio
+FITOR,Torneå (Tornio),65.85,24.1833,FI-10,FI-10,FI-10,unlocode,unlocode,Tornio
 FITOT,Tottesund,63.2333,22.05,FI-12,FI-12,FI-12,unlocode,unlocode,
 FITSD,Tervsund,60.25,22.3167,FI-19,FI-19,FI-19,boundaries,unlocode,
 FITVA,Tvärminne,59.8333,23.1833,FI-18,FI-18,FI-18,unlocode,unlocode,
@@ -5493,7 +5493,7 @@ FJELL,Ellington Wharf,-17.35,178.2167,FJ-W,FJ-W,FJ-W,boundaries,unlocode,
 FJLBS,Labasa,-16.4167,179.3833,FJ-07,FJ-N,FJ-07 FJ-N,unlocode,unlocode,
 FJLEV,Levuka,-17.6833,178.8333,FJ-06,FJ-E,FJ-06 FJ-E,unlocode,unlocode,
 FJLTK,Lautoka,-17.6167,177.45,FJ-01,FJ-W,FJ-01 FJ-W,unlocode,unlocode,
-FJMAL,Malau (Labasa),-16.3667,179.3833,FJ-N,FJ-N,FJ-N,boundaries,unlocode,Labasa
+FJMAL,Malau (Labasa),-16.3667,179.3833,FJ-N,FJ-N,FJ-N,boundaries,unlocode,
 FJMOM,Momi,-17.9167,177.2833,FJ-W,FJ-W,FJ-W,boundaries,unlocode,
 FJNAM,Nambouwalu,-16.9833,178.7,FJ-N,FJ-N,FJ-N,boundaries,unlocode,
 FJRTA,Rotuma,,,,,,,,
@@ -5538,7 +5538,7 @@ FOSTR,Strendur,62.1167,-6.75,,,,,unlocode,
 FOSYN,Streymnes,62.2,-7.0167,,,,,unlocode,
 FOTHO,Thorshavn,62.0167,-6.7667,,,,,unlocode,
 FOTOF,Toftir,62.1,-6.7333,,,,,unlocode,
-FOTOR,Tórshavn,62.1667,-65.0,,,,,unlocode,Thorshavn
+FOTOR,Tórshavn,62.1667,-65.0,,,,,unlocode,
 FOTVO,Tvoroyri,61.55,-6.8,,,,,unlocode,Tverra
 FOVAG,Vágur,61.4667,-6.8167,,,,,unlocode,
 FOVES,Vestmanhavn,62.15,-7.1667,,,,,wpi,
@@ -5658,7 +5658,7 @@ FRCDX,Capendu,43.1833,2.55,FR-11,FR-OCC,FR-11 FR-OCC,unlocode,unlocode,
 FRCEQ,Cannes,43.55,7.0167,FR-06,FR-PAC,FR-06 FR-PAC,unlocode,unlocode,
 FRCER,Cherbourg-en-Cotentin,49.6333,-1.6167,FR-50,FR-NOR,FR-50 FR-NOR,unlocode,unlocode,
 FRCFG,Châteauneuf-le-Rouge,43.4833,5.5667,FR-13,FR-PAC,FR-13 FR-PAC,unlocode,unlocode,
-FRCFR,Caen,49.1833,-0.3667,FR-14,FR-NOR,FR-14 FR-NOR,unlocode,unlocode,Ouistreham
+FRCFR,Caen,49.1833,-0.3667,FR-14,FR-NOR,FR-14 FR-NOR,unlocode,unlocode,
 FRCGF,Le Sourn,48.05,-2.9833,FR-56,FR-BRE,FR-56 FR-BRE,unlocode,unlocode,
 FRCHM,Charleville-Mézières,49.7667,4.7167,FR-08,FR-GES,FR-08 FR-GES,unlocode,unlocode,
 FRCIJ,Le Cailar,43.6667,4.2333,FR-30,FR-OCC,FR-30 FR-OCC,unlocode,unlocode,
@@ -6043,7 +6043,7 @@ FRPAR,Paris,48.85,2.35,FR-75C,FR-IDF,FR-75C FR-IDF,unlocode,unlocode,
 FRPBF,Paimbuf,47.2833,-2.0167,FR-44,FR-PDL,FR-44 FR-PDL,unlocode,unlocode,
 FRPC6,Saint-Nicolas,50.3,2.7667,FR-62,FR-HDF,FR-62 FR-HDF,unlocode,unlocode,
 FRPD2,Plombières-lès-Dijon,47.3333,4.9667,FR-21,FR-BFC,FR-21 FR-BFC,unlocode,unlocode,
-FRPDB,Port-de-Bouc,43.4,4.9833,FR-13,FR-PAC,FR-13 FR-PAC,unlocode,unlocode,Lavera
+FRPDB,Port-de-Bouc,43.4,4.9833,FR-13,FR-PAC,FR-13 FR-PAC,unlocode,unlocode,
 FRPDF,Pontevès,43.5667,6.05,FR-83,FR-PAC,FR-83 FR-PAC,unlocode,unlocode,
 FRPDH,Port-des-Barques,45.95,-0.9167,FR-17,FR-NAQ,FR-17 FR-NAQ,unlocode,unlocode,
 FRPDU,Saint-Pierre-d'Autils,49.1167,1.4167,FR-27,FR-NOR,FR-27 FR-NOR,unlocode,unlocode,
@@ -6359,12 +6359,12 @@ FRZXN,Monein,43.3167,-0.5833,FR-64,FR-NAQ,FR-64 FR-NAQ,unlocode,unlocode,
 FRZYL,Lazenay,47.0667,2.0667,FR-18,FR-CVL,FR-18 FR-CVL,unlocode,unlocode,
 FRZZU,Carnoules,43.3,6.1833,FR-83,FR-PAC,FR-83 FR-PAC,unlocode,unlocode,
 GACCB,Cocobeach,,,,,,,,
-GACLZ,Cap Lopez,-0.6333,8.7167,GA-8,GA-8,GA-8,boundaries,wpi,ELF Gabon Oil Terminal
+GACLZ,Cap Lopez,-0.6333,8.7167,GA-8,GA-8,GA-8,boundaries,wpi,
 GAEKU,Equata,-0.2167,9.3,GA-1,GA-1,GA-1,unlocode,unlocode,
 GAGAX,Gamba,-2.8333,10.0,GA-5,GA-5,GA-5,boundaries,wpi,
 GALBV,Libreville,0.3833,9.45,GA-1,GA-1,GA-1,boundaries,wpi,
 GALUC,Lucina,,,,,,,,
-GAMBY,M'bya Terminal,-3.8833,10.9333,,,,,wpi,FSO Mayumba
+GAMBY,M'bya Terminal,-3.8833,10.9333,,,,,wpi,
 GANYA,Nyanga,,,,,,,,
 GAOGU,Oguandjo Terminal,-1.5,8.9,,,,,unlocode,
 GAOWE,Owendo,0.2833,9.5,GA-1,GA-1,GA-1,boundaries,wpi,Port Ovendo
@@ -6372,7 +6372,7 @@ GAPOG,Port Gentil,-0.7,8.8,GA-8,GA-8,GA-8,boundaries,wpi,
 GB7TR,Norton,52.15,-2.1833,GB-WOR,GB-ENG,GB-WOR GB-ENG,unlocode,unlocode,
 GBABA,Aberaeron,52.25,-4.25,GB-CGN,GB-WLS,GB-CGN GB-WLS,unlocode,unlocode,
 GBABD,Aberdeen,57.1333,-2.1,GB-ABE,GB-SCT,GB-ABE GB-SCT,unlocode,unlocode,
-GBABF,Aberdyfi (Aberdovey),52.55,-4.0333,GB-GWN,GB-WLS,GB-GWN GB-WLS,unlocode,unlocode,Aberdovey
+GBABF,Aberdyfi (Aberdovey),52.55,-4.0333,GB-GWN,GB-WLS,GB-GWN GB-WLS,unlocode,unlocode,
 GBABJ,Saint Abbs,55.9,-2.1333,GB-SCB,GB-SCT,GB-SCB GB-SCT,unlocode,unlocode,
 GBABS,Aber Sôch (Abersoch),52.8167,-4.5,GB-GWN,GB-WLS,GB-GWN GB-WLS,unlocode,unlocode,Abersoch
 GBABV,Aberdovey,52.5333,-4.05,GB-GWN,GB-WLS,GB-GWN GB-WLS,unlocode,unlocode,
@@ -6380,7 +6380,7 @@ GBABW,Barmouth (Abermaw),52.7167,-4.05,GB-GWN,GB-WLS,GB-GWN GB-WLS,unlocode,unlo
 GBACA,Acharacle,54.7333,-5.7833,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode,unlocode,
 GBACB,Back,58.2667,-6.3167,GB-ELS,GB-SCT,GB-ELS GB-SCT,unlocode,unlocode,
 GBACE,Achiltibuie,58.0333,-5.3667,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode,unlocode,
-GBACV,Cove (Aberdeen),57.1,-2.0667,GB-ABD,GB-SCT,GB-ABD GB-SCT,unlocode,unlocode,Aberdeen
+GBACV,Cove (Aberdeen),57.1,-2.0667,GB-ABD,GB-SCT,GB-ABD GB-SCT,unlocode,unlocode,
 GBADF,Ardfern,56.1833,-5.5333,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode,unlocode,
 GBADK,Ardkeen,54.4167,-5.5167,GB-NMD,GB-NIR,GB-NMD GB-NIR,unlocode,unlocode,
 GBADM,Aird Mhor (Ardmhor),57.0167,-7.4167,GB-ELS,GB-SCT,GB-ELS GB-SCT,unlocode,unlocode,Ardmhor
@@ -6630,7 +6630,7 @@ GBCMP,Crombie,56.05,-3.5333,GB-FIF,GB-SCT,GB-FIF GB-SCT,unlocode,unlocode,
 GBCMS,"Cumbrae Slip, Great Cumbrae",55.7833,-4.9,GB-NAY,GB-SCT,GB-NAY GB-SCT,unlocode,unlocode,
 GBCNA,"Canna, Inner Hebrides",57.05,-6.5,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode,unlocode,
 GBCNC,Crinan,56.0833,-5.5667,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode,unlocode,
-GBCNM,Central Mainland (Shetland),60.3167,-1.2667,GB-ZET,GB-SCT,GB-ZET GB-SCT,unlocode,unlocode,Shetland
+GBCNM,Central Mainland (Shetland),60.3167,-1.2667,GB-ZET,GB-SCT,GB-ZET GB-SCT,unlocode,unlocode,
 GBCNP,Saint Catherine's Point,50.5667,-1.3,GB-IOW,GB-ENG,GB-IOW GB-ENG,unlocode,unlocode,
 GBCNU,Craignure,56.4667,-5.7167,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode,unlocode,
 GBCNV,Caernarfon,53.15,-4.2667,GB-GWN,GB-WLS,GB-GWN GB-WLS,unlocode,wpi,Carnarvon
@@ -6674,7 +6674,7 @@ GBCUS,Cushendall,55.0833,-6.05,GB-NIR,GB-NIR,GB-NIR,boundaries,unlocode,
 GBCUV,"Cullivoe, Yell",60.7,-1.0167,GB-ZET,GB-SCT,GB-ZET GB-SCT,unlocode,unlocode,
 GBCVA,Colintraive,55.9167,-5.1333,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode,unlocode,
 GBCVE,Cove,55.9333,-2.35,GB-SCB,GB-SCT,GB-SCB GB-SCT,unlocode,unlocode,
-GBCVI,Cove (Leith),55.9333,-2.35,GB-EDH,GB-SCT,GB-EDH GB-SCT,unlocode,unlocode,Leith
+GBCVI,Cove (Leith),55.9333,-2.35,GB-EDH,GB-SCT,GB-EDH GB-SCT,unlocode,unlocode,
 GBCVL,Clovelly,51.0,-4.4,GB-CON,GB-ENG,GB-CON GB-ENG,unlocode,unlocode,
 GBCVT,Coventry,52.4167,-1.55,GB-COV,GB-ENG,GB-COV GB-ENG,unlocode,unlocode,
 GBCVW,Convoys Wharf,51.8,-0.0333,GB-HRT,GB-ENG,GB-HRT GB-ENG,boundaries,unlocode,
@@ -6780,7 +6780,7 @@ GBEXM,Exmouth,50.5833,-3.4,GB-DEV,GB-ENG,GB-DEV GB-ENG,boundaries,unlocode,
 GBEYM,Eyemouth,55.8667,-2.1,GB-SCB,GB-SCT,GB-SCB GB-SCT,unlocode,unlocode,
 GBFAI,Fairisle,59.5167,-1.6,GB-ZET,GB-SCT,GB-ZET GB-SCT,unlocode,unlocode,
 GBFAL,Falmouth,50.15,-5.0667,GB-CON,GB-ENG,GB-CON GB-ENG,unlocode,wpi,
-GBFAS,Faslane,56.0667,-4.8167,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode,unlocode,HM Naval Base Clyde
+GBFAS,Faslane,56.0667,-4.8167,GB-AGB,GB-SCT,GB-AGB GB-SCT,unlocode,unlocode,
 GBFAV,Faversham,,,GB-KEN,GB-ENG,GB-KEN GB-ENG,unlocode,,
 GBFAW,Fawley,50.8167,-1.3333,GB-HAM,GB-ENG,GB-HAM GB-ENG,unlocode,wpi,
 GBFBH,Flamborough,54.1167,-0.1167,GB-ERY,GB-ENG,GB-ERY GB-ENG,unlocode,unlocode,
@@ -7666,7 +7666,7 @@ GBWIV,Wivenhoe,,,GB-ESS,GB-ENG,GB-ESS GB-ENG,unlocode,,
 GBWJH,Blewbury,51.55,-1.2333,GB-OXF,GB-ENG,GB-OXF GB-ENG,unlocode,unlocode,
 GBWKI,West Kirby,,,GB-WRL,GB-ENG,GB-WRL GB-ENG,unlocode,,
 GBWKM,Wickham,50.9,-1.1833,GB-HAM,GB-ENG,GB-HAM GB-ENG,unlocode,unlocode,
-GBWKO,Warkworth,55.35,-1.6,GB-NBL,GB-ENG,GB-NBL GB-ENG,unlocode,unlocode,Amble
+GBWKO,Warkworth,55.35,-1.6,GB-NBL,GB-ENG,GB-NBL GB-ENG,unlocode,unlocode,
 GBWL2,Willingham,52.3167,0.6667,GB-CAM,GB-ENG,GB-CAM GB-ENG,unlocode,unlocode,
 GBWLA,Wallasea,,,GB-ESS,GB-ENG,GB-ESS GB-ENG,unlocode,,
 GBWLG,Whaligoe,58.3333,-3.1833,GB-HLD,GB-SCT,GB-HLD GB-SCT,unlocode,unlocode,
@@ -7763,7 +7763,7 @@ GLJCH,Qasigiannguit (Christianshaab),68.8167,-51.1833,,,,,wpi,Kasigianguit|Chris
 GLJEG,Aasiaat (Egedesminde),68.7108,-52.8683,,,,,wpi,Egedesminde
 GLJFR,Paamiut (Fredrikshaab),62.0,-49.6667,GL-SM,GL-SM,GL-SM,boundaries,wpi,Frederikshab|Pamiut|Fredrikshaab
 GLJGO,Qeqertarsuaq (Godhavn),69.2333,-53.5333,,,,,wpi,Godhavn
-GLJGR,Kangilinguit (Gronnedal),61.2333,-48.1,GL-SM,GL-SM,GL-SM,boundaries,wpi,Green Valley Harbor|Sermersooq|Gronnedal
+GLJGR,Kangilinguit (Gronnedal),61.2333,-48.1,GL-SM,GL-SM,GL-SM,boundaries,wpi,Green Valley Harbor|Gronnedal
 GLJHS,Sisimiut (Holsteinsborg),66.9167,-53.7,GL-QE,GL-QE,GL-QE,boundaries,wpi,Holsteinsborg
 GLJJU,Qaqortoq (Julianehaab),60.7167,-46.0333,GL-KU,GL-KU,GL-KU,boundaries,wpi,Julianehaab
 GLJNN,Nanortalik,60.1167,-45.2,GL-KU,GL-KU,GL-KU,boundaries,wpi,
@@ -7778,7 +7778,7 @@ GLNAL,Nalunaq Gold Mine,60.3167,-44.9333,GL-KU,GL-KU,GL-KU,boundaries,unlocode,
 GLNAQ,Qaanaaq,,,,,,,,
 GLOBY,Illorqortoormiut (Scoresbysund),,,,,,,,
 GLSEQ,Seqi Olivine Mine,64.9667,-51.5667,GL-QE,GL-QE,GL-QE,boundaries,unlocode,
-GLTHU,Pituffik,76.5333,-68.8667,,,,,wpi,North Star Bugt|Qaanaaq
+GLTHU,Pituffik,76.5333,-68.8667,,,,,wpi,North Star Bugt
 GLTNT,Tiniteqilaaq,65.9,-37.8167,GL-SM,GL-SM,GL-SM,boundaries,unlocode,
 GLTOV,Toqqusaq,64.8667,-52.2,GL-QE,GL-QE,GL-QE,boundaries,unlocode,
 GLUAK,Narsarsuaq,61.15,-45.4333,GL-KU,GL-KU,GL-KU,boundaries,wpi,Narssarssuaq
@@ -7939,7 +7939,7 @@ GRJTR,Thíra,36.4167,25.4333,GR-L,GR-L,GR-L,boundaries,unlocode,
 GRJTY,Astypálaia,36.55,26.35,GR-L,GR-L,GR-L,boundaries,unlocode,
 GRKAG,Karkinagri Ikarias,37.5167,26.0167,GR-K,GR-K,GR-K,boundaries,unlocode,
 GRKAH,Káto Achaïa,38.15,21.55,GR-G,GR-G,GR-G,boundaries,unlocode,
-GRKAI,Kalamos Island (Lefkada),38.6167,20.9167,GR-F,GR-F,GR-F,boundaries,unlocode,Lefkada
+GRKAI,Kalamos Island (Lefkada),38.6167,20.9167,GR-F,GR-F,GR-F,boundaries,unlocode,
 GRKAK,Katakolon,37.65,21.3167,GR-G,GR-G,GR-G,boundaries,unlocode,
 GRKAP,Kapsalion (Kythira),36.15,23.0,,,,,unlocode,Kythira
 GRKAR,Néon Karlovásion,37.8,26.6833,GR-K,GR-K,GR-K,boundaries,unlocode,Karlovasion
@@ -7950,7 +7950,7 @@ GRKEF,Kefalos Ko,36.7333,26.9667,GR-L,GR-L,GR-L,boundaries,unlocode,
 GRKEI,Kateríni,40.2667,22.5,GR-B,GR-B,GR-B,boundaries,unlocode,
 GRKEM,Kosta Ermionidas,37.3,23.1667,GR-J,GR-J,GR-J,boundaries,unlocode,
 GRKER,Keramoti,40.8667,24.7,GR-A,GR-A,GR-A,boundaries,unlocode,
-GRKGS,Kos,36.8667,27.25,GR-L,GR-L,GR-L,boundaries,unlocode,Coo|Stanko
+GRKGS,Kos,36.8667,27.25,GR-L,GR-L,GR-L,boundaries,unlocode,Stanko
 GRKIM,Kimi (Kými),38.6333,24.1,GR-H,GR-H,GR-H,boundaries,unlocode,Kými
 GRKIN,Koilas Ermionidos,37.4167,23.1333,GR-J,GR-J,GR-J,boundaries,unlocode,
 GRKIO,Kiato,38.0,22.75,GR-J,GR-J,GR-J,boundaries,unlocode,
@@ -8057,7 +8057,7 @@ GRPGM,Perama Geras Mytilinis,39.0333,26.5,GR-K,GR-K,GR-K,boundaries,unlocode,
 GRPHE,Porto Heli,,,,,,,,
 GRPIA,Platania,39.1333,23.2667,GR-E,GR-E,GR-E,boundaries,unlocode,
 GRPIL,Agia Galini,35.0833,24.6833,GR-M,GR-M,GR-M,unlocode,unlocode,
-GRPIR,Piraeus,37.9333,23.6167,GR-I,GR-I,GR-I,unlocode,unlocode,Athens|Dhrapetsdna
+GRPIR,Piraeus,37.9333,23.6167,GR-I,GR-I,GR-I,unlocode,unlocode,Athens
 GRPIS,Pissaetos Ithakis,38.35,20.6833,GR-F,GR-F,GR-F,boundaries,unlocode,
 GRPIT,Pitra,36.6833,22.8333,GR-J,GR-J,GR-J,boundaries,unlocode,
 GRPKE,Poros Kefallinias,,,,,,,,
@@ -8196,7 +8196,7 @@ GWFAR,Farim,12.4833,-15.2167,GW-OI,GW-N,GW-OI GW-N,boundaries,unlocode,
 GWOXB,Bissau,11.85,-15.5833,GW-BS,GW-BS,GW-BS,unlocode,unlocode,
 GYANT,Adventure,7.0833,-58.4833,GY-CU,GY-CU,GY-CU,boundaries,unlocode,
 GYEVR,Everton,6.9167,-58.3333,GY-DE,GY-DE,GY-DE,unlocode,unlocode,
-GYGEO,Georgetown,6.8333,-58.1667,GY-EB,GY-EB,GY-EB,boundaries,wpi,Demerara
+GYGEO,Georgetown,6.8333,-58.1667,GY-EB,GY-EB,GY-EB,boundaries,wpi,
 GYGFO,Bartica,,,,,,,,
 GYLDN,Linden,6.0,-58.2833,GY-UT,GY-UT,GY-UT,boundaries,unlocode,Mackenzie
 GYNAM,New Amsterdam,6.25,-57.5167,GY-MA,GY-MA,GY-MA,boundaries,wpi,Nieuw Amsterdam
@@ -8760,7 +8760,7 @@ IDTBG,"Teluk Betung, Sumatra",,,,,,,,
 IDTBL,Toboali,-3.0,106.5,ID-SS,ID-SM,ID-SS ID-SM,unlocode,unlocode,Sabang
 IDTBN,"Tuban, Jv",-6.7333,112.15,,,,,wpi,
 IDTBO,Tobelo,1.7669,127.9826,ID-MU,ID-ML,ID-MU ID-ML,boundaries,wikidata,
-IDTBR,Telukbayur,-1.0,100.3667,ID-SB,ID-SM,ID-SB ID-SM,unlocode,unlocode,Emmahaven|Padang
+IDTBR,Telukbayur,-1.0,100.3667,ID-SB,ID-SM,ID-SB ID-SM,unlocode,unlocode,Emmahaven
 IDTBT,"Tandjung Batu, Riau",,,,,,,,
 IDTBU,Tanjung Buli,0.8333,128.25,ID-MA,ID-ML,ID-MA ID-ML,unlocode,unlocode,
 IDTEG,"Tegal, Java",-6.85,109.1333,ID-JT,ID-JW,ID-JT ID-JW,boundaries,wpi,
@@ -8776,12 +8776,12 @@ IDTNJ,Tanjungpinang,0.9167,104.45,ID-KR,ID-SM,ID-KR ID-SM,unlocode,unlocode,Tand
 IDTPN,Tanjung Pemancingan,-3.1833,116.2667,ID-KS,ID-KA,ID-KS ID-KA,unlocode,unlocode,
 IDTRH,Tarahan,-5.5667,105.3667,ID-LA,ID-SM,ID-LA ID-SM,unlocode,unlocode,
 IDTRK,"Tarakan, Kalimantan",,,,,,,,
-IDTSE,"Tanjung Sekong, Jv",-5.9167,106.0,ID-BT,ID-JW,ID-BT ID-JW,boundaries,wpi,Merak Petroleum Base
+IDTSE,"Tanjung Sekong, Jv",-5.9167,106.0,ID-BT,ID-JW,ID-BT ID-JW,boundaries,wpi,
 IDTTE,"Ternate, Halmahera",0.7833,127.3833,ID-MU,ID-ML,ID-MU ID-ML,boundaries,wpi,
 IDTUA,Tual,-5.6333,132.7333,ID-MA,ID-ML,ID-MA ID-ML,unlocode,unlocode,
 IDTZD,Amurang,1.1833,124.5667,ID-SA,ID-SL,ID-SA ID-SL,unlocode,unlocode,
 IDUDG,Udang Natuna Terminal,4.0167,106.4667,,,,,unlocode,
-IDUPG,"Ujung Pandang, Sulawesi",-5.1333,119.4,ID-SN,ID-SL,ID-SN ID-SL,boundaries,wpi,Makassar
+IDUPG,"Ujung Pandang, Sulawesi",-5.1333,119.4,ID-SN,ID-SL,ID-SN ID-SL,boundaries,wpi,
 IDUTC,Jakarta UTC1,,,ID-JK,ID-JW,ID-JK ID-JW,unlocode,,
 IDUTE,Jakarta UTC3,,,ID-JK,ID-JW,ID-JK ID-JW,unlocode,,
 IDWAI,Wainibe,-3.0667,126.5333,ID-MA,ID-ML,ID-MA ID-ML,unlocode,unlocode,
@@ -8804,7 +8804,7 @@ IEBIT,B & I Terminal,,,,,,,,
 IEBLL,Ballina,54.1167,-9.1667,IE-MO,IE-C,IE-MO IE-C,unlocode,unlocode,
 IEBNA,Ballina,52.8,-8.4333,IE-TA,IE-M,IE-TA IE-M,unlocode,unlocode,
 IEBNG,Bangor,54.1333,-9.7333,IE-MO,IE-C,IE-MO IE-C,boundaries,unlocode,
-IEBTH,Bantry Harbour,51.6833,-9.45,IE-CO,IE-M,IE-CO IE-M,unlocode,unlocode,Bantry Bay Oil Terminal
+IEBTH,Bantry Harbour,51.6833,-9.45,IE-CO,IE-M,IE-CO IE-M,unlocode,unlocode,
 IEBTM,Baltimore,,,,,,,,
 IEBUC,Buncrana,,,,,,,,
 IEBUR,Burtonport,54.9833,-8.4333,IE-DL,IE-U,IE-DL IE-U,boundaries,unlocode,
@@ -8849,7 +8849,7 @@ IEFID,Fiddown,,,,,,,,
 IEFIN,Fintona,54.5,-7.3167,,,,,unlocode,
 IEFOV,Foynes,52.6167,-9.1167,IE-LK,IE-M,IE-LK IE-M,boundaries,wpi,Shannon Foynes
 IEFPD,Flogas Products Drogheda,53.7167,-6.35,IE-LH,IE-L,IE-LH IE-L,unlocode,unlocode,
-IEFRW,Ford's Wharf (Topaz Energy Terminal),51.8833,-8.4333,IE-CO,IE-M,IE-CO IE-M,unlocode,unlocode,Topaz Energy Terminal
+IEFRW,Ford's Wharf (Topaz Energy Terminal),51.8833,-8.4333,IE-CO,IE-M,IE-CO IE-M,unlocode,unlocode,
 IEFTD,Fethard/Slade,52.2,-6.8333,IE-TA,IE-M,IE-TA IE-M,unlocode,unlocode,
 IEGGA,Glengarriff,51.75,-9.55,IE-CO,IE-M,IE-CO IE-M,unlocode,unlocode,
 IEGOW,Gowran,57.6167,-7.4,,,,,unlocode,
@@ -8875,7 +8875,7 @@ IEMAR,Marshmeadows/New Ross,52.3833,-6.95,IE-WX,IE-L,IE-WX IE-L,unlocode,unlocod
 IEMOT,Moneypoint,,,,,,,,
 IEMOV,Moville,55.1833,-7.0333,IE-DL,IE-U,IE-DL IE-U,unlocode,unlocode,
 IEMRT,Magheraroarty,55.1333,-8.1667,IE-DL,IE-U,IE-DL IE-U,unlocode,unlocode,
-IEMTL,Dublin-Marine Terminal,53.3333,-6.2333,IE-D,IE-L,IE-D IE-L,unlocode,unlocode,Baile Atha Cliath
+IEMTL,Dublin-Marine Terminal,53.3333,-6.2333,IE-D,IE-L,IE-D IE-L,unlocode,unlocode,
 IENAY,Newtonabbey,54.65,-5.9333,,,,,unlocode,
 IENET,Newport,53.8833,-9.5333,IE-MO,IE-C,IE-MO IE-C,unlocode,unlocode,
 IENEX,Newtown,,,IE-WX,IE-L,IE-WX IE-L,unlocode,,
@@ -8915,7 +8915,7 @@ IEWAT,Waterford,52.25,-7.1,IE-WD,IE-M,IE-WD IE-M,unlocode,unlocode,
 IEWCQ,Waterford City Quays,52.25,-7.1,IE-WD,IE-M,IE-WD IE-M,unlocode,unlocode,
 IEWES,Westport,53.8,-9.5333,IE-MO,IE-C,IE-MO IE-C,boundaries,wpi,
 IEWEX,Wexford,,,,,,,,
-IEWGI,Waterford Great Island (ESB),52.2667,-6.9833,IE-WD,IE-M,IE-WD IE-M,unlocode,unlocode,ESB
+IEWGI,Waterford Great Island (ESB),52.2667,-6.9833,IE-WD,IE-M,IE-WD IE-M,unlocode,unlocode,
 IEWHI,Whitegate,,,,,,,,
 IEWIC,Wicklow,,,,,,,,
 IEWIL,Wilton,,,IE-CO,IE-M,IE-CO IE-M,unlocode,,
@@ -8967,7 +8967,7 @@ INBDG,Badagara,,,IN-KL,IN-KL,IN-KL,unlocode,,
 INBDH,Bhadohi,25.4167,82.5667,IN-UP,IN-UP,IN-UP,unlocode,unlocode,
 INBDQ,Vadodara,22.3,73.2,IN-GJ,IN-GJ,IN-GJ,unlocode,unlocode,
 INBDR,Baindur,,,IN-KA,IN-KA,IN-KA,unlocode,,
-INBED,Bedi,22.5731,70.0456,IN-GJ,IN-GJ,IN-GJ,unlocode,wpi,Bed
+INBED,Bedi,22.5731,70.0456,IN-GJ,IN-GJ,IN-GJ,unlocode,wpi,
 INBET,Betul,,,IN-GA,IN-GA,IN-GA,unlocode,,
 INBEY,Beypore,11.1667,75.8,IN-KL,IN-KL,IN-KL,unlocode,wpi,Beipur
 INBGW,Bhagwa,,,IN-GJ,IN-GJ,IN-GJ,unlocode,,
@@ -9240,7 +9240,7 @@ IQKAR,Karbala,,,,,,,,
 IQKAZ,Khor al Zubair,30.1969,47.885,IQ-BA,IQ-BA,IQ-BA,boundaries,wikidata,
 IQKHA,Khor Al Amaya,29.7833,48.8,,,,,wpi,
 IQKIK,Kirkuk,,,,,,,,
-IQMAB,Basrah Oil Terminal,29.75,48.8333,IQ-BA,IQ-BA,IQ-BA,unlocode,unlocode,Mina Al Bakr Terminal
+IQMAB,Basrah Oil Terminal,29.75,48.8333,IQ-BA,IQ-BA,IQ-BA,unlocode,unlocode,
 IQMAN,Mandali,,,,,,,,
 IQNAS,Najat,,,,,,,,
 IQNJF,Najaf,31.9833,44.3,IQ-NA,IQ-NA,IQ-NA,unlocode,unlocode,
@@ -9268,7 +9268,7 @@ IRBPA,Bandare Parsian,27.1667,52.9,IR-22,IR-22,IR-22,unlocode,unlocode,
 IRBRG,Bandar-e Gaz,36.7833,53.95,IR-27,IR-27,IR-27,boundaries,unlocode,
 IRBSR,Bandar Shahid Rajaee,27.1,56.0667,IR-23,IR-23,IR-23,boundaries,wpi,
 IRBUZ,Bushehr,28.9667,50.8333,IR-18,IR-18,IR-18,unlocode,unlocode,
-IRCYT,Soroosh (Cyrus) Terminal,29.0333,49.4667,,,,,unlocode,Cyrus Oil Terminal|Soroosh Oil Terminal|Cyrus
+IRCYT,Soroosh (Cyrus) Terminal,29.0333,49.4667,,,,,unlocode,Cyrus
 IRDAY,Dayyer,27.8333,51.9333,IR-18,IR-18,IR-18,unlocode,unlocode,
 IRFKR,Freidoon Kenar,36.7,52.55,IR-21,IR-21,IR-21,unlocode,unlocode,
 IRIFN,Isfahan,,,,,,,,
@@ -9322,7 +9322,7 @@ ISGRF,Grundarfjørdur,64.9333,-23.25,IS-3,IS-3,IS-3,boundaries,wpi,
 ISGRI,Grindavík,63.8333,-22.4333,IS-2,IS-2,IS-2,boundaries,unlocode,
 ISGRT,Grundartangi,64.2667,-22.0,IS-3,IS-3,IS-3,boundaries,wpi,
 ISGUF,Gufunes/Reykjavik,,,,,,,,
-ISHAF,Hafnarfjørdur,64.0667,-21.95,,,,,wpi,Straumsvik
+ISHAF,Hafnarfjørdur,64.0667,-21.95,,,,,wpi,
 ISHEL,Helguvik,64.0333,-22.55,IS-2,IS-2,IS-2,boundaries,unlocode,
 ISHFN,"Höfn, Hornafjørdur",64.25,-15.2167,IS-7,IS-7,IS-7,boundaries,unlocode,Hofn
 ISHJA,Hjalteyri,,,,,,,,
@@ -9333,7 +9333,7 @@ ISHUS,Husavik - høfn,66.0333,-17.3333,IS-6,IS-6,IS-6,boundaries,wpi,
 ISHVM,Hvammstangi,65.4,-20.95,IS-5,IS-5,IS-5,boundaries,wpi,
 ISHVR,Midsandur,,,,,,,,
 ISISA,Isafjørdur - høfn,66.0667,-23.1167,IS-4,IS-4,IS-4,boundaries,wpi,
-ISKEV,Keflavikurkaupstadur,64.0,-22.55,IS-2,IS-2,IS-2,boundaries,wpi,Njardvik
+ISKEV,Keflavikurkaupstadur,64.0,-22.55,IS-2,IS-2,IS-2,boundaries,wpi,
 ISKJF,Skerjafjördur,64.15,-22.0167,,,,,wpi,
 ISKOP,Kopasker - høfn,,,,,,,,
 ISKOV,Kópavogur,64.1,-21.9167,,,,,unlocode,
@@ -9351,8 +9351,8 @@ ISOLV,Olafsvík,64.8833,-23.7167,IS-3,IS-3,IS-3,boundaries,unlocode,
 ISOSP,Ospakseyri,65.45,-21.4333,IS-4,IS-4,IS-4,boundaries,unlocode,
 ISPAT,Patreksfjørdur - høfn,65.6,-24.0,IS-4,IS-4,IS-4,boundaries,wpi,
 ISRAU,Raufarhöfn,66.45,-15.95,IS-6,IS-6,IS-6,boundaries,unlocode,
-ISREY,Reykjavík,64.15,-21.95,,,,,unlocode,Akranes|Grundartangi
-ISRFJ,Reydarfjørdur,65.0333,-14.1,IS-7,IS-7,IS-7,boundaries,wpi,Mjoeyrarhofn
+ISREY,Reykjavík,64.15,-21.95,,,,,unlocode,
+ISRFJ,Reydarfjørdur,65.0333,-14.1,IS-7,IS-7,IS-7,boundaries,wpi,
 ISRHA,Reykhólar,65.45,-22.2,IS-4,IS-4,IS-4,boundaries,unlocode,
 ISRIF,Rif-Hellisandur,,,,,,,,
 ISSAN,Sandgerdi,64.0333,-22.7167,IS-2,IS-2,IS-2,boundaries,wpi,Sandgerdhi
@@ -9394,7 +9394,7 @@ ITAOR,Caorle,45.6,12.8833,IT-VE,IT-34,IT-VE IT-34,boundaries,unlocode,
 ITATA,Arma di Taggia,43.8167,7.85,IT-IM,IT-42,IT-IM IT-42,boundaries,unlocode,
 ITATI,Castiglioncello,43.4,10.4,IT-LI,IT-52,IT-LI IT-52,unlocode,unlocode,
 ITATX,Arbatax,39.9333,9.7,IT-NU,IT-88,IT-NU IT-88,unlocode,unlocode,
-ITAUG,Augusta,37.2167,15.2167,IT-SR,IT-82,IT-SR IT-82,boundaries,unlocode,Megarese|Priolo Gargallo
+ITAUG,Augusta,37.2167,15.2167,IT-SR,IT-82,IT-SR IT-82,boundaries,unlocode,Megarese
 ITAVO,Avola,36.9,15.1333,IT-SR,IT-82,IT-SR IT-82,unlocode,unlocode,
 ITAZA,Arenzano,44.4,8.6833,IT-GE,IT-42,IT-GE IT-42,unlocode,unlocode,
 ITB8D,Bardello,45.8333,8.7,IT-VA,IT-25,IT-VA IT-25,unlocode,unlocode,
@@ -9445,7 +9445,7 @@ ITDNO,Duino,45.7667,13.5833,IT-TS,IT-36,IT-TS IT-36,boundaries,unlocode,
 ITFAL,Falconara,,,IT-AN,IT-57,IT-AN IT-57,override,,
 ITFAO,Fano,43.8333,13.0167,IT-PU,IT-57,IT-PU IT-57,boundaries,unlocode,
 ITFAV,Favignana,37.9333,12.3333,IT-TP,IT-82,IT-TP IT-82,boundaries,unlocode,
-ITFCO,Fiumicino,41.7667,12.2333,IT-RM,IT-62,IT-RM IT-62,unlocode,unlocode,Rome
+ITFCO,Fiumicino,41.7667,12.2333,IT-RM,IT-62,IT-RM IT-62,unlocode,unlocode,
 ITFCV,Foce Varano,41.9167,15.8,IT-FG,IT-75,IT-FG IT-75,boundaries,unlocode,
 ITFGE,Fregene,41.85,12.2,IT-RM,IT-62,IT-RM IT-62,boundaries,unlocode,
 ITFME,Francavilla al Mare,42.4167,14.2833,IT-CH,IT-65,IT-CH IT-65,boundaries,unlocode,
@@ -9710,7 +9710,7 @@ JMKIN,Kingston,17.95,-76.82,JM-02,JM-02,JM-02,boundaries,override,
 JMMBJ,Montego Bay,18.4667,-77.9333,JM-08,JM-08,JM-08,boundaries,wpi,
 JMOCJ,Ocho Rios,18.4167,-77.1167,JM-06,JM-06,JM-06,boundaries,wpi,
 JMORC,Oracabessa,18.4,-76.95,JM-05,JM-05,JM-05,boundaries,unlocode,
-JMPEV,Port Esquivel,17.8833,-77.1333,JM-14,JM-14,JM-14,boundaries,wpi,Alumina Marine Term|Esquivel
+JMPEV,Port Esquivel,17.8833,-77.1333,JM-14,JM-14,JM-14,boundaries,wpi,Esquivel
 JMPHE,Port Henderson,17.95,-76.8833,JM-14,JM-14,JM-14,unlocode,unlocode,
 JMPKS,Port Kaiser,17.8667,-77.6,JM-11,JM-11,JM-11,boundaries,wpi,Little Pedro Pt.
 JMPMO,Port Morant,,,,,,,,
@@ -10293,7 +10293,7 @@ JPKNI,Konagai,,,JP-42,JP-42,JP-42,unlocode,,
 JPKNJ,Kisane,,,JP-32,JP-32,JP-32,unlocode,,
 JPKNK,Kinkasan,,,JP-04,JP-04,JP-04,unlocode,,
 JPKNM,Kanmon,33.9,130.9167,JP-40,JP-40,JP-40,unlocode,unlocode,
-JPKNN,Kin,26.4167,127.9,JP-42,JP-42,JP-42,unlocode,wpi,Chin
+JPKNN,Kin,26.4167,127.9,JP-42,JP-42,JP-42,unlocode,wpi,
 JPKNO,Konoura,,,JP-05,JP-05,JP-05,unlocode,,
 JPKNR,Kohnoura,,,JP-42,JP-42,JP-42,unlocode,,
 JPKNS,Kunisaki,,,JP-44,JP-44,JP-44,unlocode,,
@@ -10445,7 +10445,7 @@ JPMIJ,"Miike, Tokyo",,,JP-13,JP-13,JP-13,unlocode,,
 JPMIK,"Misaki, Kanagawa",,,JP-14,JP-14,JP-14,unlocode,,
 JPMIN,Minamata,32.2,130.3833,JP-43,JP-43,JP-43,unlocode,wpi,
 JPMIR,Miura/Mitsushima,,,JP-42,JP-42,JP-42,unlocode,,
-JPMIS,"Misumi, Kumamoto",32.6,130.4667,JP-43,JP-43,JP-43,unlocode,wpi,Kumamoto
+JPMIS,"Misumi, Kumamoto",32.6,130.4667,JP-43,JP-43,JP-43,unlocode,wpi,
 JPMIT,"Mitaka, Hiroshima",,,JP-34,JP-34,JP-34,unlocode,,
 JPMIY,Miyazu,35.5333,135.2,JP-26,JP-26,JP-26,unlocode,wpi,
 JPMIZ,Mizushima,34.5,133.75,JP-33,JP-33,JP-33,unlocode,wpi,Mizusima
@@ -10478,7 +10478,7 @@ JPMNR,"Miyanoura, Nagasaki",,,JP-42,JP-42,JP-42,unlocode,,
 JPMNT,"Minato, Hyogo",,,JP-28,JP-28,JP-28,unlocode,,
 JPMNY,Minmaya,,,JP-02,JP-02,JP-02,unlocode,,
 JPMOG,Mogi,,,JP-42,JP-42,JP-42,unlocode,,
-JPMOJ,Moji/Kitakyushu,33.9,130.9667,JP-40,JP-40,JP-40,unlocode,unlocode,Kitak Yushu|Kitakyushu
+JPMOJ,Moji/Kitakyushu,33.9,130.9667,JP-40,JP-40,JP-40,unlocode,unlocode,Kitak Yushu
 JPMOM,Morodomi,,,JP-41,JP-41,JP-41,unlocode,,
 JPMOO,Morie,,,JP-44,JP-44,JP-44,unlocode,,
 JPMOR,Mori,42.1167,140.5833,JP-01,JP-01,JP-01,unlocode,wpi,
@@ -10532,7 +10532,7 @@ JPMXT,Mita,,,JP-32,JP-32,JP-32,unlocode,,
 JPMYA,Muya,,,JP-36,JP-36,JP-36,unlocode,,
 JPMYG,Miyagahama,,,JP-46,JP-46,JP-46,unlocode,,
 JPMYI,Miyagi,36.4333,139.1667,JP-10,JP-10,JP-10,unlocode,unlocode,
-JPMYJ,Matsuyama,33.85,132.7,JP-38,JP-38,JP-38,unlocode,wpi,Mitsuhama
+JPMYJ,Matsuyama,33.85,132.7,JP-38,JP-38,JP-38,unlocode,wpi,
 JPMYK,"Miyako, Iwate",39.6333,141.9833,JP-03,JP-03,JP-03,unlocode,wpi,Miyako Ko
 JPMYN,Miyanoura/Azuma,,,JP-46,JP-46,JP-46,unlocode,,
 JPMYT,"Miyoshi, Tokushima",34.0167,133.8,JP-36,JP-36,JP-36,unlocode,unlocode,
@@ -10726,7 +10726,7 @@ JPOMW,Omonawa,,,JP-46,JP-46,JP-46,unlocode,,
 JPOMX,"Ohama, Tottori",,,JP-31,JP-31,JP-31,unlocode,,
 JPOMY,Omiyaji,,,JP-43,JP-43,JP-43,unlocode,,
 JPOMZ,Omaezaki,34.6,138.2333,JP-22,JP-22,JP-22,unlocode,wpi,
-JPONA,Onahama,36.9333,140.9,JP-07,JP-07,JP-07,unlocode,wpi,Iwaki
+JPONA,Onahama,36.9333,140.9,JP-07,JP-07,JP-07,unlocode,wpi,
 JPOND,Onoda,34.0,131.1833,JP-35,JP-35,JP-35,unlocode,wpi,
 JPONE,Ohnejime,,,JP-46,JP-46,JP-46,unlocode,,
 JPONG,Onagawa,38.45,141.45,JP-04,JP-04,JP-04,unlocode,wpi,
@@ -10754,7 +10754,7 @@ JPORG,Origami,,,JP-42,JP-42,JP-42,unlocode,,
 JPORN,Orino,,,JP-36,JP-36,JP-36,unlocode,,
 JPORR,Oura/Uchinoura,,,JP-46,JP-46,JP-46,unlocode,,
 JPORX,Oura/Marugame,,,JP-37,JP-37,JP-37,unlocode,,
-JPOSA,Osaka,34.6667,135.5,JP-27,JP-27,JP-27,unlocode,unlocode,Sakai
+JPOSA,Osaka,34.6667,135.5,JP-27,JP-27,JP-27,unlocode,unlocode,
 JPOSD,Oshidomari,,,JP-01,JP-01,JP-01,unlocode,,
 JPOSE,Osoe,,,JP-32,JP-32,JP-32,unlocode,,
 JPOSG,Ogi,33.2833,130.2,JP-41,JP-41,JP-41,unlocode,unlocode,
@@ -11000,7 +11000,7 @@ JPTAS,Takeshiki,,,JP-42,JP-42,JP-42,unlocode,,
 JPTAT,Tatsugo,,,JP-46,JP-46,JP-46,unlocode,,
 JPTAW,Tannowa,,,JP-27,JP-27,JP-27,unlocode,,
 JPTAZ,Tai,,,JP-26,JP-26,JP-26,unlocode,,
-JPTBN,Tachibana,33.8667,134.6667,JP-36,JP-36,JP-36,unlocode,wpi,Anan
+JPTBN,Tachibana,33.8667,134.6667,JP-36,JP-36,JP-36,unlocode,wpi,
 JPTBO,Tobo,33.4833,129.9333,JP-41,JP-41,JP-41,unlocode,unlocode,
 JPTBR,Tabira,,,JP-42,JP-42,JP-42,unlocode,,
 JPTBS,Awajikoryunotsubasa,,,JP-28,JP-28,JP-28,unlocode,,
@@ -11084,7 +11084,7 @@ JPTOD,Todohokke,,,JP-01,JP-01,JP-01,unlocode,,
 JPTOG,Togi,,,JP-17,JP-17,JP-17,unlocode,,
 JPTOI,Toi,,,JP-22,JP-22,JP-22,unlocode,,
 JPTOJ,Toga,,,JP-05,JP-05,JP-05,unlocode,,
-JPTOK,Tokachi,42.25,143.3,JP-01,JP-01,JP-01,unlocode,wpi,Hiroo
+JPTOK,Tokachi,42.25,143.3,JP-01,JP-01,JP-01,unlocode,wpi,
 JPTOM,"Tomioka, Tokushima",,,JP-36,JP-36,JP-36,unlocode,,
 JPTON,Tonoura,,,JP-45,JP-45,JP-45,unlocode,,
 JPTOS,Toyamashinko,36.7608,137.1928,JP-16,JP-16,JP-16,unlocode,wikidata,
@@ -11196,7 +11196,7 @@ JPUWA,Uwajima,33.2167,132.5667,JP-38,JP-38,JP-38,unlocode,wpi,
 JPUZK,Uzuki,,,JP-32,JP-32,JP-32,unlocode,,
 JPWAD,Wadomari,27.3982,128.6645,JP-46,JP-46,JP-46,unlocode,wikidata,
 JPWAI,Waita,,,JP-35,JP-35,JP-35,unlocode,,
-JPWAK,Wakayama,34.2,135.1333,JP-30,JP-30,JP-30,unlocode,wpi,Minami-ku
+JPWAK,Wakayama,34.2,135.1333,JP-30,JP-30,JP-30,unlocode,wpi,
 JPWAM,Wakamatsu/Kitakyushu,33.8833,130.8167,JP-40,JP-40,JP-40,unlocode,unlocode,
 JPWAN,Wan,,,JP-46,JP-46,JP-46,unlocode,,
 JPWAT,Watanoha,,,JP-04,JP-04,JP-04,unlocode,,
@@ -11391,7 +11391,7 @@ KRSUK,Samcheok,37.4333,129.1833,KR-42,KR-42,KR-42,unlocode,unlocode,
 KRSUO,Suwon,37.25,127.2333,KR-41,KR-41,KR-41,unlocode,unlocode,
 KRSWD,Sangwangdeungdo,35.65,126.1333,KR-45,KR-45,KR-45,unlocode,unlocode,
 KRTAN,Taean-gun,36.7167,126.2667,KR-44,KR-44,KR-44,unlocode,unlocode,
-KRTGA,Tonghae,37.5333,129.1,KR-42,KR-42,KR-42,unlocode,unlocode,Donghae
+KRTGA,Tonghae,37.5333,129.1,KR-42,KR-42,KR-42,unlocode,unlocode,
 KRTGH,Donghae,37.4833,129.1167,KR-42,KR-42,KR-42,unlocode,unlocode,
 KRTJI,Dangjin,36.9667,126.7833,KR-44,KR-44,KR-44,unlocode,unlocode,
 KRTSN,Daesan/Seosan,37.0,126.3667,KR-44,KR-44,KR-44,unlocode,unlocode,Daesan
@@ -11464,7 +11464,7 @@ LRCMT,Cape Mount,,,,,,,,
 LRCPA,Cape Palmas,4.3667,-7.7167,LR-MY,LR-MY,LR-MY,boundaries,wpi,
 LRFIM,Fimibo,,,,,,,,
 LRGBS,Grand Bassa,,,,,,,,
-LRGRE,Greenville,4.9833,-9.05,LR-SI,LR-SI,LR-SI,boundaries,wpi,Sinoe
+LRGRE,Greenville,4.9833,-9.05,LR-SI,LR-SI,LR-SI,boundaries,wpi,
 LRHAR,Harper,4.3667,-7.7167,LR-MY,LR-MY,LR-MY,unlocode,unlocode,
 LRLOB,Lower Buchanan,,,,,,,,
 LRMAR,Marshall,,,,,,,,
@@ -11475,8 +11475,8 @@ LRSAB,Sarioe Bay,,,,,,,,
 LRSAZ,Sasstown,,,,,,,,
 LRSNI,Sinoe,,,,,,,,
 LRTRT,Trade Town,,,,,,,,
-LRUCN,Buchanan,5.8667,-10.0667,LR-GB,LR-GB,LR-GB,boundaries,wpi,Grand Bassa|Lower Buchanan
-LTBOT,Botingé,56.0667,21.1167,LT-KL,LT-KL,LT-KL,boundaries,unlocode,Butinge Marine Terminal
+LRUCN,Buchanan,5.8667,-10.0667,LR-GB,LR-GB,LR-GB,boundaries,wpi,
+LTBOT,Botingé,56.0667,21.1167,LT-KL,LT-KL,LT-KL,boundaries,unlocode,
 LTKLJ,Klaipeda,55.71,21.12,LT-KL,LT-KL,LT-KL,boundaries,override,Memel
 LTMLM,Malku ilankos juru uosto PVP/Klaipeda,55.7167,21.1167,LT-KL,LT-KL,LT-KL,unlocode,unlocode,
 LTMOM,Molo juru uosto PVP/Klaipeda,55.7167,21.1,LT-KL,LT-KL,LT-KL,unlocode,unlocode,
@@ -11716,7 +11716,7 @@ MXCAT,Cayo Arcas Terminal,19.6833,-92.0833,,,,,unlocode,
 MXCDD,Ciudad Madero,22.2667,-97.8333,MX-TAM,MX-TAM,MX-TAM,unlocode,unlocode,
 MXCED,Cedros,28.1167,-115.1667,MX-BCN,MX-BCN,MX-BCN,unlocode,unlocode,
 MXCME,Ciudad del Carmen,18.6333,-91.8333,MX-CAM,MX-CAM,MX-CAM,unlocode,unlocode,Laguna De Terminos
-MXCOA,Coatzacoalcos,18.1333,-94.4,MX-VER,MX-VER,MX-VER,unlocode,unlocode,Puerto Mexico
+MXCOA,Coatzacoalcos,18.1333,-94.4,MX-VER,MX-VER,MX-VER,unlocode,unlocode,
 MXCPE,Campeche,19.85,-90.55,MX-CAM,MX-CAM,MX-CAM,unlocode,wpi,
 MXCRI,Cedros Island,28.1667,-115.2167,MX-BCN,MX-BCN,MX-BCN,unlocode,unlocode,
 MXCSG,Ciudad Sahagún,19.7667,-98.5667,MX-HID,MX-HID,MX-HID,unlocode,unlocode,
@@ -11731,7 +11731,7 @@ MXEA2,Barretal,24.0833,-99.1167,MX-TAM,MX-TAM,MX-TAM,unlocode,unlocode,
 MXELD,Eldorado,,,,,,,,
 MXEPM,Empalme,27.9667,-110.8167,MX-SON,MX-SON,MX-SON,unlocode,unlocode,
 MXESE,Ensenada,31.85,-116.6,MX-BCN,MX-BCN,MX-BCN,unlocode,unlocode,
-MXFRN,Frontera,18.5333,-92.6333,MX-TAB,MX-TAB,MX-TAB,unlocode,unlocode,Alvaro Obregon
+MXFRN,Frontera,18.5333,-92.6333,MX-TAB,MX-TAB,MX-TAB,unlocode,unlocode,
 MXGET,General Terán,25.2667,-99.6833,MX-NLE,MX-NLE,MX-NLE,unlocode,unlocode,
 MXGRA,Granjas,21.1833,-101.75,MX-GUA,MX-GUA,MX-GUA,unlocode,unlocode,
 MXGSV,Guasave,25.5667,-108.45,MX-SIN,MX-SIN,MX-SIN,unlocode,unlocode,
@@ -11897,7 +11897,7 @@ MYMEN,Nenasi,3.1333,103.45,MY-06,MY-06,MY-06,unlocode,unlocode,
 MYMEP,Mersing,,,,,,,,
 MYMKM,"Mukah, Sarawak",,,,,,,,
 MYMKZ,Malacca,,,,,,,,
-MYMUA,Muar,2.05,102.5667,MY-01,MY-01,MY-01,boundaries,wpi,Bandar Maharani
+MYMUA,Muar,2.05,102.5667,MY-01,MY-01,MY-01,boundaries,wpi,
 MYMUD,Muda Marine Terminal,7.5833,102.9833,,,,,unlocode,
 MYMUR,"Marudi, Sarawak",,,,,,,,
 MYMYY,"Miri, Sarawak",4.3833,113.9667,MY-13,MY-13,MY-13,boundaries,wpi,
@@ -11983,7 +11983,7 @@ MYTUN,Tungku,,,,,,,,
 MYTWU,"Tawau, Sabah",4.25,117.8833,MY-12,MY-12,MY-12,boundaries,wpi,Tawau
 MYWAL,"Wallace Bay, Sabah",,,,,,,,
 MYWES,"Weston, Sabah",,,,,,,,
-MYXPQ,Port Klang (Ferry Port),3.0167,101.3667,MY-10,MY-10,MY-10,unlocode,unlocode,Ferry Port
+MYXPQ,Port Klang (Ferry Port),3.0167,101.3667,MY-10,MY-10,MY-10,unlocode,unlocode,
 MZANO,Angoche,,,,,,,,
 MZBEL,Bela Vista,,,,,,,,
 MZBEW,Beira,-19.8333,34.8333,MZ-S,MZ-S,MZ-S,boundaries,wpi,
@@ -12000,7 +12000,7 @@ MZMOR,Morrumbene,,,,,,,,
 MZMPM,Maputo,-25.9628,32.5447,MZ-L,MZ-L,MZ-L,boundaries,wpi,Lourenco Marques
 MZMSG,Massinga,,,,,,,,
 MZMZB,Mocímboa da Praia,-11.3333,40.35,MZ-P,MZ-P,MZ-P,unlocode,unlocode,
-MZMZQ,Mocambique,-15.0333,40.7333,MZ-N,MZ-N,MZ-N,boundaries,wpi,Mozambique
+MZMZQ,Mocambique,-15.0333,40.7333,MZ-N,MZ-N,MZ-N,boundaries,wpi,
 MZNSO,Nova Sofala,,,,,,,,
 MZPBE,Porto Belo,-17.7,37.1833,MZ-Q,MZ-Q,MZ-Q,boundaries,wpi,
 MZPEB,Pebane,-17.2667,38.15,MZ-Q,MZ-Q,MZ-Q,boundaries,wpi,
@@ -12029,7 +12029,7 @@ NGABM,Agbami,3.5167,5.5167,,,,,unlocode,
 NGABO,Abonnema,,,,,,,,
 NGADO,Ado,,,,,,,,
 NGAKP,Akpo,-3.1333,60.8167,,,,,unlocode,
-NGANA,Antan,4.2167,8.3167,,,,,unlocode,FPSO Adoon
+NGANA,Antan,4.2167,8.3167,,,,,unlocode,
 NGANB,Anambra,7.2667,7.4,NG-KO,NG-KO,NG-KO,unlocode,unlocode,
 NGANT,Anta,9.45,8.4667,NG-KD,NG-KD,NG-KD,boundaries,unlocode,
 NGAPP,Apapa,6.4374,3.3931,NG-LA,NG-LA,NG-LA,boundaries,wikidata,
@@ -12054,9 +12054,9 @@ NGKUL,Kula,,,,,,,,
 NGLKK,Ibeju - Lekki,6.4333,4.0,NG-LA,NG-LA,NG-LA,unlocode,unlocode,
 NGLOS,Lagos,6.4,3.4,NG-LA,NG-LA,NG-LA,boundaries,wpi,
 NGOBO,Que Oboe Terminal/Eket,,,,,,,,
-NGOKN,Okono,4.0167,7.2833,,,,,unlocode,FSPO Mystras
+NGOKN,Okono,4.0167,7.2833,,,,,unlocode,
 NGOKR,Okrika,4.7167,7.0833,NG-RI,NG-RI,NG-RI,boundaries,wpi,
-NGOKW,Okwori,3.85,6.9667,,,,,unlocode,FPSO Sendje Berge
+NGOKW,Okwori,3.85,6.9667,,,,,unlocode,
 NGONN,Onne,4.7167,7.15,NG-RI,NG-RI,NG-RI,unlocode,unlocode,
 NGORO,Oron,,,,,,,,
 NGOSO,Oso,2.8333,8.0,,,,,unlocode,
@@ -12067,9 +12067,9 @@ NGSPL,Sapele,5.9,5.6833,NG-DE,NG-DE,NG-DE,boundaries,wpi,
 NGTIN,Tincan/Lagos,6.4344,3.3487,NG-LA,NG-LA,NG-LA,boundaries,wpi,
 NGWAR,Warri,5.5167,5.7333,NG-DE,NG-DE,NG-DE,boundaries,wpi,
 NI8LG,Totogalpa,13.5667,-86.5,NI-MD,NI-MD,NI-MD,unlocode,unlocode,
-NIBEF,Bluefields,12.0167,-83.75,NI-AS,NI-AS,NI-AS,boundaries,wpi,El Bluff|El Rama
+NIBEF,Bluefields,12.0167,-83.75,NI-AS,NI-AS,NI-AS,boundaries,wpi,El Rama
 NICIO,Corinto,12.4833,-87.1667,NI-CI,NI-CI,NI-CI,boundaries,wpi,
-NIELB,El Bluff,12.0,-83.7,NI-AS,NI-AS,NI-AS,boundaries,wpi,Bluefields
+NIELB,El Bluff,12.0,-83.7,NI-AS,NI-AS,NI-AS,boundaries,wpi,
 NILM8,Las Maderas,12.4333,-86.0333,NI-MN,NI-MN,NI-MN,unlocode,unlocode,
 NIMAC,Masachapa,11.7833,-86.5167,NI-MN,NI-MN,NI-MN,unlocode,unlocode,
 NIPIB,Puerto Isabel,13.3667,-83.5667,NI-AN,NI-AN,NI-AN,boundaries,unlocode,
@@ -13401,7 +13401,7 @@ NZWHN,Whangaparapara,-36.2333,175.3833,NZ-AUK,NZ-AUK,NZ-AUK,unlocode,unlocode,
 NZWHR,Whangaroa,-35.0333,173.75,NZ-NTL,NZ-NTL,NZ-NTL,unlocode,unlocode,
 NZWKE,Waiheke Island,-36.8,175.1,NZ-AUK,NZ-AUK,NZ-AUK,unlocode,unlocode,
 NZWLG,Wellington,-41.2667,174.7833,NZ-WGN,NZ-WGN,NZ-WGN,unlocode,unlocode,Port Nicholson
-NZWRE,Whangarei,-35.8333,174.4833,NZ-NTL,NZ-NTL,NZ-NTL,unlocode,unlocode,Marsden Point
+NZWRE,Whangarei,-35.8333,174.4833,NZ-NTL,NZ-NTL,NZ-NTL,unlocode,unlocode,
 NZWSZ,Westport,-41.7333,171.5833,NZ-WTC,NZ-WTC,NZ-WTC,unlocode,unlocode,
 NZWTG,Waitangi,-35.25,174.0833,NZ-NTL,NZ-NTL,NZ-NTL,unlocode,unlocode,
 OMDQM,Duqm,19.65,57.7,OM-WU,OM-WU,OM-WU,unlocode,unlocode,Al Duqm
@@ -13429,7 +13429,7 @@ PABCC,Boca Chica,8.2167,-82.2167,PA-4,PA-4,PA-4,unlocode,unlocode,
 PABLB,Balboa,8.95,-79.565,PA-8,PA-8,PA-8,boundaries,override,
 PABOC,Bocas del Toro,9.3333,-82.2333,PA-1,PA-1,PA-1,unlocode,unlocode,
 PACHA,Charco Azul,8.2167,-82.8667,PA-4,PA-4,PA-4,boundaries,wpi,Petroterminal De Panama
-PACHG,Chiriquí Grande,8.95,-82.1167,PA-1,PA-1,PA-1,boundaries,unlocode,Atlantic Terminal
+PACHG,Chiriquí Grande,8.95,-82.1167,PA-1,PA-1,PA-1,boundaries,unlocode,
 PACTB,Cristóbal,9.35,-79.9,PA-3,PA-3,PA-3,unlocode,unlocode,
 PACTD,Chitre,7.9667,-80.4333,PA-6,PA-6,PA-6,unlocode,unlocode,
 PACZZ,Cañazas,8.1333,-80.7,PA-9,PA-9,PA-9,boundaries,unlocode,
@@ -13489,7 +13489,7 @@ PEPCL,Pucallpa,,,,,,,,
 PEPCS,Pucusana,-12.4833,-76.7833,PE-LIM,PE-LIM,PE-LIM,unlocode,unlocode,
 PEPEM,Puerto Maldonado,-12.5833,-69.2,PE-MDD,PE-MDD,PE-MDD,unlocode,unlocode,
 PEPIO,Pisco,,,,,,,,
-PEPLO,Punta Lobitos,-10.0833,-78.1833,PE-ANC,PE-ANC,PE-ANC,unlocode,unlocode,Huarmey
+PEPLO,Punta Lobitos,-10.0833,-78.1833,PE-ANC,PE-ANC,PE-ANC,unlocode,unlocode,
 PEPMC,Pampa Melchorita,-13.3,-77.7833,PE-LIM,PE-LIM,PE-LIM,unlocode,unlocode,
 PEPMT,Pimentel,-6.8333,-79.9333,PE-LAM,PE-LAM,PE-LAM,boundaries,wpi,
 PEPUB,Bayovar,-5.85,-81.0667,PE-PIU,PE-PIU,PE-PIU,unlocode,unlocode,
@@ -13843,7 +13843,7 @@ PHNAB,Nabulao Bay/Iloilo,,,,,,,,
 PHNAL,Nalungga/Iloilo,,,,,,,,
 PHNAP,Napsan/Puerto Princesa,,,,,,,,
 PHNAR,Naris Point/Puerto Princesa,,,,,,,,
-PHNAS,Nasipit/Masao,8.9833,125.3333,PH-AGN,PH-13,PH-AGN PH-13,boundaries,wpi,Masao
+PHNAS,Nasipit/Masao,8.9833,125.3333,PH-AGN,PH-13,PH-AGN PH-13,boundaries,wpi,
 PHNGH,Nagh,,,,,,,,
 PHNID,Nido Terminal,,,,,,,,
 PHNON,Nonoc/Surigao Del Norte,,,,,,,,
@@ -13935,7 +13935,7 @@ PHSOR,Sorsogon/Legaspi,12.9667,124.0,PH-SOR,PH-05,PH-SOR PH-05,boundaries,wpi,
 PHSPQ,San Pio Quinto/Aparri,,,,,,,,
 PHSTE,San Teodoro/Batangas,,,,,,,,
 PHSUA,Sual,,,,,,,,
-PHSUG,"Surigao, Mindanao",9.7833,125.5,PH-SUN,PH-13,PH-SUN PH-13,boundaries,wpi,Bilan Bilan|Mindanao Isl.
+PHSUG,"Surigao, Mindanao",9.7833,125.5,PH-SUN,PH-13,PH-SUN PH-13,boundaries,wpi,Bilan Bilan
 PHTAC,"Tacloban, Leyte",11.25,125.0,PH-LEY,PH-08,PH-LEY PH-08,boundaries,wpi,
 PHTAG,"Tagbilaran, Bohol",9.65,123.85,PH-BOH,PH-07,PH-BOH PH-07,boundaries,wpi,
 PHTAL,Talibon,10.1333,124.3167,PH-BOH,PH-07,PH-BOH PH-07,unlocode,unlocode,
@@ -14137,7 +14137,7 @@ PTLAJ,Lajes das Flores,39.3833,-31.1667,PT-20,PT-20,PT-20,unlocode,unlocode,
 PTLDP,Lajes,38.3833,-28.2667,PT-20,PT-20,PT-20,unlocode,unlocode,
 PTLDR,Lordelo,41.3667,-8.3833,PT-03,PT-03,PT-03,unlocode,unlocode,
 PTLE2,Maceira,39.6833,-8.8833,PT-10,PT-10,PT-10,unlocode,unlocode,
-PTLEI,Leixões,41.1833,-8.6833,PT-13,PT-13,PT-13,unlocode,unlocode,Leixos|Matosinhos
+PTLEI,Leixões,41.1833,-8.6833,PT-13,PT-13,PT-13,unlocode,unlocode,Leixos
 PTLEP,Leça da Palmeira,41.2,-8.7,PT-13,PT-13,PT-13,unlocode,unlocode,
 PTLIS,Lisboa,38.7167,-9.1333,PT-11,PT-11,PT-11,unlocode,unlocode,Lisbon
 PTLNS,Lanheses,41.05,-8.6667,PT-16,PT-16,PT-16,unlocode,unlocode,
@@ -14224,7 +14224,7 @@ PYPCJ,Puerto la Victoria,-22.2833,-57.9333,PY-16,PY-16,PY-16,boundaries,unlocode
 PYPGU,Puerto Guarani,-21.3,-57.9167,PY-16,PY-16,PY-16,unlocode,unlocode,
 PYPSA,Puerto Sara,-25.4333,-57.5333,PY-11,PY-11,PY-11,unlocode,unlocode,
 PYSAN,San Antonio,,,,,,,,
-PYTER,Terport (San Antonio),-25.3833,-57.6333,PY-ASU,PY-ASU,PY-ASU,boundaries,unlocode,San Antonio
+PYTER,Terport (San Antonio),-25.3833,-57.6333,PY-ASU,PY-ASU,PY-ASU,boundaries,unlocode,
 PYVLL,Villeta,,,,,,,,
 QAASN,Al Shaheen,26.55,52.0667,,,,,unlocode,
 QADOH,Doha,25.2833,51.5333,QA-DA,QA-DA,QA-DA,unlocode,wpi,Ad Dawhah
@@ -14293,7 +14293,7 @@ ROPTA,Petelea,46.7333,24.7167,RO-MS,RO-MS,RO-MS,unlocode,unlocode,
 RORDE,Rediu,46.9,27.5833,RO-IS,RO-IS,RO-IS,unlocode,unlocode,
 RORNN,Rosia Montana,46.3,23.1333,RO-AB,RO-AB,RO-AB,boundaries,unlocode,
 RORVA,Hârsova,44.6833,27.95,RO-CT,RO-CT,RO-CT,unlocode,unlocode,
-ROSUL,Sulina (Port et Zone Franche),45.15,29.6667,RO-TL,RO-TL,RO-TL,unlocode,unlocode,Suluna|Port et Zone Franche
+ROSUL,Sulina (Port et Zone Franche),45.15,29.6667,RO-TL,RO-TL,RO-TL,unlocode,unlocode,Suluna
 ROTCE,Tulcea,45.1833,28.8,RO-TL,RO-TL,RO-TL,unlocode,unlocode,
 ROTR5,Tureni,46.6167,23.7,RO-CJ,RO-CJ,RO-CJ,unlocode,unlocode,
 ROTUM,Turnu Magurele,43.75,24.8833,RO-TR,RO-TR,RO-TR,unlocode,unlocode,
@@ -14343,7 +14343,7 @@ RUBNK,Bronka Port,59.9167,29.6667,RU-SPE,RU-SPE,RU-SPE,unlocode,unlocode,
 RUBOR,Borisova,57.0167,106.2333,RU-IRK,RU-IRK,RU-IRK,unlocode,unlocode,
 RUBOS,Boshnyakovo,49.65,142.1667,RU-SAK,RU-SAK,RU-SAK,boundaries,unlocode,
 RUBRK,Lomonosov,59.9,29.7333,RU-SPE,RU-SPE,RU-SPE,unlocode,unlocode,
-RUBVV,Kuril'skiy Burevestnik AFB (Burevestnik AFB),44.9333,147.6333,RU-SAK,RU-SAK,RU-SAK,unlocode,unlocode,Burevestnik AFB
+RUBVV,Kuril'skiy Burevestnik AFB (Burevestnik AFB),44.9333,147.6333,RU-SAK,RU-SAK,RU-SAK,unlocode,unlocode,
 RUCEE,Cherepovets,,,,,,,,
 RUCHA,Chamgu,50.9333,143.6,RU-SAK,RU-SAK,RU-SAK,unlocode,unlocode,
 RUCHB,Chebarkul',54.9667,60.3667,RU-CHE,RU-CHE,RU-CHE,boundaries,unlocode,
@@ -14493,7 +14493,7 @@ RUPOK,Engels,51.5,46.1167,RU-SAR,RU-SAR,RU-SAR,unlocode,unlocode,
 RUPRI,Primorsk (Koivisto),60.3667,28.6333,RU-LEN,RU-LEN,RU-LEN,boundaries,wpi,Koivisto Bay|Zaliv Koyvisto|Koivisto
 RUPRN,Poronaisk,49.2167,143.1333,RU-SAK,RU-SAK,RU-SAK,boundaries,wpi,Shikuka
 RUPRY,Preobrazheniye,42.9,133.9,RU-PRI,RU-PRI,RU-PRI,boundaries,unlocode,
-RUPSE,Posyet,42.65,130.8,RU-PRI,RU-PRI,RU-PRI,boundaries,wpi,Novgorod
+RUPSE,Posyet,42.65,130.8,RU-PRI,RU-PRI,RU-PRI,boundaries,wpi,
 RUPTN,Plastun,44.7333,136.3,RU-PRI,RU-PRI,RU-PRI,boundaries,wikidata,
 RUPTP,Potapova,57.3833,107.5167,RU-IRK,RU-IRK,RU-IRK,unlocode,unlocode,
 RUPUD,Pudozh,,,,,,,,
@@ -14637,7 +14637,7 @@ SBTLG,"Tulagi, Ngella",-9.1,160.15,SB-CE,SB-CE,SB-CE,boundaries,wpi,
 SBVIU,Viru Harbour,-8.4919,157.7353,SB-CH,SB-CH,SB-CH,boundaries,wikidata,
 SBXYA,"Yandina, Russell Island",-9.1167,159.2167,SB-CE,SB-CE,SB-CE,boundaries,unlocode,
 SCMAW,Mahe,,,,,,,,
-SCPOV,Port Victoria,-4.6233,55.4642,SC-18,SC-18,SC-18,boundaries,wpi,Mahe
+SCPOV,Port Victoria,-4.6233,55.4642,SC-18,SC-18,SC-18,boundaries,wpi,
 SCVIC,Victoria,-4.6167,55.45,SC-22,SC-22,SC-22,unlocode,unlocode,
 SDMBH,Marsa Bashayer,19.3833,37.3,SD-RS,SD-RS,SD-RS,boundaries,unlocode,
 SDPZU,Port Sudan,19.6,37.2333,SD-RS,SD-RS,SD-RS,unlocode,wpi,Bur Sudan
@@ -14837,7 +14837,7 @@ SENHN,Nyhamn,,,SE-X,SE-X,SE-X,unlocode,,
 SENJA,Norrbottens Järnverk-SSAB,,,SE-BD,SE-BD,SE-BD,unlocode,,
 SENOE,Norrtälje,59.75,18.7167,SE-AB,SE-AB,SE-AB,unlocode,unlocode,
 SENOG,Nordmaling,63.6667,19.4167,SE-AC,SE-AC,SE-AC,unlocode,unlocode,
-SENOL,Nol (ports),57.9167,12.0667,SE-O,SE-O,SE-O,unlocode,unlocode,ports
+SENOL,Nol (ports),57.9167,12.0667,SE-O,SE-O,SE-O,unlocode,unlocode,
 SENOR,Norrbyskär,,,SE-Y,SE-Y,SE-Y,unlocode,,
 SENOT,Norrsundet,60.95,17.1333,SE-X,SE-X,SE-X,unlocode,unlocode,
 SENRK,Norrköping,58.6,16.1833,SE-E,SE-E,SE-E,unlocode,unlocode,
@@ -15070,7 +15070,7 @@ SRABN,Albina,,,,,,,,
 SRAGI,Wageningen,,,,,,,,
 SRICK,Nieuw Nickerie,5.95,-57.0,SR-NI,SR-NI,SR-NI,boundaries,wpi,New Nickerie
 SRLLW,Lelydorp,5.7,-55.2333,SR-WA,SR-WA,SR-WA,unlocode,unlocode,
-SRMOJ,Moengo,5.6333,-54.4167,SR-MA,SR-MA,SR-MA,boundaries,wpi,Abina|Albina
+SRMOJ,Moengo,5.6333,-54.4167,SR-MA,SR-MA,SR-MA,boundaries,wpi,Abina
 SRPBM,Paramaribo,5.8333,-55.1667,SR-PM,SR-PM,SR-PM,boundaries,wpi,
 SRPRM,Paranam,5.6167,-55.1,SR-PR,SR-PR,SR-PR,boundaries,wpi,
 SRSMA,Smalkalden,,,,,,,,
@@ -15093,7 +15093,7 @@ SXGES,Gallis Bay,18.0167,-63.0667,,,,,unlocode,
 SXMAR,Marigot,18.0667,-63.0667,,,,,unlocode,
 SXPHI,Philipsburg,18.0167,-63.0333,,,,,unlocode,Filipsburg|Grand Bay|Groote Baai
 SXSXM,Sint-Maarten Apt,18.05,-63.1167,,,,,unlocode,
-SYALD,Al Ladhiqiyah,35.5167,35.7833,SY-LA,SY-LA,SY-LA,boundaries,unlocode,Latakia
+SYALD,Al Ladhiqiyah,35.5167,35.7833,SY-LA,SY-LA,SY-LA,boundaries,unlocode,
 SYARW,Arwad,34.85,35.85,SY-TA,SY-TA,SY-TA,unlocode,unlocode,
 SYBAN,Baniyas,35.1833,35.95,SY-TA,SY-TA,SY-TA,unlocode,unlocode,
 SYBEN,Banghazi,32.1167,20.0667,,,,,unlocode,
@@ -15124,7 +15124,7 @@ THBNK,Ban Kantang,7.4167,99.5,TH-92,TH-92,TH-92,unlocode,unlocode,
 THBNL,Ban Laem,13.1167,100.1167,TH-76,TH-76,TH-76,unlocode,unlocode,
 THBPG,Ban Pong,13.8,99.8667,TH-70,TH-70,TH-70,boundaries,unlocode,
 THBPK,Ban Prakop Customs House,6.4667,100.7167,TH-90,TH-90,TH-90,unlocode,unlocode,
-THBSP,Bang Saphan,11.2,99.5167,TH-77,TH-77,TH-77,boundaries,unlocode,Prachuap Port
+THBSP,Bang Saphan,11.2,99.5167,TH-77,TH-77,TH-77,boundaries,unlocode,
 THBTC,Bangpakong Terminal,13.4667,100.9833,TH-24,TH-24,TH-24,unlocode,unlocode,
 THBTP,Ban Talat Takua Pa,8.8333,98.3667,TH-82,TH-82,TH-82,unlocode,unlocode,
 THCHA,Chanthaburi,12.3,102.2333,TH-22,TH-22,TH-22,unlocode,unlocode,
@@ -15368,7 +15368,7 @@ TTCRN,Carenage,10.6833,-61.6,TT-DMN,TT-DMN,TT-DMN,boundaries,unlocode,
 TTCVA,Couva,10.4167,-61.45,TT-CTT,TT-CTT,TT-CTT,boundaries,unlocode,
 TTFPT,Saint Mary's,10.2167,-61.5333,TT-CTT,TT-CTT,TT-CTT,unlocode,unlocode,
 TTFRE,Freeport,10.45,-61.4167,TT-CTT,TT-CTT,TT-CTT,unlocode,unlocode,
-TTGUA,Guayaguayare,10.1333,-61.0333,,,,,unlocode,Galeota Oil Terminal
+TTGUA,Guayaguayare,10.1333,-61.0333,,,,,unlocode,
 TTLAB,La Brea (Brighton),10.25,-61.6333,TT-SIP,TT-SIP,TT-SIP,boundaries,wpi,Brighton
 TTPLY,Plymouth,,,,,,,,
 TTPOS,Port-of-Spain,10.65,-61.5167,TT-POS,TT-POS,TT-POS,unlocode,unlocode,
@@ -16145,7 +16145,7 @@ USL9G,LaGrange,33.0333,-85.0167,US-GA,US-GA,US-GA,unlocode,unlocode,
 USL9K,Longboat Key,27.4,-82.65,US-FL,US-FL,US-FL,unlocode,unlocode,
 USLA2,Lake Arrowhead,34.25,-117.1833,US-CA,US-CA,US-CA,unlocode,unlocode,
 USLAT,Los Alamitos,33.8,-118.0667,US-CA,US-CA,US-CA,unlocode,unlocode,
-USLAX,Los Angeles,34.05,-118.25,US-CA,US-CA,US-CA,unlocode,unlocode,San Pedro|Terminal Island|Wilmington
+USLAX,Los Angeles,34.05,-118.25,US-CA,US-CA,US-CA,unlocode,unlocode,
 USLB2,Lubec,44.85,-66.9833,US-ME,US-ME,US-ME,unlocode,unlocode,
 USLB9,Lansdowne-Baltimore,39.2333,-76.65,US-MD,US-MD,US-MD,unlocode,unlocode,
 USLBQ,Calabash,33.8833,-78.5667,US-NC,US-NC,US-NC,unlocode,unlocode,
@@ -16173,7 +16173,7 @@ USLLU,Los Lunas,34.8,-106.7167,US-NM,US-NM,US-NM,unlocode,unlocode,
 USLMY,Lemay,38.5333,-90.2667,US-MO,US-MO,US-MO,unlocode,unlocode,
 USLN5,Linnton,45.6,-122.7833,US-OR,US-OR,US-OR,unlocode,unlocode,
 USLO7,Lodi,42.6,-76.8167,US-NY,US-NY,US-NY,unlocode,unlocode,
-USLO8,Louisiana Offshore Oil Port (Loop),28.8833,-90.0167,US-LA,US-LA,US-LA,unlocode,unlocode,Loop
+USLO8,Louisiana Offshore Oil Port (Loop),28.8833,-90.0167,US-LA,US-LA,US-LA,unlocode,unlocode,
 USLO9,Loop Terminal,28.8833,-90.0167,US-LA,US-LA,US-LA,unlocode,unlocode,
 USLOG,Longview,46.1333,-122.9333,US-WA,US-WA,US-WA,unlocode,wpi,
 USLOR,Lorain,41.4667,-82.1833,US-OH,US-OH,US-OH,unlocode,wpi,
@@ -17245,7 +17245,7 @@ VECGU,Ciudad Guayana,,,,,,,,
 VECHQ,Chiquinquirá,10.4333,-71.6333,VE-V,VE-V,VE-V,unlocode,unlocode,
 VECHV,Chichiriviche,10.9167,-68.2667,VE-I,VE-I,VE-I,boundaries,wpi,
 VECMR,Puerto Cumarebo,11.4833,-69.35,VE-I,VE-I,VE-I,unlocode,unlocode,Tucupido
-VECUM,Cumana,10.4667,-64.1833,VE-R,VE-R,VE-R,boundaries,wpi,Puerto Sucre
+VECUM,Cumana,10.4667,-64.1833,VE-R,VE-R,VE-R,boundaries,wpi,
 VECUP,Carupano,10.7,-63.25,VE-R,VE-R,VE-R,boundaries,wpi,
 VECXA,Caicara de Orinoco,,,,,,,,
 VECZE,Coro,,,,,,,,
@@ -17446,7 +17446,7 @@ VNVPH,Van Phong,20.8,106.8667,VN-HP,VN-HP,VN-HP,unlocode,unlocode,
 VNVRO,Vung Ro,12.85,109.4167,VN-32,VN-32,VN-32,boundaries,unlocode,
 VNVUT,Vung Tau,10.35,107.0667,VN-43,VN-43,VN-43,unlocode,unlocode,
 VNXNG,Quang Ngai,,,,,,,,
-VULUG,Luganville,-15.5333,167.1667,VU-SAM,VU-SAM,VU-SAM,unlocode,unlocode,Santo
+VULUG,Luganville,-15.5333,167.1667,VU-SAM,VU-SAM,VU-SAM,unlocode,unlocode,
 VUPSA,Port Sandwich,,,,,,,,
 VUSAN,Santo,,,,,,,,
 VUVLI,Port Vila,-17.7333,168.3167,VU-SEE,VU-SEE,VU-SEE,boundaries,wpi,
@@ -17461,7 +17461,7 @@ XZANU,Anoa Natuna,5.2333,105.6,,,,,unlocode,
 XZBUV,Buffalo Venture,,,,,,,,
 XZCMT,Camar Marine Terminal,-6.3,113.0,,,,,unlocode,
 XZDHS,Dai Hung (STS Load),8.8667,103.3,,,,,unlocode,
-XZDHT,Dai Hung (Tandem Load),8.4667,108.6833,,,,,unlocode,Tandem Load
+XZDHT,Dai Hung (Tandem Load),8.4667,108.6833,,,,,unlocode,
 XZDRA,Draugen,64.3333,7.75,,,,,unlocode,
 XZDTL,Dulang Marine Terminal,5.8,104.1667,,,,,unlocode,
 XZHEI,Heidrun,65.3167,7.3333,,,,,unlocode,

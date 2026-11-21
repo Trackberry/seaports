@@ -38,7 +38,7 @@ module Seaports
     CSV_PATH = File.join(DIRECTORY, "UpdatedPub150.csv")
     PROVENANCE_PATH = File.join(DIRECTORY, "provenance.json")
 
-    REQUIRED_COLUMNS = ["World Port Index Number", "Main Port Name", "UN/LOCODE", "Country Code", "Latitude", "Longitude"].freeze
+    REQUIRED_COLUMNS = ["World Port Index Number", "Main Port Name", "UN/LOCODE", "Country Code", "Alternate Port Name", "Latitude", "Longitude"].freeze
     # A file this far from the vendored one's size is a truncated download or a
     # different document, not a new edition. The index changes by a handful of
     # ports a year.
@@ -161,6 +161,12 @@ module Seaports
         locode = locode_of(row)
         [locode, row["Alternate Port Name"]] if locode.match?(AlternateNames::LOCODE)
       end
+    end
+
+    # The index's country names as comparable keys, so a country written as a
+    # port's alternate name ("Mozambique") can be told from a place.
+    def self.country_keys(text)
+      rows(text).map { |row| AlternateNames.key(row["Country Code"]) }.reject(&:empty?).to_set
     end
 
     def self.source_label(snapshot)

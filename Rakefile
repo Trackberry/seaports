@@ -45,7 +45,7 @@ namespace :seaports do
       builder = Seaports::Builder.new(source, subdivisions:, boundaries:, overrides: Seaports::Builder.overrides,
         coordinate_overrides: Seaports::Builder.coordinate_overrides,
         fallback_coordinates: Seaports::Builder.fallback_coordinates,
-        alternate_names: Seaports::Builder.alternate_name_layers)
+        alternate_names: Seaports::Builder.alternate_name_layers, rejected_names: Seaports::Builder.rejected_alternate_names)
       builder.write(Seaports::TABLE_PATH)
     rescue StandardError => e
       FileUtils.cp(before, Seaports::TABLE_PATH)
@@ -218,7 +218,7 @@ namespace :seaports do
   def write_changelog(version, release, diff)
     require "date"
 
-    entry = ["## #{version} — #{Date.today}", "", "UN/LOCODE #{release || 'release unknown'}. #{diff.headline}"]
+    entry = ["## #{version} — #{Date.today}", "", "UN/LOCODE #{release || 'release unknown'}. #{[diff.headline, diff.names_headline].compact.join(' ')}"]
     unless diff.removed.empty?
       entry += ["", "Removed: #{diff.removed.join(', ')}."]
     end

@@ -536,13 +536,36 @@ class BuilderTest < Minitest::Test
     table = CSV.read(Seaports::TABLE_PATH, headers: true).to_h { |row| [row["locode"], row] }
 
     assert_operator layers.last.size, :>, 500
-    layers.each do |names_by_locode|
-      names_by_locode.each_key do |locode|
-        row = table.fetch(locode) { flunk "#{locode} is not in the shipped table" }
-        expected = Seaports::AlternateNames.for(locode:, name: row["name"], located: !row["lat"].to_s.empty?, layers:)
-        assert_equal expected.join("|"), row["alternate_names"].to_s, locode
-      end
+    (layers + [Seaports::Builder.rejected_alternate_names]).each do |names_by_locode|
+      names_by_locode.each_key { |locode| assert table.key?(locode), "#{locode} is not in the shipped table" }
     end
+
+    # Applying the files to a copy of the shipped table changes no row: it is
+    # exactly what the builder makes from them.
+    copy = File.join(Dir.mktmpdir, "ports.csv")
+    FileUtils.cp(Seaports::TABLE_PATH, copy)
+    assert_equal [], Seaports::Builder.apply_alternate_names(copy)
+    assert_equal File.read(Seaports::TABLE_PATH), File.read(copy)
+  end
+
+  def test_a_main_name_beats_an_alternate_and_a_shared_alternate_names_nobody
+    source = SOURCE.sub(/\n\z/, "\n,AU,SYD,Sydney,Sydney,NSW,AI,1-------,0001,,,\n,AU,NTL,Newcastle,Newcastle,NSW,AI,1-------,0001,,,\n" \
+      ",AU,PTK,Port Kembla,Port Kembla,NSW,AI,1-------,0001,,,\n,NZ,SYD,Sydney Cove,Sydney Cove,,AI,1-------,0001,,,\n")
+    layers = [{ "AUNTL" => ["Sydney", "Hunter", "Wollongong Bay"], "AUPTK" => ["Wollongong Bay", "Kembla"], "AUBNE" => ["Brizzy"],
+                "NZSYD" => ["Sydney"] }]
+    names = alternates(Seaports::Builder.new(source, alternate_names: layers))
+
+    assert_equal "Hunter", names["AUNTL"], "Sydney is another Australian port's own name; Wollongong Bay is shared"
+    assert_equal "Kembla", names["AUPTK"]
+    assert_equal "Brizzy", names["AUBNE"]
+    assert_equal "Sydney", names["NZSYD"], "another country's port does not collide"
+  end
+
+  def test_a_reviewed_rejection_removes_a_name_from_every_source
+    layers = [{ "AUBNE" => ["Brizzy", "Brisvegas"] }]
+    names = alternates(Seaports::Builder.new(SOURCE, alternate_names: layers, rejected_names: { "AUBNE" => ["brizzy"] }))
+
+    assert_equal "Brisvegas", names["AUBNE"]
   end
 
   def test_every_generated_position_file_is_valid_and_in_the_shipped_table

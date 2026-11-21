@@ -58,6 +58,9 @@ module Seaports
     # Seaports::AlternateNames.
     ALTERNATE_NAMES_PATH = File.expand_path("../../data/sources/alternate_names.csv", __dir__)
     WPI_ALTERNATE_NAMES_PATH = File.expand_path("../../data/sources/alternate_names_wpi.csv", __dir__)
+    # Names reviewed and refused for a port (locode, name, reason), whichever
+    # source offers them: the wrong-place names that got past the index filter.
+    REJECTED_ALTERNATE_NAMES_PATH = File.expand_path("../../data/sources/alternate_names_rejected.csv", __dir__)
 
     # The published list, straight off the network — or off disk, if what was
     # handed over is a path. Both, because a rebuild from an already-downloaded
@@ -166,15 +169,26 @@ module Seaports
       paths.map { |path| AlternateNames.read(path) }
     end
 
+    # { locode => [names] } of REJECTED_ALTERNATE_NAMES_PATH (or +path+), read by
+    # the same rules, with a reason in place of the source.
+    def self.rejected_alternate_names(path = REJECTED_ALTERNATE_NAMES_PATH)
+      AlternateNames.read(path, third: "reason")
+    end
+
     # Writes the alternate names in +layers+ (see alternate_name_layers) into
     # the table at +path+, without a download: how a reviewed row reaches the
     # table between refreshes. Returns the locodes whose names changed.
-    def self.apply_alternate_names(path = Seaports::TABLE_PATH, layers = alternate_name_layers)
+    def self.apply_alternate_names(path = Seaports::TABLE_PATH, layers = alternate_name_layers, rejected = rejected_alternate_names)
       changed = []
-      rows = CSV.read(path, headers: true).map do |row|
+      table = CSV.read(path, headers: true)
+      candidates = table.map do |row|
+        [row["locode"], row["name"], AlternateNames.for(locode: row["locode"], name: row["name"], located: !row["lat"].to_s.empty?,
+          layers:, rejected:)]
+      end
+      names = AlternateNames.resolve(candidates)
+      rows = table.map do |row|
         was = row["alternate_names"].to_s
-        row["alternate_names"] = AlternateNames.dump(AlternateNames.for(locode: row["locode"], name: row["name"],
-          located: !row["lat"].to_s.empty?, layers:))
+        row["alternate_names"] = AlternateNames.dump(names.fetch(row["locode"], []))
         changed << row["locode"] if was != row["alternate_names"].to_s
         row.fields(*HEADERS)
       end
@@ -243,9 +257,10 @@ module Seaports
     # +alternate_names+ is a list of { locode => [names] }, best first (see
     # Builder.alternate_name_layers).
     def initialize(source, subdivisions: nil, boundaries: nil, overrides: {}, coordinate_overrides: {}, fallback_coordinates: [],
-      alternate_names: [])
+      alternate_names: [], rejected_names: {})
       @source = source
       @alternate_names = alternate_names
+      @rejected_names = rejected_names
       @subdivisions = subdivisions
       @boundaries = boundaries
       @overrides = overrides
@@ -262,11 +277,17 @@ module Seaports
     # Sorted because the file is committed: a stable order means a refresh
     # diff shows what changed rather than the whole table moving.
     def rows
-      @rows ||= CSV.parse(@source, headers: true)
-        .select { |row| seaport?(row) }
-        .map { |row| port_row(row) }
-        .uniq { |locode, *| locode }
-        .sort_by(&:first)
+      @rows ||= begin
+        rows = CSV.parse(@source, headers: true)
+          .select { |row| seaport?(row) }
+          .map { |row| port_row(row) }
+          .uniq { |locode, *| locode }
+          .sort_by(&:first)
+        # The last cell is the port's candidate names until each has been
+        # compared with the rest of its country.
+        names = AlternateNames.resolve(rows.map { |locode, name, *, candidates| [locode, name, candidates] })
+        rows.map { |row| [*row[0..-2], AlternateNames.dump(names.fetch(row.first, []))] }
+      end
     end
 
     def write(path = Seaports::TABLE_PATH)
@@ -334,7 +355,7 @@ module Seaports
       # A code whose chain breaks has no trustworthy top, so it is not kept.
       subdivision = source = nil if path.empty?
       name = row["Name"].strip
-      alternates = AlternateNames.dump(AlternateNames.for(locode:, name:, located: !lat.nil?, layers: @alternate_names))
+      alternates = AlternateNames.for(locode:, name:, located: !lat.nil?, layers: @alternate_names, rejected: @rejected_names)
       [locode, name, lat, lng, subdivision, path.last, path.empty? ? nil : path.join(" "), source, coordinate_source, alternates]
     end
 

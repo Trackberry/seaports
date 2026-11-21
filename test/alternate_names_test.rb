@@ -37,6 +37,84 @@ class AlternateNamesTest < Minitest::Test
     end
   end
 
+  def test_no_alternate_is_another_ports_name_or_shared_in_its_country
+    mains = Hash.new { |hash, key| hash[key] = [] }
+    alternates = Hash.new { |hash, key| hash[key] = [] }
+    Seaports.all.each do |port|
+      [port.name, port.name.sub(/\(.*\)/, "")].each { |spelling| mains[[port.locode[0, 2], Names.key(spelling)]] << port.locode }
+      port.alternate_names.each { |name| alternates[[port.locode[0, 2], Names.key(name)]] << port.locode }
+    end
+
+    alternates.each do |(country, name), locodes|
+      assert_equal 1, locodes.size, "#{country} #{name.inspect} is an alternate of #{locodes.join(', ')}"
+      assert_empty mains[[country, name]] - locodes, "#{country} #{name.inspect} is another port's own name"
+    end
+  end
+
+  def test_the_collisions_in_the_review_are_gone
+    assert_empty Seaports.alternate_names("CLANF")
+    assert_empty Seaports.alternate_names("GBACV")
+    assert_empty Seaports.alternate_names("JPOSA")
+    %w[BEBRU BEMSJ BEODE].each { |locode| refute_includes Seaports.alternate_names(locode), "Bruxelles" }
+  end
+
+  def test_resolve_drops_another_ports_own_name_and_a_name_two_ports_share
+    ports = [["AAONE", "One", %w[Shared Unique Two]], ["AATWO", "Two", %w[Shared Other]], ["AATHR", "Three", %w[Shared]],
+             ["BBONE", "Elsewhere", %w[Shared Two]]]
+    resolved = Names.resolve(ports)
+
+    assert_equal %w[Unique], resolved["AAONE"], "Two is a port's name, Shared is on three ports"
+    assert_equal %w[Other], resolved["AATWO"]
+    assert_empty resolved["AATHR"]
+    assert_equal %w[Shared Two], resolved["BBONE"], "another country does not collide"
+  end
+
+  def test_a_parenthesis_is_one_plain_name
+    assert Names.parenthesis_name?("Alexandria")
+    refute Names.parenthesis_name?("Ibiza/Eivissa"), "a list"
+    refute Names.parenthesis_name?("Nuns, Island"), "a list"
+    refute Names.parenthesis_name?("Ste"), "too short"
+    ["ex Bombay", "Oil Terminal", "Tandem Load", "Ferry Port", "Port et Zone Franche", "Zone Franche", "Energy Terminal", "AFB", "Loop",
+     "Fishing Ports", "Cargo Terminal"].each { |text| refute Names.parenthesis_name?(text), text }
+  end
+
+  def test_index_names_split_on_semicolons_and_commas_and_drop_junk
+    countries = Set["mozambique"]
+
+    assert_equal %w[Antwerp Anvers], Names.index_names("Antwerp; Anvers")
+    assert_equal %w[Ghent Gand], Names.index_names("Ghent, Gand")
+    ["FSO Kome", "FPSO Aoka", "FSPO Thing", "MV Baobab", "Shell Terminal", "Oil Berth", "Naval Port", "Kaupmees Sadamate", "Statoil AS",
+     "Petroleum Quay", "Mozambique", "Bed", "Ab", "Base Nord", "Term. Sud"].each do |junk|
+      assert_empty Names.index_names(junk, countries:), junk
+    end
+    assert_equal ["Assens"], Names.index_names("Assens", countries:), "AS only as a suffix"
+    assert_equal ["Basel"], Names.index_names("Basel"), "Base only as a word"
+  end
+
+  def test_for_drops_a_rejected_name
+    layers = [{ "XXAAA" => %w[Alpha Beta] }]
+
+    assert_equal %w[Beta], Names.for(locode: "XXAAA", name: "Main", located: true, layers:, rejected: { "XXAAA" => ["alpha"] })
+    assert_equal %w[Alpha Beta], Names.for(locode: "XXAAA", name: "Main", located: true, layers:, rejected: { "XXBBB" => ["alpha"] })
+  end
+
+  def test_the_rejected_file_is_valid_and_its_names_are_gone
+    rejected = Seaports::Builder.rejected_alternate_names
+
+    assert_equal 16, rejected.values.sum(&:size)
+    rejected.each do |locode, names|
+      names.each { |name| refute_includes Seaports.alternate_names(locode).map { |n| Names.key(n) }, Names.key(name), "#{locode} #{name}" }
+    end
+  end
+
+  def test_read_requires_a_reason_in_the_rejected_file
+    path = File.join(Dir.mktmpdir, "rejected.csv")
+    File.write(path, "locode,name,reason\nBEANR,Antwerp,\n")
+
+    error = assert_raises(ArgumentError) { Names.read(path, third: "reason") }
+    assert_match(/has no reason/, error.message)
+  end
+
   def test_key_folds_case_accents_and_punctuation
     assert_equal "goteborg", Names.key("Göteborg")
     assert_equal "st petersburg", Names.key("St.-Petersburg")
