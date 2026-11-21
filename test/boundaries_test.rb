@@ -23,6 +23,7 @@ class BoundariesTest < Minitest::Test
         feature({ "iso_3166_2" => "GB-LRN", "gu_a3" => "NIR" }, [square(-6.0, 54.8)]),
         feature({ "iso_3166_2" => "-99" }, [square(10.0, 10.0)]),
         feature({ "iso_3166_2" => "NO-55" }, [square(20.0, 69.5)]),
+        feature({ "iso_3166_2" => "US-KS" }, [square(-100.0, 40.0)]),
         { "type" => "Feature", "properties" => { "iso_3166_2" => "ES-PM" },
           "geometry" => { "type" => "MultiPolygon", "coordinates" => [[square(2.5, 39.5, 0.5)], [square(4.0, 39.8, 0.3)]] } }
       ]
@@ -97,5 +98,12 @@ class BoundariesTest < Minitest::Test
 
   def test_a_country_the_map_does_not_draw_cannot_be_judged
     assert_nil @boundaries.near_country?("GI", 36.1, -5.35)
+  end
+
+  # A territory the map does not draw is judged against its parent where the
+  # parent's areas reach it, and is not judged where they do not.
+  def test_a_territory_is_judged_against_its_parent_only_where_the_parent_reaches_it
+    assert @boundaries.near_country?("PR", 40.5, -99.5)
+    assert_nil @boundaries.near_country?("PR", 18.4, -66.1), "far from the United States on the map: unjudged, not rejected"
   end
 end

@@ -193,4 +193,35 @@ class DiffTest < Minitest::Test
   def port(name, point = [1.0, 2.0], path: "")
     { name: name, point: point, path: path }
   end
+
+  # About 50 m: a re-survey of the same quay, not a change worth a release.
+  def test_a_move_under_a_hundred_metres_is_not_a_change
+    diff = Seaports::Diff.new(healthy("AAAAA" => port("Quay", [51.85, -8.2667])), healthy("AAAAA" => port("Quay", [51.8504, -8.2667])))
+
+    refute_predicate diff, :changed?
+  end
+
+  def test_a_move_over_a_hundred_metres_is_a_change
+    diff = Seaports::Diff.new(healthy("AAAAA" => port("Quay", [51.85, -8.2667])), healthy("AAAAA" => port("Quay", [51.852, -8.2667])))
+
+    assert_predicate diff, :changed?
+  end
+
+  def test_refuses_a_refresh_that_moves_more_than_five_percent_of_positions_over_a_kilometre
+    before = healthy
+    after = before.transform_values { |ported| ported[:point] ? ported.merge(point: [20.0, 20.0]) : ported }
+    diff = Seaports::Diff.new(before, after)
+
+    refute_predicate diff, :ok?
+    assert_match(/positions moved over 1 km/, diff.failures.join)
+  end
+
+  def test_reports_position_changes_by_source
+    before = healthy("AAAAA" => { name: "A", point: nil, source: "" }, "BBBBB" => { name: "B", point: nil, source: "" })
+    after = healthy("AAAAA" => { name: "A", point: [1.0, 1.0], source: "wpi" }, "BBBBB" => { name: "B", point: [2.0, 2.0], source: "wikidata" })
+
+    summary = Seaports::Diff.new(before, after).summary
+    assert_includes summary, "- wikidata: 1 located"
+    assert_includes summary, "- wpi: 1 located"
+  end
 end

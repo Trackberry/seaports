@@ -23,7 +23,12 @@ module Seaports
     SOURCE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/data/code-list.csv"
     DATAPACKAGE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/datapackage.json"
 
-    HEADERS = %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source].freeze
+    HEADERS = %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source coordinate_source].freeze
+
+    # Where a port's position came from, best first. "unlocode" is UN/LOCODE's
+    # own and always wins; a later regeneration may replace any of the others.
+    COORDINATE_SOURCES = %w[unlocode override wpi wikidata].freeze
+    FALLBACK_NAMES = %w[wpi wikidata].freeze
 
     # Reviewed subdivisions for ports neither UN/LOCODE nor the map places:
     # Valencia, Algeciras and Barcelona have no subdivision and no position.
@@ -133,44 +138,48 @@ module Seaports
       paths.map { |path| coordinate_overrides(path) }
     end
 
+    # The supplementary positions by source, best first: { "override" => {...},
+    # "wpi" => {...}, "wikidata" => {...} }, each { locode => [lat, lng] }.
+    def self.coordinate_layers
+      wpi, wikidata = fallback_coordinates
+      { "override" => coordinate_overrides, "wpi" => wpi, "wikidata" => wikidata }
+    end
+
     # Every supplementary position the builder would use, one per port, in
     # precedence order: hand-written, then World Port Index, then Wikidata.
     def self.all_coordinates
-      fallbacks = fallback_coordinates
-      fallbacks.reverse.reduce({}, :merge).merge(coordinate_overrides)
+      coordinate_layers.values.reverse.reduce({}, :merge)
     end
 
-    # Writes +overrides+ ({ locode => [lat, lng] }) into the shipped table at
-    # +path+ for the ports that have no position there, without a download:
-    # how a reviewed row reaches the table between refreshes. A refresh gets
-    # the same result by itself, and also places the port on the boundaries
-    # map, which this does not. Returns the locodes it filled.
+    # Writes the supplementary positions in +layers+ (see coordinate_layers; a
+    # flat { locode => [lat, lng] } counts as the "override" layer) into the
+    # table at +path+, without a download: how a reviewed row reaches the table
+    # between refreshes. A refresh gets the same result by itself, and also
+    # places the port on the boundaries map, which this does not.
     #
-    # +previous+ is what the overrides were before they were regenerated. A
-    # port whose position is exactly a previous supplementary one, and which
-    # the overrides no longer give that position, is moved to the new one or
-    # emptied: it was never UN/LOCODE's, so nothing is lost, and the table does
-    # not keep a row that left its source file.
-    def self.apply_coordinates(path = Seaports::TABLE_PATH, overrides = all_coordinates, previous: {})
-      filled = []
+    # A row the builder recorded as UN/LOCODE's own (coordinate_source
+    # "unlocode") is never touched. Every other row takes the best layer's
+    # position, or loses its position when no layer has one any more: it was
+    # never UN/LOCODE's, so a row that left its source file leaves the table
+    # too. Returns the locodes whose position changed.
+    def self.apply_coordinates(path = Seaports::TABLE_PATH, layers = coordinate_layers)
+      layers = { "override" => layers } if layers.values.first.is_a?(Array)
+      changed = []
       rows = CSV.read(path, headers: true).map do |row|
-        point = overrides[row["locode"]]
-        if row["lat"].to_s.strip.empty?
-          if point
-            row["lat"], row["lng"] = point
-            filled << row["locode"]
-          end
-        elsif (old = previous[row["locode"]]) && old == [row["lat"].to_f, row["lng"].to_f] && point != old
-          row["lat"], row["lng"] = point
-          filled << row["locode"]
-        end
+        next row.fields if row["coordinate_source"] == "unlocode" || (row["coordinate_source"].nil? && !row["lat"].to_s.empty?)
+
+        source, point = layers.lazy.filter_map { |name, points| [name, points[row["locode"]]] if points[row["locode"]] }.first
+        was = [row["lat"].to_s, row["lng"].to_s]
+        row["lat"], row["lng"] = point
+        row["coordinate_source"] = point && source
+        changed << row["locode"] if was != [row["lat"].to_s, row["lng"].to_s]
         row.fields
       end
       CSV.open(path, "w") do |csv|
         csv << HEADERS
         rows.each { |row| csv << row }
       end
-      filled
+      changed
     end
 
     # Where a port's subdivision comes from, best first:
@@ -208,7 +217,7 @@ module Seaports
     end
 
     # [locode, name, lat, lng, subdivision, principal_subdivision,
-    # subdivision_path, subdivision_source] per port, deduplicated and sorted
+    # subdivision_path, subdivision_source, coordinate_source] per port, deduplicated and sorted
     # by locode. The path is the subdivision and everything above it, space
     # separated, most specific first (see Seaports::Subdivisions#path).
     # Sorted because the file is committed: a stable order means a refresh
@@ -280,32 +289,31 @@ module Seaports
 
     def port_row(row)
       locode = "#{row['Country']}#{row['Location']}".upcase
-      lat, lng = coordinates_for(locode, row)
+      lat, lng, coordinate_source = coordinates_for(locode, row)
       subdivision, source = subdivision_for(locode, row, lat, lng)
       path = @subdivisions&.path(subdivision) || []
       # A code whose chain breaks has no trustworthy top, so it is not kept.
       subdivision = source = nil if path.empty?
-      [locode, row["Name"].strip, lat, lng, subdivision, path.last, path.empty? ? nil : path.join(" "), source]
+      [locode, row["Name"].strip, lat, lng, subdivision, path.last, path.empty? ? nil : path.join(" "), source, coordinate_source]
     end
 
-    # UN/LOCODE's own position when it has one, else the reviewed override,
-    # else the first fallback dataset that has one.
+    # [lat, lng, source] where source says whose position it is, so a later
+    # step never has to guess from the values: UN/LOCODE's own when it has
+    # one, else the reviewed override, else the first fallback dataset that
+    # has one, else [nil, nil, nil].
     def coordinates_for(locode, row)
       own = decimal_degrees(row["Coordinates"])
       override = @coordinate_overrides[locode]
-      if override.nil?
-        return own unless own.first.nil?
-
-        fallback = @fallback_coordinates.lazy.filter_map { |points| points[locode] }.first
-        return fallback || own
+      unless own.first.nil?
+        @coordinates_superseded << [locode, own, override] if override
+        return [*own, "unlocode"]
       end
+      return [*override, "override"] if override
 
-      if own.first.nil?
-        override
-      else
-        @coordinates_superseded << [locode, own, override]
-        own
+      @fallback_coordinates.each_with_index do |points, index|
+        return [*points[locode], FALLBACK_NAMES.fetch(index, "fallback")] if points[locode]
       end
+      [nil, nil, nil]
     end
 
     # [code, source], or [nil, nil] when no source has a valid one.

@@ -84,7 +84,7 @@ class BuilderTest < Minitest::Test
     path = File.join(Dir.mktmpdir, "ports.csv")
     Seaports::Builder.new(SOURCE).write(path)
 
-    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source], CSV.readlines(path).first
+    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source coordinate_source], CSV.readlines(path).first
     assert_equal @locodes, CSV.readlines(path).drop(1).map(&:first)
   end
 
@@ -146,11 +146,11 @@ class BuilderTest < Minitest::Test
     ]))
     rows = Seaports::Builder.new(SOURCE, subdivisions: broken).rows
 
-    assert_equal [nil, nil, nil, nil], rows.find { |row| row.first == "ESVLC" }.last(4)
+    assert_equal [nil, nil, nil, nil], rows.find { |row| row.first == "ESVLC" }[4, 4]
   end
 
   def test_leaves_subdivisions_empty_without_the_iso_list
-    assert(@rows.all? { |row| row.last(4) == [nil, nil, nil, nil] })
+    assert(@rows.all? { |row| row[4, 4] == [nil, nil, nil, nil] })
   end
 
   AMSTERDAM = <<~CSV
@@ -440,28 +440,75 @@ class BuilderTest < Minitest::Test
     assert_equal [4.0, 4.0], builder.rows.find { |row| row.first == "IEORK" }.values_at(2, 3)
   end
 
+  def apply(path, layers)
+    Seaports::Builder.apply_coordinates(path, layers)
+    CSV.read(path, headers: true).to_h { |row| [row["locode"], row] }
+  end
+
+  def test_applies_the_best_layer_and_records_its_source
+    path = File.join(Dir.mktmpdir, "ports.csv")
+    Seaports::Builder.new(SOURCE).write(path)
+
+    table = apply(path, { "override" => { "ESVLC" => [1.0, 1.0] }, "wpi" => { "ESVLC" => [2.0, 2.0] }, "wikidata" => {} })
+
+    assert_equal ["1.0", "1.0", "override"], table["ESVLC"].values_at("lat", "lng", "coordinate_source")
+    assert_equal ["-27.4667", "unlocode"], table["AUBNE"].values_at("lat", "coordinate_source")
+  end
+
+  # A position that left its file leaves the table, and a changed one is
+  # replaced: the intermediate state is asserted, not just the end.
   def test_applies_a_regenerated_position_over_the_one_it_replaces
     path = File.join(Dir.mktmpdir, "ports.csv")
     Seaports::Builder.new(SOURCE, fallback_coordinates: [{ "ESVLC" => [1.0, 1.0] }]).write(path)
+    assert_equal ["1.0", "wpi"], apply(path, { "wpi" => { "ESVLC" => [1.0, 1.0] } })["ESVLC"].values_at("lat", "coordinate_source")
 
-    # The row left its file: the table does not keep it. A UN/LOCODE
-    # position (AUBNE) is never touched.
-    Seaports::Builder.apply_coordinates(path, { "ESVLC" => [2.0, 2.0] }, previous: { "ESVLC" => [1.0, 1.0] })
-    Seaports::Builder.apply_coordinates(path, {}, previous: { "ESVLC" => [2.0, 2.0] })
-    table = CSV.read(path, headers: true).to_h { |row| [row["locode"], row] }
+    table = apply(path, { "wpi" => { "ESVLC" => [2.0, 2.0] } })
+    assert_equal ["2.0", "2.0", "wpi"], table["ESVLC"].values_at("lat", "lng", "coordinate_source"), "the new position replaces the old"
 
+    table = apply(path, { "wpi" => {}, "wikidata" => {} })
     assert_nil table["ESVLC"]["lat"]
-    assert_equal "-27.4667", table["AUBNE"]["lat"]
+    assert_nil table["ESVLC"]["coordinate_source"]
+    assert_equal ["-27.4667", "unlocode"], table["AUBNE"].values_at("lat", "coordinate_source"), "UN/LOCODE's position is never touched"
+  end
+
+  # W8: what UN/LOCODE published is known from the build, not from the values.
+  # A fallback that happens to equal UN/LOCODE's own position is still a
+  # fallback, and one that equals a row's position does not make it UN/LOCODE's.
+  def test_a_position_equal_to_unlocodes_does_not_change_whose_it_is
+    path = File.join(Dir.mktmpdir, "ports.csv")
+    Seaports::Builder.new(SOURCE).write(path)
+
+    table = apply(path, { "wpi" => { "AUBNE" => [-27.4667, 153.0167], "ESVLC" => [3.0, 3.0] } })
+    assert_equal "unlocode", table["AUBNE"]["coordinate_source"]
+
+    table = apply(path, { "wpi" => { "ESVLC" => [3.0, 3.0] } })
+    assert_equal "wpi", table["ESVLC"]["coordinate_source"]
+    table = apply(path, { "wikidata" => { "ESVLC" => [3.0, 3.0] } })
+    assert_equal "wikidata", table["ESVLC"]["coordinate_source"], "the same values from another source are that source's"
+  end
+
+  def test_the_builder_records_the_source_of_each_position
+    source = SOURCE.sub(/\n\z/, "\n,IE,ORK,Cork,Cork,,AI,1-------,0001,,,\n")
+    builder = Seaports::Builder.new(source, coordinate_overrides: { "ESVLC" => [7.0, 7.0] }, fallback_coordinates: [{ "IEORK" => [1.0, 1.0] }, {}])
+    sources = builder.rows.to_h { |row| [row.first, row.last] }
+
+    assert_equal({ "AUBNE" => "unlocode", "ESVLC" => "override", "IEORK" => "wpi", "NZTRG" => "unlocode" }, sources.compact)
   end
 
   def test_every_generated_position_file_is_valid_and_in_the_shipped_table
     table = CSV.read(Seaports::TABLE_PATH, headers: true).to_h { |row| [row["locode"], row] }
-    wpi, wikidata = Seaports::Builder.fallback_coordinates
+    layers = Seaports::Builder.coordinate_layers
 
-    assert_operator wpi.size, :>, 1000
-    assert_operator wikidata.size, :>, 1000
-    Seaports::Builder.all_coordinates.each do |locode, (lat, lng)|
-      assert_equal [lat, lng], table.fetch(locode).values_at("lat", "lng").map(&:to_f), locode
+    assert_operator layers["wpi"].size, :>, 1000
+    assert_operator layers["wikidata"].size, :>, 50
+    layers.each do |name, points|
+      points.each do |locode, (lat, lng)|
+        row = table.fetch(locode)
+        next if row["coordinate_source"] == "unlocode" # UN/LOCODE won; the override report names a redundant hand row
+
+        best = layers.find { |_, other| other.key?(locode) }.first
+        assert_equal [best, lat, lng], [row["coordinate_source"], *row.values_at("lat", "lng").map(&:to_f)], "#{locode} (#{name})"
+      end
     end
   end
 end

@@ -30,8 +30,8 @@ out of the default gems.
 
 ## What is in it
 
-Every entry UN/LOCODE classifies as a sea port: **17,567 ports**, 14,375 of them
-with coordinates and 15,560 with a subdivision, rebuilt from UNECE's
+Every entry UN/LOCODE classifies as a sea port: **17,567 ports**, 13,216 of them
+with coordinates and 15,209 with a subdivision, rebuilt from UNECE's
 latest published list whenever it changes.
 
 ```ruby
@@ -52,7 +52,7 @@ than being guessed at. `nil` is also the answer for a code the table does not
 hold: seventeen thousand ports is most of the world's, not all of it, so an
 unknown code is the ordinary case rather than an error.
 
-About a fifth of the table has no position at all, and about a third has none published by UN/LOCODE. That is a fact about
+About a quarter of the table has no position at all, and about a third has none published by UN/LOCODE. That is a fact about
 the source, not a failure: UN/LOCODE's coordinates column is optional, and each
 country's national focal point decides whether to fill it when it registers or
 updates a location. Many old entries were never given one, among them some of
@@ -76,18 +76,26 @@ wins:
    about 3,800 ports with a UN/LOCODE and a position. It fills 1,172 ports,
    Cork, Rosslare, Limerick, Foynes, Dover and Mombasa among them.
 3. **Wikidata**, `data/sources/coordinates_wikidata.csv`: items carrying a
-   UN/LOCODE (P1937) and coordinates (P625). It fills the 1,270 ports the
-   first two leave.
+   UN/LOCODE (P1937) and coordinates (P625). Only items typed as a port or
+   harbour are used, because a town item is a city centre and often inland, so
+   it fills just 111 ports the first two leave. A code that is also on a town
+   item needs its port item within 50 km of it, and several port items need to
+   lie within 10 km of each other, or the code is skipped.
 
 Each generated row names its `source`: the World Port Index edition, or the
-Wikidata item. A supplementary position only ever fills a gap. If UN/LOCODE
+Wikidata item and its kind (`Wikidata Q123 (port, CC0)`). The table records
+the source of every position in its `coordinate_source` column (`unlocode`,
+`override`, `wpi` or `wikidata`), written by the build, so what UN/LOCODE
+published is never guessed from equal values. A supplementary position only ever fills a gap. If UN/LOCODE
 publishes a position for the port, that one ships, and the row drops out of
 the generated file the next time it is regenerated, so the source of record
 stays in charge and a stale row cannot mask better data. For the reviewed list
 the refresh reports the row instead, and CI holds the refresh pull request until
 it is removed. A position outside its own country, by more than 50 km on
 Natural Earth's map, is not used, nor is a UN/LOCODE that two World Port Index
-ports share.
+ports share (Wikidata may still fill such a code). A territory the map does not
+draw as a country (Aruba, Guam, the Falklands) cannot be checked against its
+parent state and is kept unchecked; the refresh summary counts those.
 
 **Licences and attribution.** The World Port Index is published by the US
 National Geospatial-Intelligence Agency, a work of the US government in the
@@ -100,16 +108,22 @@ contributors, ODbL.
 `rake seaports:refresh_wpi` looks for a newer World Port Index: NGA first, and
 when NGA answers with its maintenance page, as it often does, the Internet
 Archive's newest snapshot of the same URL. A download is used only when it has
-the expected columns, a row count within 20% of the vendored copy, and Cork in
-it. If its content (its sha256, ignoring line endings and a byte order mark)
-differs from the vendored copy in `data/sources/wpi/`, the copy is replaced and
-`provenance.json` beside it records where it came from, the snapshot date and
-the hash; if not, nothing happens. Given a path and a snapshot date,
+the expected columns, a row count within 5% of the vendored copy, a last row as long as the header
+(not cut off) and Cork in it. If its content (its sha256, ignoring line endings and a byte order mark)
+differs from the vendored copy in `data/sources/wpi/`, the copy, its
+`provenance.json` (where it came from, the snapshot date and the hash) and the
+regenerated `coordinates_wpi.csv` are replaced together, or none of them is; if
+not, nothing happens. A regeneration that drops more than 2% of the World Port
+Index rows already used, or that moves more than 5% of a file's positions over a
+kilometre, is refused. Given a path and a snapshot date,
 `rake "seaports:refresh_wpi[/path/UpdatedPub150.csv,2026-09-29]"` uses a file
 already downloaded. `rake seaports:refresh_wikidata` rebuilds the Wikidata file
-from a live query, and refuses an answer that is a fifth smaller than the file it
-replaces. The weekly refresh workflow runs both, and an unreachable source is a
-warning, not a failure. Both send a generic `User-Agent` naming the gem and its
+from a live query, and refuses an answer with fewer than 80% of the codes it
+expects. Neither task touches the table: `rake seaports:refresh` runs after
+them and merges what they wrote, so its gates judge the coordinate changes too.
+The weekly refresh workflow runs all three in that order, and an unreachable
+source is a warning, not a failure; a source that answers with something its
+gates refuse also opens an issue. Both send a generic `User-Agent` naming the gem and its
 repository.
 
 The reviewed list's rows were placed by hand, to roughly a kilometre, then each
@@ -130,7 +144,7 @@ asks whether a ship is at the port, which is why the check is part of adding a
 row. It is not a survey of berths: a row is only as precise as its note says.
 The World Port Index and Wikidata positions are less checked than the reviewed
 ones, often a town centre or a harbour mouth rather than a berth, so treat
-them as "in the right place" and not as "at the quay". About 3,200 ports,
+them as "in the right place" and not as "at the quay". About 4,350 ports,
 mostly small ones, still have no position.
 
 `rake seaports:refresh` merges all three into the rebuilt table, and the
@@ -292,11 +306,16 @@ request body — every
 removal listed in full, because those are the changes that break a caller, and
 position changes called out separately, because they move markers on a map.
 
-The same weekly run refreshes the World Port Index and Wikidata coordinates
-(see [Coordinates](#coordinates)). A run that only moved coordinates still opens
-a pull request, with a minor bump and a changelog entry, and the summary says
-how many ports each source added and removed and which World Port Index
-snapshot it used.
+The same weekly run first refreshes the World Port Index and Wikidata
+coordinates (see [Coordinates](#coordinates)), then rebuilds. The release is
+decided by the rebuilt table: if a port's position or subdivision changed (a
+move under 100 m does not count), the run bumps the minor version and writes a
+changelog entry. If only the generated source files changed, with the same
+positions, it opens a pull request to review and releases nothing. A rebuild
+that moves more than 5% of the positions over a kilometre is refused. The summary
+says how many ports each source added, removed and moved, which World Port
+Index snapshot it used, and lists the ports whose World Port Index name differs
+from UN/LOCODE's.
 
 Merging that pull request changes `lib/seaports/version.rb`, which is the only
 thing that triggers a release. The gem is published by RubyGems trusted

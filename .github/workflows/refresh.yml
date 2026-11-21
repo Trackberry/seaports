@@ -9,10 +9,14 @@ name: Refresh the UN/LOCODE table and its coordinates
 #
 # The same run refreshes the ports' positions from two open datasets: the NGA
 # World Port Index (NGA, else the Internet Archive's copy of it) and Wikidata.
-# Each is its own step and neither can fail the run: an unreachable source is
-# a warning, and the file it feeds stays as it was. Whatever changed, in the
-# table or in a source, lands in the one pull request, and a run in which only
-# coordinates moved still gets a version bump and a changelog entry.
+# They run first, each in its own step, and neither can fail the run: an
+# unreachable source is a warning and the files it feeds stay as they were.
+# The UN/LOCODE rebuild runs last and merges whatever they wrote, so its gates
+# judge the coordinate changes with everything else. The pull request opens
+# when the shipped table changed (a release, with a version bump and a
+# changelog entry) or only the generated source files did (a pull request to
+# review, no release). A source that answers with something its gates refuse
+# also raises an issue.
 on:
   schedule:
     - cron: "17 6 * * 1"
@@ -34,27 +38,21 @@ jobs:
           ruby-version: "3.4"
           bundler-cache: true
 
-      - name: Rebuild from the published release
-        run: bundle exec rake seaports:refresh
-
-      # The positions are refreshed on top of the rebuilt table, unless the
-      # rebuild was refused: a refused table is restored, and a person has to
-      # look at it before anything else is stacked on it. The rake tasks
-      # report their own failures and exit 0; continue-on-error is for the
-      # ones they cannot, such as a gem failing to load.
+      # Each of these reports its own failure as a warning and exits 0, and
+      # keeps its three files together or leaves them alone; continue-on-error
+      # covers what the tasks cannot, such as a gem failing to load.
       - name: Refresh the World Port Index coordinates
         continue-on-error: true
-        run: |
-          if [ "$(cat tmp/refresh/status)" != "failed" ]; then bundle exec rake seaports:refresh_wpi; fi
+        run: bundle exec rake seaports:refresh_wpi
 
       - name: Refresh the Wikidata coordinates
         continue-on-error: true
-        run: |
-          if [ "$(cat tmp/refresh/status)" != "failed" ]; then bundle exec rake seaports:refresh_wikidata; fi
+        run: bundle exec rake seaports:refresh_wikidata
 
-      - name: Fold the coordinates into the release
-        run: |
-          if [ "$(cat tmp/refresh/status)" != "failed" ]; then bundle exec rake seaports:finish_coordinates; fi
+      # Last, so that the table diff, its gates and the version bump all see
+      # the coordinates. Reads the Natural Earth copy the steps above saved.
+      - name: Rebuild from the published release
+        run: bundle exec rake seaports:refresh
 
       - name: Read what the refresh decided
         id: refresh
@@ -63,8 +61,11 @@ jobs:
           if [ -f tmp/refresh/version ]; then
             echo "version=$(cat tmp/refresh/version)" >> "$GITHUB_OUTPUT"
           fi
+          if [ -f tmp/refresh/refused ]; then
+            echo "refused=true" >> "$GITHUB_OUTPUT"
+          fi
           if [ -f tmp/refresh/coordinates.md ]; then
-            grep "not refreshed" tmp/refresh/coordinates.md | while read -r line; do echo "::warning::$line"; done || true
+            grep -E "not refreshed|refused" tmp/refresh/coordinates.md | while read -r line; do echo "::warning::$line"; done || true
           fi
 
       - name: Nothing to do
@@ -74,26 +75,26 @@ jobs:
       # A refusal is not a failed build — the gates did their job and the table
       # in main is still good. It needs a person, so it gets an issue.
       - name: Raise the refusal for a person to read
-        if: steps.refresh.outputs.status == 'failed'
+        if: steps.refresh.outputs.status == 'failed' || steps.refresh.outputs.refused == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh label create refresh-blocked --color D93F0B --force
           gh issue create \
-            --title "UN/LOCODE refresh refused on $(date -u +%Y-%m-%d)" \
+            --title "Sea-port refresh refused on $(date -u +%Y-%m-%d)" \
             --body-file tmp/refresh/summary.md \
             --label "refresh-blocked" \
             --assignee edouard
 
       - name: Open the refresh for review
         id: pull_request
-        if: steps.refresh.outputs.status == 'ok'
+        if: steps.refresh.outputs.status == 'ok' || steps.refresh.outputs.status == 'sources'
         uses: peter-evans/create-pull-request@v7
         with:
           branch: refresh/un-locode
           base: main
           commit-message: "chore(data): refresh the UN/LOCODE sea-port table and its coordinates"
-          title: "Refresh the sea-port table (${{ steps.refresh.outputs.version }})"
+          title: ${{ steps.refresh.outputs.status == 'ok' && format('Refresh the sea-port table ({0})', steps.refresh.outputs.version) || 'Refresh the coordinate sources (no release)' }}
           body-path: tmp/refresh/summary.md
           labels: data-refresh
           reviewers: edouard
@@ -104,6 +105,7 @@ jobs:
             data/sources/coordinates_wikidata.csv
             data/sources/wpi/UpdatedPub150.csv
             data/sources/wpi/provenance.json
+            data/sources/wikidata_provenance.json
             lib/seaports/version.rb
             CHANGELOG.md
 

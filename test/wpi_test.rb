@@ -87,10 +87,35 @@ class WpiTest < Minitest::Test
     assert_equal "2026-01-01", quiet { Seaports::Wpi.fetch_latest(http: callable) }.snapshot
   end
 
-  def test_fails_when_neither_nga_nor_the_archive_has_it
+  def test_is_unavailable_when_neither_nga_nor_the_archive_has_it
     callable, = http(Seaports::Wpi::SOURCE_URL => [503, HTML], CDX => cdx_answer)
 
-    assert_raises(Seaports::Wpi::Invalid) { quiet { Seaports::Wpi.fetch_latest(http: callable) } }
+    assert_raises(Seaports::Wpi::Unavailable) { quiet { Seaports::Wpi.fetch_latest(http: callable) } }
+  end
+
+  def test_asks_the_archive_once_when_nga_raises
+    asked = []
+    callable = lambda do |url, _headers = {}|
+      asked << url
+      raise Timeout::Error if url == Seaports::Wpi::SOURCE_URL
+
+      url.start_with?(CDX) ? cdx_answer("20260929232408") : [200, csv.b]
+    end
+
+    assert_equal "the Internet Archive", quiet { Seaports::Wpi.fetch_latest(http: callable) }.via
+    assert_equal 1, asked.count { |url| url.start_with?(CDX) }
+  end
+
+  def test_an_archive_that_cannot_be_read_is_unavailable
+    callable, = http(Seaports::Wpi::SOURCE_URL => [503, HTML], CDX => [200, "not json"])
+
+    assert_raises(Seaports::Wpi::Unavailable) { quiet { Seaports::Wpi.fetch_latest(http: callable) } }
+  end
+
+  def test_a_truncated_gzip_is_not_the_index
+    callable, = http(Seaports::Wpi::SOURCE_URL => [200, gzip(csv).b[0, 120]], CDX => cdx_answer)
+
+    assert_raises(Seaports::Wpi::Unavailable) { quiet { Seaports::Wpi.fetch_latest(http: callable) } }
   end
 
   def test_rejects_a_file_without_the_columns
@@ -102,50 +127,20 @@ class WpiTest < Minitest::Test
     assert_match(/Cork/, error.message)
   end
 
-  def test_rejects_a_file_whose_size_is_off_by_more_than_a_fifth
-    assert_raises(Seaports::Wpi::Invalid) { Seaports::Wpi.validate!(csv(5), vendored: csv(10)) }
-    assert_equal 12, Seaports::Wpi.validate!(csv(11), vendored: csv(10))
+  def test_rejects_a_file_whose_size_is_off_by_more_than_five_percent
+    assert_raises(Seaports::Wpi::Invalid) { Seaports::Wpi.validate!(csv(94), vendored: csv(100)) }
+    assert_equal 106, Seaports::Wpi.validate!(csv(105), vendored: csv(100))
+    assert_equal 96, Seaports::Wpi.validate!(csv(95), vendored: csv(100))
   end
 
-  def vendor(download, dir)
-    Seaports::Wpi.vendor(download, csv_path: File.join(dir, "wpi.csv"), provenance_path: File.join(dir, "provenance.json"),
-      today: Date.new(2026, 11, 21))
-  end
+  # Cut off inside the tolerance, so the row count alone would pass it.
+  def test_rejects_a_file_whose_last_row_is_short
+    text = csv(100)
+    cut = text.sub(/,Ireland,51\.85,-8\.2667\r\n\z/, ",Ire")
 
-  def download(text, snapshot = "2026-09-29")
-    Seaports::Wpi::Download.new(text:, url: "https://example.test/pub150", snapshot:, via: "the Internet Archive")
-  end
-
-  def test_vendors_a_new_index_and_records_where_it_came_from
-    dir = Dir.mktmpdir
-
-    assert_equal :replaced, vendor(download(csv), dir)
-    provenance = JSON.parse(File.read(File.join(dir, "provenance.json")))
-    assert_equal "2026-09-29", provenance["snapshot"]
-    assert_equal "2026-11-21", provenance["retrieved_on"]
-    assert_equal "https://example.test/pub150", provenance["retrieved_from"]
-    assert_equal Seaports::Wpi.sha256(csv), provenance["sha256"]
-    refute File.read(File.join(dir, "wpi.csv")).start_with?("﻿")
-  end
-
-  # The same index saved with other line endings or a byte order mark is not a
-  # new edition.
-  def test_an_unchanged_sha_is_a_no_op
-    dir = Dir.mktmpdir
-    vendor(download(csv), dir)
-    provenance = File.read(File.join(dir, "provenance.json"))
-
-    assert_equal :unchanged, vendor(download(csv.delete("\r").delete_prefix("﻿"), "2026-11-01"), dir)
-    assert_equal provenance, File.read(File.join(dir, "provenance.json"))
-  end
-
-  def test_a_rejected_file_leaves_the_vendored_copy_alone
-    dir = Dir.mktmpdir
-    vendor(download(csv(10)), dir)
-    before = File.read(File.join(dir, "wpi.csv"))
-
-    assert_raises(Seaports::Wpi::Invalid) { vendor(download(csv(3)), dir) }
-    assert_equal before, File.read(File.join(dir, "wpi.csv"))
+    assert_operator Seaports::Wpi.rows(cut).size, :>=, 100
+    error = assert_raises(Seaports::Wpi::Invalid) { Seaports::Wpi.validate!(cut, vendored: text) }
+    assert_match(/truncated/, error.message)
   end
 
   def test_candidates_read_the_spaced_locode
@@ -157,5 +152,20 @@ class WpiTest < Minitest::Test
   def test_the_vendored_index_is_valid
     assert_operator Seaports::Wpi.validate!(File.read(Seaports::Wpi::CSV_PATH)), :>, 3000
     assert_equal Seaports::Wpi.sha256(File.read(Seaports::Wpi::CSV_PATH)), Seaports::Wpi.provenance["sha256"]
+  end
+
+  # The generated file is the vendored index put through the rules, nothing
+  # else: every row's position is the index's, and its source the snapshot's.
+  def test_the_generated_coordinates_match_the_vendored_index
+    candidates = Seaports::Wpi.candidates(File.read(Seaports::Wpi::CSV_PATH), source: "x").group_by(&:locode)
+    label = Seaports::Wpi.source_label(Seaports::Wpi.provenance.fetch("snapshot"))
+    rows = CSV.read(Seaports::Builder::WPI_COORDINATES_PATH, headers: true)
+
+    assert_operator rows.size, :>, 1000
+    rows.each do |row|
+      candidate = candidates.fetch(row["locode"]).first
+      assert_equal [candidate.lat.to_f.round(4), candidate.lng.to_f.round(4)], [row["lat"].to_f, row["lng"].to_f], row["locode"]
+      assert_equal label, row["source"]
+    end
   end
 end
