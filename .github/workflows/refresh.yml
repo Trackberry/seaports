@@ -124,6 +124,7 @@ jobs:
             data/un_locode_seaports.csv
             data/sources/coordinates_wpi.csv
             data/sources/coordinates_wikidata.csv
+            data/sources/alternate_names_wpi.csv
             data/sources/wpi/UpdatedPub150.csv
             data/sources/wpi/provenance.json
             data/sources/wikidata_provenance.json

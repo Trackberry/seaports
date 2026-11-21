@@ -3,6 +3,18 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## 1.6.0 — 2026-11-21
+
+Ports now carry their other names. `Seaports.find("BEANR").alternate_names` is `["Antwerp", "Anvers"]`, where `name` is UN/LOCODE's `Antwerpen`; `Seaports.alternate_names(locode)` is the shortcut, and `[]` answers for a port with none. 662 of 17,567 ports have at least one.
+
+The names come from three places, best first: a reviewed list, `data/sources/alternate_names.csv` (Genoa, Dunkirk, Bombay, Rangoon and 10 more the other sources lack); the [NGA World Port Index](https://msi.nga.mil/Publications/WPI)'s "Alternate Port Name" column, split on `;` and `,` (public domain, credited as NGA asks), skipping a locode that is not in the table or is on more than one index row, and filtering vessel, terminal, base, company and country names and fragments; and the name in the parentheses of UN/LOCODE's name (`El Iskandariya (Alexandria)`), for ports with a position, when it is one plain name. Spellings that differ only in case, accents or punctuation count as one, and a name equal to the port's own is dropped.
+
+A main name always beats an alternate: a name that is another port's own name in the same country is dropped, and so is one that two or more ports of a country share (`Bruxelles` on three Belgian ports), also comparing with a port's name without a trailing Pt, Port or Harbour and with each part of a `/` or `,` name. The names are filtered and reviewed: `data/sources/alternate_names_rejected.csv` lists wrong-place names a person has refused. They are still not checked against the place, so a few are a bay or a point near the port.
+
+The table has a new last column, `alternate_names`, separated by `|`. `Seaports::Port` has a new last member, `alternate_names`, defaulting to a shared empty list, so a Port built without it still works. Because it is a new member, `Port#to_h`, `Port.members` and `deconstruct`/`deconstruct_keys` gain a key, and a `Port` serialised with `Marshal` by 1.5.0 will not load in 1.6.0. `rake seaports:refresh_wpi` regenerates `data/sources/alternate_names_wpi.csv` with the coordinates, under the same checks, and refuses an index that lacks the "Alternate Port Name" column or loses more than 5% of the names already used. `rake seaports:apply_alternate_names` writes the name files into the table without a download. A change to the names alone is a change to the table: the refresh diff counts changed, added and removed names under "Names", they make a release, and the changelog entry mentions them.
+
+Same ports, names and positions as 1.5.0.
+
 ## 1.5.0 — 2026-11-21
 
 Fills in positions for 1,283 more ports from two open datasets, so 13,216 of 17,567 ports now have coordinates, up from 11,933. Where UN/LOCODE publishes no position and the reviewed list has none, the [NGA World Port Index](https://msi.nga.mil/Publications/WPI) (Pub. 150, snapshot 2026-09-29; public domain, credited as NGA asks) places 1,172 ports, Cork, Rosslare, Limerick, Foynes, Dover and Mombasa among them, and Wikidata (CC0, port and harbour items only) places 111 more. Ireland goes from 73 ports with a position to 86. UN/LOCODE's own position always wins, then the reviewed list, then the World Port Index, then Wikidata; a position more than 50 km outside its country is not used.

@@ -10,6 +10,7 @@ require "timeout"
 require "uri"
 require "zlib"
 
+require_relative "alternate_names"
 require_relative "coordinate_sources"
 require_relative "http"
 
@@ -37,7 +38,7 @@ module Seaports
     CSV_PATH = File.join(DIRECTORY, "UpdatedPub150.csv")
     PROVENANCE_PATH = File.join(DIRECTORY, "provenance.json")
 
-    REQUIRED_COLUMNS = ["World Port Index Number", "Main Port Name", "UN/LOCODE", "Country Code", "Latitude", "Longitude"].freeze
+    REQUIRED_COLUMNS = ["World Port Index Number", "Main Port Name", "UN/LOCODE", "Country Code", "Alternate Port Name", "Latitude", "Longitude"].freeze
     # A file this far from the vendored one's size is a truncated download or a
     # different document, not a new edition. The index changes by a handful of
     # ports a year.
@@ -151,6 +152,21 @@ module Seaports
         CoordinateSources::Candidate.new(locode: locode_of(row), name: row["Main Port Name"], lat: row["Latitude"],
           lng: row["Longitude"], source:)
       end
+    end
+
+    # [locode, "Antwerp; Anvers"] per row with a valid-looking locode, for
+    # AlternateNames.select. A row without a locode cannot be placed.
+    def self.alternate_candidates(text)
+      rows(text).filter_map do |row|
+        locode = locode_of(row)
+        [locode, row["Alternate Port Name"]] if locode.match?(AlternateNames::LOCODE)
+      end
+    end
+
+    # The index's country names as comparable keys, so a country written as a
+    # port's alternate name ("Mozambique") can be told from a place.
+    def self.country_keys(text)
+      rows(text).map { |row| AlternateNames.key(row["Country Code"]) }.reject(&:empty?).to_set
     end
 
     def self.source_label(snapshot)

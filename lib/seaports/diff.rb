@@ -43,7 +43,8 @@ module Seaports
         locode = row["locode"].to_s.strip.upcase
         next if locode.empty?
 
-        ports[locode] = { name: row["name"].to_s.strip, point: point(row), path: path(row), source: row["coordinate_source"].to_s.strip }
+        ports[locode] = { name: row["name"].to_s.strip, point: point(row), path: path(row), source: row["coordinate_source"].to_s.strip,
+                         alternates: row["alternate_names"].to_s.split("|").map(&:strip).reject(&:empty?) }
       end
     end
 
@@ -81,7 +82,28 @@ module Seaports
     end
 
     def changed?
-      !(added.empty? && removed.empty? && renamed.empty? && repositioned.empty? && resubdivided.empty?)
+      !(added.empty? && removed.empty? && renamed.empty? && repositioned.empty? && resubdivided.empty? && renamed_alternates.empty?)
+    end
+
+    # [locode, name, names added, names removed] for a port that kept its code
+    # and changed its alternate names. A table from before the column existed
+    # has none, so every name is an addition.
+    def renamed_alternates
+      @renamed_alternates ||= common.filter_map do |locode|
+        was = @before[locode][:alternates].to_a.sort
+        now = @after[locode][:alternates].to_a.sort
+        [locode, @after[locode][:name], now - was, was - now] if was != now
+      end
+    end
+
+    # "Alternate names: 790 ports changed (1,100 names added, 4 removed).", or
+    # nil when none did. Also for the changelog.
+    def names_headline
+      return nil if renamed_alternates.empty?
+
+      added = renamed_alternates.sum { |_, _, gained, _| gained.size }
+      lost = renamed_alternates.sum { |_, _, _, dropped| dropped.size }
+      "Alternate names: #{renamed_alternates.size} ports changed (#{added} names added, #{lost} removed)."
     end
 
     def added
@@ -156,6 +178,7 @@ module Seaports
         section("Removed", removed.map { |locode| "`#{locode}` #{@before[locode][:name]}" }, limit: nil),
         section("Added", added.map { |locode| "`#{locode}` #{@after[locode][:name]}" }),
         section("Renamed", renamed.map { |locode, was, now| "`#{locode}` #{was} → #{now}" }),
+        section("Names", renamed_alternates.map { |locode, name, gained, dropped| names_line(locode, name, gained, dropped) }),
         by_source_line,
         section("Coordinates", repositioned.map { |locode, name, kind| "`#{locode}` #{name} — #{POSITION_WORDS.fetch(kind)}" }),
         section("Subdivision", resubdivided.map { |locode, name, was, now| "`#{locode}` #{name}: #{path_words(was)} → #{path_words(now)}" })
@@ -223,6 +246,11 @@ module Seaports
       return nil if far.to_f / placed <= MAXIMUM_MOVED
 
       "#{far} of #{placed} positions moved over #{MOVED_KM} km, past the #{(MAXIMUM_MOVED * 100).round}% limit: a source reshuffled its coordinates."
+    end
+
+    def names_line(locode, name, gained, dropped)
+      changes = gained.map { |each| "+#{each}" } + dropped.map { |each| "−#{each}" }
+      "`#{locode}` #{name}: #{changes.join(', ')}"
     end
 
     def path_words(path)

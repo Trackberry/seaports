@@ -28,12 +28,13 @@ class CoordinateRefreshTest < Minitest::Test
     @dir = Dir.mktmpdir
     {
       csv_path: File.join(@dir, "wpi", "UpdatedPub150.csv"), provenance_path: File.join(@dir, "wpi", "provenance.json"),
-      coordinates_path: File.join(@dir, "coordinates_wpi.csv"), table: table, held: [], today: Date.new(2026, 11, 21)
+      coordinates_path: File.join(@dir, "coordinates_wpi.csv"), alternate_names_path: File.join(@dir, "alternate_names_wpi.csv"),
+      table: table, held: [], today: Date.new(2026, 11, 21)
     }
   end
 
   def files(options)
-    options.values_at(:csv_path, :provenance_path, :coordinates_path).map { |path| File.exist?(path) ? File.read(path) : nil }
+    options.values_at(:csv_path, :provenance_path, :coordinates_path, :alternate_names_path).map { |path| File.exist?(path) ? File.read(path) : nil }
   end
 
   def test_a_first_run_vendors_the_index_and_writes_the_coordinates_together
@@ -47,6 +48,30 @@ class CoordinateRefreshTest < Minitest::Test
     assert_equal "2026-11-21", JSON.parse(provenance)["retrieved_on"]
     assert_includes coordinates, "IEORK,Cork,51.85,-8.2667,\"NGA World Port Index (Pub. 150), snapshot 2026-09-29\""
     assert_match(/101 ports placed \(101 added/, outcome.line)
+  end
+
+  # A table port with two names, a port the table lacks, and a code on two
+  # index rows: only the first is written, and the others are counted.
+  def test_the_alternate_names_are_regenerated_with_the_coordinates_under_the_same_guards
+    options = sandbox
+    options[:table] = table.merge("BEANR" => ["Antwerpen", nil, nil, nil], "SEGOT" => ["Göteborg", nil, nil, nil])
+    text = csv.sub(/\z/, <<~ROWS)
+      1001,1001,Region,Antwerpen,Antwerp; Anvers; antwerpen,BE ANR,Belgium,51.2,4.4
+      1002,1002,Region,Goteborg, ,SE GOT,Sweden,57.7,11.9
+      1003,1003,Region,Nowhere,Nowhereland,XX NWR,Nowhere,1.0,1.0
+      1004,1004,Region,Port Dup,Dup A,ZZ001,Zedland,1.0,1.0
+    ROWS
+    outcome = Refresh.refresh_wpi(download: download(text), **options)
+
+    assert_equal "changed", outcome.status
+    rows = CSV.read(options[:alternate_names_path], headers: true).map { |row| row.fields(0, 1) }
+    # The index's own spelling of the port stays; the build drops what equals the table's name.
+    assert_equal [%w[BEANR Antwerp], %w[BEANR antwerpen], %w[BEANR Anvers]], rows
+    assert_includes outcome.line, "Alternate names: 1 ports, skipped: 1 not in table, 1 duplicate"
+
+    before = File.read(options[:alternate_names_path])
+    assert_equal "unchanged", Refresh.refresh_wpi(download: download(text), **options).status
+    assert_equal before, File.read(options[:alternate_names_path])
   end
 
   def test_an_unchanged_sha_is_a_no_op
@@ -83,7 +108,7 @@ class CoordinateRefreshTest < Minitest::Test
 
     assert_equal "failed", outcome.status
     assert_match(/not refreshed, left as it was/, outcome.line)
-    assert_equal [nil, nil, nil], files(options)
+    assert_equal [nil, nil, nil, nil], files(options)
   end
 
   def test_refuses_a_regeneration_that_loses_more_than_two_percent_of_the_rows
@@ -126,6 +151,56 @@ class CoordinateRefreshTest < Minitest::Test
 
     assert_equal "failed", outcome.status
     assert_equal before.first(2), files(options).first(2), "the vendored copy and its provenance are put back"
+  end
+
+  # The names file moves last: when it is the one that cannot be written, the
+  # three that already moved are put back.
+  def test_a_failure_moving_the_names_file_restores_all_the_others
+    options = sandbox
+    options[:table] = table.merge("BEANR" => ["Antwerpen", nil, nil, nil])
+    text = csv + "1001,1001,Region,Antwerpen,Antwerp,BE ANR,Belgium,51.2,4.4\n"
+    Refresh.refresh_wpi(download: download(text), **options)
+    before = files(options)
+    blocker = File.join(@dir, "blocker")
+    File.write(blocker, "a file where a directory has to go")
+    blocked = options.merge(alternate_names_path: File.join(blocker, "alternate_names_wpi.csv"))
+
+    outcome = Refresh.refresh_wpi(download: download(text.sub("Port 1,", "Port One,").sub(",Antwerp,", ",Anvers,"), snapshot: "2026-11-01"), **blocked)
+
+    assert_equal "failed", outcome.status
+    assert_equal before, files(options), "all four files are as they were"
+  end
+
+  def test_refuses_a_regeneration_that_loses_more_than_five_percent_of_the_names
+    options = sandbox
+    names = (1..40).map { |n| "Alias#{n}" }
+    named = csv.lines.each_with_index.map { |line, i| i.between?(1, 40) ? line.sub(/(Port \d+),,/, "\\1,#{names[i - 1]},") : line }.join
+    Refresh.refresh_wpi(download: download(named), **options)
+    assert_equal 40, CSV.read(options[:alternate_names_path], headers: true).size
+    before = files(options)
+
+    stripped = named.lines.each_with_index.map { |line, i| i.between?(1, 2) ? line.sub(/(Port \d+),Alias\d+,/, "\\1,,") : line }.join
+    outcome = Refresh.refresh_wpi(download: download(stripped, snapshot: "2026-11-01"), **options)
+    assert_equal "changed", outcome.status, "2 of 40 is within the limit"
+
+    outcome = Refresh.refresh_wpi(download: download(csv, snapshot: "2026-11-02"), **options)
+    assert_equal "refused", outcome.status
+    assert_match(/alternate names would be lost/, outcome.line)
+    refute_equal before, files(options)
+    assert_equal 38, CSV.read(options[:alternate_names_path], headers: true).size, "the refused run left the names as they were"
+  end
+
+  def test_an_index_without_the_names_column_is_refused
+    options = sandbox
+    Refresh.refresh_wpi(download: download(csv), **options)
+    before = files(options)
+    without = csv.lines.map { |line| line.chomp.split(",", -1).tap { |cells| cells.delete_at(4) }.join(",") }.join("\n")
+
+    outcome = quiet { Refresh.refresh_wpi(download: download(without, snapshot: "2026-11-01"), **options) }
+
+    assert_equal "refused", outcome.status
+    assert_match(/Alternate Port Name/, outcome.line)
+    assert_equal before, files(options)
   end
 
   # A thousand-port index, so that 30 rows are more than the 2% limit.
@@ -195,7 +270,7 @@ class CoordinateRefreshTest < Minitest::Test
 
     assert_equal "failed", outcome.status
     assert_match(/Natural Earth answered HTTP 503/, outcome.line)
-    assert_equal [nil, nil, nil], files(options)
+    assert_equal [nil, nil, nil, nil], files(options)
   end
 
   def test_wikidata_refuses_losing_more_than_ten_percent_of_its_rows

@@ -5,6 +5,9 @@ require "fileutils"
 require "json"
 require "tmpdir"
 
+require "set"
+
+require_relative "alternate_names"
 require_relative "builder"
 require_relative "coordinate_sources"
 require_relative "wikidata"
@@ -67,6 +70,27 @@ module Seaports
       raise Refused, "#{lost.size} of #{change.before_size} #{label} rows would be lost by the dataset, past the #{(maximum_lost * 100).round}% limit"
     end
 
+    # More than this share of the World Port Index names already in
+    # alternate_names_wpi.csv disappearing in one run is a truncated or
+    # reorganised column, not ports whose names were edited.
+    MAXIMUM_LOST_NAMES = 0.05
+
+    # +before+ is { locode => [names] } as in the file, +rows+ the new
+    # [locode, name, source] rows. A name of a port that left the table is not
+    # the index's loss.
+    def self.guard_names!(before, rows, ports)
+      kept = rows.to_set { |locode, name, _| [locode, AlternateNames.key(name)] }
+      total = before.sum { |_, names| names.size }
+      return if total.zero?
+
+      lost = before.sum do |locode, names|
+        ports.include?(locode) ? names.count { |name| !kept.include?([locode, AlternateNames.key(name)]) } : 0
+      end
+      return unless lost.to_f / total > MAXIMUM_LOST_NAMES
+
+      raise Refused, "#{lost} of #{total} World Port Index alternate names would be lost, past the #{(MAXIMUM_LOST_NAMES * 100).round}% limit"
+    end
+
     # Moves each staged file over its destination, and puts back whatever it
     # replaced if one of the moves fails.
     def self.install(stage, moves)
@@ -111,7 +135,7 @@ module Seaports
 
     def self.wpi(download, boundaries: nil, table: CoordinateSources.table, held: Builder.coordinate_overrides.keys,
       csv_path: Wpi::CSV_PATH, provenance_path: Wpi::PROVENANCE_PATH, coordinates_path: Builder::WPI_COORDINATES_PATH,
-      today: Date.today)
+      alternate_names_path: Builder::WPI_ALTERNATE_NAMES_PATH, today: Date.today)
       vendored = File.exist?(csv_path) ? File.read(csv_path) : nil
       Wpi.validate!(download.text, vendored:)
 
@@ -132,21 +156,35 @@ module Seaports
       change = CoordinateSources.change(CoordinateSources.points(coordinates_path), result.rows.to_h { |row| [row[0], row.values_at(2, 3)] })
       guard!("World Port Index", change, maximum_lost: MAXIMUM_LOST, reasons: result.reasons)
 
+      # The alternate names come from the same file under the same checks: the
+      # port must be in the table, and a locode on several index rows is
+      # skipped. A names file has no positions to move, but an index that loses
+      # more than MAXIMUM_LOST_NAMES of the names already used is refused, as
+      # for positions; the table diff shows the rest.
+      alternate_rows, alternate_counts = AlternateNames.select(Wpi.alternate_candidates(text), ports: table.keys.to_set,
+        source: Wpi.source_label(provenance.fetch("snapshot")), countries: Wpi.country_keys(text))
+      guard_names!(AlternateNames.read(alternate_names_path), alternate_rows, table.keys.to_set)
+
       Dir.mktmpdir("seaports-wpi") do |stage|
         staged = { csv: File.join(stage, "UpdatedPub150.csv"), provenance: File.join(stage, "provenance.json"),
-                   coordinates: File.join(stage, "coordinates_wpi.csv") }
+                   coordinates: File.join(stage, "coordinates_wpi.csv"), alternate_names: File.join(stage, "alternate_names_wpi.csv") }
         File.write(staged[:csv], text)
         File.write(staged[:provenance], "#{JSON.pretty_generate(provenance)}\n")
         CoordinateSources.write(staged[:coordinates], result.rows)
+        AlternateNames.write(staged[:alternate_names], alternate_rows)
 
         moves = {}
         moves[staged[:csv]] = csv_path if replaced
         moves[staged[:provenance]] = provenance_path if replaced
         coordinates_changed = !File.exist?(coordinates_path) || File.read(coordinates_path) != File.read(staged[:coordinates])
         moves[staged[:coordinates]] = coordinates_path if coordinates_changed
+        names_changed = !File.exist?(alternate_names_path) || File.read(alternate_names_path) != File.read(staged[:alternate_names])
+        moves[staged[:alternate_names]] = alternate_names_path if names_changed
         install(stage, moves) unless moves.empty?
 
         line = CoordinateSources.summary("World Port Index (snapshot #{provenance['snapshot']})", change, result.rows.size, result.counts)
+        skipped = alternate_counts.except(:ports).map { |reason, n| "#{n} #{reason.to_s.tr('_', ' ')}" }
+        line += " Alternate names: #{alternate_counts.fetch(:ports, 0)} ports, skipped: #{skipped.empty? ? 'none' : skipped.join(', ')}."
         line += " The vendored index was replaced (#{download.via}, #{download.url})." if replaced
         Outcome.new(moves.empty? ? "unchanged" : "changed", line, name_report(result.mismatches))
       end
