@@ -106,6 +106,23 @@ module Seaports
       (containing || nearest(areas, lat, lng))&.codes || []
     end
 
+    # Whether the point is inside +country+ or within +km+ of it: true or false,
+    # or nil when the map has no area for the country at all (a few islands
+    # and city states), where nothing can be said either way. Used to refuse a
+    # supplementary position that landed in the wrong place, so the distance
+    # is generous: ports sit on a coast the map drew a little differently.
+    def near_country?(country, lat, lng, km = 50)
+      areas = @by_country.fetch(country.to_s.upcase, [])
+      return nil if areas.empty?
+
+      lat_margin = km / KM_PER_DEGREE_LAT
+      lng_margin = km / (KM_PER_DEGREE_LNG * [Math.cos(lat * Math::PI / 180), 0.01].max)
+      close = areas.select { |area| within_bbox?(area, lat, lng, lat_margin, lng_margin) }
+      return true if close.any? { |area| within_bbox?(area, lat, lng, 0) && contains?(area, lat, lng) }
+
+      close.any? { |area| distance_km(area, lat, lng) <= km }
+    end
+
     private
 
     # +lat_margin+ and +lng_margin+ in degrees. They differ because a degree

@@ -416,4 +416,52 @@ class BuilderTest < Minitest::Test
     assert_includes stamped, 'DATA_RELEASE = "2030-1"'
     assert_includes stamped, 'DATA_REFRESHED_ON = "2030-01-01"'
   end
+
+  # UN/LOCODE, then the hand-written file, then the World Port Index, then
+  # Wikidata: each fills only what the ones before it leave empty.
+  def test_ranks_the_position_sources
+    source = SOURCE.sub(/\n\z/, "\n,IE,ORK,Cork,Cork,,AI,1-------,0001,,,\n,IE,ROE,Rosslare,Rosslare,,AI,1-------,0001,,,\n")
+    wpi = { "IEORK" => [1.0, 1.0], "IEROE" => [2.0, 2.0], "AUBNE" => [9.0, 9.0], "ESVLC" => [3.0, 3.0] }
+    wikidata = { "IEORK" => [4.0, 4.0], "IEROE" => [5.0, 5.0], "ESVLC" => [6.0, 6.0] }
+    builder = Seaports::Builder.new(source, coordinate_overrides: { "ESVLC" => [7.0, 7.0] }, fallback_coordinates: [wpi, wikidata])
+    points = builder.rows.to_h { |row| [row.first, row.values_at(2, 3)] }
+
+    assert_equal [-27.4667, 153.0167], points["AUBNE"], "UN/LOCODE wins"
+    assert_equal [7.0, 7.0], points["ESVLC"], "then the hand-written file"
+    assert_equal [1.0, 1.0], points["IEORK"], "then the World Port Index"
+    assert_equal [2.0, 2.0], points["IEROE"]
+    assert_empty builder.override_report, "a generated row that is redundant is dropped by regeneration, not reported"
+  end
+
+  def test_wikidata_fills_what_the_world_port_index_lacks
+    source = SOURCE.sub(/\n\z/, "\n,IE,ORK,Cork,Cork,,AI,1-------,0001,,,\n")
+    builder = Seaports::Builder.new(source, fallback_coordinates: [{}, { "IEORK" => [4.0, 4.0] }])
+
+    assert_equal [4.0, 4.0], builder.rows.find { |row| row.first == "IEORK" }.values_at(2, 3)
+  end
+
+  def test_applies_a_regenerated_position_over_the_one_it_replaces
+    path = File.join(Dir.mktmpdir, "ports.csv")
+    Seaports::Builder.new(SOURCE, fallback_coordinates: [{ "ESVLC" => [1.0, 1.0] }]).write(path)
+
+    # The row left its file: the table does not keep it. A UN/LOCODE
+    # position (AUBNE) is never touched.
+    Seaports::Builder.apply_coordinates(path, { "ESVLC" => [2.0, 2.0] }, previous: { "ESVLC" => [1.0, 1.0] })
+    Seaports::Builder.apply_coordinates(path, {}, previous: { "ESVLC" => [2.0, 2.0] })
+    table = CSV.read(path, headers: true).to_h { |row| [row["locode"], row] }
+
+    assert_nil table["ESVLC"]["lat"]
+    assert_equal "-27.4667", table["AUBNE"]["lat"]
+  end
+
+  def test_every_generated_position_file_is_valid_and_in_the_shipped_table
+    table = CSV.read(Seaports::TABLE_PATH, headers: true).to_h { |row| [row["locode"], row] }
+    wpi, wikidata = Seaports::Builder.fallback_coordinates
+
+    assert_operator wpi.size, :>, 1000
+    assert_operator wikidata.size, :>, 1000
+    Seaports::Builder.all_coordinates.each do |locode, (lat, lng)|
+      assert_equal [lat, lng], table.fetch(locode).values_at("lat", "lng").map(&:to_f), locode
+    end
+  end
 end

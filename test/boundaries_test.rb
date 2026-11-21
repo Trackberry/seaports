@@ -84,4 +84,18 @@ class BoundariesTest < Minitest::Test
   def test_needs_a_position
     assert_empty @boundaries.codes_at("ES", nil, nil)
   end
+
+  def test_a_point_in_the_country_or_within_fifty_kilometres_of_it_is_near
+    assert @boundaries.near_country?("ES", 39.5, 0.5)
+    assert @boundaries.near_country?("ES", 38.7, 0.5), "about 33 km south of the coast"
+  end
+
+  def test_a_point_far_from_the_country_is_not
+    assert_equal false, @boundaries.near_country?("ES", 36.0, 0.5)
+    assert_equal false, @boundaries.near_country?("ES", 39.5, 20.0)
+  end
+
+  def test_a_country_the_map_does_not_draw_cannot_be_judged
+    assert_nil @boundaries.near_country?("GI", 36.1, -5.35)
+  end
 end

@@ -1,4 +1,4 @@
-name: Refresh the UN/LOCODE table
+name: Refresh the UN/LOCODE table and its coordinates
 
 # UNECE republishes twice a year and never announces it, so this looks weekly
 # and almost always finds nothing. A refresh opens a pull request rather than
@@ -6,6 +6,13 @@ name: Refresh the UN/LOCODE table
 # and CI runs against the new table before anyone merges it (started by the
 # last step, since a pull request opened with GITHUB_TOKEN starts no
 # workflows by itself).
+#
+# The same run refreshes the ports' positions from two open datasets: the NGA
+# World Port Index (NGA, else the Internet Archive's copy of it) and Wikidata.
+# Each is its own step and neither can fail the run: an unreachable source is
+# a warning, and the file it feeds stays as it was. Whatever changed, in the
+# table or in a source, lands in the one pull request, and a run in which only
+# coordinates moved still gets a version bump and a changelog entry.
 on:
   schedule:
     - cron: "17 6 * * 1"
@@ -30,12 +37,34 @@ jobs:
       - name: Rebuild from the published release
         run: bundle exec rake seaports:refresh
 
-      - name: Read what the rebuild decided
+      # The positions are refreshed on top of the rebuilt table, unless the
+      # rebuild was refused: a refused table is restored, and a person has to
+      # look at it before anything else is stacked on it. The rake tasks
+      # report their own failures and exit 0; continue-on-error is for the
+      # ones they cannot, such as a gem failing to load.
+      - name: Refresh the World Port Index coordinates
+        continue-on-error: true
+        run: |
+          if [ "$(cat tmp/refresh/status)" != "failed" ]; then bundle exec rake seaports:refresh_wpi; fi
+
+      - name: Refresh the Wikidata coordinates
+        continue-on-error: true
+        run: |
+          if [ "$(cat tmp/refresh/status)" != "failed" ]; then bundle exec rake seaports:refresh_wikidata; fi
+
+      - name: Fold the coordinates into the release
+        run: |
+          if [ "$(cat tmp/refresh/status)" != "failed" ]; then bundle exec rake seaports:finish_coordinates; fi
+
+      - name: Read what the refresh decided
         id: refresh
         run: |
           echo "status=$(cat tmp/refresh/status)" >> "$GITHUB_OUTPUT"
           if [ -f tmp/refresh/version ]; then
             echo "version=$(cat tmp/refresh/version)" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -f tmp/refresh/coordinates.md ]; then
+            grep "not refreshed" tmp/refresh/coordinates.md | while read -r line; do echo "::warning::$line"; done || true
           fi
 
       - name: Nothing to do
@@ -63,14 +92,18 @@ jobs:
         with:
           branch: refresh/un-locode
           base: main
-          commit-message: "chore(data): refresh the UN/LOCODE sea-port table"
-          title: "Refresh the UN/LOCODE sea-port table (${{ steps.refresh.outputs.version }})"
+          commit-message: "chore(data): refresh the UN/LOCODE sea-port table and its coordinates"
+          title: "Refresh the sea-port table (${{ steps.refresh.outputs.version }})"
           body-path: tmp/refresh/summary.md
           labels: data-refresh
           reviewers: edouard
           assignees: edouard
           add-paths: |
             data/un_locode_seaports.csv
+            data/sources/coordinates_wpi.csv
+            data/sources/coordinates_wikidata.csv
+            data/sources/wpi/UpdatedPub150.csv
+            data/sources/wpi/provenance.json
             lib/seaports/version.rb
             CHANGELOG.md
 
