@@ -86,16 +86,17 @@ class CoordinateRefreshTest < Minitest::Test
     assert_equal [nil, nil, nil], files(options)
   end
 
-  def test_refuses_a_regeneration_that_drops_more_than_two_percent_of_the_rows
+  def test_refuses_a_regeneration_that_loses_more_than_two_percent_of_the_rows
     options = sandbox
     Refresh.refresh_wpi(download: download(csv), **options)
     before = files(options)
-    options[:table] = table.merge((1..4).to_h { |n| ["ZZ#{format('%03d', n)}", ["Port #{n}", 1.0, 1.0, "unlocode"]] })
+    lines = csv.lines
+    missing = (lines.first(1) + lines.drop(5)).join # four ports gone from the index
 
-    outcome = Refresh.refresh_wpi(download: download(csv.sub("ZZ 050", "ZZ 150"), snapshot: "2026-11-01"), **options)
+    outcome = Refresh.refresh_wpi(download: download(missing, snapshot: "2026-11-01"), **options)
 
     assert_equal "refused", outcome.status
-    assert_match(/rows would be removed/, outcome.line)
+    assert_match(/rows would be lost by the dataset/, outcome.line)
     assert_equal before, files(options)
   end
 
@@ -125,6 +126,97 @@ class CoordinateRefreshTest < Minitest::Test
 
     assert_equal "failed", outcome.status
     assert_equal before.first(2), files(options).first(2), "the vendored copy and its provenance are put back"
+  end
+
+  # A thousand-port index, so that 30 rows are more than the 2% limit.
+  def code(n) = "ZZ#{n.to_s(36).upcase.rjust(3, '0')}"
+
+  def big_csv(range)
+    body = range.map { |n| "#{n},#{n},Region,Port #{n},,#{code(n).insert(2, ' ')},Zedland,#{(n % 80) + 1},#{n % 170}" }
+    body << "99999,99999,Region,Cork,,IE ORK,Ireland,51.85,-8.2667"
+    "#{HEADER}\n#{body.join("\n")}\n"
+  end
+
+  def big_table(range, unlocode: [])
+    ports = range.to_h { |n| [code(n), ["Port #{n}", nil, nil, nil]] }
+    unlocode.each { |n| ports[code(n)] = ["Port #{n}", 1.0, 1.0, "unlocode"] }
+    ports.merge("IEORK" => ["Cork", nil, nil, nil])
+  end
+
+  # Rows that left because UN/LOCODE now has the port's position are not the
+  # dataset's loss, however many they are.
+  def test_thirty_legitimate_removals_pass_the_loss_guard
+    options = sandbox.merge(table: big_table(1..1000))
+    assert_equal "changed", Refresh.refresh_wpi(download: download(big_csv(1..1000)), **options).status
+
+    options[:table] = big_table(1..1000, unlocode: 1..30)
+    outcome = Refresh.refresh_wpi(download: download(big_csv(1..1000), snapshot: "2026-11-01"), **options)
+
+    assert_equal "changed", outcome.status, outcome.line
+    assert_match(/30 removed/, outcome.line)
+  end
+
+  def test_thirty_dataset_losses_refuse
+    options = sandbox.merge(table: big_table(1..1000))
+    Refresh.refresh_wpi(download: download(big_csv(1..1000)), **options)
+    before = files(options)
+
+    outcome = Refresh.refresh_wpi(download: download(big_csv(31..1000), snapshot: "2026-11-01"), **options)
+
+    assert_equal "refused", outcome.status
+    assert_match(/30 of 1001 World Port Index rows would be lost by the dataset/, outcome.line)
+    assert_equal before, files(options)
+  end
+
+  # Two editions of the index seen by turns would flip the file every run.
+  def test_an_older_edition_than_the_vendored_one_is_refused
+    options = sandbox
+    Refresh.refresh_wpi(download: download(csv, snapshot: "2026-09-29"), **options)
+    before = files(options)
+
+    outcome = Refresh.refresh_wpi(download: download(csv.sub("Port 1,", "Port One,"), snapshot: "2026-09-01"), **options)
+
+    assert_equal "refused", outcome.status
+    assert_match(/older than the vendored 2026-09-29/, outcome.line)
+    assert_equal before, files(options)
+  end
+
+  def test_the_same_edition_is_not_older
+    options = sandbox
+    Refresh.refresh_wpi(download: download(csv, snapshot: "2026-09-29"), **options)
+
+    assert_equal "changed", Refresh.refresh_wpi(download: download(csv.sub("Port 1,", "Port One,"), snapshot: "2026-09-29"), **options).status
+  end
+
+  # The map is fetched inside the refresh, so an outage is a recorded failure.
+  def test_a_failing_boundaries_download_is_a_failed_outcome
+    options = sandbox
+    outcome = Refresh.refresh_wpi(download: download(csv), **options.merge(boundaries: -> { raise "Natural Earth answered HTTP 503" }))
+
+    assert_equal "failed", outcome.status
+    assert_match(/Natural Earth answered HTTP 503/, outcome.line)
+    assert_equal [nil, nil, nil], files(options)
+  end
+
+  def test_wikidata_refuses_losing_more_than_ten_percent_of_its_rows
+    options = wikidata_options
+    Refresh.refresh_wikidata(hits: padded(hits(100)), **options)
+    before = File.read(options[:coordinates_path])
+
+    refused = Refresh.refresh_wikidata(hits: padded(hits(100).first(80)), **options)
+    assert_equal "refused", refused.status
+    assert_match(/20 of 100 Wikidata rows would be lost/, refused.line)
+    assert_equal before, File.read(options[:coordinates_path])
+
+    assert_equal "changed", Refresh.refresh_wikidata(hits: padded(hits(100).first(95)), **options).status
+  end
+
+  def test_wikidata_rows_the_other_sources_now_hold_are_not_losses
+    options = wikidata_options
+    Refresh.refresh_wikidata(hits: padded(hits(100)), **options)
+    held = (1..30).map { |n| "ZZ#{format('%03d', n)}" }
+
+    assert_equal "changed", Refresh.refresh_wikidata(hits: padded(hits(100)), **options.merge(held:)).status
   end
 
   def hits(count)

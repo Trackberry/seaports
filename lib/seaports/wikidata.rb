@@ -31,11 +31,16 @@ module Seaports
     CLUSTER_KM = 10
     TOWN_KM = 50
     # About how many codes Wikidata resolves to a position (43,565 in November
-    # 2026). A result below MINIMUM_SHARE of it is an outage or a broken query.
+    # 2026), and the size an answer is judged against.
     EXPECTED_CODES = 40_000
-    # Below this share of the file it replaces, a result is an outage or a
-    # broken query, not Wikidata losing codes, and is refused.
+    # An answer with fewer than this share of EXPECTED_CODES codes is an outage
+    # or a broken query, not Wikidata losing codes, and is refused.
     MINIMUM_SHARE = 0.8
+    # A regeneration that loses more than this share of the rows it replaces is
+    # refused: Wikidata is edited by anyone, and a retyped item takes its port
+    # with it. Rows that left because UN/LOCODE or a higher source now places
+    # the port do not count.
+    MAXIMUM_LOST = 0.10
 
     NUMBER = /[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/
     POINT = /\APoint\(\s*(#{NUMBER})\s+(#{NUMBER})\s*\)\z/

@@ -224,4 +224,28 @@ class DiffTest < Minitest::Test
     assert_includes summary, "- wikidata: 1 located"
     assert_includes summary, "- wpi: 1 located"
   end
+
+  def test_refuses_a_refresh_that_strips_positions_from_more_than_two_percent_of_ports
+    before = healthy
+    after = before.dup
+    after[Seaports::Diff::ANCHORS.first] = port("Anchor", nil)
+    diff = Seaports::Diff.new(before, after)
+
+    refute_predicate diff, :ok?
+    assert_match(/1 of 16 positioned ports lost their position/, diff.failures.join)
+  end
+
+  def test_a_port_that_leaves_the_table_with_its_position_counts_as_a_loss
+    before = healthy("AAAAA" => port("Gone", [3.0, 3.0]))
+    after = healthy
+
+    assert_match(/lost their position/, Seaports::Diff.new(before, after).failures.join)
+  end
+
+  def test_a_few_lost_positions_in_a_large_table_are_fine
+    ports = (1..200).to_h { |n| ["AA#{n.to_s.rjust(3, '0')}", port("P#{n}", [1.0, 1.0])] }
+    after = ports.merge("AA001" => port("P1", nil), "AA002" => port("P2", nil))
+
+    assert_empty Seaports::Diff.new(healthy(ports), healthy(after)).failures
+  end
 end

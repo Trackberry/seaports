@@ -70,6 +70,11 @@ module Seaports
     MAXIMUM_MOVED = 0.05
     MOVED_KM = 1
 
+    # More than this share of the ports that had a position losing it in one
+    # refresh is a source that vanished or was refused wholesale, not ports
+    # whose coordinates were withdrawn.
+    MAXIMUM_LOST_POSITIONS = 0.02
+
     def initialize(before, after)
       @before = before
       @after = after
@@ -137,7 +142,7 @@ module Seaports
     # Empty means the refresh may ship. Anything here is a reason it may not,
     # written the way it should read in an issue.
     def failures
-      [count_failure, shrinkage_failure, region_failure, reassignment_failure, moved_failure, *anchor_failures, *excluded_failures].compact
+      [count_failure, shrinkage_failure, region_failure, reassignment_failure, moved_failure, positions_failure, *anchor_failures, *excluded_failures].compact
     end
 
     def ok?
@@ -193,6 +198,18 @@ module Seaports
     end
 
     private
+
+    def positions_failure
+      placed = @before.count { |_, port| port[:point] }
+      return nil if placed.zero?
+
+      lost = common.count { |locode| @before[locode][:point] && @after[locode][:point].nil? }
+      lost += removed.count { |locode| @before[locode][:point] }
+      return nil if lost.to_f / placed <= MAXIMUM_LOST_POSITIONS
+
+      "#{lost} of #{placed} positioned ports lost their position, past the #{(MAXIMUM_LOST_POSITIONS * 100).round}% limit: " \
+        "a coordinate source disappeared."
+    end
 
     def moved_failure
       placed = @before.count { |_, port| port[:point] }

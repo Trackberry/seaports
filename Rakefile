@@ -116,7 +116,7 @@ namespace :seaports do
         Seaports::Wpi::Download.new(text: File.read(args[:file], encoding: "UTF-8"), url: File.basename(args[:file]),
           snapshot: args[:snapshot], via: "a local file")
       end
-    record_coordinates("wpi", Seaports::CoordinateRefresh.refresh_wpi(download:, boundaries: coordinate_boundaries))
+    record_coordinates("wpi", Seaports::CoordinateRefresh.refresh_wpi(download:, boundaries: -> { coordinate_boundaries }))
   end
 
   # Recurring: the weekly refresh runs it, after refresh_wpi. Wikidata is
@@ -129,7 +129,7 @@ namespace :seaports do
     require "fileutils"
     FileUtils.mkdir_p(REFRESH_DIR)
 
-    record_coordinates("wikidata", Seaports::CoordinateRefresh.refresh_wikidata(boundaries: coordinate_boundaries))
+    record_coordinates("wikidata", Seaports::CoordinateRefresh.refresh_wikidata(boundaries: -> { coordinate_boundaries }))
   end
 
   # Natural Earth is 40 MB, and the two coordinate steps and the rebuild all
@@ -139,11 +139,18 @@ namespace :seaports do
     require "fileutils"
     require_relative "lib/seaports/boundaries"
     require_relative "lib/seaports/builder"
+    require_relative "lib/seaports/http"
     return Seaports::Boundaries.parse(Seaports::Builder.fetch(source)) if source
 
     FileUtils.mkdir_p(REFRESH_DIR)
     cache = File.join(REFRESH_DIR, "boundaries.geojson")
-    File.write(cache, Seaports::Builder.fetch(Seaports::Boundaries::SOURCE_URL)) unless File.exist?(cache)
+    unless File.exist?(cache)
+      # Through Seaports::Http, for its User-Agent and its size cap.
+      status, body, = Seaports::Http.get(Seaports::Boundaries::SOURCE_URL)
+      raise "Natural Earth answered HTTP #{status}" unless status == 200
+
+      File.binwrite(cache, body)
+    end
     Seaports::Boundaries.parse(File.read(cache))
   end
 

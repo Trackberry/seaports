@@ -80,11 +80,32 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh label create refresh-blocked --color D93F0B --force
-          gh issue create \
-            --title "Sea-port refresh refused on $(date -u +%Y-%m-%d)" \
-            --body-file tmp/refresh/summary.md \
-            --label "refresh-blocked" \
-            --assignee edouard
+          # One open issue at a time: a refusal that persists for weeks
+          # comments on the first issue instead of opening a new one weekly.
+          existing=$(gh issue list --label refresh-blocked --state open --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file tmp/refresh/summary.md
+          else
+            gh issue create \
+              --title "Sea-port refresh refused on $(date -u +%Y-%m-%d)" \
+              --body-file tmp/refresh/summary.md \
+              --label "refresh-blocked" \
+              --assignee edouard
+          fi
+
+      # An earlier week's refresh pull request that is still open describes
+      # data this run no longer produces (a source reverted, or this week's
+      # rebuild was refused). Closing it risks losing a review in progress, so
+      # it gets a comment saying it is stale instead.
+      - name: Mark an earlier refresh pull request stale
+        if: steps.refresh.outputs.status == 'unchanged' || steps.refresh.outputs.status == 'failed'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pr=$(gh pr list --head refresh/un-locode --state open --json number --jq '.[0].number // empty')
+          if [ -n "$pr" ]; then
+            gh pr comment "$pr" --body "Stale: this week's run on $(date -u +%Y-%m-%d) found ${{ steps.refresh.outputs.status }} against main, so this branch no longer matches what the sources produce. Close it, or wait for the next run to update it."
+          fi
 
       - name: Open the refresh for review
         id: pull_request

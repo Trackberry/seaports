@@ -32,8 +32,8 @@ module Seaports
     MOVED_KM = 1
     NAMES_SHOWN = 60
 
-    # A World Port Index that drops more than this share of the rows already
-    # used is a truncated or reorganised file.
+    # A World Port Index that loses more than this share of the rows already
+    # used (see dataset_losses) is a truncated or reorganised file.
     MAXIMUM_LOST = 0.02
 
     class Refused < StandardError; end
@@ -42,7 +42,18 @@ module Seaports
     # differs between the dataset and the table, "" when there are none.
     Outcome = Data.define(:status, :line, :names)
 
-    def self.guard!(label, change, maximum_lost: nil)
+    # Why a row may leave a generated file without the dataset having lost it:
+    # UN/LOCODE publishes the port's position now, the code left the table, or
+    # a higher-ranked source holds it. Anything else (gone from the dataset,
+    # invalid, ambiguous, off its country) is the dataset's doing.
+    LEGITIMATE_REMOVALS = %i[has_unlocode_position not_in_table held_by_other_source].freeze
+
+    # The removed locodes the dataset itself lost, given Result#reasons.
+    def self.dataset_losses(removed, reasons)
+      removed.reject { |locode| LEGITIMATE_REMOVALS.include?(reasons[locode]) }
+    end
+
+    def self.guard!(label, change, maximum_lost: nil, reasons: {})
       return if change.before_size.zero?
 
       moved = change.moved.size.to_f / change.before_size
@@ -50,10 +61,10 @@ module Seaports
         raise Refused, "#{change.moved.size} of #{change.before_size} #{label} positions moved over #{MOVED_KM} km, past the #{(MAXIMUM_MOVED * 100).round}% limit"
       end
 
-      lost = change.removed.size.to_f / change.before_size
-      return unless maximum_lost && lost > maximum_lost
+      lost = dataset_losses(change.removed, reasons)
+      return unless maximum_lost && lost.size.to_f / change.before_size > maximum_lost
 
-      raise Refused, "#{change.removed.size} of #{change.before_size} #{label} rows would be removed, past the #{(maximum_lost * 100).round}% limit"
+      raise Refused, "#{lost.size} of #{change.before_size} #{label} rows would be lost by the dataset, past the #{(maximum_lost * 100).round}% limit"
     end
 
     # Moves each staged file over its destination, and puts back whatever it
@@ -104,13 +115,22 @@ module Seaports
       vendored = File.exist?(csv_path) ? File.read(csv_path) : nil
       Wpi.validate!(download.text, vendored:)
 
+      # An older copy than the one vendored (an archive snapshot, after NGA
+      # was reached once) would flip the file back and forth between runs.
+      current = Wpi.provenance(provenance_path)["snapshot"]
+      if current && download.snapshot < current
+        raise Refused, "the download is the #{download.snapshot} edition, older than the vendored #{current}"
+      end
+
+      boundaries = boundaries.call if boundaries.respond_to?(:call)
+
       replaced = vendored.nil? || Wpi.sha256(vendored) != Wpi.sha256(download.text)
       provenance = replaced ? Wpi.provenance_for(download, today) : Wpi.provenance(provenance_path)
       text = Wpi.normalize(download.text)
       result = CoordinateSources.select(Wpi.candidates(text, source: Wpi.source_label(provenance.fetch("snapshot"))),
         table:, held:, boundaries:)
       change = CoordinateSources.change(CoordinateSources.points(coordinates_path), result.rows.to_h { |row| [row[0], row.values_at(2, 3)] })
-      guard!("World Port Index", change, maximum_lost: MAXIMUM_LOST)
+      guard!("World Port Index", change, maximum_lost: MAXIMUM_LOST, reasons: result.reasons)
 
       Dir.mktmpdir("seaports-wpi") do |stage|
         staged = { csv: File.join(stage, "UpdatedPub150.csv"), provenance: File.join(stage, "provenance.json"),
@@ -145,6 +165,7 @@ module Seaports
     def self.wikidata(hits, boundaries: nil, table: CoordinateSources.table,
       held: Builder.coordinate_overrides.keys + Builder.coordinate_overrides(Builder::WPI_COORDINATES_PATH).keys,
       coordinates_path: Builder::WIKIDATA_COORDINATES_PATH, provenance_path: Wikidata::PROVENANCE_PATH, today: Date.today)
+      boundaries = boundaries.call if boundaries.respond_to?(:call)
       seen = hits.map(&:locode).uniq.size
       minimum = Wikidata::EXPECTED_CODES * Wikidata::MINIMUM_SHARE
       raise Refused, "Wikidata answered with only #{seen} codes, fewer than #{minimum.to_i}" if seen < minimum
@@ -152,7 +173,7 @@ module Seaports
       candidates, stats = Wikidata.candidates(hits)
       result = CoordinateSources.select(candidates, table:, held:, boundaries:)
       change = CoordinateSources.change(CoordinateSources.points(coordinates_path), result.rows.to_h { |row| [row[0], row.values_at(2, 3)] })
-      guard!("Wikidata", change)
+      guard!("Wikidata", change, maximum_lost: Wikidata::MAXIMUM_LOST, reasons: result.reasons)
 
       Dir.mktmpdir("seaports-wikidata") do |stage|
         staged = File.join(stage, "coordinates_wikidata.csv")

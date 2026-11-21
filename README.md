@@ -113,13 +113,15 @@ the expected columns, a row count within 5% of the vendored copy, a last row as 
 differs from the vendored copy in `data/sources/wpi/`, the copy, its
 `provenance.json` (where it came from, the snapshot date and the hash) and the
 regenerated `coordinates_wpi.csv` are replaced together, or none of them is; if
-not, nothing happens. A regeneration that drops more than 2% of the World Port
-Index rows already used, or that moves more than 5% of a file's positions over a
+not, nothing happens. A download older than the vendored snapshot is refused, so two editions seen
+by turns cannot flip the file. A regeneration that loses more than 2% of the World Port
+Index rows already used (rows that left because UN/LOCODE, the reviewed list or the
+table now holds the port do not count), or that moves more than 5% of a file's positions over a
 kilometre, is refused. Given a path and a snapshot date,
 `rake "seaports:refresh_wpi[/path/UpdatedPub150.csv,2026-09-29]"` uses a file
 already downloaded. `rake seaports:refresh_wikidata` rebuilds the Wikidata file
 from a live query, and refuses an answer with fewer than 80% of the codes it
-expects. Neither task touches the table: `rake seaports:refresh` runs after
+expects or one that loses over 10% of the rows it replaces. Neither task touches the table: `rake seaports:refresh` runs after
 them and merges what they wrote, so its gates judge the coordinate changes too.
 The weekly refresh workflow runs all three in that order, and an unreachable
 source is a warning, not a failure; a source that answers with something its
@@ -312,7 +314,8 @@ decided by the rebuilt table: if a port's position or subdivision changed (a
 move under 100 m does not count), the run bumps the minor version and writes a
 changelog entry. If only the generated source files changed, with the same
 positions, it opens a pull request to review and releases nothing. A rebuild
-that moves more than 5% of the positions over a kilometre is refused. The summary
+that moves more than 5% of the positions over a kilometre, or in which more than
+2% of the positioned ports lose their position, is refused. The summary
 says how many ports each source added, removed and moved, which World Port
 Index snapshot it used, and lists the ports whose World Port Index name differs
 from UN/LOCODE's.

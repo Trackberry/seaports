@@ -1,11 +1,7 @@
 # Changelog
 
-Every entry below the first is a UN/LOCODE refresh, opened as a pull request by
-`.github/workflows/refresh.yml` and merged by a person.
-
-## Unreleased
-
-Requires Ruby 3.3 or newer. Ruby 3.2 reached end of life on 2026-03-31 and is no longer tested.
+Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
+pull request, or by hand for a code change; a person merges both.
 
 ## 1.5.0 — 2026-11-21
 
@@ -16,6 +12,8 @@ The new positions also place ports on the boundaries map, so 601 ports gain a su
 The table has a new last column, `coordinate_source`: `unlocode`, `override`, `wpi` or `wikidata`, or empty for a port with no position. It records what the build knows, so a later step never has to infer from equal values whether UN/LOCODE published a position.
 
 The refresh workflow now regenerates both sources every week, before the UN/LOCODE rebuild, so the rebuild's gates judge the coordinate changes with everything else, and refuses a rebuild that moves more than 5% of positions over a kilometre. The release is decided by the rebuilt table (a move under 100 m is not a change); a run that only changed the generated source files opens a pull request without a release. `rake seaports:refresh_wpi` fetches the newest World Port Index from NGA, or from the Internet Archive while NGA is in maintenance, validates it, and replaces the vendored copy in `data/sources/wpi/`, its provenance note and the generated coordinates together or not at all. `rake seaports:refresh_wikidata` queries Wikidata. Neither is shipped in the gem; only the table is.
+
+Requires Ruby 3.3 or newer. Ruby 3.2 reached end of life on 2026-03-31 and is no longer tested.
 
 Same ports and names as 1.4.0. Positions of ports that had one are unchanged.
 

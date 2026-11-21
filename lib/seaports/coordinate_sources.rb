@@ -29,7 +29,11 @@ module Seaports
     # +mismatches+: [locode, the dataset's name, the table's name] for the kept
     # rows where the two names share nothing, which usually means the dataset
     # files another place under that code.
-    Result = Data.define(:rows, :counts, :mismatches)
+    #
+    # +reasons+ is { locode => why it was not kept } for every candidate with a
+    # usable locode that was not, so a caller can tell a row dropped because
+    # UN/LOCODE caught up from one the dataset lost.
+    Result = Data.define(:rows, :counts, :mismatches, :reasons)
 
     # +candidates+ are Candidates with raw values: a locode as written and
     # a lat and lng as numbers or strings.
@@ -42,6 +46,7 @@ module Seaports
     # passes and is counted as unjudged.
     def self.select(candidates, table:, held: [], boundaries: nil)
       counts = Hash.new(0)
+      reasons = {}
       valid = candidates.filter_map do |candidate|
         counts[:candidates] += 1
         locode = candidate.locode.to_s.delete(" ").upcase
@@ -50,6 +55,7 @@ module Seaports
         unless locode.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/) && lat && lng &&
             lat.between?(-90, 90) && lng.between?(-180, 180) && !(lat.zero? && lng.zero?)
           counts[:invalid] += 1
+          reasons[locode] = :invalid if locode.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/)
           next
         end
         candidate.with(locode:, lat: lat.round(4), lng: lng.round(4))
@@ -59,6 +65,7 @@ module Seaports
       rows = valid.group_by(&:locode).sort.filter_map do |locode, group|
         if group.size > 1
           counts[:duplicate] += 1
+          reasons[locode] = :duplicate
           next
         end
         candidate = group.first
@@ -73,12 +80,13 @@ module Seaports
             judged == false ? :off_country : :kept
           end
         counts[reason] += 1
+        reasons[locode] = reason unless reason == :kept
         next unless reason == :kept
 
         mismatches << [locode, candidate.name, name] if candidate.name && !same_place?(candidate.name, name)
         [locode, name, candidate.lat, candidate.lng, candidate.source]
       end
-      Result.new(rows:, counts: counts.to_h, mismatches:)
+      Result.new(rows:, counts: counts.to_h, mismatches:, reasons:)
     end
 
     # Whether two names plausibly name one place: one holds the other once
