@@ -5,7 +5,15 @@ pull request, or by hand for a code change; a person merges both.
 
 ## 1.6.1 — 2026-11-21
 
-Six more wrong alternate names are refused, so 658 of 17,567 ports have alternate names, down from 662: USROC no longer answers to "Charlotte" (an inland city in North Carolina), TNLSK to "Qabes" (the name of Gabès, TNGAE), ESSAG to "El Puerto", JPUNO to "Tama", AUPBY to "Stony Point" (a different place, in Victoria) or GBSHO to "New Shoreham" (Rhode Island). Same ports, names and positions otherwise.
+Five more alternate names are refused, so 659 of 17,567 ports have alternate names, down from 662:
+
+- USROC no longer answers to "Charlotte": it is the Rochester neighbourhood at the port, but the name clashes with Charlotte, North Carolina, a common inland destination.
+- TNLSK no longer answers to "Qabes", the name of Gabès (TNGAE).
+- ESSAG no longer answers to "El Puerto", which is generic and also El Puerto de Santa María.
+- JPUNO no longer answers to "Tama", a district of Tamano near the port, not the port's name.
+- GBSHO no longer answers to "New Shoreham", an obsolete name for Shoreham-by-Sea that is also used today for Block Island, Rhode Island.
+
+Same ports, names and positions otherwise.
 
 ## 1.6.0 — 2026-11-21
 

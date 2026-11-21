@@ -96,6 +96,15 @@ class AlternateNamesTest < Minitest::Test
      "Fishing Ports", "Cargo Terminal"].each { |text| refute Names.parenthesis_name?(text), text }
   end
 
+  def test_the_reviewed_rejections_hold
+    assert_empty Seaports.alternate_names("USROC")
+    refute_includes Seaports.alternate_names("TNLSK"), "Qabes"
+    refute_includes Seaports.alternate_names("ESSAG"), "El Puerto"
+    refute_includes Seaports.alternate_names("JPUNO"), "Tama"
+    refute_includes Seaports.alternate_names("GBSHO"), "New Shoreham"
+    assert_includes Seaports.alternate_names("AUPBY"), "Stony Point", "the Santos facility at Port Bonython"
+  end
+
   def test_index_names_split_on_semicolons_and_commas_and_drop_junk
     countries = Set["mozambique"]
 

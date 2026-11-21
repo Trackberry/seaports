@@ -168,7 +168,7 @@ Seaports.alternate_names("BEANR")       # => ["Antwerp", "Anvers"]
 Seaports.alternate_names("NLRTM")       # => []
 ```
 
-Never the port's own `name`, and `[]` when there are none. 658 ports have at
+Never the port's own `name`, and `[]` when there are none. 659 ports have at
 least one. Sources, best first:
 
 1. **A reviewed list**, `data/sources/alternate_names.csv` (`locode`, `name`,
