@@ -3,6 +3,12 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## 1.7.1 — 2026-11-23
+
+Antwerp's outline no longer includes "Containerkade" (Katoen Natie, OpenStreetMap way 376648236), a quay in the Western Scheldt near Vlissingen, 32 km from Antwerp's nearest terminal. It came from the search around Vlissingen used for the anchorages. Because the port limits are derived from the terminals, they had stretched down the river to take it in, so `Seaports.within?("BEANR", …)` answered true for ships off Terneuzen. Antwerp now has 7 terminals and its limits end at Doel and Zandvliet.
+
+The checks now refuse a terminal more than 25 km from every other terminal of its port, which would have caught it.
+
 ## 1.7.0 — 2026-11-23
 
 Port outlines, for three ports to start: Rotterdam, Antwerp and Dover. `Seaports.geometry(locode)` is the port as GeoJSON, and `Seaports.areas`, `terminals`, `anchorages` and `port_limits` are its features as `Seaports::Geometry::Area`s, each with a kind, name, operator, cargo type, anchorage category, the OpenStreetMap ids it came from, `source`, `licence`, `reviewed_at` and a note. `Seaports.within?(locode, lat, lng, kind:)` and `areas_at` say whether, and in which area, a position is; `Seaports.ports_at(lat, lng)` names the ports whose limits hold it; `Seaports.quays(locode)` lists the locodes that are parts of the port (`NLBOT` for Rotterdam). A port with no outline answers `nil`, `[]` and `false`.
