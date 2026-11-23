@@ -1,0 +1,25 @@
+---
+locode: GBLGP
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features around the port and seamark searches of the Thames estuary.
+  OpenStreetMap maps the container terminal as one area. It maps no deep-sea anchorage in the estuary:
+  the anchorages it has in Sea Reach are for small craft or explosives, and the Medway's N1 to N5 serve
+  Sheerness, so none is listed here. Carriers often file London Gateway calls as GBLON (London), which
+  also covers Tilbury, so GBLON is not listed as a quay.
+port_limits:
+  derive: hull
+  buffer_m: 800
+  note: >-
+    OpenStreetMap maps no port limits for London Gateway; the Port of London Authority's limits cover
+    the whole tidal Thames. These are the hull of the container terminal, grown by 800 m to take in its
+    berths and the river in front of them.
+features:
+- osm: way/505852953
+  kind: terminal
+  name: London Gateway Port
+  operator: DP World
+  cargo:
+  - container
+  note: Tagged man_made=container_terminal and operator=DP World. The logistics park behind it is left
+    out.

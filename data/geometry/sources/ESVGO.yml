@@ -1,0 +1,35 @@
+---
+locode: ESVGO
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features around the ría de Vigo. OpenStreetMap maps two cargo terminals,
+  Guixar and Bouzas, and no anchorage in the ría, so none is listed. The cruise quay, the Berbés fishing
+  port and its cold stores are not mapped as terminals. The ría passenger boats (Estación Marítima de
+  Ría, Terminal Alberto Durán) and the Frigoríficos del Morrazo cold store across the ría at Cangas are
+  left out: none takes a cargo ship.
+port_limits:
+  derive: hull
+  buffer_m: 400
+  note: >-
+    OpenStreetMap maps no port limits for Vigo. These are the hull of the two terminals below, from Guixar
+    to Bouzas, grown by 400 m. They take in the waterfront between them, the cruise and fishing quays
+    included, and a strip of the city behind it.
+features:
+- osm: relation/13456267
+  kind: terminal
+  name: Guixar
+  operator: Marítima Dávila
+  cargo:
+  - container
+  note: >-
+    OpenStreetMap names it Terminal de Contedores and gives operator Marítima Davila. Container is from
+    the name.
+- osm: relation/13473990
+  kind: terminal
+  name: Termavi
+  operator: Termavi
+  cargo:
+  - ro_ro
+  note: >-
+    The Bouzas ro-ro terminal. OpenStreetMap names it Terminal Ro-Ro and gives the port authority as operator;
+    Termavi is the company that runs it, so check that.

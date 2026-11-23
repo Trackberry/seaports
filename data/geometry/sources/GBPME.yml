@@ -1,0 +1,44 @@
+---
+locode: GBPME
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features and seamarks around Portsmouth Harbour, Spithead and the Nab.
+  OpenStreetMap maps no commercial anchorage for Portsmouth: the seamark anchorages nearby are unnamed
+  points in Langstone and Chichester harbours, so none is listed. The Naval Base is left out.
+port_limits:
+  derive: hull
+  buffer_m: 800
+  note: >-
+    OpenStreetMap maps no port limits for Portsmouth. These are the hull of the terminals below, from
+    the Wightlink berth at the Gunwharf to the international port at Whale Island, grown by 800 m to take
+    in the harbour water in front of them. Much smaller than the Queen's Harbour Master's limits.
+features:
+- osm: way/156568442
+  kind: terminal
+  name: Portsmouth International Port
+  operator: Portsmouth City Council
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    Tagged amenity=ferry_terminal. The cross-Channel and Channel Islands ferry berths; the cruise terminal
+    is a building inside it, so not a separate feature here.
+- osm: relation/4073345
+  kind: terminal
+  name: Portico
+  operator: Portico
+  cargo:
+  - reefer
+  - general
+  note: >-
+    OpenStreetMap names it Portico Cargo Terminal and gives no cargo tag. The fruit and general cargo
+    berths next to the ferry port; reefer is from what Portico handles, so check it.
+- osm: way/71398461
+  kind: terminal
+  name: Wightlink Portsmouth
+  operator: Wightlink
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The Isle of Wight car ferry terminal at the Gunwharf, mapped as a building tagged amenity=ferry_terminal.

@@ -1,0 +1,112 @@
+---
+locode: DEHAM
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around the city and off the Elbe and Weser mouths, and
+  a name search for terminals tagged landuse=industrial only (O'Swaldkai, the HHLA fruit centre, Steinweg,
+  Rosshafen). Quays from Trackberry's config/port_areas.yml. The anchorages are the Elbe's, at its mouth
+  more than 100 km below the city: they serve Brunsbüttel, Cuxhaven and Stade too, not Hamburg alone.
+  OpenStreetMap gives none of them a category, and maps no anchorage in the harbour itself.
+quays:
+- DEHHV
+- DEHBU
+- DEHTJ
+- DEXFW
+port_limits:
+  derive: hull
+  buffer_m: 1500
+  note: >-
+    OpenStreetMap maps no port limits for Hamburg. These are the hull of the terminals below, from Eurogate
+    and Altenwerder in the west to O'Swaldkai and the cruise centre in the east, grown by 1.5 km. They
+    take in Steinwerder, Wilhelmsburg's port side and the Elbe between, so they are rougher than the legal
+    port area.
+features:
+- osm: way/991881631
+  kind: anchorage
+  name: Elbe Approach Reede
+  note: Seamark area in the German Bight, west of the Elbe mouth.
+- osm: way/991881633
+  kind: anchorage
+  name: Außenelbe Reede
+  note: Seamark area at the outer Elbe.
+- osm: way/155953614
+  kind: anchorage
+  name: Neuwerk-Reede
+  note: Seamark area off Neuwerk, at the Elbe mouth.
+- osm: way/177278214
+  kind: anchorage
+  name: Medem Reede
+  note: Seamark area off Cuxhaven, in the river.
+- osm: node/1946724629
+  kind: pilot_boarding
+  note: >-
+    A pilot boarding place off Waltershof, where Elbe pilots hand over to harbour pilots. OpenStreetMap
+    gives it no name.
+- osm: relation/8448069
+  kind: terminal
+  name: Containerterminal Altenwerder
+  operator: Hamburger Hafen und Logistik AG
+  cargo:
+  - container
+  note: HHLA CTA. Tagged cargo=container.
+- osm: relation/15625871
+  kind: terminal
+  name: Container Terminal Burchardkai
+  operator: Hamburger Hafen und Logistik AG
+  cargo:
+  - container
+  note: HHLA CTB. Tagged cargo=container.
+- osm: way/131265593
+  kind: terminal
+  name: Container Terminal Tollerort
+  operator: HHLA Container Terminal Tollerort GmbH
+  cargo:
+  - container
+  note: HHLA CTT. Tagged cargo=container.
+- osm: relation/9203441
+  kind: terminal
+  name: Eurogate Container Terminal Hamburg
+  operator: Eurogate
+  cargo:
+  - container
+  note: Tagged cargo=container.
+- osm: way/52823306
+  kind: terminal
+  name: Autoterminal Hamburg
+  cargo:
+  - ro_ro
+  note: >-
+    Tagged seamark:harbour:category=roro. OpenStreetMap gives the area no operator; a BLG AutoTerminal
+    building stands on it, so check whether BLG runs it.
+- osm: way/72708311
+  kind: terminal
+  name: O'Swaldkai
+  note: OpenStreetMap gives no cargo type or operator.
+- osm: way/735594029
+  kind: terminal
+  name: HHLA Frucht- und Kühlzentrum
+  operator: HHLA
+  cargo:
+  - reefer
+  note: >-
+    Tagged industrial=warehouse. Reefer is from its name (fruit and cold-store centre) and the operator
+    from its name too, so check both.
+- osm: way/26352690
+  kind: terminal
+  name: C. Steinweg Süd-West Terminal
+  note: OpenStreetMap gives no cargo type or operator.
+- osm: way/1044298423
+  kind: terminal
+  name: HHLA Rosshafen Terminal
+  note: OpenStreetMap gives no cargo type or operator.
+- osm: relation/8457142
+  kind: terminal
+  name: Hansaport
+  note: OpenStreetMap gives no cargo type or operator.
+- osm: way/323480585
+  kind: terminal
+  name: Cruise Center Steinwerder
+  operator: Cruise Gate Hamburg GmbH
+  cargo:
+  - passenger
+  note: Tagged seamark:harbour:category=passenger.

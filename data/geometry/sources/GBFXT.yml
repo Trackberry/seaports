@@ -1,0 +1,48 @@
+---
+locode: GBFXT
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[GBFXT,8], a search of named features around the docks
+  and a seamark search of the Harwich approaches. OpenStreetMap maps the Port of Felixstowe as one area,
+  not as its Trinity, Landguard and Berth 8-9 terminals, so the terminal below is the whole port. The
+  anchorages and pilot stations serve Harwich Haven as a whole (Harwich and Ipswich too), not Felixstowe
+  alone. OpenStreetMap gives none of the anchorages a category.
+port_limits:
+  derive: hull
+  buffer_m: 600
+  note: >-
+    OpenStreetMap maps no port limits for Felixstowe. These are the hull of the Port of Felixstowe area,
+    grown by 600 m to take in the berths' water on the Orwell and Stour. Rougher than the legal limits,
+    which Harwich Haven Authority sets for the whole haven.
+features:
+- osm: way/28725586
+  kind: terminal
+  name: Port of Felixstowe
+  operator: Hutchison Ports
+  cargo:
+  - container
+  note: >-
+    Tagged man_made=container_terminal and industrial=intermodal_freight_terminal, with no operator tag;
+    the operator is from the port's Wikidata entry (Q3398484), so check it. Covers Trinity, Landguard
+    and Berths 8-9, which OpenStreetMap does not map apart. The Freightliner rail terminal pieces inside
+    it are left out.
+- osm: way/340748332
+  kind: anchorage
+  name: Cork Anchorage
+  note: Seamark area off the haven entrance.
+- osm: way/340747790
+  kind: anchorage
+  name: Platters Anchorage
+  note: Seamark area south of Landguard Point.
+- osm: way/341058028
+  kind: anchorage
+  name: Bawdsey Anchorage
+  note: Seamark area offshore, north-east of the haven entrance.
+- osm: node/3508580493
+  kind: pilot_boarding
+  name: Haven Pilot Station
+  note: Seamark pilot boarding place for Harwich Haven.
+- osm: node/3508579592
+  kind: pilot_boarding
+  name: Sunk Pilot Station
+  note: Seamark pilot boarding place at the Sunk, offshore of the haven.

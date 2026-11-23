@@ -1,0 +1,72 @@
+---
+locode: ESVLC
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[ESVLC,8] and a search of named features around the harbour.
+  OpenStreetMap maps the three container terminals, one unnamed ro-ro terminal, the two ferry terminals
+  as buildings, and the north and south anchorages; it maps no fruit or reefer terminal, so none is listed.
+  The Baleària terminal (way/220677569) is left out: OpenStreetMap maps it as a building under 500 m²,
+  too small to pass as a terminal. Sagunto is left out: it has its own locode, ESSAG.
+port_limits:
+  derive: hull
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Valencia. These are the hull of the terminals below, from the
+    CSP Iberian terminal in the south to the APM terminal in the north, grown by 500 m. They take in the
+    harbour basins between but not the anchorages offshore.
+features:
+- osm: way/1010784059
+  kind: anchorage
+  name: North Anchorage
+  note: >-
+    Seamark area with anchor berths N1 to N4, unnamed in OpenStreetMap; the name is from those berths.
+    OpenStreetMap gives no category.
+- osm: way/1010784058
+  kind: anchorage
+  name: South Anchorage
+  note: >-
+    Seamark area with anchor berths S1 to S16, unnamed in OpenStreetMap; the name is from those berths.
+    OpenStreetMap gives no category.
+- osm: node/9325475646
+  kind: pilot_boarding
+  name: Valencia pilot boarding place
+  note: Seamark pilot boarding point off the harbour entrance, unnamed in OpenStreetMap.
+- osm: relation/15864349
+  kind: terminal
+  name: CSP Iberian Valencia Terminal
+  operator: COSCO Shipping Ports
+  cargo:
+  - container
+  note: Tagged cargo=container. The operator is from the name, so check it.
+- osm: relation/21216348
+  kind: terminal
+  name: MSC Terminal Valencia
+  operator: MSC
+  cargo:
+  - container
+  note: OpenStreetMap names it "MSC Terminal" and tags it cargo=container.
+- osm: relation/21216340
+  kind: terminal
+  name: APM Terminals Valencia
+  operator: APM Terminals
+  cargo:
+  - container
+  note: OpenStreetMap names it "APM Terminals" and tags it cargo=container.
+- osm: relation/16611362
+  kind: terminal
+  name: Ro-ro terminal
+  cargo:
+  - ro_ro
+  note: >-
+    Tagged industrial=port and port=roro, with no name or operator in OpenStreetMap. Name the operator
+    once someone checks which it is.
+- osm: way/150545987
+  kind: terminal
+  name: Trasmed Valencia Terminal
+  operator: Trasmed
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The ferry terminal building, tagged amenity=ferry_terminal. OpenStreetMap still names it Terminal
+    Acciona-Trasmediterránea; the line now sails as Trasmed. Ro-ro is from its ferries, so check it.

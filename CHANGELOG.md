@@ -3,6 +3,24 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## 1.7.2 — 2026-11-23
+
+Port outlines for 8 more ports, so 11 in all: Hamburg (`DEHAM`), Felixstowe (`GBFXT`), London Gateway (`GBLGP`), Southampton (`GBSOU`), Portsmouth (`GBPME`), Algeciras (`ESALG`), Valencia (`ESVLC`) and Vigo (`ESVGO`). Each comes from a reviewed selection of OpenStreetMap features, built and checked the same way as the first three.
+
+What OpenStreetMap has for them:
+
+- OpenStreetMap maps no port limits for any of them, so every port's limits are the hull of its terminals.
+- Felixstowe is one area, not its Trinity, Landguard and Berth 8-9 terminals.
+- The anchorages of Hamburg (on the Elbe), Felixstowe (Harwich Haven) and Valencia carry no category. Hamburg's and Felixstowe's also serve their neighbours: Brunsbüttel, Cuxhaven and Stade on the Elbe, Harwich and Ipswich in the haven.
+- London Gateway, Southampton, Portsmouth, Algeciras and Vigo have no anchorage mapped.
+- Some terminals are mapped as a building or a pier rather than the quay, so a ship moored alongside can fall outside the terminal and only inside the port limits: Southampton's fruit terminal and the Fawley jetty, Portsmouth's Wightlink berth, Valencia's Trasmed terminal and the Algeciras refinery jetty.
+- Several of Hamburg's terminals have no cargo type, and Algeciras's ferry and ro-ro terminal is not mapped as a terminal.
+- Valencia leaves out Sagunto, which is its own locode (`ESSAG`) with no terminal mapped.
+
+Each outline now carries `selection_digest`, a fingerprint of the selection it was built from, and `rake seaports:check_geometry` fails an outline whose selection changed without a rebuild. On a pull request, `.github/workflows/geometry.yml` fetches from OpenStreetMap only the ports whose outline does not match its selection, with two tries of ten minutes each, and one port that fails no longer stops the rest. A batch of ports built locally then checks in seconds rather than spending most of an hour on Overpass. The weekly rebuild still fetches every port.
+
+Same ports, names and positions as 1.7.1.
+
 ## 1.7.1 — 2026-11-23
 
 Antwerp's outline no longer includes "Containerkade" (Katoen Natie, OpenStreetMap way 376648236), a quay in the Western Scheldt near Vlissingen, 32 km from Antwerp's nearest terminal. It came from the search around Vlissingen used for the anchorages. Because the port limits are derived from the terminals, they had stretched down the river to take it in, so `Seaports.within?("BEANR", …)` answered true for ships off Terneuzen. Antwerp now has 7 terminals and its limits end at Doel and Zandvliet.

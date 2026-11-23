@@ -1,0 +1,43 @@
+---
+locode: ESALG
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[ESALG,10,36.12,-5.40] and a search of named features
+  around the bay. OpenStreetMap maps no anchorage in the Bay of Algeciras and no seamark of any kind there,
+  so none is listed. Gibraltar shares the bay: these limits stop west of its harbour. The port authority's
+  Campamento quays (way/702562146, tagged industrial=port, no cargo type) are left out because their hull
+  reached into Gibraltar's limits. The Pantalán Evos tanker jetties and the bus stations tagged as depots
+  are left out too.
+port_limits:
+  derive: hull
+  osm: way/215864005
+  buffer_m: 400
+  note: >-
+    OpenStreetMap maps no port limits for Algeciras; the port authority's waters cover the whole bay,
+    Gibraltar's included. These are the hull of the Puerto de Algeciras area and the terminals below,
+    from Isla Verde to the San Roque refinery, grown by 400 m. They take in the bay water between, where
+    ships wait, but not Gibraltar.
+features:
+- osm: way/274800035
+  kind: terminal
+  name: APM Terminal Algeciras
+  operator: APM Terminals
+  cargo:
+  - container
+  note: >-
+    Tagged landuse=industrial and industrial=port only. The operator is from the name; container is from
+    the operator, so check it.
+- osm: way/274800036
+  kind: terminal
+  name: Total Terminal International Algeciras
+  note: >-
+    TTI Algeciras on Isla Verde Exterior. Tagged landuse=industrial only: OpenStreetMap gives no cargo
+    type or operator.
+- osm: way/661007793
+  kind: terminal
+  name: Puerto de Refinería
+  cargo:
+  - tanker
+  note: >-
+    The San Roque refinery's port. Tagged industrial=refinery; tanker is from that and its name, so check
+    it.
