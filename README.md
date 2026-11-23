@@ -318,6 +318,57 @@ selection names) grown by a stated distance, with `source` saying so. That is
 rougher than the legal limits and takes in land between the quays, which is
 what a "is this ship in the port?" question needs and no more.
 
+A hull cannot follow a concave harbour, though: it takes in the town on the
+hill behind Lyttelton, Mount Maunganui between Tauranga's two wharves, and
+Petit-Couronne between Rouen's quays. No ship is ever there, and the drawing
+and the notes say a town is "in the port". With `clip: water`, the hull is
+cut down to the water OpenStreetMap maps inside it, and the terminals are
+kept whole:
+
+```yaml
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  # disjoint: why the limits are in parts, when the water does not join them
+  note: ...
+```
+
+The limits become the hull ∩ (sea ∪ mapped water ∪ the terminals, and any
+areas the selection lists under `osm:`, each grown by 30 m). The sea is the
+side of OpenStreetMap's coastline (`natural=coastline`, drawn with the land on
+its left) that the coastline says it is; the mapped water is
+`natural=water` (rivers, docks, basins, lakes), `waterway=riverbank` and
+`waterway=dock`, and canals drawn as areas. `landuse=harbour` is left out,
+since it often maps the whole port, quays and sheds included. Water that
+touches no terminal (a pond in a park) is dropped, holes under a hectare are
+filled, and the outline is simplified to within 8 m. The result can be a
+MultiPolygon; `Area#contains?` and `Seaports.within?` answer for any part. It
+is fetched from the same place as the shapes (Overpass, or the Geofabrik
+extract with `OSM_SOURCE=extract`), so no coordinate is typed here either.
+
+Two more checks apply to clipped limits. The build refuses a terminal with no
+water within 30 m of it inside the hull, since a ship alongside it would fall
+outside the limits; that is usually a river or a dock OpenStreetMap maps only
+as a line. And the limits must be one body of water unless the selection says
+why not with `disjoint`: a part on its own is usually a terminal whose water
+is not mapped as an area, or one that is not on the water at all.
+
+Clipping is build-time work for [GEOS](https://libgeos.org), through the
+[ffi-geos](https://github.com/dark-panda/ffi-geos) gem in the Gemfile, not
+the gemspec: `brew install geos` or `apt-get install libgeos-dev` before
+building a port that uses it. Robust overlay of concave polygons with holes is
+GEOS's work and not something to hand-roll. The outlines it builds are shipped
+as plain GeoJSON, so the gem itself still depends on nothing but `csv`, and a
+port without `clip: water` never loads it. GEOS releases can simplify the same
+shape a vertex differently, so the build log names the GEOS version, and a
+clipped port rebuilt on a laptop and then by the weekly run may move by a
+vertex with no change in OpenStreetMap.
+
+A port that adopts `clip: water` will often find UN/LOCODE's position, the
+city centre, outside its limits once the land is gone: give the reason in
+`position_outside`, as for Rotterdam.
+
 How a port is drafted:
 
 1. `rake "seaports:geometry_candidates[NLRTM]"` lists the OpenStreetMap
@@ -336,7 +387,8 @@ How a port is drafted:
    source, licence and review date on every feature, quays that are real
    locodes, and no terminal inside another port's limits. Gaps are warnings:
    no anchorage mapped, a terminal with no cargo type, an anchorage with no
-   category.
+   category, and limits that overlap another port's (shape against shape, not
+   their bounding boxes).
    `rake seaports:geometry` asks the public Overpass API by default. With
    `OSM_SOURCE=extract` it reads OpenStreetMap from
    [Geofabrik's](https://download.geofabrik.de) daily extracts instead, on

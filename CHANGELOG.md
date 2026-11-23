@@ -3,6 +3,12 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## Unreleased
+
+Derived port limits can be cut to the water: `clip: water` under a selection's `port_limits` takes the hull of the terminals down to the sea within OpenStreetMap's coastline and the rivers, docks and basins it maps, keeping the terminals whole. Hulls that took in the towns between and behind the quays (Lyttelton, Tauranga's Mount Maunganui, Rouen's left bank) no longer do. The build refuses a terminal with no water beside it, and clipped limits in separate parts must say why (`disjoint`). Clipping uses GEOS at build time through the ffi-geos gem (`brew install geos`, `apt-get install libgeos-dev`); the gem itself still needs neither. Outlines without `clip` are built byte for byte as before.
+
+The check that two ports' limits overlap now compares their shapes rather than their bounding boxes, so two ports along one lagoon no longer warn.
+
 ## 1.7.4 — 2026-11-23
 
 Port outlines for 16 more ports, so 41 in all:
