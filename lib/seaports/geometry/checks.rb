@@ -161,6 +161,7 @@ module Seaports
           @warnings << "#{kind} #{feature['properties']['name']}: outside the port limits" unless Planar.contains?(outline, lng, lat)
         end
         check_isolated_terminals(features)
+        check_clipped(limits.first, features) if limits.first["properties"]["clip"] == "water"
         @warnings << "no anchorage mapped" if features.none? { |f| f["properties"]["kind"] == "anchorage" }
         @warnings << "no terminal mapped" if features.none? { |f| f["properties"]["kind"] == "terminal" }
         check_overlaps(locode, features)
@@ -186,6 +187,31 @@ module Seaports
         end
       end
 
+      # Limits cut to the water (clip: water) must keep every terminal whole,
+      # and be one body of water unless the selection says why not
+      # (disjoint): a part on its own is usually a terminal whose water
+      # OpenStreetMap does not map as an area, not a second port. That every
+      # terminal has water beside it is checked by the build, which has the
+      # water (Clip#dry_terminals); the shipped file does not.
+      def check_clipped(limits, features)
+        outline = limits["geometry"]
+        features.each do |feature|
+          next unless feature["properties"]["kind"] == "terminal"
+
+          positions = Planar.polygons(feature["geometry"]).flat_map(&:first)
+          next if positions.all? { |lng, lat| Planar.contains?(outline, lng, lat) }
+
+          name = feature["properties"]["name"] || feature["properties"]["osm"]&.join(", ")
+          @errors << "terminal #{name}: cut by the port limits, which must keep it whole"
+        end
+        parts = Planar.polygons(outline).size
+        reason = !blank?(limits["properties"]["disjoint"])
+        @warnings << "the port limits are one part, so disjoint no longer applies" if parts == 1 && reason
+        return if parts == 1 || reason
+
+        @errors << "the port limits are #{parts} separate parts: say why with disjoint, or map the water that joins them"
+      end
+
       # A terminal of this port inside another port's limits is a terminal
       # that will be filed under the wrong port, which is the bug outlines
       # exist to fix. Overlapping limits alone are only worth a look:
@@ -198,8 +224,9 @@ module Seaports
 
           theirs = Array(collection["features"]).find { |f| f.dig("properties", "kind") == "port_limits" }
           next unless theirs && Planar.bboxes_overlap?(box, Planar.bbox(theirs["geometry"]))
-
-          @warnings << "the port limits overlap #{other}'s"
+          # The shapes, not their boxes: Lagos's two ports have overlapping
+          # boxes along the lagoon and limits that never meet.
+          @warnings << "the port limits overlap #{other}'s" if Planar.intersects?(mine, theirs["geometry"])
           features.each do |feature|
             next unless feature["properties"]["kind"] == "terminal"
 
@@ -211,30 +238,24 @@ module Seaports
         end
       end
 
-      # Every pair of non-adjacent edges. Quadratic, and fine: the biggest
-      # ring here has a few hundred positions.
+      # Every pair of non-adjacent edges whose spans of longitude overlap,
+      # found by sweeping the edges in order of their west end: a clipped
+      # coastline can run to thousands of positions, where every pair would
+      # be millions.
       def self_intersecting?(ring)
         edges = ring.each_cons(2).to_a
         last = edges.size - 1
-        edges.each_with_index.any? do |a, i|
-          ((i + 2)..last).any? do |j|
-            next false if i.zero? && j == last
+        order = edges.each_index.sort_by { |i| edges[i].map(&:first).min }
+        order.each_with_index.any? do |i, position|
+          east = edges[i].map(&:first).max
+          order[(position + 1)..].any? do |j|
+            break false if edges[j].map(&:first).min > east
+            next false if (i - j).abs < 2 || [i, j].minmax == [0, last]
 
-            segments_cross?(a, edges[j])
+            Planar.segments_cross?(edges[i], edges[j])
           end
         end
       end
-
-      def segments_cross?((p1, p2), (p3, p4))
-        d1 = direction(p3, p4, p1)
-        d2 = direction(p3, p4, p2)
-        d3 = direction(p1, p2, p3)
-        d4 = direction(p1, p2, p4)
-        ((d1.positive? && d2.negative?) || (d1.negative? && d2.positive?)) &&
-          ((d3.positive? && d4.negative?) || (d3.negative? && d4.positive?))
-      end
-
-      def direction(a, b, c) = ((c[0] - a[0]) * (b[1] - a[1])) - ((b[0] - a[0]) * (c[1] - a[1]))
 
       def date?(value)
         Date.iso8601(value.to_s)

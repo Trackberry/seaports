@@ -9,6 +9,7 @@ require_relative "../geometry"
 require_relative "osm"
 require_relative "planar"
 require_relative "selection"
+require_relative "water"
 
 module Seaports
   module Geometry
@@ -30,6 +31,8 @@ module Seaports
     #     derive: hull        # or osm: relation/123 alone, when OpenStreetMap maps them
     #     osm: [relation/18550095]  # with derive: also inside the hull (a basin)
     #     buffer_m: 1500
+    #     clip: water         # with derive: hull, cut the land away (see Clip)
+    #     disjoint: why the clipped limits are in parts, when they are
     #     note: ...
     #   features:
     #     - osm: way/597875321  # or a list, for a terminal mapped in parts
@@ -82,11 +85,19 @@ module Seaports
         false
       end
 
-      # +shapes+ answers Osm.shapes's question; a test passes a lambda.
-      def initialize(selection, shapes: Osm.method(:shapes))
+      # +shapes+ answers Osm.shapes's question and +water+ Water.overpass's,
+      # which is asked only for limits with clip: water; a test passes
+      # lambdas.
+      def initialize(selection, shapes: Osm.method(:shapes), water: Water.method(:overpass))
         @selection = selection
         @shapes = shapes
+        @water = water
+        @notices = []
       end
+
+      # What a build had to say that is not an error: the water relations
+      # it skipped. The rake task prints them.
+      attr_reader :notices
 
       def locode = @selection.fetch("locode")
 
@@ -145,6 +156,7 @@ module Seaports
         raise Invalid, "#{locode} port_limits: unknown keys #{unknown.join(', ')}" unless unknown.empty?
 
         check_buffer!(limits["buffer_m"], "#{locode} port_limits")
+        check_clip!(limits)
 
         @selection.fetch("features").each_with_index do |entry, index|
           where = "#{locode} feature #{index + 1} (#{entry['name'] || entry['osm']})"
@@ -164,6 +176,17 @@ module Seaports
 
           check_buffer!(entry["buffer_m"], where)
         end
+      end
+
+      def check_clip!(limits)
+        where = "#{locode} port_limits"
+        if limits.key?("clip")
+          raise Invalid, "#{where}: clip #{limits['clip'].inspect} is not water" unless limits["clip"] == "water"
+          raise Invalid, "#{where}: clip: water cuts derived limits, so it needs derive: hull" unless limits["derive"] == "hull"
+        end
+        return unless limits.key?("disjoint")
+        raise Invalid, "#{where}: disjoint says why clipped limits are in parts, so it needs clip: water" unless limits["clip"]
+        raise Invalid, "#{where}: disjoint is a reason, in words" unless limits["disjoint"].is_a?(String) && !blank?(limits["disjoint"])
       end
 
       def check_buffer!(value, where)
@@ -228,7 +251,41 @@ module Seaports
         geometry = { "type" => "Polygon", "coordinates" => [Planar.convex_hull(Planar.spread(points, metres))] }
         basins = extra.empty? ? "" : " and #{extra.map { |ref| ref.sub("/", " ") }.join(", ")}"
         source = "Derived: the convex hull of this port's terminals#{basins} from OpenStreetMap, grown by #{metres.round} m"
+        if limits["clip"] == "water"
+          geometry = clipped(geometry, inputs, extra.map { |ref| fetched.fetch(ref) })
+          kept = extra.empty? ? "the terminals" : "the terminals and those areas"
+          source += ", then cut to the water OpenStreetMap maps inside it (the sea within its coastline, rivers, docks " \
+                    "and basins), with #{kept} kept whole"
+        end
         properties(limits.merge("kind" => "port_limits"), (inputs.flat_map { |f| f["properties"]["osm"] } + extra).uniq, geometry, source:)
+      end
+
+      # The hull cut to the water, refused when a terminal has no water
+      # beside it inside the hull: its ships alongside would be outside.
+      def clipped(hull, terminals, basins)
+        require_relative "clip"
+        @notices << "#{locode}: clipping with GEOS #{Clip.geos_version}"
+        water = @water.call(Clip.fetch_bbox(hull))
+        skipped = Array(water["skipped"])
+        skipped.each { |line| @notices << "#{locode}: water skipped, #{line}" }
+        named = terminals.to_h { |f| [[f["properties"]["name"], "(#{f['properties']['osm'].join(', ')})"].compact.join(" "), f["geometry"]] }
+        clip = Clip.new(hull:, terminals: named, basins:, water:)
+        dry = clip.dry_terminals
+        unless dry.empty?
+          # A skipped water relation is the likeliest reason, so say so here:
+          # the notices are not printed for a build that fails.
+          why = skipped.empty? ? "" : " (water skipped: #{skipped.join('; ')})"
+          raise Invalid, "#{locode}: clip: water leaves no water within #{Clip::TOUCH_M} m of #{dry.join(', ')}: map the water " \
+                         "beside it as an area in OpenStreetMap, or leave it out of the selection#{why}"
+        end
+
+        clip.geometry
+      # Geos is named only once ffi-geos has loaded, which Clip::Unavailable
+      # says it did not.
+      rescue StandardError => e
+        raise unless e.is_a?(Clip::Failed) || e.is_a?(Clip::Unavailable) || (defined?(Geos::Error) && e.is_a?(Geos::Error))
+
+        raise Invalid, "#{locode}: clip: water failed: #{e.message}"
       end
 
       def properties(entry, refs, geometry, source:)
@@ -236,7 +293,7 @@ module Seaports
           "kind" => entry["kind"], "name" => entry["name"], "operator" => entry["operator"],
           "cargo" => Array(entry["cargo"]), "category" => entry["category"], "osm" => refs, "source" => source,
           "licence" => LICENCE, "reviewed_at" => (entry["reviewed_at"] || @selection["reviewed_at"]).to_s,
-          "note" => entry["note"]&.strip
+          "clip" => entry["clip"], "disjoint" => entry["disjoint"]&.strip, "note" => entry["note"]&.strip
         }
         { "type" => "Feature", "properties" => properties.compact, "geometry" => geometry }
       end

@@ -275,8 +275,10 @@ namespace :seaports do
     extract = osm_extract
     failed = []
     locodes.each do |locode|
-      shapes = extract ? { shapes: extract.shapes_for(locode) } : {}
-      collection = builder_class.new(builder_class.read_selection(builder_class.selection_path(locode)), **shapes).build
+      sources = extract ? { shapes: extract.shapes_for(locode), water: extract.water_for(locode) } : {}
+      builder = builder_class.new(builder_class.read_selection(builder_class.selection_path(locode)), **sources)
+      collection = builder.build
+      builder.notices.each { |line| puts "  notice: #{line}" }
       others = geometry_collections.except(locode)
       result = checks.run(collection, others:, file_locode: locode)
       report_geometry(result)
