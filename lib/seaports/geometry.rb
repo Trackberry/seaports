@@ -75,16 +75,18 @@ module Seaports
       NO_AREAS = [].freeze
 
       # [collection, areas] for a locode, read once; nil for a port with no
-      # file. The miss is remembered too, so an unknown port costs a hash
-      # lookup after the first time rather than a stat.
+      # file. Only ports that have a file are cached, so a caller passing
+      # arbitrary codes (user input, a whole feed) cannot grow the cache.
+      # Everything happens under the lock, which costs nothing measurable and
+      # does not lean on CRuby's GVL to keep the hash consistent.
       def entry(locode)
         key = locode.to_s.strip.upcase
-        return nil unless key.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/)
+        return nil unless key.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/) && locodes.bsearch { |known| known >= key } == key
 
-        entries = @entries || LOCK.synchronize { @entries ||= {} }
-        return entries[key] if entries.key?(key)
-
-        LOCK.synchronize { entries.key?(key) ? entries[key] : (entries[key] = load(key)) }
+        LOCK.synchronize do
+          @entries ||= {}
+          @entries.fetch(key) { @entries[key] = load(key) }
+        end
       end
 
       def load(key)

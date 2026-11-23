@@ -17,7 +17,7 @@ module Seaports
     module Osm
       ENDPOINTS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"].freeze
       RETRY_PAUSES = [20, 60, nil].freeze
-      REF = %r{\A(node|way|relation)/(\d+)\z}
+      REF = %r{\A(node|way|relation)/([1-9]\d*)\z}
 
       class Error < StandardError; end
 
@@ -32,10 +32,21 @@ module Seaports
         RETRY_PAUSES.each do |seconds|
           ENDPOINTS.each do |endpoint|
             status, body, = http.call("#{endpoint}?data=#{URI.encode_www_form_component(text)}", {})
-            return JSON.parse(body) if status == 200 && body.to_s.lstrip.start_with?("{")
+            if status == 200 && body.to_s.lstrip.start_with?("{")
+              data = JSON.parse(body)
+              # Overpass answers a timeout or an exhausted memory quota with
+              # 200 and a "remark", over whatever it had found so far: a
+              # partial answer that must not pass for a whole one.
+              return data unless data["remark"].to_s.match?(/error|timed out|out of memory/i)
 
-            failures << "#{endpoint} answered HTTP #{status}"
-          rescue JSON::ParserError, SystemCallError, IOError, Timeout::Error, OpenSSL::SSL::SSLError => e
+              failures << "#{endpoint} stopped early: #{data['remark'].to_s.strip[0, 200]}"
+            else
+              failures << "#{endpoint} answered HTTP #{status}"
+            end
+          # Anything the network or a body can throw: DNS (SocketError), a
+          # malformed response, a body over Http's cap. Each is a reason to
+          # try the next instance, not to stop.
+          rescue StandardError => e
             failures << "#{endpoint}: #{e.class}: #{e.message}"
           end
           pause.call(seconds) if seconds
@@ -94,10 +105,19 @@ module Seaports
       # and each inner ring put inside the outer ring that holds it. A
       # relation with no outer rings (a route, a site) has no area and comes
       # back as a MultiPoint of its nodes for a caller to refuse or buffer.
+      #
+      # A relation whose rings do not all close, or with a hole outside every
+      # outer ring, raises: OpenStreetMap relations are sometimes broken
+      # mid-edit, and shipping the closed half of a terminal would look like a
+      # small move in a refresh rather than the breakage it is.
       def relation_shape(element)
+        ref = "relation/#{element['id']}"
         members = (element["members"] || []).select { |member| member["type"] == "way" }
-        outers = rings(members.select { |m| m["role"] != "inner" }.map { |m| line(m["geometry"]) })
-        inners = rings(members.select { |m| m["role"] == "inner" }.map { |m| line(m["geometry"]) })
+        outers, open_outers = rings(members.select { |m| m["role"] != "inner" }.map { |m| line(m["geometry"]) })
+        inners, open_inners = rings(members.select { |m| m["role"] == "inner" }.map { |m| line(m["geometry"]) })
+        broken = open_outers + open_inners
+        raise Error, "#{ref} has #{broken} ring part(s) that do not close: fix it in OpenStreetMap or wait for the edit to finish" if broken.positive?
+
         if outers.empty?
           points = (element["members"] || []).flat_map { |m| m["geometry"] ? line(m["geometry"]) : [] }
           points << position(element["center"]) if points.empty? && element["center"]
@@ -106,18 +126,22 @@ module Seaports
 
         polygons = outers.map { |ring| [orient(ring, outer: true)] }
         inners.each do |hole|
-          home = polygons.find { |rings| Planar.ring_contains?(rings.first, *hole.first) } || next
+          # Any vertex strictly inside will do: OpenStreetMap lets a hole touch
+          # its outer ring, so the first vertex may sit on the boundary.
+          home = polygons.find { |rings| hole.any? { |vertex| Planar.ring_contains?(rings.first, *vertex) } }
+          raise Error, "#{ref} has a hole outside every outer ring" unless home
+
           home << orient(hole, outer: false)
         end
         polygons.size == 1 ? { "type" => "Polygon", "coordinates" => polygons.first } : { "type" => "MultiPolygon", "coordinates" => polygons }
       end
 
-      # Joins lines that share end points into closed rings. A line that
-      # cannot be closed is dropped: OpenStreetMap relations are sometimes
-      # broken mid-edit, and an open ring is no area at all.
+      # Joins lines that share end points into closed rings. Answers the
+      # closed rings and how many chains could not be closed.
       def rings(lines)
         pool = lines.reject(&:empty?).map(&:dup)
         closed = []
+        open = 0
         until pool.empty?
           ring = pool.shift
           while ring.first != ring.last
@@ -127,9 +151,13 @@ module Seaports
             other = pool.delete_at(index)
             ring.concat((other.first == ring.last ? other : other.reverse).drop(1))
           end
-          closed << ring if ring.size >= 4 && ring.first == ring.last
+          if ring.size >= 4 && ring.first == ring.last
+            closed << ring
+          else
+            open += 1
+          end
         end
-        closed
+        [closed, open]
       end
 
       # GeoJSON's right-hand rule: outer rings counter-clockwise, holes

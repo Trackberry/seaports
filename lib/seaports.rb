@@ -168,6 +168,10 @@ module Seaports
     # terminal, then an anchorage, then the port limits.
     def areas_at(locode, lat, lng, kind: nil)
       wanted = kind&.to_s
+      # A misspelt kind (:terminals) would otherwise answer "not inside" for
+      # every position, which reads exactly like a correct answer.
+      raise ArgumentError, "kind must be one of #{Geometry::KINDS.join(', ')}, not #{kind.inspect}" if wanted && !Geometry::KINDS.include?(wanted)
+
       areas(locode).select { |area| (wanted.nil? || area.kind == wanted) && !area.point? && area.contains?(lat, lng) }
         .sort_by { |area| Geometry::KINDS.reverse.index(area.kind) }
     end

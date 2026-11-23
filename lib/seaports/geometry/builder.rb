@@ -7,6 +7,7 @@ require "yaml"
 require_relative "../geometry"
 require_relative "osm"
 require_relative "planar"
+require_relative "selection"
 
 module Seaports
   module Geometry
@@ -43,7 +44,7 @@ module Seaports
       SOURCES_DIR = File.join(DIR, "sources")
       LICENCE = "ODbL-1.0"
       ATTRIBUTION = "© OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright"
-      FEATURE_KEYS = %w[osm kind name operator cargo category note reviewed_at buffer_m].freeze
+      FEATURE_KEYS = Selection::FEATURE_KEYS
 
       class Invalid < StandardError; end
 
@@ -98,6 +99,18 @@ module Seaports
         raise Invalid, "locode #{locode.inspect} is not a locode" unless locode.to_s.match?(/\A[A-Z]{2}[A-Z0-9]{3}\z/)
         raise Invalid, "#{locode}: reviewed_at is missing" if blank?(@selection["reviewed_at"])
 
+        # A typo must not pass silently: "bufer_m: 5" would otherwise become
+        # the default distance with nobody told.
+        unknown = @selection.keys - Selection::TOP_KEYS
+        raise Invalid, "#{locode}: unknown keys #{unknown.join(', ')}" unless unknown.empty?
+        raise Invalid, "#{locode}: features must be a list" unless @selection["features"].is_a?(Array)
+
+        limits = @selection["port_limits"] || {}
+        unknown = limits.keys - Selection::LIMIT_KEYS
+        raise Invalid, "#{locode} port_limits: unknown keys #{unknown.join(', ')}" unless unknown.empty?
+
+        check_buffer!(limits["buffer_m"], "#{locode} port_limits")
+
         @selection.fetch("features").each_with_index do |entry, index|
           where = "#{locode} feature #{index + 1} (#{entry['name'] || entry['osm']})"
           unknown = entry.keys - FEATURE_KEYS
@@ -110,7 +123,18 @@ module Seaports
           if entry["category"] && !ANCHORAGE_CATEGORIES.include?(entry["category"])
             raise Invalid, "#{where}: category #{entry['category']} is not one of #{ANCHORAGE_CATEGORIES.join(', ')}"
           end
+          if entry["kind"] == "pilot_boarding" && Array(entry["osm"]).size != 1
+            raise Invalid, "#{where}: a pilot boarding place is one OpenStreetMap node"
+          end
+
+          check_buffer!(entry["buffer_m"], where)
         end
+      end
+
+      def check_buffer!(value, where)
+        return if value.nil? || (value.is_a?(Numeric) && value.positive? && value <= 20_000)
+
+        raise Invalid, "#{where}: buffer_m #{value.inspect} must be a number of metres, up to 20000"
       end
 
       def feature(entry, fetched)
@@ -158,7 +182,9 @@ module Seaports
         raise Invalid, "#{locode}: port_limits needs osm: or derive: hull" unless limits["derive"] == "hull"
 
         metres = limits.fetch("buffer_m", 1000).to_f
-        inputs = features.reject { |f| f["properties"]["kind"] == "anchorage" }
+        # Terminals only: an anchorage or a pilot boarding place can lie 50 km
+        # out, and the limits would swallow the sea between.
+        inputs = features.select { |f| f["properties"]["kind"] == "terminal" }
         extra = Array(limits["osm"])
         points = inputs.flat_map { |f| Planar.positions(f["geometry"]) } +
           extra.flat_map { |ref| Planar.positions(fetched.fetch(ref)) }

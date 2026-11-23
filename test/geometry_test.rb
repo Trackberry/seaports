@@ -65,14 +65,69 @@ class GeometryOsmTest < Minitest::Test
     a = [[0, 0], [1, 0], [1, 1]]
     b = [[0, 1], [1, 1]]
     c = [[0, 1], [0, 0]]
-    ring = Osm.rings([a, b, c]).first
+    closed, open = Osm.rings([a, b, c])
+    ring = closed.first
 
     assert_equal ring.first, ring.last
     assert_equal 5, ring.size
+    assert_equal 0, open
   end
 
-  def test_drops_a_ring_that_never_closes
-    assert_empty Osm.rings([[[0, 0], [1, 0], [1, 1]]])
+  def test_counts_a_ring_that_never_closes
+    assert_equal [[], 1], Osm.rings([[[0, 0], [1, 0], [1, 1]]])
+  end
+
+  # Mid-edit breakage: half a terminal must not ship as a small move.
+  def test_a_relation_with_an_open_outer_raises
+    closed = [node(0, 0), node(0, 1), node(1, 1), node(0, 0)]
+    open = [node(5, 5), node(5, 6), node(6, 6)]
+    relation = { "type" => "relation", "id" => 7, "members" => [
+      { "type" => "way", "role" => "outer", "geometry" => closed },
+      { "type" => "way", "role" => "outer", "geometry" => open }
+    ] }
+
+    error = assert_raises(Osm::Error) { Osm.shape(relation) }
+    assert_match "relation/7", error.message
+  end
+
+  # OpenStreetMap lets a hole touch its outer ring, so its first vertex may
+  # sit on the boundary.
+  def test_a_hole_touching_its_outer_ring_is_kept
+    outer = [node(0, 0), node(0, 4), node(4, 4), node(4, 0), node(0, 0)]
+    inner = [node(0, 2), node(1, 3), node(2, 2), node(0, 2)]
+    shape = Osm.shape({ "type" => "relation", "id" => 8, "members" => [
+      { "type" => "way", "role" => "outer", "geometry" => outer },
+      { "type" => "way", "role" => "inner", "geometry" => inner }
+    ] })
+
+    assert_equal 2, shape["coordinates"].size
+  end
+
+  def test_a_reference_with_a_leading_zero_is_refused
+    assert_raises(Osm::Error) { Osm.parse_ref("way/0123") }
+  end
+
+  # A DNS failure is not a SystemCallError, and must still fail over.
+  def test_query_fails_over_after_a_socket_error
+    calls = 0
+    http = lambda do |url, _headers|
+      calls += 1
+      raise SocketError, "getaddrinfo" if url.include?("overpass-api.de")
+
+      [200, '{"elements":[]}']
+    end
+
+    assert_equal({ "elements" => [] }, Osm.query("[out:json];", http:, pause: ->(_) { }))
+    assert_equal 2, calls
+  end
+
+  # Overpass answers a timeout with 200 and a remark over partial results.
+  def test_query_refuses_a_partial_answer
+    partial = JSON.generate({ "elements" => [{ "type" => "node", "id" => 1 }], "remark" => "runtime error: Query timed out in \"query\" at line 1 after 181 seconds." })
+    http = ->(_url, _headers) { [200, partial] }
+
+    error = assert_raises(Osm::Error) { Osm.query("[out:json];", http:, pause: ->(_) { }) }
+    assert_match "stopped early", error.message
   end
 
   def test_a_relation_puts_its_inner_ring_inside_the_outer
@@ -159,14 +214,39 @@ class GeometryBuilderTest < Minitest::Test
     assert_equal "OpenStreetMap way 1", collection["features"][2]["properties"]["source"]
   end
 
-  # The limits are derived from the terminals, never from the anchorage
-  # 40 km out at sea, or the port would cover half the North Sea.
-  def test_derived_limits_hold_the_terminals_but_not_the_anchorages
+  # The limits are derived from the terminals, never from the anchorage or
+  # the pilot station out at sea, or the port would cover half the North Sea.
+  def test_derived_limits_hold_the_terminals_but_not_what_lies_offshore
     limits = Builder.new(selection, shapes:).build["features"].first
+    box = Seaports::Geometry::Planar.bbox(limits["geometry"])
 
     assert_match "Derived", limits["properties"]["source"]
     assert Seaports::Geometry::Planar.contains?(limits["geometry"], 4.5, 51.915)
-    refute Seaports::Geometry::Planar.contains?(limits["geometry"], 3.85, 52.02)
+    assert_operator box[0], :>, 4.4, "the limits reach west to #{box[0]}, towards the anchorage or the pilot"
+  end
+
+  def test_refuses_a_misspelt_key_rather_than_ignoring_it
+    typo = selection.merge("port_limits" => { "derive" => "hull", "bufer_m" => 5 })
+
+    error = assert_raises(Builder::Invalid) { Builder.new(typo, shapes:).build }
+    assert_match "bufer_m", error.message
+  end
+
+  def test_refuses_a_buffer_that_is_not_a_number
+    bad = selection.merge("port_limits" => { "derive" => "hull", "buffer_m" => "1.5km" })
+
+    assert_raises(Builder::Invalid) { Builder.new(bad, shapes:).build }
+  end
+
+  def test_the_outline_drifts_from_a_selection_it_was_not_built_from
+    collection = Builder.new(selection, shapes:).build
+    checks = Seaports::Geometry::Checks
+
+    assert_empty checks.drift(collection, selection)
+
+    renamed = Marshal.load(Marshal.dump(collection))
+    renamed["features"][2]["properties"]["name"] = "Something else"
+    refute_empty checks.drift(renamed, selection)
   end
 
   def test_a_line_becomes_an_area_only_when_given_a_buffer
@@ -302,6 +382,20 @@ class GeometryApiTest < Minitest::Test
     assert_empty Seaports.quays("AUBNE")
     refute Seaports.within?("AUBNE", -27.4, 153.1)
     assert_nil Seaports.geometry("not a locode")
+  end
+
+  # A misspelt kind would otherwise read exactly like "not inside".
+  def test_an_unknown_kind_raises
+    assert_raises(ArgumentError) { Seaports.within?("NLRTM", 51.955, 4.03, kind: :terminals) }
+  end
+
+  # Callers pass arbitrary codes; only ports with an outline are cached.
+  def test_unknown_locodes_do_not_grow_the_cache
+    Seaports::Geometry.reset!
+    %w[ZZAAA ZZAAB ZZAAC].each { |code| Seaports.areas(code) }
+    Seaports.areas("GBDVR")
+
+    assert_equal ["GBDVR"], Seaports::Geometry.instance_variable_get(:@entries).keys
   end
 
   def test_a_ship_in_dover_harbour_is_within_the_port_and_one_mid_channel_is_not

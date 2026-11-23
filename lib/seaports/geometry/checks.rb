@@ -36,6 +36,30 @@ module Seaports
         new(collection, others:, file_locode:).run
       end
 
+      # Where a shipped outline and the selection it should have been built
+      # from disagree, as lines for a person: a feature missing from either
+      # side or carrying other references, names or cargo, or other quays.
+      # Offline, so CI can run it; it cannot see a hand-moved coordinate,
+      # which geometry.yml catches by rebuilding the outline from
+      # OpenStreetMap.
+      def self.drift(collection, selection)
+        shipped = Array(collection["features"]).reject { |f| f.dig("properties", "kind") == "port_limits" }.map do |feature|
+          props = feature["properties"]
+          signature(props["kind"], props["osm"], props["name"], props["operator"], props["cargo"], props["category"])
+        end
+        selected = Array(selection["features"]).map do |entry|
+          signature(entry["kind"], entry["osm"], entry["name"], entry["operator"], entry["cargo"], entry["category"])
+        end
+        lines = (selected - shipped).map { |sig| "the selection has #{sig.first} #{sig[1].join(', ')} (#{sig[2]}) and the outline does not match it" }
+        lines += (shipped - selected).map { |sig| "the outline has #{sig.first} #{sig[1].join(', ')} (#{sig[2]}), which the selection does not" }
+        lines << "the quays differ from the selection's" unless Array(collection["quays"]).sort == Array(selection["quays"]).sort
+        lines
+      end
+
+      def self.signature(kind, osm, name, operator, cargo, category)
+        [kind, Array(osm).map(&:to_s).sort, name, operator, Array(cargo).sort, category]
+      end
+
       def initialize(collection, others:, file_locode:)
         @collection = collection
         @others = others

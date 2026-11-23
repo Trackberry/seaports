@@ -296,7 +296,7 @@ Each area is a `Seaports::Geometry::Area` with `kind` (`port_limits`,
 `anchorage`, `terminal` or `pilot_boarding`), `name`, `operator`, `cargo` (from
 `container`, `reefer`, `ro_ro`, `bulk`, `tanker`, `general`, `passenger`),
 `category` for an anchorage, its GeoJSON `geometry`, a label point (`lat`,
-`lng`) that is always inside it, and where it came from: `osm` (the
+`lng`) inside it (a test holds every shipped area to that), and where it came from: `osm` (the
 OpenStreetMap ids), `source`, `licence`, `reviewed_at` and a `note`. `quays`
 are the other locodes that are really parts of the port (`NLBOT` Botlek for
 Rotterdam), so a feed that names one is talking about this port. A port with no

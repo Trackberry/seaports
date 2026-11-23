@@ -261,26 +261,34 @@ namespace :seaports do
 
   # Recurring: run it after editing a selection, and weekly from
   # .github/workflows/geometry.yml to pick up OpenStreetMap's edits. Builds
-  # one port, or every port with a selection, then runs the checks over
-  # everything shipped. A port that fails its checks keeps its old file.
+  # one port, or every port with a selection, and checks each against the
+  # others already shipped, both ways. A port that fails keeps its old file,
+  # and the task fails after trying the rest.
   desc "Build port outlines from data/geometry/sources and check them"
   task :geometry, [:locode] do |_task, args|
     require_relative "lib/seaports/geometry/builder"
     require_relative "lib/seaports/geometry/checks"
 
     builder_class = Seaports::Geometry::Builder
+    checks = Seaports::Geometry::Checks
     locodes = args[:locode] ? [args[:locode].upcase] : Dir[File.join(builder_class::SOURCES_DIR, "*.yml")].map { |p| File.basename(p, ".yml") }.sort
     failed = []
     locodes.each do |locode|
       collection = builder_class.new(builder_class.read_selection(builder_class.selection_path(locode))).build
       others = geometry_collections.except(locode)
-      result = Seaports::Geometry::Checks.run(collection, others:, file_locode: locode)
+      result = checks.run(collection, others:, file_locode: locode)
       report_geometry(result)
-      next failed << locode unless result.ok?
+      # Both ways: new limits that now swallow a neighbour's terminal are as
+      # wrong as a terminal inside a neighbour's limits.
+      swallowed = others.flat_map { |other, theirs| checks.run(theirs, others: { locode => collection }, file_locode: other).errors.grep(/inside #{locode}/) }
+      swallowed.each { |line| puts "  error: #{line}" }
+      next failed << locode unless result.ok? && swallowed.empty?
 
       File.write(builder_class.output_path(locode), "#{builder_class.dump(collection)}\n")
-    rescue Seaports::Geometry::Builder::Invalid, Seaports::Geometry::Osm::Error => e
-      warn "#{locode}: #{e.message}"
+    # Any failure is this port's alone: a YAML typo, a deleted feature or an
+    # Overpass outage must not cost the weekly run every port after it.
+    rescue StandardError => e
+      warn "#{locode}: #{e.class}: #{e.message}"
       failed << locode
     end
     abort "Not written: #{failed.join(', ')}" unless failed.empty?
@@ -298,7 +306,17 @@ namespace :seaports do
     results.each { |result| report_geometry(result) }
     orphans = collections.keys.reject { |locode| File.exist?(Seaports::Geometry::Builder.selection_path(locode)) }
     abort "No selection for #{orphans.join(', ')}" unless orphans.empty?
-    abort "Port outlines failed their checks" unless results.all?(&:ok?)
+
+    # An outline must say what its selection says. A hand-edited GeoJSON (a
+    # feature added, renamed or re-sourced without the selection) fails here;
+    # its shapes are rebuilt from OpenStreetMap by geometry.yml on any pull
+    # request that touches data/geometry.
+    drift = collections.flat_map do |locode, collection|
+      selection = Seaports::Geometry::Builder.read_selection(Seaports::Geometry::Builder.selection_path(locode))
+      Seaports::Geometry::Checks.drift(collection, selection).map { |line| "#{locode}: #{line}" }
+    end
+    drift.each { |line| puts "  error: #{line}" }
+    abort "Port outlines failed their checks" unless results.all?(&:ok?) && drift.empty?
   end
 
   def geometry_collections
