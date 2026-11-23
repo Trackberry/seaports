@@ -1,0 +1,60 @@
+---
+locode: USNYC
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from Geofabrik's New Jersey and New York extracts. This outline covers the terminals at Port
+  Newark and Port Elizabeth, which handle most of the port's containers. The limits are one convex shape,
+  so four terminals are left out to keep homes out: Port Liberty New York at Howland Hook (way/406658230),
+  which would bring in Elizabethport, and Port Liberty Bayonne (relation/14486566), Red Hook in Brooklyn
+  (way/987715271) and South Brooklyn Marine Terminal (way/988344861), which would bring in Bayonne and
+  Staten Island. OpenStreetMap maps no anchorage or pilot boarding place in the harbour.
+quays:
+- USEWR
+- USPNJ
+position_outside: >-
+  UN/LOCODE places New York at the Battery, the tip of Manhattan (40.7, -74.0), about 13 km east of Port
+  Newark across Upper New York Bay and Bayonne. No container terminal is there.
+port_limits:
+  derive: hull
+  osm: relation/14484596
+  buffer_m: 250
+  note: >-
+    OpenStreetMap maps no port limits for the Port of New York and New Jersey. These are the hull of the
+    terminals below and the Port Authority's Port Newark-Elizabeth Marine Terminal, grown by 250 m, over
+    the western side of Newark Bay and the Port Newark and Elizabeth channels. They also take in the IKEA
+    store by Port Elizabeth. A search of OpenStreetMap found no homes, residential land, schools, churches,
+    hospitals or named places inside them: Elizabethport, the Jersey Gardens mall and Bayonne are outside.
+features:
+- osm: relation/21240522
+  kind: terminal
+  name: Maher Terminals
+  operator: Maher Terminals
+  cargo:
+  - container
+  note: The port's largest container terminal, at Port Elizabeth. Tagged man_made=container_terminal.
+- osm: relation/21240521
+  kind: terminal
+  name: APM Terminals Elizabeth
+  operator: APM Terminals
+  cargo:
+  - container
+  note: >-
+    Container terminal at Port Elizabeth, south of Maher. OpenStreetMap names it APM Terminals and tags
+    it industrial=port.
+- osm: relation/21240523
+  kind: terminal
+  name: Port Newark Container Terminal
+  operator: Ports America
+  cargo:
+  - container
+  note: PNCT, on the Port Newark channel. Tagged man_made=container_terminal, operator Ports America.
+- osm: way/1319129979
+  kind: terminal
+  name: Red Hook Terminals Newark
+  operator: Red Hook Terminals
+  cargo:
+  - ro_ro
+  - general
+  note: >-
+    Red Hook's berths at Port Newark, for export vehicles, rolling cargo and container barges. OpenStreetMap
+    names it Red Hook Terminal.

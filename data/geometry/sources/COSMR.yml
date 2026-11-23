@@ -1,0 +1,30 @@
+---
+locode: COSMR
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Colombia extract around the bay of Santa Marta. OpenStreetMap maps
+  the public port as one area, and no anchorage or pilot boarding place. Ecopetrol's Pozos Colorados terminal,
+  9 km south, is left out: OpenStreetMap maps only its tank farm ashore.
+position_outside: >-
+  UN/LOCODE places Santa Marta at (11.24, -74.22), on the marina and the old town's waterfront about 1
+  km south of the port. Cargo ships berth at the port, not there.
+port_limits:
+  derive: hull
+  buffer_m: 150
+  note: >-
+    OpenStreetMap maps no port limits for Santa Marta. These are the port area grown by 150 m, over its
+    berths and the water alongside; the port backs onto the old town, so the margin is kept small.
+features:
+- osm: way/687259694
+  kind: terminal
+  name: Sociedad Portuaria de Santa Marta
+  operator: Sociedad Portuaria de Santa Marta
+  cargo:
+  - container
+  - reefer
+  - bulk
+  - general
+  note: >-
+    The public multipurpose port, tagged industrial=port. Its container terminal is run by Santa Marta
+    International Terminal Company (SMITCO), with SSA International, and has reefer plugs for the region's
+    banana and fruit exports.

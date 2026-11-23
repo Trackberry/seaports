@@ -1,0 +1,29 @@
+---
+locode: CLVAP
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Chile extract around the bay of Valparaíso. OpenStreetMap maps
+  the port as one area, Puerto de Valparaíso, which reaches into the old town's waterfront, and the Terminal
+  1 container yard inside it. It does not map Terminal 2, the Espigón, as a terminal of its own, so it
+  is not listed. The bay's anchor positions are mapped as points, not areas, so no anchorage is listed.
+position_outside: >-
+  UN/LOCODE places Valparaíso at (-33.0333, -71.6333), on the hillside of Playa Ancha about 500 m west
+  of Terminal 1. A ship there would be ashore.
+port_limits:
+  derive: hull
+  buffer_m: 100
+  note: >-
+    OpenStreetMap maps no port limits for Valparaíso. These are Terminal 1 grown by 100 m, over its berths
+    and the water alongside. The port sits against the old town, so the margin is kept small enough to
+    leave out Barrio Puerto and Plaza Sotomayor. The Espigón and the Barón pier stay outside.
+features:
+- osm: relation/14349711
+  kind: terminal
+  name: TPS Valparaíso
+  operator: Terminal Pacífico Sur
+  cargo:
+  - container
+  - reefer
+  note: >-
+    Terminal 1, at the breakwater, tagged man_made=container_terminal and unnamed in OpenStreetMap. Terminal
+    Pacífico Sur (TPS) has run it under concession since 2000; it handles about 85% of the port's cargo.

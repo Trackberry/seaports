@@ -1,0 +1,60 @@
+---
+locode: USOAK
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Northern California extract around the Oakland Outer and Middle
+  Harbors. OpenStreetMap maps the port's berths under the names they had in the 2000s (Hanjin, APL, Ben
+  E. Nutter, Transbay); each is matched here to the terminal the Port of Oakland lists on those berths
+  today. The vacant Outer Harbor Terminal (berths 22 to 24) and Howard Terminal (berths 67 and 68) are
+  left out. OpenStreetMap maps no anchorage in San Francisco Bay that serves Oakland, and no pilot boarding
+  place.
+port_limits:
+  derive: hull
+  buffer_m: 250
+  note: >-
+    OpenStreetMap maps no port limits for Oakland. These are the hull of the terminals below, from the
+    Outer Harbor to the Middle Harbor, grown by 250 m. They take in the rail yards and logistics centre
+    between the terminals and the Middle Harbor basin. A search of OpenStreetMap found no homes, residential
+    land, schools, churches, hospitals or named places inside them: South Prescott Park and the houses
+    of West Oakland are just outside.
+features:
+- osm: way/27234604
+  kind: terminal
+  name: Everport Oakland
+  operator: Everport Terminal Services
+  cargo:
+  - container
+  note: Berths 35 to 38 on the Outer Harbor. OpenStreetMap names it Port Of Oakland Ben E. Nutter Terminal.
+- osm:
+  - way/27234629
+  - way/27234638
+  - way/27234676
+  kind: terminal
+  name: TraPac Oakland
+  operator: TraPac
+  cargo:
+  - container
+  note: >-
+    Berths 25 to 33 on the Outer Harbor, mapped as three areas that OpenStreetMap names Berths 32-34,
+    Trapac Terminal and Transbay Container Terminal, merged here.
+- osm:
+  - way/27234584
+  - way/27234567
+  kind: terminal
+  name: Oakland International Container Terminal
+  operator: SSA Terminals
+  cargo:
+  - container
+  note: >-
+    OICT, berths 55 to 60 on the Middle Harbor, the port's largest terminal. Mapped as two areas that
+    OpenStreetMap names Hanjin Terminal and Stevedoring Services Of America Terminal, merged here.
+- osm: way/27234534
+  kind: terminal
+  name: Matson Terminal
+  operator: SSA Terminals
+  cargo:
+  - container
+  - ro_ro
+  note: >-
+    Berths 61 to 63 on the Middle Harbor, Matson's Oakland terminal. OpenStreetMap names it Port Of Oakland
+    APL Terminal.
