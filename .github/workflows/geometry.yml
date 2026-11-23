@@ -26,7 +26,12 @@ name: Port outlines
 # - Weekly, it rebuilds every port to pick up OpenStreetMap's edits and opens
 #   one pull request with what moved, like refresh.yml does for UN/LOCODE. A
 #   port that could not be built keeps its old outline and fails the run, so
-#   a deleted feature or an Overpass outage is not a quiet green tick.
+#   a deleted feature or a failed download is not a quiet green tick. This
+#   job reads Geofabrik's daily extracts with osmium-tool (OSM_SOURCE=extract)
+#   rather than asking Overpass: every port at once is what Overpass's
+#   rate limits refuse, and an extract gives the same answer to a rerun.
+#   The pull request job stays on Overpass: it builds a port or two, and a
+#   new port has no outline yet to choose its Geofabrik region by.
 on:
   pull_request:
     paths:
@@ -129,6 +134,28 @@ jobs:
           fi
           exit "$status"
 
+      - name: Install osmium-tool
+        if: github.event_name != 'pull_request'
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends osmium-tool
+
+      # Geofabrik publishes each region once a day, so a rerun the same day
+      # reads the extracts the first run downloaded, and gives the same
+      # outlines. Nothing older is restored: the build would download it
+      # again anyway (Extract::MAX_AGE_DAYS). Saved by its own step below,
+      # since the run that most needs a rerun is one that failed, and
+      # actions/cache saves only after a success.
+      - name: Date the extracts
+        id: date
+        if: github.event_name != 'pull_request'
+        run: echo "today=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+      - name: Restore the day's extracts
+        id: extracts
+        if: github.event_name != 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: tmp/osm
+          key: osm-extracts-${{ steps.date.outputs.today }}
+
       # A port that fails keeps its old file; the others still reach the
       # pull request, and the last step fails the run for the ones that did
       # not build.
@@ -136,7 +163,16 @@ jobs:
         id: rebuild
         if: github.event_name != 'pull_request'
         continue-on-error: true
+        env:
+          OSM_SOURCE: extract
         run: bundle exec rake seaports:geometry
+
+      - name: Keep the day's extracts for a rerun
+        if: always() && github.event_name != 'pull_request' && steps.extracts.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: tmp/osm
+          key: osm-extracts-${{ steps.date.outputs.today }}
 
       - name: Open what moved for review
         id: pull_request

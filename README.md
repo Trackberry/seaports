@@ -337,11 +337,29 @@ How a port is drafted:
    locodes, and no terminal inside another port's limits. Gaps are warnings:
    no anchorage mapped, a terminal with no cargo type, an anchorage with no
    category.
+   `rake seaports:geometry` asks the public Overpass API by default. With
+   `OSM_SOURCE=extract` it reads OpenStreetMap from
+   [Geofabrik's](https://download.geofabrik.de) daily extracts instead, on
+   this machine with [osmium-tool](https://osmcode.org/osmium-tool/)
+   (`brew install osmium-tool`, `apt-get install osmium-tool`): nothing to
+   rate-limit it, and the same answer from the same day's data. Each feature
+   is read from the smallest regions that hold its shipped shape
+   (`europe/netherlands/zuid-holland` for most of Rotterdam, Belgium and
+   Zeeland for an anchorage on the Scheldt), downloaded once into `tmp/osm`,
+   checked against Geofabrik's MD5 and reused for three days
+   (`OSM_EXTRACT_MAX_AGE_DAYS`). The build log names each region and the
+   date its data is from. A new port has no shape to choose by, so it is
+   looked for around its UN/LOCODE position; when a feature lies beyond that,
+   name the region: `OSM_REGION=europe/netherlands`. A continent is never
+   downloaded unless named that way. It is the same OpenStreetMap data
+   under the same licence, and gives the same GeoJSON as Overpass does for
+   the same data.
 4. Each port is a pull request. On one that edits a selection,
    `.github/workflows/geometry.yml` builds the outline and commits it to the
    branch, so the reviewer sees shapes. Weekly, it rebuilds every port to pick
-   up OpenStreetMap's edits and opens one pull request with what moved. The
-   GeoJSON has one feature per line, so that diff shows which terminal moved.
+   up OpenStreetMap's edits, from Geofabrik's extracts, and opens one pull
+   request with what moved. The GeoJSON has one feature per line, so that
+   diff shows which terminal moved.
 
 Not checked yet: that anchorages are on water and terminals touch land, and
 that outlines match where ships really stop. Both wait for a record of ship
