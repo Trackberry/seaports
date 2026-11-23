@@ -21,7 +21,7 @@ module Seaports
   # `rake seaports:geometry`, © OpenStreetMap contributors under the ODbL.
   #
   #   suez = Seaports.canal("suez")
-  #   suez.anchorages.size                 # => 139
+  #   suez.anchorages.size                 # => 78
   #   suez.anchorage_at(31.3583, 32.3346)  # => #<data Seaports::Canal::Area name="C1" approach="north" ...>
   #   suez.end_name("north")               # => "Port Said"
   #   Seaports.canal_anchorage_at(31.3583, 32.3346)&.canal  # => "suez"

@@ -384,7 +384,7 @@ rather than "at anchor, Port Said".
 ```ruby
 Seaports.canal_ids                               # => ["panama", "suez"]
 suez = Seaports.canal("suez")
-suez.anchorages.size                             # => 139
+suez.anchorages.size                             # => 78
 suez.anchorages_for(:north).map(&:name).first(3) # => ["C1", "C2", "C3"]
 suez.end_name("north")                           # => "Port Said"
 area = Seaports.canal_anchorage_at(31.3585, 32.3350)
@@ -430,10 +430,12 @@ way.
 
 What OpenStreetMap does not map is not here: anchorage B in Limon Bay, any
 anchorage outside the Colón breakwaters, a pilot boarding place at the Suez
-end, and anchorages off Port Said East. OpenStreetMap names the Suez Bay areas
-but does not say which serve the canal and which the ports of Suez and
-Adabiya; they are all filed under the canal except the two named C1 off
-Adabiya harbour.
+end, and anchorages off Port Said East. In Suez Bay only the northbound
+convoy's waiting areas are the canal's: the V berths and the East Waiting Area,
+which the Suez Canal Authority's Rules of Navigation give to incoming ships.
+The West Waiting Area (W1 to W14), for ships awaiting orders, bunkering or
+bound for Suez and Adabiya, and the lettered areas nearer Port Tawfiq are left
+out, so a ship there reads as waiting for no canal.
 
 ### What is deliberately not in it
 
