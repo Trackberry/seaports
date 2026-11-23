@@ -4,6 +4,7 @@ require "test_helper"
 require "seaports/geometry/builder"
 require "seaports/geometry/checks"
 require "seaports/geometry/candidates"
+require "seaports/geometry/selection"
 
 class GeometryPlanarTest < Minitest::Test
   Planar = Seaports::Geometry::Planar

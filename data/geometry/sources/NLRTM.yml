@@ -1,165 +1,189 @@
-# Rotterdam. Drafted 2026-11-23 from `rake seaports:geometry_candidates`
-# around Maasvlakte and the city, and a name search for the terminals those
-# tags miss (Rotterdam World Gateway and the Waalhaven cold stores are tagged
-# landuse=industrial only).
+---
 locode: NLRTM
-reviewed_at: 2026-11-23
-# From Trackberry's config/port_areas.yml: the UN/LOCODE entries that are
-# really parts of this port.
-quays: [NLBOT, NLAWD, NLPER, NLPTG, NLHVH, NLKAI, NLSCI, NLVLA, NLMSV, NLEUR, NLMSL]
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around Maasvlakte and the city, and a name search for
+  terminals tagged landuse=industrial only (Rotterdam World Gateway, the Waalhaven cold stores). Quays
+  from Trackberry's config/port_areas.yml. OpenStreetMap gives no category for the Maasmond anchorages,
+  so none is set.
+quays:
+- NLBOT
+- NLAWD
+- NLPER
+- NLPTG
+- NLHVH
+- NLKAI
+- NLSCI
+- NLVLA
+- NLMSV
+- NLEUR
+- NLMSL
 position_outside: >-
-  UN/LOCODE places Rotterdam on the city centre (51.9167, 4.5), about 4 km
-  east of Waalhaven, the easternmost cargo quay mapped here. A ship there is
-  in the city, not at a terminal.
+  UN/LOCODE places Rotterdam on the city centre (51.9167, 4.5), about 4 km east of Waalhaven, the easternmost
+  cargo quay mapped here. A ship there is in the city, not at a terminal.
 port_limits:
   derive: hull
   buffer_m: 1500
   note: >-
-    OpenStreetMap maps no port limits for Rotterdam. These are the hull of
-    the terminals below, from Maasvlakte to Waalhaven, grown by 1.5 km. They
-    also take in Rozenburg and the river banks between, which are inside the
-    real port area too, but are rougher than the legal limits.
+    OpenStreetMap maps no port limits for Rotterdam. These are the hull of the terminals below, from Maasvlakte
+    to Waalhaven, grown by 1.5 km. They also take in Rozenburg and the river banks between, which are
+    inside the real port area too, but are rougher than the legal limits.
 features:
-  # Anchorages off the Maasmond. OpenStreetMap gives no anchorage category for
-  # them, so none is set here.
-  - osm: relation/10406117
-    kind: anchorage
-    name: 4 East Anchorage
-    note: Seamark area off the Maasmond.
-  - osm: way/499613374
-    kind: anchorage
-    name: 4 West Anchorage
-    note: Seamark area, further offshore than 4 East.
-  - osm: relation/10406116
-    kind: anchorage
-    name: 5 East Anchorage
-    note: Seamark area north of the approach channel.
-  - osm: way/755193783
-    kind: anchorage
-    name: Emergency anchorage
-    category: emergency
-    note: OpenStreetMap names it "Emergency".
-
-  # Maasvlakte container terminals.
-  - osm: way/597875321
-    kind: terminal
-    name: Euromax Terminal
-    operator: Hutchison Ports ECT
-    cargo: [container]
-    note: Tagged with Wikidata Q123046649.
-  - osm: [way/145664537, way/145664536]
-    kind: terminal
-    name: ECT Delta Terminal
-    operator: Hutchison Ports ECT
-    cargo: [container]
-    note: Mapped as two ways, merged here.
-  - osm: way/607016850
-    kind: terminal
-    name: Hutchison Ports Delta II
-    operator: Hutchison Ports ECT
-    cargo: [container]
-    note: Tagged cargo=container.
-  - osm: way/599016100
-    kind: terminal
-    name: APM Terminals Maasvlakte II
-    operator: APM Terminals
-    cargo: [container]
-    note: Tagged cargo=container.
-  - osm: way/598845434
-    kind: terminal
-    name: Rotterdam World Gateway
-    cargo: [container]
-    note: Tagged cargo=container. OpenStreetMap gives no operator.
-  - osm: way/33545355
-    kind: terminal
-    name: Rhenus Maasvlakte
-    operator: Rhenus
-    cargo: [general]
-    note: Tagged cargo=general.
-  - osm: [way/271231996, way/271232095, way/726525834]
-    kind: terminal
-    name: Kloosterboer Maasvlakte
-    operator: Kloosterboer
-    cargo: [reefer]
-    note: >-
-      Cold stores, mapped as three buildings tagged industrial=cooling. The
-      quay they serve is not mapped separately.
-
-  # Europoort and Hoek van Holland: ferries and liquid bulk.
-  - osm: way/144699200
-    kind: terminal
-    name: P&O Ferries Europoort
-    operator: P&O Ferries
-    cargo: [ro_ro, passenger]
-    note: Tagged cargo=vehicle.
-  - osm: relation/14072136
-    kind: terminal
-    name: Stena Line Hoek van Holland
-    operator: Stena Line
-    cargo: [ro_ro, passenger]
-    note: Tagged cargo=passengers;vehicle.
-  - osm: relation/8404578
-    kind: terminal
-    name: Maasvlakte Olie Terminal
-    cargo: [tanker]
-    note: Tagged cargo=liquid_bulk.
-  - osm: way/144928920
-    kind: terminal
-    name: Shell Europoort Terminal
-    operator: Shell
-    cargo: [tanker]
-    note: Tagged cargo=liquid_bulk.
-  - osm: relation/19284500
-    kind: terminal
-    name: Vopak Terminal Europoort
-    operator: Vopak
-    cargo: [tanker]
-    note: Tagged cargo=liquid_bulk.
-  - osm: relation/19284499
-    kind: terminal
-    name: Maatschap Europoort Terminal
-    cargo: [tanker]
-    note: Tagged cargo=liquid_bulk.
-
-  # Botlek (NLBOT).
-  - osm: way/148123443
-    kind: terminal
-    name: C. Steinweg Botlek Terminal
-    operator: C. Steinweg
-    cargo: [general]
-    note: Tagged cargo=general.
-  - osm: way/144149689
-    kind: terminal
-    name: Chane Terminal Botlek
-    operator: Koole Terminals
-    cargo: [tanker]
-    note: Tagged cargo=liquid_bulk.
-
-  # Waalhaven and Eemhaven, the city side: fruit cold stores and smaller
-  # container terminals.
-  - osm: [way/448735512, way/951224296]
-    kind: terminal
-    name: Cool Port
-    operator: Kloosterboer
-    cargo: [reefer]
-    note: >-
-      Cool Port I and II, cold stores on the Waalhaven, mapped as two
-      buildings tagged industrial=cooling.
-  - osm: way/152034534
-    kind: terminal
-    name: Frigocare Rotterdam
-    cargo: [reefer]
-    note: >-
-      A cold store on the Waalhaven. OpenStreetMap gives no cargo tag; reefer
-      is from its name, so check it.
-  - osm: way/151407973
-    kind: terminal
-    name: Matrans Rotterdam Terminal
-    operator: Matrans
-    cargo: [container]
-    note: Tagged industrial=container_terminal.
-  - osm: way/1224036766
-    kind: terminal
-    name: Depot Pier 7
-    cargo: [container]
-    note: A container depot on the Waalhaven, tagged cargo=container.
+- osm: relation/10406117
+  kind: anchorage
+  name: 4 East Anchorage
+  note: Seamark area off the Maasmond.
+- osm: way/499613374
+  kind: anchorage
+  name: 4 West Anchorage
+  note: Seamark area, further offshore than 4 East.
+- osm: relation/10406116
+  kind: anchorage
+  name: 5 East Anchorage
+  note: Seamark area north of the approach channel.
+- osm: way/755193783
+  kind: anchorage
+  name: Emergency anchorage
+  category: emergency
+  note: OpenStreetMap names it "Emergency".
+- osm: way/597875321
+  kind: terminal
+  name: Euromax Terminal
+  operator: Hutchison Ports ECT
+  cargo:
+  - container
+  note: Tagged with Wikidata Q123046649.
+- osm:
+  - way/145664537
+  - way/145664536
+  kind: terminal
+  name: ECT Delta Terminal
+  operator: Hutchison Ports ECT
+  cargo:
+  - container
+  note: Mapped as two ways, merged here.
+- osm: way/607016850
+  kind: terminal
+  name: Hutchison Ports Delta II
+  operator: Hutchison Ports ECT
+  cargo:
+  - container
+  note: Tagged cargo=container.
+- osm: way/599016100
+  kind: terminal
+  name: APM Terminals Maasvlakte II
+  operator: APM Terminals
+  cargo:
+  - container
+  note: Tagged cargo=container.
+- osm: way/598845434
+  kind: terminal
+  name: Rotterdam World Gateway
+  cargo:
+  - container
+  note: Tagged cargo=container. OpenStreetMap gives no operator.
+- osm: way/33545355
+  kind: terminal
+  name: Rhenus Maasvlakte
+  operator: Rhenus
+  cargo:
+  - general
+  note: Tagged cargo=general.
+- osm:
+  - way/271231996
+  - way/271232095
+  - way/726525834
+  kind: terminal
+  name: Kloosterboer Maasvlakte
+  operator: Kloosterboer
+  cargo:
+  - reefer
+  note: >-
+    Cold stores, mapped as three buildings tagged industrial=cooling. The quay they serve is not mapped
+    separately.
+- osm: way/144699200
+  kind: terminal
+  name: P&O Ferries Europoort
+  operator: P&O Ferries
+  cargo:
+  - ro_ro
+  - passenger
+  note: Tagged cargo=vehicle.
+- osm: relation/14072136
+  kind: terminal
+  name: Stena Line Hoek van Holland
+  operator: Stena Line
+  cargo:
+  - ro_ro
+  - passenger
+  note: Tagged cargo=passengers;vehicle.
+- osm: relation/8404578
+  kind: terminal
+  name: Maasvlakte Olie Terminal
+  cargo:
+  - tanker
+  note: Tagged cargo=liquid_bulk.
+- osm: way/144928920
+  kind: terminal
+  name: Shell Europoort Terminal
+  operator: Shell
+  cargo:
+  - tanker
+  note: Tagged cargo=liquid_bulk.
+- osm: relation/19284500
+  kind: terminal
+  name: Vopak Terminal Europoort
+  operator: Vopak
+  cargo:
+  - tanker
+  note: Tagged cargo=liquid_bulk.
+- osm: relation/19284499
+  kind: terminal
+  name: Maatschap Europoort Terminal
+  cargo:
+  - tanker
+  note: Tagged cargo=liquid_bulk.
+- osm: way/148123443
+  kind: terminal
+  name: C. Steinweg Botlek Terminal
+  operator: C. Steinweg
+  cargo:
+  - general
+  note: Tagged cargo=general.
+- osm: way/144149689
+  kind: terminal
+  name: Chane Terminal Botlek
+  operator: Koole Terminals
+  cargo:
+  - tanker
+  note: Tagged cargo=liquid_bulk.
+- osm:
+  - way/448735512
+  - way/951224296
+  kind: terminal
+  name: Cool Port
+  operator: Kloosterboer
+  cargo:
+  - reefer
+  note: Cool Port I and II, cold stores on the Waalhaven, mapped as two buildings tagged industrial=cooling.
+- osm: way/152034534
+  kind: terminal
+  name: Frigocare Rotterdam
+  cargo:
+  - reefer
+  note: >-
+    A cold store on the Waalhaven. OpenStreetMap gives no cargo tag; reefer is from its name, so check
+    it.
+- osm: way/151407973
+  kind: terminal
+  name: Matrans Rotterdam Terminal
+  operator: Matrans
+  cargo:
+  - container
+  note: Tagged industrial=container_terminal.
+- osm: way/1224036766
+  kind: terminal
+  name: Depot Pier 7
+  cargo:
+  - container
+  note: A container depot on the Waalhaven, tagged cargo=container.
