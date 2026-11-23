@@ -335,7 +335,11 @@ port_limits:
 ```
 
 The limits become the hull ∩ (sea ∪ mapped water ∪ the terminals, and any
-areas the selection lists under `osm:`, each grown by 30 m). The sea is the
+areas the selection lists under `osm:`, ∪ the part of those grown by 30 m that
+lies within 30 m of the water). The 30 m only bridges between a terminal and
+the water, so a quay drawn a few metres back from the mapped coastline still
+joins it, while land behind a terminal's fence (housing, say) stays outside
+the limits. The terminals themselves are always kept whole. The sea is the
 side of OpenStreetMap's coastline (`natural=coastline`, drawn with the land on
 its left) that the coastline says it is; the mapped water is
 `natural=water` (rivers, docks, basins, lakes), `waterway=riverbank` and
@@ -355,9 +359,11 @@ why not with `disjoint`: a part on its own is usually a terminal whose water
 is not mapped as an area, or one that is not on the water at all.
 
 Clipping is build-time work for [GEOS](https://libgeos.org), through the
-[ffi-geos](https://github.com/dark-panda/ffi-geos) gem in the Gemfile, not
+[rgeo](https://github.com/rgeo/rgeo) gem's C extension, in the Gemfile, not
 the gemspec: `brew install geos` or `apt-get install libgeos-dev` before
-building a port that uses it. Robust overlay of concave polygons with holes is
+building a port that uses it: rgeo installs without GEOS when the library is
+missing at install time, so the build stops with a clear message unless
+`RGeo::Geos.capi_supported?`, and CI checks it. Robust overlay of concave polygons with holes is
 GEOS's work and not something to hand-roll. The outlines it builds are shipped
 as plain GeoJSON, so the gem itself still depends on nothing but `csv`, and a
 port without `clip: water` never loads it. GEOS releases can simplify the same

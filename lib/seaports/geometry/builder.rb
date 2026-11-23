@@ -280,10 +280,10 @@ module Seaports
         end
 
         clip.geometry
-      # Geos is named only once ffi-geos has loaded, which Clip::Unavailable
-      # says it did not.
+      # RGeo is named only once rgeo has loaded, which Clip::Unavailable says
+      # it did not.
       rescue StandardError => e
-        raise unless e.is_a?(Clip::Failed) || e.is_a?(Clip::Unavailable) || (defined?(Geos::Error) && e.is_a?(Geos::Error))
+        raise unless e.is_a?(Clip::Failed) || e.is_a?(Clip::Unavailable) || (defined?(RGeo::Error::RGeoError) && e.is_a?(RGeo::Error::RGeoError))
 
         raise Invalid, "#{locode}: clip: water failed: #{e.message}"
       end

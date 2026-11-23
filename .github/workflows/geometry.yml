@@ -69,14 +69,18 @@ jobs:
         with:
           ref: ${{ github.event_name == 'pull_request' && github.head_ref || '' }}
           fetch-depth: 0
+      # GEOS cuts port limits with clip: water down to the water
+      # (Geometry::Clip), through the rgeo gem's C extension. Build time only,
+      # and installed before bundler builds rgeo, which otherwise installs
+      # without GEOS support and says nothing.
+      - name: Install GEOS
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
           bundler-cache: true
-      # GEOS cuts port limits with clip: water down to the water
-      # (Geometry::Clip), through the ffi-geos gem. Build time only.
-      - name: Install GEOS
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
+      - name: rgeo was built with GEOS
+        run: bundle exec ruby -e 'require "rgeo"; abort "rgeo has no GEOS (CAPI) support" unless RGeo::Geos.capi_supported?; puts "GEOS #{RGeo::Geos.version}"'
 
       - name: Build the outlines a pull request touches
         id: touched
