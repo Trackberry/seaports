@@ -1,0 +1,106 @@
+---
+locode: FRLEH
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around Port 2000 and the Seine bay, and checked against
+  HAROPA's 2026 container terminal catalogue. OpenStreetMap maps no anchorage in the Seine bay, so none
+  is listed. The Seafrigo cold stores are mapped only as buildings, so no reefer store is here; reefer
+  is marked on the container terminals that HAROPA lists with reefer plugs. The Terminal de Normandie
+  mapped on the Bassin René Coty (way/163105116) is left out: HAROPA lists no container terminal there,
+  and Terminaux de Normandie is now the name of the Port 2000 terminal below. The cruise terminal and
+  Brittany Ferries' Terminal de la Citadelle are left out too: they stand on the city waterfront at Saint-François,
+  and a hull reaching them would run across the homes and schools of Saint-Nicolas and L'Eure. For the
+  same reason the CIM oil terminal (way/518702536) is left out: its 150 ha tank farm and six tanker berths
+  on the south side of the Bassin Théophile Ducrocq are a real part of the port, but its western tip pulls
+  the limits over Saint-Nicolas and L'Eure. Quays from Trackberry's config/port_areas.yml. The pilot boarding
+  places are the three Le Havre ones, by draught.
+quays:
+- FRGLO
+- FRHRF
+position_outside: >-
+  UN/LOCODE places Le Havre at (49.5, 0.1), in the town north of the old docks, beyond the Bassin Vauban
+  and the Bassin du Commerce. A ship there is in the city, not at a terminal.
+port_limits:
+  derive: hull
+  buffer_m: 250
+  note: >-
+    OpenStreetMap maps no port limits for Le Havre. These are the hull of the terminals below, from Port
+    2000 and Terminal de l'Atlantique to the ro-ro terminals on the Darse de l'Océan, grown by 250 m.
+    Les Neiges, a district of homes and a primary school enclosed by the docks between Terminal de l'Atlantique
+    and Terminal de l'Europe, is inside. Beyond it the only addresses inside are a few premises on Rue
+    Cuvier, by the municipal vehicle garage, and a container depot on the Route des Marais. Saint-François,
+    Saint-Nicolas, L'Eure, Graville, Harfleur and Gonfreville-l'Orcher are outside.
+features:
+- osm: node/11431822294
+  kind: pilot_boarding
+  name: Le Havre Tirant d'eau 12m
+  note: Tagged seamark:type=pilot_boarding, for ships drawing up to 12 m.
+- osm: node/11431822295
+  kind: pilot_boarding
+  name: Le Havre Tirant d'eau 16m
+  note: Tagged seamark:type=pilot_boarding, for ships drawing up to 16 m.
+- osm: node/11431822296
+  kind: pilot_boarding
+  name: Le Havre Tirant d'eau 18m
+  note: Tagged seamark:type=pilot_boarding, for the deepest ships.
+- osm:
+  - way/517454589
+  - way/690910919
+  kind: terminal
+  name: Terminaux de Normandie
+  operator: Terminaux à Conteneurs de France (TiL)
+  cargo:
+  - container
+  - reefer
+  note: >-
+    The Port 2000 terminal formed from TNMSC and Terminal Porte Océane (TPO), mapped as those two areas.
+    HAROPA's 2026 catalogue lists it as one terminal of 107 ha with 2,100 m of quay and 1,418 reefer plugs,
+    run by Terminaux à Conteneurs de France, part of MSC's TiL.
+- osm:
+  - way/261362482
+  - way/518702537
+  kind: terminal
+  name: Terminal de France
+  operator: Générale de Manutention Portuaire (GMP)
+  cargo:
+  - container
+  - reefer
+  note: >-
+    At Port 2000, with 1,400 m of quay and 1,482 reefer plugs (HAROPA, 2026). Mapped as two areas that
+    share a boundary and do not overlap: the yard (way/261362482) and the quayside strip along the berths
+    (way/518702537), both named Terminal de France.
+- osm: way/32067603
+  kind: terminal
+  name: Terminal de l'Europe
+  operator: Générale de Manutention Portuaire (GMP)
+  cargo:
+  - container
+  - reefer
+  - ro_ro
+  note: >-
+    Tagged landuse=container_terminal. The Quai de l'Europe of GMP's Terminaux Nord, which HAROPA lists
+    with 450 reefer plugs and ro-ro and con-ro traffic.
+- osm: way/126098291
+  kind: terminal
+  name: Terminal de l'Atlantique
+  operator: Hanseatic Global Terminals Le Havre
+  cargo:
+  - container
+  - reefer
+  note: >-
+    On the Quai de l'Atlantique, with 280 reefer plugs. OpenStreetMap names Compagnie Nouvelle de Manutention
+    Portuaires as the operator; HAROPA's 2026 catalogue names Hanseatic Global Terminals.
+- osm: way/261364503
+  kind: terminal
+  name: Centre roulier
+  cargo:
+  - ro_ro
+  note: Ro-ro is from its name (roulier). OpenStreetMap gives no operator.
+- osm: way/261363802
+  kind: terminal
+  name: Terminal Roulier
+  cargo:
+  - ro_ro
+  note: >-
+    The ro-ro terminal east of the Centre roulier, on the Darse de l'Océan, mapped as man_made=works.
+    Ro-ro is from its name. OpenStreetMap gives no operator.

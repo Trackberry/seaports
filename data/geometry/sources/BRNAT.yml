@@ -1,0 +1,48 @@
+---
+locode: BRNAT
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Nordeste extract around the mouth of the Potengi river. OpenStreetMap
+  maps the public port, Porto de Natal, as one area on the river's south bank, and the anchorages at the
+  river mouth and offshore as seamark areas.
+position_outside: >-
+  UN/LOCODE places Natal at (-5.75, -35.25), across the Potengi river about 5 km north-west of the port.
+  A ship there would be ashore.
+port_limits:
+  derive: hull
+  buffer_m: 50
+  note: >-
+    OpenStreetMap maps no port limits for Natal. These are the port area grown by 50 m, over its quay
+    and the river alongside; the anchorages stay outside. The port sits in the Ribeira district, so the
+    margin is kept small. A search of OpenStreetMap found two buildings mapped as houses on Rua Chile
+    inside the margin, within 40 m of its edge, and no residential land, schools, churches, hospitals
+    or named places. The Hospital dos Pescadores and the Isabel Gondim school are just outside.
+features:
+- osm: way/189330201
+  kind: anchorage
+  name: Anchorage No 1
+  note: Seamark area named No 1 in OpenStreetMap, offshore of the river mouth.
+- osm: way/189330202
+  kind: anchorage
+  name: Anchorage No 2
+  note: Seamark area named No 2 in OpenStreetMap, inside the river mouth.
+- osm: way/189330194
+  kind: anchorage
+  name: Anchorage No 3
+  note: Seamark area named No 3 in OpenStreetMap, off the river mouth.
+- osm: way/288581157
+  kind: anchorage
+  name: Anchorage No 3 (outer)
+  note: A second seamark area also named No 3 in OpenStreetMap, east of the first.
+- osm: way/291018553
+  kind: terminal
+  name: Porto de Natal
+  operator: Codern
+  cargo:
+  - container
+  - reefer
+  - general
+  note: >-
+    The public port, tagged landuse=harbour and run by the federal port company Codern. Fruit, chiefly
+    melons and watermelons for Europe, is its main cargo, shipped in reefer containers and refrigerated
+    trailers.

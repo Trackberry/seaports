@@ -1,0 +1,43 @@
+---
+locode: ESSVQ
+reviewed_at: '2026-11-23'
+note: >-
+  Sevilla is a river port, 80 km up the Guadalquivir, with its quays on the Canal de Alfonso XIII and
+  the Dársena del Batán. Ships wait for the tide at the river mouth, off Bonanza and Chipiona, where OpenStreetMap
+  maps no anchorage. Left out: the Sevitrade liquid bulk terminal at the Dársena del Cuarto and the Carbón
+  Puerto (Euroports) dry bulk terminal on the left bank of the canal, which OpenStreetMap does not map
+  as areas; the Muelle de Tablada, which it maps only as harbour land; the Batán logistics zones, Zona
+  Franca and Stockauto Sur vehicle yard, which are not berths; and the shipyards.
+port_limits:
+  derive: hull
+  osm: way/55501385
+  buffer_m: 300
+  note: >-
+    OpenStreetMap maps no port limits for Sevilla. These are the hull of the terminals below and the Dársena
+    del Batán, grown by 300 m, which takes in the canal along the quays. The city centre and Triana are
+    outside, and so is the 80 km of river to the sea. The residential streets of Los Remedios and Tablada
+    are outside, but the limits take in the southern half of the Real de la Feria fairground, north of
+    the Exolum depot.
+features:
+- osm: way/615484227
+  kind: terminal
+  name: Terminal de contenedores (Muelle del Centenario)
+  operator: Terminal Marítima del Guadalquivir
+  cargo:
+  - container
+  - ro_ro
+  note: >-
+    The container terminal on the Muelle del Centenario, between the Dársena del Batán and the canal.
+    The port authority's 30-year concession to Terminal Marítima del Guadalquivir (Boluda and OPDR) covers
+    about 18 ha with 350 m of berth and the ro-ro ramp; this area is 18 ha. OpenStreetMap names it Terminal
+    de contenedores and gives Puerto de Sevilla as operator.
+- osm: way/268627088
+  kind: terminal
+  name: Exolum Sevilla
+  operator: Exolum
+  cargo:
+  - tanker
+  note: >-
+    The petroleum products depot on the Muelle del Batán, on the right bank of the canal, where the port
+    authority let Exolum occupy land for three of its tanks in 2024, and Exolum applied for a concession
+    over it in 2025 (BOE). Mapped as landuse=industrial.
