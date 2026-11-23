@@ -1,0 +1,92 @@
+# Antwerp. Drafted 2026-11-23 from `rake seaports:geometry_candidates`
+# around the city and off Vlissingen, and a name search for the terminals
+# tagged landuse=industrial only (MPET, Antwerp Gateway, Europaterminal).
+locode: BEANR
+reviewed_at: 2026-11-23
+# From Trackberry's config/port_areas.yml.
+quays: [BEDEG, BEPTP, BEDEL, BEKOU, BELIL, BEBRT, BEZVT, BEKDE, BEMRK, BEEKE, BEZWL]
+port_limits:
+  derive: hull
+  osm: [way/1143855241, way/1143855256, way/1143855243, way/1143855260, way/48605572]
+  buffer_m: 1500
+  note: >-
+    OpenStreetMap maps no port limits for Antwerp. These are the hull of the
+    terminals below, four docks (Hansadok, Leopolddok, Vierde and Zesde
+    Havendok) and a Katoen Natie warehouse by the city, grown by 1.5 km. They
+    take in the land between the two banks of the Scheldt, so they are rougher
+    than the legal limits.
+features:
+  # The Scheldt anchorages. Ships for Antwerp wait here, but so do ships for
+  # Vlissingen, Terneuzen and Gent: they are anchorages of the river, not of
+  # Antwerp alone. OpenStreetMap gives no anchorage category for them.
+  - osm: [way/685961770, way/685961771]
+    kind: anchorage
+    name: Rede van Antwerpen
+    note: Antwerp's own roads, off the city quays. Mapped as two seamark areas.
+  - osm: relation/10351244
+    kind: anchorage
+    name: Schaar van Ouden Doel
+    note: In the river below Doel.
+  - osm: [way/464334827, way/464334826, way/464334825]
+    kind: anchorage
+    name: Everingen
+    note: Everingen A, B and C, in the Western Scheldt.
+  - osm: relation/10362019
+    kind: anchorage
+    name: Rede van Vlissingen
+    note: Off Vlissingen, about 60 km downriver.
+  - osm: way/233090331
+    kind: anchorage
+    name: Wielingen-Noord
+    note: At the mouth of the Western Scheldt, more than 15 nautical miles from Antwerp.
+  - osm: relation/10362020
+    kind: anchorage
+    name: Wielingen-Zuid
+    note: At the mouth of the Western Scheldt.
+
+  # Container terminals, right bank then left bank.
+  - osm: relation/21119001
+    kind: terminal
+    name: PSA Noordzeeterminal
+    operator: PSA Antwerp
+    cargo: [container]
+    note: Tagged industrial=container_terminal.
+  - osm: relation/2188766
+    kind: terminal
+    name: Europaterminal
+    operator: PSA Antwerp
+    cargo: [container]
+    note: >-
+      OpenStreetMap gives no cargo tag; container is from the terminal's name
+      and operator, so check it.
+  - osm: relation/21119005
+    kind: terminal
+    name: MSC PSA European Terminal (MPET)
+    operator: PSA / TIL
+    cargo: [container]
+    note: On the Deurganckdok, left bank. Container is from its name.
+  - osm: relation/21119015
+    kind: terminal
+    name: Antwerp Gateway
+    operator: DP World
+    cargo: [container]
+    note: On the Deurganckdok, left bank. Container is from its operator.
+  - osm: way/376648236
+    kind: terminal
+    name: Containerkade
+    operator: Katoen Natie
+    cargo: [container]
+    note: Tagged cargo=container.
+  - osm: way/89143911
+    kind: terminal
+    name: Antwerp Euroterminal
+    note: OpenStreetMap gives no cargo type or operator.
+  - osm: relation/5496745
+    kind: terminal
+    name: Katoen Natie
+    operator: Katoen Natie
+    note: OpenStreetMap gives no cargo type.
+  - osm: way/89152521
+    kind: terminal
+    name: Euroports
+    note: OpenStreetMap gives no cargo type.

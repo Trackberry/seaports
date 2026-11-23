@@ -269,6 +269,91 @@ way, optional and defaulting to a shared empty list. Because it is a new member,
 `Port#to_h`, `Port.members` and `deconstruct`/`deconstruct_keys` gain a key, and
 a `Port` serialised with `Marshal` by 1.5.0 will not load in 1.6.0.
 
+### Port outlines
+
+A point says where a port is; an outline says whether a ship is in it. Sevilla
+and Huelva sit up their rivers, Rotterdam's Maasvlakte is 30 km from the city
+UN/LOCODE places it on, and Antwerp's ships wait at anchor off Vlissingen,
+60 km downriver. A radius around one point gets all of those wrong.
+
+For a few ports the gem ships an outline: the port limits, the anchorages, the
+terminals with their operator and cargo type, and the pilot boarding places.
+
+```ruby
+Seaports.geometry_locodes                        # => ["BEANR", "GBDVR", "NLRTM"]
+Seaports.within?("NLRTM", 51.955, 4.03)          # => true, on the Maasvlakte
+Seaports.within?("NLRTM", 51.955, 4.03, kind: :anchorage)  # => false
+Seaports.areas_at("NLRTM", 51.977, 4.033).map(&:name)
+# => ["Euromax Terminal", nil]   the terminal, then the port limits
+Seaports.terminals("NLRTM").first.cargo          # => ["container"]
+Seaports.anchorages("BEANR").map(&:name)         # => ["Rede van Antwerpen", ...]
+Seaports.quays("NLRTM")                          # => ["NLAWD", "NLBOT", ...]
+Seaports.ports_at(51.0, 1.5)                     # => [], mid-Channel
+Seaports.geometry("GBDVR")                       # => the GeoJSON FeatureCollection, for a map
+```
+
+Each area is a `Seaports::Geometry::Area` with `kind` (`port_limits`,
+`anchorage`, `terminal` or `pilot_boarding`), `name`, `operator`, `cargo` (from
+`container`, `reefer`, `ro_ro`, `bulk`, `tanker`, `general`, `passenger`),
+`category` for an anchorage, its GeoJSON `geometry`, a label point (`lat`,
+`lng`) that is always inside it, and where it came from: `osm` (the
+OpenStreetMap ids), `source`, `licence`, `reviewed_at` and a `note`. `quays`
+are the other locodes that are really parts of the port (`NLBOT` Botlek for
+Rotterdam), so a feed that names one is talking about this port. A port with no
+outline answers `nil`, `[]` and `false`, which says nothing about where a ship
+is: ask `geometry` first when that matters.
+
+**No coordinate here was typed or generated.** Every shape is an OpenStreetMap
+feature, chosen by its id in a reviewed selection,
+`data/geometry/sources/<LOCODE>.yml`, and fetched from OpenStreetMap by
+`rake seaports:geometry`. The selection says which features are the port's,
+what each is called and what cargo it takes, and holds no coordinates, so a
+person, an agent or a reader's correction can only choose among shapes
+OpenStreetMap already has. A part of a port that OpenStreetMap does not map is
+mapped there first.
+
+OpenStreetMap maps port limits for none of the three ports so far, so their
+limits are derived: the convex hull of the port's terminals (and any docks the
+selection names) grown by a stated distance, with `source` saying so. That is
+rougher than the legal limits and takes in land between the quays, which is
+what a "is this ship in the port?" question needs and no more.
+
+How a port is drafted:
+
+1. `rake "seaports:geometry_candidates[NLRTM]"` lists the OpenStreetMap
+   features near the port that could be part of it (harbours, docks, terminals,
+   anchorages, berths, pilot boarding places), by id and tags, without their
+   shapes, and drops the marinas. Give it a radius, and a position for
+   anchorages far out: `[BEANR,22,51.42,3.45]`.
+2. A person, or an agent, writes the selection from that list: which features
+   are terminals and anchorages, their names, operators and cargo, the
+   neighbouring locodes that are quays, and a note on each choice.
+3. `rake "seaports:geometry[NLRTM]"` fetches the shapes and runs the checks,
+   and writes `data/geometry/NLRTM.geojson` only if they pass. The checks:
+   valid closed rings that do not cross themselves, one set of port limits that
+   contains the port's own position (or a reviewed `position_outside` reason
+   why not: Rotterdam's position is its city centre), plausible sizes, a
+   source, licence and review date on every feature, quays that are real
+   locodes, and no terminal inside another port's limits. Gaps are warnings:
+   no anchorage mapped, a terminal with no cargo type, an anchorage with no
+   category.
+4. Each port is a pull request. On one that edits a selection,
+   `.github/workflows/geometry.yml` builds the outline and commits it to the
+   branch, so the reviewer sees shapes. Weekly, it rebuilds every port to pick
+   up OpenStreetMap's edits and opens one pull request with what moved. The
+   GeoJSON has one feature per line, so that diff shows which terminal moved.
+
+Not checked yet: that anchorages are on water and terminals touch land, and
+that outlines match where ships really stop. Both wait for a record of ship
+stops by type.
+
+The outlines are © OpenStreetMap contributors and published under the
+[Open Database Licence](https://opendatacommons.org/licenses/odbl/1-0/),
+separately from the gem's MIT code: see
+[data/geometry/LICENSE.md](data/geometry/LICENSE.md). Credit OpenStreetMap
+wherever you draw them; the collection's `attribution` member is the line to
+use.
+
 ### What is deliberately not in it
 
 Only entries UNECE marks with function `1`, "port", are kept. A road terminal,
@@ -395,5 +480,9 @@ the UN/LOCODE edition when the source gave one, and is nil otherwise.
 The code is MIT. The table is derived from the UN/LOCODE code list published by
 UNECE, which is public domain, by way of the [datasets/un-locode][mirror]
 distribution released under PDDL-1.0. See [LICENSE.txt](LICENSE.txt).
+
+The port outlines in `data/geometry` are not: they are derived from
+OpenStreetMap and published under the ODbL 1.0, © OpenStreetMap contributors.
+See [data/geometry/LICENSE.md](data/geometry/LICENSE.md).
 
 [mirror]: https://github.com/datasets/un-locode

@@ -16,7 +16,9 @@ Gem::Specification.new do |spec|
     each UN/LOCODE release and shipped inside the gem.
   TEXT
   spec.homepage = "https://github.com/Trackberry/seaports"
-  spec.license = "MIT"
+  # The code is MIT; the port outlines in data/geometry are derived from
+  # OpenStreetMap and published under the ODbL, see data/geometry/LICENSE.md.
+  spec.licenses = ["MIT", "ODbL-1.0"]
 
   spec.required_ruby_version = ">= 3.3.0"
 
@@ -27,7 +29,7 @@ Gem::Specification.new do |spec|
     "rubygems_mfa_required" => "true"
   }
 
-  spec.files = Dir["lib/**/*.rb", "data/*.csv", "README.md", "CHANGELOG.md", "LICENSE.txt"]
+  spec.files = Dir["lib/**/*.rb", "data/*.csv", "data/geometry/*.geojson", "data/geometry/LICENSE.md", "README.md", "CHANGELOG.md", "LICENSE.txt"]
   spec.require_paths = ["lib"]
 
   # The only dependency, and only because Ruby 3.4 demoted csv out of the

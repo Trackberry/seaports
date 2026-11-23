@@ -4,6 +4,7 @@ require "csv"
 require "date"
 
 require_relative "seaports/version"
+require_relative "seaports/geometry"
 
 # UN/LOCODE sea ports: a locode in, a port name and position out.
 #
@@ -118,6 +119,69 @@ module Seaports
     # code the table does not hold. See Port.
     def alternate_names(locode)
       find(locode)&.alternate_names || NO_NAMES
+    end
+
+    # The port's outline as GeoJSON: a deep-frozen FeatureCollection with
+    # "locode", "quays" and "attribution" beside its features, ready for a
+    # map. Nil for a port with no outline, which is most of them: see
+    # Seaports::Geometry, and Seaports.geometry_locodes for the ones that
+    # have one.
+    def geometry(locode)
+      Geometry.collection(locode)
+    end
+
+    # Every feature of the port's outline as a Seaports::Geometry::Area:
+    # port limits, anchorages, terminals and pilot boarding places, in that
+    # order. [] for a port with no outline.
+    def areas(locode)
+      Geometry.areas(locode)
+    end
+
+    def anchorages(locode)
+      areas(locode).select { |area| area.kind == "anchorage" }
+    end
+
+    def terminals(locode)
+      areas(locode).select { |area| area.kind == "terminal" }
+    end
+
+    def port_limits(locode)
+      areas(locode).find { |area| area.kind == "port_limits" }
+    end
+
+    # The other locodes that are really quays of this port, so a feed that
+    # names one is talking about this port: NLBOT Botlek for NLRTM. [] for a
+    # port with no outline or none listed.
+    def quays(locode)
+      geometry(locode)&.fetch("quays", nil) || NO_NAMES
+    end
+
+    # Whether a position is inside one of the port's areas: any of them, or
+    # only those of +kind+ (:port_limits, :anchorage or :terminal). False for
+    # a port with no outline, which says nothing about the ship: ask
+    # geometry first when the difference matters.
+    def within?(locode, lat, lng, kind: nil)
+      !areas_at(locode, lat, lng, kind:).empty?
+    end
+
+    # The port's areas that contain a position, most specific first: a
+    # terminal, then an anchorage, then the port limits.
+    def areas_at(locode, lat, lng, kind: nil)
+      wanted = kind&.to_s
+      areas(locode).select { |area| (wanted.nil? || area.kind == wanted) && !area.point? && area.contains?(lat, lng) }
+        .sort_by { |area| Geometry::KINDS.reverse.index(area.kind) }
+    end
+
+    # The locodes whose port limits contain a position, for a stop that
+    # arrived with no port named. Usually one or none; two only where a
+    # port's limits overlap a neighbour's, which the checks flag.
+    def ports_at(lat, lng)
+      geometry_locodes.select { |locode| within?(locode, lat, lng, kind: :port_limits) }
+    end
+
+    # Every locode with an outline.
+    def geometry_locodes
+      Geometry.locodes
     end
 
     # Every port in the table, ordered by locode. Materialised on each call

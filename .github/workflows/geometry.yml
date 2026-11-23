@@ -1,0 +1,98 @@
+name: Port outlines
+
+# Two jobs share one build step, `rake seaports:geometry`, which fetches the
+# OpenStreetMap features each selection in data/geometry/sources names and
+# rewrites data/geometry/<LOCODE>.geojson when they pass their checks.
+#
+# - On a pull request that edits a selection (a person's, or a reader's
+#   correction sent from Trackberry), it builds the ports that pull request
+#   touches and commits the regenerated outlines to the same branch, so the
+#   reviewer sees the shapes, not only the ids. A selection that fails its
+#   checks fails this job, with the reasons in the log.
+# - Weekly, it rebuilds every port to pick up OpenStreetMap's edits and opens
+#   one pull request with what moved, like refresh.yml does for UN/LOCODE.
+on:
+  pull_request:
+    paths:
+      - "data/geometry/sources/**"
+  schedule:
+    - cron: "41 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    # A fork's branch cannot be pushed to with this token; its outlines are
+    # built when a maintainer moves it onto a branch here.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || '' }}
+          fetch-depth: 0
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+
+      - name: Build the outlines a pull request touches
+        if: github.event_name == 'pull_request'
+        run: |
+          git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- data/geometry/sources \
+            | grep -E '\.yml$' | xargs -n1 basename | sed 's/\.yml$//' > tmp_locodes || true
+          while read -r locode; do
+            if [ -f "data/geometry/sources/$locode.yml" ]; then
+              bundle exec rake "seaports:geometry[$locode]"
+            else
+              rm -f "data/geometry/$locode.geojson"
+            fi
+          done < tmp_locodes
+          rm -f tmp_locodes
+          bundle exec rake seaports:check_geometry
+
+      - name: Commit the regenerated outlines
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ -n "$(git status --porcelain data/geometry)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/geometry
+            git commit -m "chore(data): build the port outlines from the edited selections"
+            git push
+            # A push with GITHUB_TOKEN starts no workflow, so ask for CI.
+            gh workflow run ci.yml --ref "${{ github.head_ref }}"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # A port that fails its checks keeps its old file and fails this step;
+      # the others still reach the pull request.
+      - name: Rebuild every outline
+        if: github.event_name != 'pull_request'
+        continue-on-error: true
+        run: bundle exec rake seaports:geometry
+
+      - name: Open what moved for review
+        id: pull_request
+        if: github.event_name != 'pull_request'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: refresh/geometry
+          base: main
+          commit-message: "chore(data): refresh the port outlines from OpenStreetMap"
+          title: "Refresh the port outlines from OpenStreetMap"
+          body: "The weekly rebuild of `data/geometry` from the OpenStreetMap features each selection names. The diff has one feature per line, so it shows which terminals and anchorages moved."
+          labels: data-refresh
+          reviewers: edouard
+          add-paths: data/geometry/*.geojson
+
+      - name: Run CI on the refresh
+        if: steps.pull_request.outputs.pull-request-operation == 'created' || steps.pull_request.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run ci.yml --ref refresh/geometry
