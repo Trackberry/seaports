@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "date"
+require "digest"
 require "json"
 require "yaml"
 
@@ -55,6 +56,25 @@ module Seaports
         YAML.safe_load_file(path, permitted_classes: [Date])
       end
 
+      # A fingerprint of what a selection says, stamped on the outline built
+      # from it as "selection_digest". Taken over the canonical form, so
+      # rewrapping a note changes nothing and any edit that could change the
+      # outline (an id, a buffer, a name) changes it. It lets a pull request
+      # rebuild only the ports whose selection moved since their outline was
+      # built (geometry.yml); it is a fingerprint, not a signature, and the
+      # weekly rebuild from OpenStreetMap remains what catches a hand-moved
+      # coordinate.
+      def self.digest(selection) = Digest::SHA256.hexdigest(Selection.dump(selection))
+
+      # Whether the shipped outline for +locode+ was built from its selection
+      # as it stands.
+      def self.current?(locode)
+        path = output_path(locode)
+        return false unless File.exist?(path) && File.exist?(selection_path(locode))
+
+        JSON.parse(File.read(path))["selection_digest"] == digest(read_selection(selection_path(locode)))
+      end
+
       # +shapes+ answers Osm.shapes's question; a test passes a lambda.
       def initialize(selection, shapes: Osm.method(:shapes))
         @selection = selection
@@ -72,7 +92,8 @@ module Seaports
         ordered = ([limits].compact + features).sort_by.with_index { |f, i| [KINDS.index(f["properties"]["kind"]), i] }
 
         { "type" => "FeatureCollection", "locode" => locode, "quays" => Array(@selection["quays"]).sort,
-          "attribution" => ATTRIBUTION, "position_outside" => @selection["position_outside"]&.strip, "features" => ordered }.compact
+          "attribution" => ATTRIBUTION, "position_outside" => @selection["position_outside"]&.strip,
+          "selection_digest" => self.class.digest(@selection), "features" => ordered }.compact
       end
 
       def write(path = self.class.output_path(locode))

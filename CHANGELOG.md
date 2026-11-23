@@ -17,6 +17,8 @@ What OpenStreetMap has for them:
 - Several of Hamburg's terminals have no cargo type, and Algeciras's ferry and ro-ro terminal is not mapped as a terminal.
 - Valencia leaves out Sagunto, which is its own locode (`ESSAG`) with no terminal mapped.
 
+Each outline now carries `selection_digest`, a fingerprint of the selection it was built from, and `rake seaports:check_geometry` fails an outline whose selection changed without a rebuild. On a pull request, `.github/workflows/geometry.yml` fetches from OpenStreetMap only the ports whose outline does not match its selection, with two tries of ten minutes each, and one port that fails no longer stops the rest. A batch of ports built locally then checks in seconds rather than spending most of an hour on Overpass. The weekly rebuild still fetches every port.
+
 Same ports, names and positions as 1.7.1.
 
 ## 1.7.1 — 2026-11-23

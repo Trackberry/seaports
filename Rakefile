@@ -294,6 +294,19 @@ namespace :seaports do
     abort "Not written: #{failed.join(', ')}" unless failed.empty?
   end
 
+  # Recurring, and offline: geometry.yml asks it before fetching a port from
+  # OpenStreetMap. Succeeds when the shipped outline was built from the
+  # selection as it stands, and fails when it was not, or is missing.
+  desc "Whether a port's outline was built from its current selection"
+  task :geometry_current, [:locode] do |_task, args|
+    require_relative "lib/seaports/geometry/builder"
+
+    locode = args[:locode].to_s.upcase
+    abort "#{locode}: the outline is missing or was built from another selection" unless Seaports::Geometry::Builder.current?(locode)
+
+    puts "#{locode}: the outline was built from this selection"
+  end
+
   # Recurring, and offline: what CI runs. The same checks over every shipped
   # file, plus that each has a selection it was built from.
   desc "Check every shipped port outline"
@@ -313,7 +326,13 @@ namespace :seaports do
     # request that touches data/geometry.
     drift = collections.flat_map do |locode, collection|
       selection = Seaports::Geometry::Builder.read_selection(Seaports::Geometry::Builder.selection_path(locode))
-      Seaports::Geometry::Checks.drift(collection, selection).map { |line| "#{locode}: #{line}" }
+      lines = Seaports::Geometry::Checks.drift(collection, selection)
+      # Catches what the comparison above cannot see, such as a changed
+      # buffer_m, and an outline whose selection was edited without a rebuild.
+      unless collection["selection_digest"] == Seaports::Geometry::Builder.digest(selection)
+        lines << "the outline was not built from the selection as it stands: rebuild it with rake seaports:geometry[#{locode}]"
+      end
+      lines.map { |line| "#{locode}: #{line}" }
     end
     drift.each { |line| puts "  error: #{line}" }
     abort "Port outlines failed their checks" unless results.all?(&:ok?) && drift.empty?

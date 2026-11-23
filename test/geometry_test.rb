@@ -249,6 +249,26 @@ class GeometryBuilderTest < Minitest::Test
     refute_empty checks.drift(renamed, selection)
   end
 
+  # The digest lets a pull request skip fetching a port whose outline was
+  # built from its selection as it stands: it must move with anything that
+  # could change the outline, and not with a note's line wrapping.
+  def test_the_outline_carries_the_digest_of_the_selection_it_was_built_from
+    collection = Builder.new(selection, shapes:).build
+    rebuffered = selection.merge("port_limits" => selection["port_limits"].merge("buffer_m" => 800))
+    reloaded = Seaports::Geometry::Selection.load(Seaports::Geometry::Selection.dump(selection))
+
+    assert_equal Builder.digest(selection), collection["selection_digest"]
+    assert_equal Builder.digest(selection), Builder.digest(reloaded), "the same selection read back from its file"
+    refute_equal Builder.digest(selection), Builder.digest(rebuffered), "a changed buffer, which the drift check cannot see"
+  end
+
+  def test_every_shipped_outline_was_built_from_its_selection_as_it_stands
+    locodes = Dir[File.join(Seaports::Geometry::DIR, "*.geojson")].map { |path| File.basename(path, ".geojson") }
+
+    refute_empty locodes
+    locodes.each { |locode| assert Builder.current?(locode), "#{locode}: rebuild it with rake seaports:geometry[#{locode}]" }
+  end
+
   def test_a_line_becomes_an_area_only_when_given_a_buffer
     features = [{ "osm" => "way/2", "kind" => "terminal", "name" => "Berth" }]
 

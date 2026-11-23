@@ -6,11 +6,19 @@ name: Port outlines
 #
 # - On a pull request that touches a port's selection or its outline (a
 #   person's edit, or a reader's correction sent from Trackberry), it
-#   rebuilds that port from OpenStreetMap and commits the result to the same
-#   branch, so the reviewer sees the shapes and not only the ids. A
-#   hand-edited outline is overwritten the same way: no coordinate ships that
-#   OpenStreetMap did not supply. A selection that fails its checks fails
-#   this job, with the reasons in the log.
+#   rebuilds from OpenStreetMap each port whose outline was not built from
+#   its selection as it stands, and commits the result to the same branch, so
+#   the reviewer sees the shapes and not only the ids. A port whose outline
+#   carries its selection's digest (built locally with rake seaports:geometry
+#   and committed with it) is not fetched again: Overpass is slow and
+#   rate-limited, and a batch of ports would otherwise take most of an hour.
+#   Each port gets two tries of ten minutes, and one that still fails does not
+#   stop the others. A selection that fails its checks fails this job, with
+#   the reasons in the log.
+#
+#   The digest is a fingerprint, not a signature: a hand-moved coordinate in
+#   a committed outline is caught by the weekly rebuild below, which fetches
+#   every port and opens a pull request for whatever moved.
 # - Weekly, it rebuilds every port to pick up OpenStreetMap's edits and opens
 #   one pull request with what moved, like refresh.yml does for UN/LOCODE. A
 #   port that could not be built keeps its old outline and fails the run, so
@@ -55,6 +63,7 @@ jobs:
           bundler-cache: true
 
       - name: Build the outlines a pull request touches
+        id: touched
         if: github.event_name == 'pull_request'
         run: |
           set -euo pipefail
@@ -62,14 +71,28 @@ jobs:
           # Only names shaped like a locode reach rake: a file called
           # "x];sh" must not become a task argument.
           locodes=$(printf '%s\n' "$changed" | sed -nE 's#^data/geometry/(sources/)?([A-Z]{2}[A-Z0-9]{3})\.(yml|geojson)$#\2#p' | sort -u)
+          failed=""
           for locode in $locodes; do
-            if [ -f "data/geometry/sources/$locode.yml" ]; then
-              bundle exec rake "seaports:geometry[$locode]"
-            else
+            if [ ! -f "data/geometry/sources/$locode.yml" ]; then
               rm -f "data/geometry/$locode.geojson"
+              continue
+            fi
+            if bundle exec rake "seaports:geometry_current[$locode]"; then
+              continue
+            fi
+            built=""
+            for attempt in 1 2; do
+              if timeout 600 bundle exec rake "seaports:geometry[$locode]"; then
+                built=yes
+                break
+              fi
+              echo "$locode: attempt $attempt did not build"
+            done
+            if [ -z "$built" ]; then
+              failed="$failed $locode"
             fi
           done
-          bundle exec rake seaports:check_geometry
+          echo "failed=$failed" >> "$GITHUB_OUTPUT"
 
       - name: Commit the regenerated outlines
         if: github.event_name == 'pull_request'
@@ -86,6 +109,20 @@ jobs:
             # A push with GITHUB_TOKEN starts no workflow, so ask for CI.
             gh workflow run ci.yml --ref "$HEAD_REF"
           fi
+
+      # After the commit, so the ports that did build reach the branch even
+      # when another did not.
+      - name: Check the outlines
+        if: github.event_name == 'pull_request'
+        env:
+          FAILED: ${{ steps.touched.outputs.failed }}
+        run: |
+          set -euo pipefail
+          if [ -n "${FAILED// /}" ]; then
+            echo "::error::Not built from OpenStreetMap:$FAILED. The 'Build the outlines a pull request touches' step's log says why."
+            exit 1
+          fi
+          bundle exec rake seaports:check_geometry
 
       # A port that fails keeps its old file; the others still reach the
       # pull request, and the last step fails the run for the ones that did
