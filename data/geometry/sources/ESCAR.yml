@@ -1,0 +1,44 @@
+---
+locode: ESCAR
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features around Cartagena and the Escombreras valley. OpenStreetMap maps
+  the town harbour's container and general-cargo terminals and the cruise quay. It maps nothing at Escombreras
+  as an area: the harbour is a node, and the Alkion tank terminal (way/99702319) is a building too small
+  to pass, so the Escombreras liquid and bulk terminals (Repsol, Enagás, Alkion and the rest) are left
+  out until they are mapped. OpenStreetMap maps no anchorage off Cartagena, so none is listed.
+position_outside: >-
+  UN/LOCODE places Cartagena at (37.6, -0.9833), in the old town about 500 m north of the cruise quay,
+  just beyond these limits. A ship there is not at a terminal.
+port_limits:
+  derive: hull
+  buffer_m: 400
+  note: >-
+    OpenStreetMap maps no port limits for Cartagena. These are the hull of the terminals below, around
+    the town harbour, grown by 400 m. They leave out Escombreras, 3 km east, whose terminals are not mapped.
+features:
+- osm: relation/14685601
+  kind: terminal
+  name: Terminal de Contenedores de Cartagena
+  cargo:
+  - container
+  note: >-
+    OpenStreetMap names it Terminal de Contenedores - Muelle de Santa Lucía and tags it landuse=industrial
+    only. Container is from the name.
+- osm: relation/14685519
+  kind: terminal
+  name: Muelle de San Pedro
+  cargo:
+  - general
+  note: >-
+    OpenStreetMap names it Terminal de Mercancía General - Muelle de San Pedro and tags it landuse=industrial
+    only. General is from the name.
+- osm: way/316458295
+  kind: terminal
+  name: Terminal de Cruceros de Cartagena
+  cargo:
+  - passenger
+  buffer_m: 60
+  note: >-
+    The cruise quay, mapped as man_made=quay and named Terminal de Cruceros. Drawn as the quay grown by
+    60 m if OpenStreetMap maps it as a line.

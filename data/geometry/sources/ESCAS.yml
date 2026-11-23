@@ -1,0 +1,44 @@
+---
+locode: ESCAS
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[ESCAS,6,39.96,0.02], recentred on the harbour; a broader
+  name search timed out on Overpass. OpenStreetMap maps the port area, one container terminal and three
+  unnamed anchorages. It maps none of the bulk, ceramics or liquid terminals separately, nor the BP refinery's
+  jetties, so they are not here by name; the port area covers the quays.
+position_outside: >-
+  UN/LOCODE places Castellón at (39.9833, -0.0333), on the city centre, about 5 km inland of the harbour
+  at El Grau. A ship there is in the city, not at a terminal.
+port_limits:
+  derive: hull
+  osm: relation/9646829
+  buffer_m: 300
+  note: >-
+    OpenStreetMap maps no port limits for Castellón. These are the hull of the port area (relation/9646829,
+    tagged industrial=port and named Port de Castelló) and the terminal below, grown by 300 m. They leave
+    the anchorages offshore outside.
+features:
+- osm: way/1024857543
+  kind: anchorage
+  name: North Anchorage
+  note: >-
+    Seamark area, unnamed in OpenStreetMap; the name is from where it lies, north-east of the harbour
+    entrance. OpenStreetMap gives no category.
+- osm: way/1024857542
+  kind: anchorage
+  name: Outer North Anchorage
+  note: >-
+    Seamark area, unnamed in OpenStreetMap; the name is from where it lies, further offshore than the
+    North Anchorage. OpenStreetMap gives no category.
+- osm: way/1024857541
+  kind: anchorage
+  name: South Anchorage
+  note: >-
+    Seamark area, unnamed in OpenStreetMap; the name is from where it lies, south-east of the harbour.
+    OpenStreetMap gives no category.
+- osm: relation/9646830
+  kind: terminal
+  name: Castellón Container Terminal
+  cargo:
+  - container
+  note: Tagged industrial=port and cargo=container, with no name or operator in OpenStreetMap.

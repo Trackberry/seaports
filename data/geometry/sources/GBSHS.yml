@@ -1,0 +1,57 @@
+---
+locode: GBSHS
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features and seamarks over the Medway and Thames estuary. OpenStreetMap
+  maps the Port of Sheerness as one area, with the fruit import terminal as a warehouse inside it, so
+  the terminal below is the whole port. Thamesport and the Grain oil terminal across the Medway, Queenborough
+  and Chatham Docks upstream are other ports and are left out. The N1 to N5 anchorages and Little Nore
+  serve the Medway approach; OpenStreetMap gives none of them a category.
+port_limits:
+  derive: hull
+  buffer_m: 800
+  note: >-
+    OpenStreetMap maps no port limits for Sheerness; Peel Ports' Medway limits cover the whole river.
+    These are the hull of the Port of Sheerness, grown by 800 m to take in its berths and the water off
+    Garrison Point, and stop short of Thamesport and Queenborough.
+features:
+- osm: way/58377753
+  kind: terminal
+  name: Port of Sheerness
+  operator: Peel Ports
+  cargo:
+  - reefer
+  - ro_ro
+  - general
+  note: >-
+    Tagged industrial=port and port=cargo, with no operator tag. Covers the fruit import terminal, the
+    car terminal and the forest products berths, which OpenStreetMap does not map apart. Reefer is from
+    the fruit terminal, a warehouse OpenStreetMap names Fruit Import Terminal.
+- osm: way/1064874180
+  kind: anchorage
+  name: Little Nore Anchorage
+  note: Seamark area off Garrison Point.
+- osm: way/1064874181
+  kind: anchorage
+  name: Sheerness Small Ship Anchorage
+  note: Seamark area north-east of the port.
+- osm: way/1144337728
+  kind: anchorage
+  name: N1
+  note: Seamark area in the Medway approach.
+- osm: way/1144337727
+  kind: anchorage
+  name: N2
+  note: Seamark area in the Medway approach.
+- osm: way/1144337726
+  kind: anchorage
+  name: N3
+  note: Seamark area in the Medway approach.
+- osm: way/1144337725
+  kind: anchorage
+  name: N4
+  note: Seamark area in the Medway approach.
+- osm: way/1144337724
+  kind: anchorage
+  name: N5
+  note: Seamark area in the Medway approach.

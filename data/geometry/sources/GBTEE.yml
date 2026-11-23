@@ -1,0 +1,41 @@
+---
+locode: GBTEE
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features and seamarks over the Tees estuary. OpenStreetMap maps Teesport
+  as one area, with the ro-ro harbour and the bulks terminal inside it, so the terminal below is the whole
+  port. Hartlepool, 11 km north, is another port and is left out, as are the upriver wharves at Middlesbrough
+  and Stockton. OpenStreetMap maps no anchorage in Tees Bay.
+position_outside: >-
+  UN/LOCODE places Teesport at (54.5833, -1.15), inland of the port towards Grangetown, about 2 km south
+  of the Teesport quays. A ship cannot be there.
+port_limits:
+  derive: hull
+  buffer_m: 800
+  note: >-
+    OpenStreetMap maps no port limits for Teesport; PD Ports' Tees limits run from the river mouth to
+    Stockton. These are the hull of Teesport and the Redcar bulk quay, grown by 800 m to take in the river
+    in front of their berths.
+features:
+- osm: way/50981960
+  kind: terminal
+  name: Teesport
+  operator: PD Ports
+  cargo:
+  - container
+  - ro_ro
+  - bulk
+  - general
+  note: >-
+    Tagged industrial=port, port=cargo and cargo=container, with Wikidata Q7694565. Covers the container
+    terminal, the ro-ro harbour and the bulks terminal, which OpenStreetMap maps inside it.
+- osm: way/539642524
+  kind: terminal
+  name: Redcar Bulk Terminal
+  operator: PD Ports
+  cargo:
+  - bulk
+  buffer_m: 200
+  note: >-
+    OpenStreetMap draws only the quay, as a line tagged man_made=quay, so the terminal is that line grown
+    by 200 m.

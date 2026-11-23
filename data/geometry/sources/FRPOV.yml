@@ -1,0 +1,22 @@
+---
+locode: FRPOV
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of OpenStreetMap around the harbour: rake seaports:geometry_candidates[FRPOV,4]
+  found nothing, because OpenStreetMap tags neither the harbour nor its basins as such. The fruit quays
+  are mapped as one area, Port Fruitier International. OpenStreetMap maps no anchorage off Port-Vendres.
+port_limits:
+  derive: hull
+  buffer_m: 600
+  note: >-
+    OpenStreetMap maps no port limits for Port-Vendres. These are the fruit terminal grown by 600 m, which
+    takes in the inner harbour and part of the town around it, so they are rougher than the legal limits.
+features:
+- osm: way/42304307
+  kind: terminal
+  name: Port Fruitier International
+  cargo:
+  - reefer
+  note: >-
+    The fruit quays, mapped as one landuse=industrial area. OpenStreetMap gives no operator or cargo tag;
+    reefer is from its name.

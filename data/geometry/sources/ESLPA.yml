@@ -1,0 +1,48 @@
+---
+locode: ESLPA
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features around the Puerto de la Luz. OpenStreetMap maps no anchorage
+  off Las Palmas, so none is listed. Of the container terminals only OPCSA is mapped; La Luz container
+  terminal on the Muelle de La Esfinge, the fruit and reefer quays and the Naviera Armas and Fred. Olsen
+  ferry berths are not mapped as areas (Fred. Olsen's way/266670736 is too small to pass), so they are
+  not here.
+position_outside: >-
+  UN/LOCODE places Las Palmas at (28.1, -15.4167), on the city south of the harbour, about 1.5 km south
+  of the port area and 3 km south of the first cargo terminal. A ship there is not at a terminal.
+port_limits:
+  derive: hull
+  osm: way/44854146
+  buffer_m: 300
+  note: >-
+    OpenStreetMap maps no port limits for Las Palmas. These are the hull of the port area (way/44854146,
+    tagged industrial=port and named Puerto de la Luz y de Las Palmas) and the terminals below, grown
+    by 300 m.
+features:
+- osm: way/1530867665
+  kind: terminal
+  name: OPCSA
+  operator: OPCSA
+  cargo:
+  - container
+  note: >-
+    Operaciones Portuarias Canarias, tagged industrial=port and port=cargo. Container is from the operator,
+    so check it.
+- osm: way/1034806337
+  kind: terminal
+  name: Santa Catalina Terminal
+  cargo:
+  - passenger
+  note: >-
+    The Santa Catalina pier, tagged industrial=port and amenity=ferry_terminal and named for the whole
+    port in OpenStreetMap. It is the cruise quay; passenger is from that, so check it.
+- osm: relation/14403207
+  kind: terminal
+  name: Baleària Las Palmas Terminal
+  operator: Baleària
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The Baleària Canarias terminal building, tagged amenity=ferry_terminal. Ro-ro is from the operator's
+    ferries, so check it.

@@ -1,0 +1,66 @@
+---
+locode: DEBRV
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around the city and off the Weser mouth, and a name search
+  for the container terminals. OpenStreetMap maps the whole container terminal (CT1 to CT4, run by Eurogate,
+  NTB and MSC Gate) as one area with no operator, so the three operators are not separate features. Trackberry's
+  config/port_areas.yml lists no quays for Bremerhaven. OpenStreetMap gives the Weser anchorages no category.
+position_outside: >-
+  UN/LOCODE places Bremerhaven at (53.5333, 8.6), in Geestemünde east of the Fischereihafen, about 2 km
+  south-east of the Neuer Hafen and 7 km from the container terminal. A ship there is in the town, not
+  at a cargo terminal.
+port_limits:
+  derive: hull
+  osm:
+  - way/153029409
+  - way/153027885
+  buffer_m: 1000
+  note: >-
+    OpenStreetMap maps no port limits for Bremerhaven. These are the hull of the terminals below and two
+    harbour basins (Neuer Hafen and Kaiserhafen I), grown by 1 km. They take in the Weser along the quays
+    and the town behind them, so they are rougher than the legal port area.
+features:
+- osm: way/303440598
+  kind: anchorage
+  name: Blexen - Reede
+  note: Seamark area in the Weser, off Blexen and opposite the town.
+- osm: way/170017178
+  kind: anchorage
+  name: F-Reede
+  note: Seamark area in the outer Weser.
+- osm: way/188241786
+  kind: anchorage
+  name: Neue Weser Nord Reede
+  note: Seamark area at the Weser approach, about 50 km out.
+- osm: node/2675727094
+  kind: pilot_boarding
+  name: Jade / Weser
+  note: The pilot boarding place for the Jade and the Weser, shared with Wilhelmshaven.
+- osm: way/182659673
+  kind: terminal
+  name: Container-Terminal Bremerhaven
+  cargo:
+  - container
+  note: >-
+    Tagged cargo=container. One area for the whole quay, CT1 to CT4, which Eurogate, NTB and MSC Gate
+    run in parts; OpenStreetMap does not map those parts, so it has no operator here.
+- osm: way/41421215
+  kind: terminal
+  name: Kühlhaus
+  cargo:
+  - reefer
+  note: >-
+    A cold store on the container terminal, tagged building=coldstore; reefer is from that tag. OpenStreetMap
+    gives no operator.
+- osm:
+  - way/176318802
+  - relation/2354031
+  kind: terminal
+  name: BLG Autoterminal Bremerhaven
+  operator: BLG
+  cargo:
+  - ro_ro
+  note: >-
+    Mapped as two areas, merged here. Tagged cargo=vehicle and seamark:harbour:category=roro. The operator
+    is from its name.
