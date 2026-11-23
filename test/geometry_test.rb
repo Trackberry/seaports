@@ -341,6 +341,17 @@ class GeometryChecksTest < Minitest::Test
 
     assert(Checks.run(collection([limits])).errors.any? { |line| line.include?("licence is missing") })
   end
+
+  # Antwerp once shipped a quay near Vlissingen, 30 km from its nearest
+  # Antwerp terminal, picked from the wrong search.
+  def test_a_terminal_far_from_the_ports_others_is_an_error
+    far = [[3.75, 51.34], [3.76, 51.34], [3.76, 51.345], [3.75, 51.345], [3.75, 51.34]]
+    wide = [[3.7, 51.85], [4.6, 51.85], [4.6, 52.0], [3.7, 52.0], [3.7, 51.85]]
+    result = Checks.run(collection([feature("port_limits", wide), feature("terminal", TERMINAL, name: "Near", cargo: ["bulk"]),
+      feature("terminal", far, name: "Far", cargo: ["bulk"])]))
+
+    assert(result.errors.any? { |line| line.include?("terminal Far is") && line.include?("km from") })
+  end
 end
 
 class GeometryCandidatesTest < Minitest::Test

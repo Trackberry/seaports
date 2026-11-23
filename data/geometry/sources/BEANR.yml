@@ -91,13 +91,6 @@ features:
   cargo:
   - container
   note: On the Deurganckdok, left bank. Container is from its operator.
-- osm: way/376648236
-  kind: terminal
-  name: Containerkade
-  operator: Katoen Natie
-  cargo:
-  - container
-  note: Tagged cargo=container.
 - osm: way/89143911
   kind: terminal
   name: Antwerp Euroterminal

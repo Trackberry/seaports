@@ -160,9 +160,30 @@ module Seaports
           lng, lat = Planar.label_point(feature["geometry"])
           @warnings << "#{kind} #{feature['properties']['name']}: outside the port limits" unless Planar.contains?(outline, lng, lat)
         end
+        check_isolated_terminals(features)
         @warnings << "no anchorage mapped" if features.none? { |f| f["properties"]["kind"] == "anchorage" }
         @warnings << "no terminal mapped" if features.none? { |f| f["properties"]["kind"] == "terminal" }
         check_overlaps(locode, features)
+      end
+
+      # A terminal far from every other terminal of its port is almost always
+      # one picked from a neighbouring port's search: Antwerp shipped a
+      # Containerkade near Vlissingen, 30 km from its nearest Antwerp quay,
+      # and the derived limits stretched down the Scheldt to take it in.
+      ISOLATED_M = 25_000
+
+      def check_isolated_terminals(features)
+        points = features.select { |f| f["properties"]["kind"] == "terminal" }.map do |feature|
+          [feature["properties"]["name"] || feature["properties"]["osm"]&.join(", "), Planar.label_point(feature["geometry"])]
+        end
+        return if points.size < 2
+
+        points.each do |name, point|
+          nearest = points.reject { |_, other| other.equal?(point) }.map { |_, other| Planar.distance_m(point, other) }.min
+          next if nearest <= ISOLATED_M
+
+          @errors << "terminal #{name} is #{(nearest / 1000).round} km from the port's nearest other terminal: is it this port's?"
+        end
       end
 
       # A terminal of this port inside another port's limits is a terminal
