@@ -1,0 +1,32 @@
+---
+locode: IEWAT
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[IEWAT,12,52.25,-7.05] and a seamark search of Waterford
+  Harbour. Belview, down the Suir from the city, is the port's cargo terminal; OpenStreetMap tags it industrial=port
+  with no cargo type, so its cargo is from the Port of Waterford's list of facilities. It maps no anchorage
+  and no pilot boarding place in Waterford Harbour. The Dunmore East fishery harbour is left out. Trackberry's
+  config/port_areas.yml has no entry for Waterford, so no quays are listed.
+position_outside: >-
+  UN/LOCODE places Waterford at (52.25, -7.1), in the city south of the Suir, about 4 km west of Belview,
+  the only berths these limits cover. A ship cannot be there.
+port_limits:
+  derive: hull
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Waterford. These are the hull of Belview, grown by 500 m: the
+    river berths at Belview only. The city quays (Frank Cassin Wharf), which the port lists for cruise
+    and project cargo, are left out, so the limits do not reach the city.
+features:
+- osm: way/46605667
+  kind: terminal
+  name: Belview Port
+  operator: Port of Waterford
+  cargo:
+  - container
+  - bulk
+  - general
+  note: >-
+    Tagged industrial=port and operator=Port of Waterford. The Port of Waterford lists three berths here:
+    the Belview Container Terminal (containers and project cargo), the Belview Bulk Terminal (bulk and
+    general cargo) and the Suir Shipping quay (bulk).

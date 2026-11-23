@@ -1,0 +1,53 @@
+---
+locode: ESSCT
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[ESSCT,10] and a search of named features along the waterfront,
+  repeated on 2026-11-23. OpenStreetMap maps the harbour's quays as landuse=harbour areas, among them
+  the Muelle de Contenedores in the Dársena del Este, the Muelle de Enlace and the Muelle de Ribera, which
+  are used below. The Fred. Olsen and Naviera Armas berths are mapped only as nodes, so they are named
+  in the quays' notes rather than as features. The Baleária cargo depot on the Muelle de Enlace (way/1318816052)
+  is left out as part of that quay, and so is the cruise terminal building (way/264287946), which stands
+  on the Muelle de Ribera and is tagged disused:building=public. The refinery's oil harbour at La Hondura
+  (relation/2609785), 5 km south-west, is left out too: the hull from it to the Dársena del Este runs
+  across the city centre. OpenStreetMap maps no anchorage off Santa Cruz.
+port_limits:
+  derive: hull
+  buffer_m: 100
+  note: >-
+    OpenStreetMap maps the harbour as one area, Puerto de Santa Cruz de Tenerife (relation/1216506), but
+    its hull takes in the city centre behind the waterfront, so it is not used. These are the hull of
+    the terminals below alone, grown by 100 m: Plaza de España, El Toscal and the city's own OpenStreetMap
+    point stay outside.
+features:
+- osm: relation/2609780
+  kind: terminal
+  name: Terminal de Contenedores de Tenerife
+  operator: Terminal de Contenedores de Tenerife
+  cargo:
+  - container
+  note: >-
+    Mapped as Muelle de Contenedores, a landuse=harbour area on the Dique del Este. The port authority
+    awarded the public container terminal in the Dársena del Este to OHL Concesiones in 2012, run by its
+    subsidiary Terminal de Contenedores de Tenerife (TCT), which holds the port's general-cargo handling
+    licence (BOE, 2012, 2016 and 2022).
+- osm: relation/2609781
+  kind: terminal
+  name: Muelle de Enlace
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    A landuse=harbour area in the Dársena de Anaga. Naviera Armas boards its ferries here (Embarque Armas,
+    Calle Muelle de Enlace), and Baleária's cargo depot is on it; OpenStreetMap gives no operator.
+- osm: relation/2609783
+  kind: terminal
+  name: Muelle de Ribera
+  cargo:
+  - ro_ro
+  - passenger
+  - general
+  note: >-
+    A landuse=harbour area. Fred. Olsen's ferries board here, and the quay has ro-ro ramps and the fruit
+    and general cargo berths with their cold stores (Universidad de Las Palmas, port history). OpenStreetMap
+    gives no operator.

@@ -1,0 +1,63 @@
+---
+locode: GBBEL
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features and seamarks around Belfast Lough. OpenStreetMap maps the Victoria
+  Terminals on the east bank as one area named Belfast Harbour, with Belfast Container Terminal and the
+  Stena Line terminals as small buildings inside it, so the terminal below is that area. The west-bank
+  quays (York Dock, Barnett Dock, Albert and Ballast Quays, Sinclair and Gotto wharves) carry no cargo
+  type in OpenStreetMap and go into the port limits only. The Cloghan Point oil terminal, 15 km down the
+  lough, is left out so the limits do not cover the lough. OpenStreetMap maps no anchorage in Belfast
+  Lough.
+position_outside: >-
+  UN/LOCODE places Belfast at (54.9833, -5.9167), on the Antrim coast about 40 km north of the harbour.
+  A ship there is nowhere near Belfast.
+port_limits:
+  derive: hull
+  osm:
+  - way/221825963
+  - way/221826529
+  - way/221827044
+  - way/222482977
+  - way/223541549
+  buffer_m: 600
+  note: >-
+    OpenStreetMap maps no port limits for Belfast. These are the hull of the terminals and the west-bank
+    quays, from the Victoria Terminals up both banks of the Lagan to Albert Quay, grown by 600 m. Much
+    smaller than Belfast Harbour's limits, which take in the inner lough.
+features:
+- osm: way/744954052
+  kind: terminal
+  name: Belfast Harbour Victoria Terminals
+  operator: Belfast Harbour
+  cargo:
+  - container
+  - ro_ro
+  - passenger
+  note: >-
+    OpenStreetMap names it Belfast Harbour and tags it industrial=harbour. Holds Belfast Container Terminal
+    (VT3) and the Stena Line Victoria Terminals 2 and 4, which OpenStreetMap maps as buildings inside
+    it, too small to be features of their own.
+- osm: way/221826526
+  kind: terminal
+  name: Stormont Wharf
+  cargo:
+  - general
+  note: >-
+    A deep-water quay on the east bank, tagged landuse=industrial, and one of the general user berths
+    in Belfast Harbour's schedule of charges. It was Belfast's main cruise berth after its 2009 extension;
+    cruise calls now use the Belfast Cruise Terminal, and Belfast Harbour's 2026 cruise schedule lists
+    none here, so it is not tagged passenger.
+- osm:
+  - way/221826528
+  - way/223540319
+  - way/223540693
+  - way/223540694
+  kind: terminal
+  name: Pollock Dock
+  cargo:
+  - general
+  note: >-
+    Pollock Dock B-D, 5, 6 and 7, mapped as four areas tagged landuse=industrial and merged here. Belfast
+    Harbour lists Pollock Dock and Basin among its general user berths, open to any trade, and publishes
+    no cargo type for it; OpenStreetMap gives none either, so it is general.

@@ -1,0 +1,85 @@
+---
+locode: ESBIO
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates and a search of named features around the Abra and the
+  ría. OpenStreetMap maps no anchorage off Bilbao, so none is listed. It names the outer-harbour quays
+  (A-1 to AZ-6) but gives no operator or cargo for most of them; only the container quays are named for
+  their operator. The Petronor jetties and the BBG LNG terminal are not mapped as terminals, so they are
+  not here by name. Muelle A-6 is left out: the ferry terminal below sits wholly inside it and it carries
+  no use of its own. The Muelle de Lutxana up the ría (relation/5612716) is left out: its hull would take
+  in Portugalete, Barakaldo and Getxo.
+position_outside: >-
+  UN/LOCODE places Bilbao on the city (43.25, -2.9667), about 12 km up the ría from the outer harbour
+  at Santurtzi, where every terminal mapped here is. A ship there is in the city, not at a terminal.
+port_limits:
+  derive: hull
+  osm: way/110020916
+  buffer_m: 300
+  note: >-
+    OpenStreetMap maps no port limits for Bilbao. These are the hull of the outer harbour (way/110020916,
+    tagged harbour=yes and named Bilbao Port), the terminals below and the Getxo cruise terminal across
+    the Abra, grown by 300 m. They take in the water of the Abra between, and the waterfront of Santurtzi
+    as far as its town hall.
+features:
+- osm:
+  - way/302501227
+  - way/169168190
+  kind: terminal
+  name: CSP Iberian Bilbao Terminal
+  operator: CSP Iberian Bilbao Terminal
+  cargo:
+  - container
+  note: >-
+    Muelles A-1 and A-2, merged here. OpenStreetMap still tags both operator=Noatum Container Terminal
+    Bilbao, the terminal's name before COSCO Shipping Ports bought Noatum Ports in 2017; the group renamed
+    it CSP Iberian Bilbao Terminal (cspspain.com), and a July 2026 concession notice in the BOE uses that
+    name.
+- osm: way/109786918
+  kind: terminal
+  name: Frigoríficos Portuarios del Norte (Frioport)
+  cargo:
+  - reefer
+  note: >-
+    A cold store by the container quays, tagged building=warehouse and named Frigorífico Portuario del
+    Norte. The port authority (bilbaoport.eus, perishables terminal) names it Frigoríficos Portuarios
+    del Norte, or Frioport, its perishable goods terminal of 25,000 m³ beside CSP Iberian's container
+    quay at A-1.
+- osm: way/554285112
+  kind: terminal
+  name: Terminal de Ferry de Bilbao
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The ferry terminal building at Santurtzi, tagged amenity=ferry_terminal; a ferry node beside it is
+    tagged cargo=passengers;vehicle. OpenStreetMap gives the terminal no operator; the ferry routes mapped
+    from it, to Portsmouth (relation/2705259) and Rosslare, are Brittany Ferries'.
+- osm:
+  - way/292975951
+  - way/390266991
+  kind: terminal
+  name: Getxo Cruise Terminal
+  cargo:
+  - passenger
+  note: Terminal de Cruceros Getxo I y II and Getxo III, two buildings merged here.
+- osm: way/1293467637
+  kind: terminal
+  name: Muelle AZ-0
+  note: Tagged landuse=industrial only; OpenStreetMap gives no operator or cargo.
+- osm: way/169095497
+  kind: terminal
+  name: Muelle AZ-1
+  note: Tagged landuse=industrial only; OpenStreetMap gives no operator or cargo.
+- osm: way/169095498
+  kind: terminal
+  name: Muelle AZ-2
+  note: Tagged landuse=industrial only; OpenStreetMap gives no operator or cargo.
+- osm: way/169168196
+  kind: terminal
+  name: Muelle AZ-3
+  note: Tagged landuse=industrial only; OpenStreetMap gives no operator or cargo.
+- osm: way/631903606
+  kind: terminal
+  name: Muelle AZ-6
+  note: Tagged landuse=industrial only; OpenStreetMap gives no operator or cargo.

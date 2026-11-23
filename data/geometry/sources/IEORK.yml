@@ -1,0 +1,52 @@
+---
+locode: IEORK
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[IEORK,14,51.84,-8.30], a search of named features around
+  Cork Harbour and a seamark search of the harbour and its approaches. These are the Ringaskiddy deep-water
+  berths only. Tivoli, up the Lee, and the Whitegate refinery, across the harbour, are left out: a hull
+  reaching Tivoli takes in Passage West, Monkstown, Blackrock and Mahon, and one reaching Whitegate takes
+  in Whitegate village and the lower harbour between. Cobh's cruise quay is mapped only as a line. OpenStreetMap
+  maps no anchorage or pilot boarding place for Cork, and Trackberry's config/port_areas.yml has no entry
+  for it.
+position_outside: >-
+  UN/LOCODE places Cork at (51.85, -8.2667), on Great Island east of Cobh, about 3.5 km north-east of
+  the Ringaskiddy berths that bound these limits. No terminal is there.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  note: >-
+    OpenStreetMap maps no port limits for Cork. These are the hull of the Ringaskiddy terminals below,
+    grown by 300 m. They take in the north end of Ringaskiddy village, around the ferry terminal, and
+    none of the other harbour towns. Ships at Tivoli or at the Whitegate jetty fall outside them.
+features:
+- osm: way/78183761
+  kind: terminal
+  name: Port of Cork Deepwater Berth
+  operator: Port of Cork
+  cargo:
+  - bulk
+  - general
+  note: >-
+    At Ringaskiddy, tagged landuse=industrial only. The Port of Cork handles its bulk cargo here and at
+    the City Quays, and project cargo such as wind turbines at Ringaskiddy; Panamax ships berth here.
+- osm: way/664675390
+  kind: terminal
+  name: Port of Cork Deepwater Berth Extension
+  operator: Port of Cork
+  cargo:
+  - container
+  note: >-
+    Tagged landuse=industrial only. It is the reclaimed quay beside the Ringaskiddy ferry terminal, where
+    the Port of Cork opened Cork Container Terminal in 2022 (a 360 m quay); OpenStreetMap does not name
+    the container terminal, so the area is taken to be it.
+- osm: way/71433422
+  kind: terminal
+  name: Ringaskiddy Ferry Terminal
+  operator: Port of Cork
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The ferry terminal building, tagged amenity=ferry_terminal and named Port of Cork. Brittany Ferries
+    sails from here to Roscoff.

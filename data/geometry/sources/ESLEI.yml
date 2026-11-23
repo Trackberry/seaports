@@ -1,0 +1,29 @@
+---
+locode: ESLEI
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[ESLEI,8,36.83,-2.47] and a search of named features around
+  the harbour, repeated on 2026-11-23. OpenStreetMap maps the ferry terminal, the harbour and its basins,
+  and nothing else as an area: not the Muelle de Ribera, Muelle de Poniente or Pechina cargo quays, nor
+  any anchorage. So the ferry terminal is the only terminal here. The cold store named Frigoríficos del
+  Puerto (way/196310292) is left out: it is tagged building=yes only and stands at the fishing port, by
+  the Dársena Pesquera, and nothing ties it to cargo ships.
+position_outside: >-
+  UN/LOCODE places Almería at (36.8333, -2.45), on the shore about 1.5 km east of the Dársena Comercial.
+  A ship there is off the city, not at a terminal.
+port_limits:
+  osm: relation/2638483
+  note: >-
+    OpenStreetMap maps no port limits for Almería. These are its harbour area, Puerto de Almería (relation/2638483,
+    landuse=harbour), as mapped: the commercial and fishing basins and their quays.
+features:
+- osm: way/196310297
+  kind: terminal
+  name: Estación Marítima de Almería
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The ferry terminal for the North African lines, mapped as a building named Terminal portuaria and
+    tagged amenity=ferry_terminal. Ro-ro is from those lines: the ferries to Melilla, Nador and Oran are
+    ro-pax ships that carry vehicles and freight trailers. OpenStreetMap gives no operator.

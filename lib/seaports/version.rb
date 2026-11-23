@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Seaports
-  VERSION = "1.7.3"
+  VERSION = "1.7.4"
 
   # The UN/LOCODE edition the shipped table was built from, when the source
   # names one: UNECE labels each release by year and half, so "2024-2" is the

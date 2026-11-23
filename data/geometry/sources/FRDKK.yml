@@ -1,0 +1,55 @@
+---
+locode: FRDKK
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[FRDKK,16,51.02,2.25] and a name search for terminals,
+  ferry stations and cold stores between Port Ouest and Port Est, repeated on 2026-11-23 for fruit, reefer
+  and cold-store names and for harbour areas. Only Port Ouest is mapped here. OpenStreetMap maps no harbour
+  area for the port, only points, and the hull of terminals from Port Ouest to Port Est takes in Mardyck
+  and Fort-Mardyck whatever the buffer, so the two Port Est liquid bulk tank farms (way/1549490568 and
+  way/1549490567, formerly Rubis Terminal) are left out. OpenStreetMap maps no fruit terminal or port
+  cold store as an area: Dunkirk's fruit arrives in reefer containers at Terminal des Flandres, marked
+  reefer below. It maps no anchorage. Terminal des Flandres and the LNG terminal are each mapped twice,
+  as a way and as a relation; the ways are used.
+position_outside: >-
+  UN/LOCODE places Dunkirk on the town centre (51.0333, 2.3833), by Port Est, about 13 km east of the
+  Port Ouest terminals mapped here. A ship there is in the town, not at a terminal.
+port_limits:
+  derive: hull
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Dunkirk. These are the hull of the Port Ouest terminals below,
+    grown by 500 m. Mardyck, Fort-Mardyck, Grande-Synthe and Saint-Pol-sur-Mer stay outside; so does Port
+    Est, which these limits do not cover.
+features:
+- osm: way/1480777223
+  kind: terminal
+  name: Terminal des Flandres
+  cargo:
+  - container
+  - reefer
+  note: >-
+    The Port Ouest container terminal, tagged man_made=container_terminal. OpenStreetMap gives no operator.
+    Reefer is from the port authority (dunkerque-port.fr), which names it as the call of Seatrade's reefer
+    service from Ecuador, Peru and Surinam; CMA CGM's tropical fruit services call here too. Also mapped
+    as relation/13293438, not used here.
+- osm: node/4175657703
+  kind: terminal
+  name: DFDS Dunkerque ferry terminal
+  operator: DFDS
+  cargo:
+  - ro_ro
+  - passenger
+  buffer_m: 300
+  note: >-
+    The Dover ferry berths at Port Ouest. OpenStreetMap maps the terminal only as a point tagged amenity=ferry_terminal
+    and cargo=vehicle, so this area is that point grown by 300 m. It covers the Ro-Ro 2, 3, 5 and 6 linkspans
+    mapped beside it; Ro-Ro 4, about 450 m south-west, falls outside.
+- osm: way/1549523183
+  kind: terminal
+  name: Dunkerque LNG
+  cargo:
+  - tanker
+  note: >-
+    The LNG terminal at Port Ouest, named Dunkerque terminal méthanier and tagged utility=gas. Tanker
+    is from its name. Also mapped as relation/10626830, not used here.

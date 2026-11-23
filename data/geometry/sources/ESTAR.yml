@@ -1,0 +1,38 @@
+---
+locode: ESTAR
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[ESTAR,10] and a search of named features around the harbour,
+  repeated on 2026-11-23. OpenStreetMap maps the harbour itself but few of its terminals as areas: not
+  the agribulk quays, the ro-ro berths or the Repsol monobuoy, whose quays are only named points. There
+  is no container terminal to map: DP World gave up its Moll d'Andalusia concession in 2023, and the port
+  awarded a new multipurpose terminal there to COSCO and PTP in 2026 (Alimarket, Diari de Tarragona).
+  An unnamed industrial=port area (way/957609233) and an unnamed car depot (relation/14500019) are left
+  out: OpenStreetMap names neither, and nothing ties either to a berth. OpenStreetMap maps no anchorage
+  off Tarragona.
+port_limits:
+  derive: hull
+  osm: relation/7331271
+  buffer_m: 300
+  note: >-
+    OpenStreetMap maps the harbour, Port de Tarragona (landuse=harbour), but its outline is concave and
+    misses the port's own position in the outer harbour. These are the hull of that outline and the terminals
+    below, grown by 300 m.
+features:
+- osm: relation/18549955
+  kind: terminal
+  name: Moll de la Química
+  cargo:
+  - tanker
+  note: >-
+    Tagged industrial=port and cargo=liquid_bulk, with no name or operator in OpenStreetMap. Named for
+    the quay: its Moll de la Química A, B and C berths are mapped as points beside it, on the Dársena
+    de la Química (relation/18549728, seamark harbour category tanker).
+- osm: way/875577802
+  kind: terminal
+  name: Moll de Catalunya
+  cargo:
+  - bulk
+  note: >-
+    Mapped as a pier area. Bulk is from its trade: coal is handled here (Diari de Tarragona, 2021), and
+    a grain warehouse and conveyors for solid minerals serve the quay. OpenStreetMap gives no operator.

@@ -1,0 +1,64 @@
+---
+locode: FRMTX
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[FRMTX,9,47.30,-2.15] and a name search along the Montoir
+  quays. These are the Montoir terminals of Nantes-Saint-Nazaire; Donges (FRDON) and the Saint-Nazaire
+  basins (FRSNR) have their own locodes and are left out. OpenStreetMap does not map the Montoir container
+  terminal: a second search on 2026-11-23 for container, terminal and quay names and tags around the Montoir
+  quays found none, and the quays behind it are one unnamed industrial area, used here only for the port
+  limits. The estuary anchorages are mapped only as unnamed points, with no area, so they are left out
+  too.
+position_outside: >-
+  UN/LOCODE places Montoir-de-Bretagne on the town, about 3 km north of the quays. A ship there is ashore,
+  not at a terminal.
+port_limits:
+  derive: hull
+  osm: way/545376168
+  buffer_m: 800
+  note: >-
+    OpenStreetMap maps no port limits for Montoir. These are the hull of the terminals below and the unnamed
+    industrial area behind the Montoir quays, grown by 800 m. They take in the industrial land between
+    the quays, so they are rougher than the legal limits.
+features:
+- osm: node/428646911
+  kind: terminal
+  name: Montoir ro-ro terminal
+  cargo:
+  - ro_ro
+  buffer_m: 300
+  note: >-
+    The Montoir ro-ro berths, mapped only as a point tagged amenity=ferry_terminal, so this area is that
+    point grown by 300 m. The port lists freight ro-ro only here: Suardiaz's motorway of the sea to Vigo
+    three times a week, its Atlantic service to Zeebrugge and Tangier, and LD Seaplane's services (nantes.port.fr,
+    ro-ro page, checked 2026-11-23). The Gijón line closed in 2014 and no passenger service calls, so
+    the point's cargo=passengers tag is not followed.
+- osm: way/545376169
+  kind: terminal
+  name: Terminal Méthanier de Montoir
+  operator: Elengy
+  cargo:
+  - tanker
+  note: The LNG terminal, named Terminal Méthanier Elengy. Tanker is from its name.
+- osm: way/545376167
+  kind: terminal
+  name: Terminal charbonnier
+  cargo:
+  - bulk
+  note: The coal terminal. OpenStreetMap gives no operator or cargo tag; bulk is from its name.
+- osm: way/1553540912
+  kind: terminal
+  name: SEA-invest Montoir
+  operator: SEA-invest
+  cargo:
+  - bulk
+  note: >-
+    Tagged industrial=warehouse. Bulk is from the port, which names MBT, a SEA-invest and IDEA subsidiary,
+    as the operator of the Montoir agri-food multi-bulk terminal.
+- osm: way/1355372825
+  kind: terminal
+  name: Idea Services Vrac
+  operator: Idea
+  cargo:
+  - bulk
+  note: Bulk storage at the upstream end of the Montoir quays. Bulk is from its name (vrac).

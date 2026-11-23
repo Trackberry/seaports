@@ -1,0 +1,32 @@
+---
+locode: IEROS
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from searches of named features and seamarks around Rosslare Harbour; the candidates task timed
+  out on Overpass, so the search was narrowed by hand. OpenStreetMap maps the four ferry berths as docks
+  of water and no terminal area on land, so the terminal here is the berths themselves. It maps no anchorage
+  and no pilot boarding place off Rosslare. The freight yards and the Europort Business Park are left
+  out. Trackberry's config/port_areas.yml has no entry for Rosslare, so no quays are listed.
+port_limits:
+  derive: hull
+  osm: way/972535620
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Rosslare. These are the hull of the four berths and the customs
+    and agriculture border inspection post behind them (tagged industrial=port), grown by 500 m to take
+    in the harbour inside the breakwater.
+features:
+- osm:
+  - way/1300233195
+  - way/1300233198
+  - way/1300233196
+  - way/1300233197
+  kind: terminal
+  name: Rosslare Europort, Berths 1 to 4
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    Berths 1 to 4, each tagged waterway=dock with no cargo tag. Ro-ro and passenger are from the ferry
+    routes OpenStreetMap maps from Rosslare (Stena Line, Irish Ferries, Brittany Ferries, DFDS), so check
+    them. The name Rosslare Europort is from its public transport stop.

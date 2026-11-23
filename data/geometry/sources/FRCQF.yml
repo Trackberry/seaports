@@ -1,0 +1,28 @@
+---
+locode: FRCQF
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[FRCQF,5,50.97,1.87] and a search for ferry terminals
+  and harbour areas. OpenStreetMap maps the ferry berths (Postes 5 to 11, on the old port and the Calais
+  Port 2015 basin) only as points inside one port area, so that area is the terminal. OpenStreetMap maps
+  no anchorage off Calais.
+position_outside: >-
+  UN/LOCODE places Calais on the town (50.95, 1.85), by the inner basins south of the ferry port. A ship
+  there is in the town or the marina, not at a ferry berth.
+port_limits:
+  derive: hull
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Calais. These are the port area grown by 500 m, so they are
+    rougher than the legal limits.
+features:
+- osm: relation/9199357
+  kind: terminal
+  name: Port de Calais ferry terminal
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The ferry port, mapped as one area named Port de Calais and tagged industrial=port. The cross-Channel
+    berths, Postes 5 to 11, are points inside it tagged cargo=passengers;vehicle, so they are not separate
+    features here. OpenStreetMap gives no operator.

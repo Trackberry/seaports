@@ -69,13 +69,18 @@ features:
   cargo:
   - container
   note: Tagged cargo=container.
-- osm: way/599016100
+- osm:
+  - way/599016100
+  - way/1231452162
   kind: terminal
   name: APM Terminals Maasvlakte II
   operator: APM Terminals
   cargo:
   - container
-  note: Tagged cargo=container.
+  note: >-
+    Mapped as two ways, merged here: the working terminal, tagged cargo=container, and its southern expansion
+    along the Prinses Amaliahaven, tagged landuse=construction. The expansion adds about 1 km of deep-sea
+    quay, due to open from late 2026.
 - osm: way/598845434
   kind: terminal
   name: Rotterdam World Gateway
@@ -172,8 +177,8 @@ features:
   cargo:
   - reefer
   note: >-
-    A cold store on the Waalhaven. OpenStreetMap gives no cargo tag; reefer is from its name, so check
-    it.
+    A cold store on the Waalhaven. OpenStreetMap gives no cargo tag; reefer is from what a cold store
+    handles.
 - osm: way/151407973
   kind: terminal
   name: Matrans Rotterdam Terminal
