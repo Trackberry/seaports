@@ -276,6 +276,15 @@ module Seaports
         ->(refs) { shapes(refs, outline:, position:, label: locode) }
       end
 
+      # The same for a canal, chosen by its shipped outline alone: a canal has
+      # no UN/LOCODE position, so a new one needs OSM_REGION.
+      def shapes_for_canal(id)
+        require_relative "../canal/builder"
+        path = Canal::Builder.output_path(id)
+        outline = File.exist?(path) ? JSON.parse(File.read(path)) : nil
+        ->(refs) { shapes(refs, outline:, position: nil, label: id) }
+      end
+
       # A callable with Water.overpass's shape for Builder, for limits with
       # clip: water.
       def water_for(locode)

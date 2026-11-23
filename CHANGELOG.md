@@ -5,6 +5,10 @@ pull request, or by hand for a code change; a person merges both.
 
 ## Unreleased
 
+Canal outlines, a new kind of data beside the port outlines, for the Suez and Panama canals: each canal's centreline, the anchorages where ships wait to transit with the end each serves (`north`, `south` or `in_transit`), and its pilot boarding places, all from OpenStreetMap by id. `Seaports.canals`, `Seaports.canal("suez")` and `Seaports.canal_anchorage_at(lat, lng)` read them; see the README. `rake seaports:geometry` builds them and `rake seaports:check_geometry` checks them, including that no canal anchorage overlaps a port's limits.
+
+A port outline for Ain Sokhna (`EGSOK`, with `EGAIS` as a quay): OpenStreetMap's port area as the limits, DP World Sokhna's terminal and the liquid bulk berths. OpenStreetMap does not map Red Sea Container Terminals yet.
+
 Derived port limits can be cut to the water: `clip: water` under a selection's `port_limits` takes the hull of the terminals down to the sea within OpenStreetMap's coastline and the rivers, docks and basins it maps, keeping the terminals whole. Hulls that took in the towns between and behind the quays (Lyttelton, Tauranga's Mount Maunganui, Rouen's left bank) no longer do. The build refuses a terminal with no water beside it, and clipped limits in separate parts must say why (`disjoint`). Clipping uses GEOS at build time through the ffi-geos gem (`brew install geos`, `apt-get install libgeos-dev`); the gem itself still needs neither. Outlines without `clip` are built byte for byte as before.
 
 The check that two ports' limits overlap now compares their shapes rather than their bounding boxes, so two ports along one lagoon no longer warn.

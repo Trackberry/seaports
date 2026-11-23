@@ -1,6 +1,6 @@
 # Port outlines: data licence
 
-The files in this directory, `data/geometry/*.geojson` and the selections in `data/geometry/sources/`, are a database derived from [OpenStreetMap](https://www.openstreetmap.org/).
+The files in this directory, `data/geometry/*.geojson` and the selections in `data/geometry/sources/`, and the canal outlines in `data/geometry/canals/*.geojson` with their selections in `data/geometry/canals/sources/`, are a database derived from [OpenStreetMap](https://www.openstreetmap.org/).
 
 They are © OpenStreetMap contributors and Trackberry, and are made available under the [Open Database License (ODbL) 1.0](https://opendatacommons.org/licenses/odbl/1-0/). Any rights in individual contents of the database are licensed under the [Database Contents License](https://opendatacommons.org/licenses/dbcl/1-0/).
 

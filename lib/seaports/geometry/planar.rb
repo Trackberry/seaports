@@ -59,6 +59,7 @@ module Seaports
         case geometry && geometry["type"]
         when "Point" then [geometry["coordinates"]]
         when "LineString", "MultiPoint" then geometry["coordinates"]
+        when "MultiLineString" then geometry["coordinates"].flatten(1)
         when "Polygon", "MultiPolygon" then polygons(geometry).flatten(1).flatten(1)
         else []
         end
@@ -142,6 +143,7 @@ module Seaports
       # An L-shaped quay's centre is often in the dock beside it.
       def label_point(geometry)
         return geometry["coordinates"] if geometry["type"] == "Point"
+        return line_label_point(geometry) if %w[LineString MultiLineString].include?(geometry["type"])
 
         largest = polygons(geometry).max_by { |rings| ring_area_m2(rings.first) }
         return nil unless largest
@@ -157,6 +159,37 @@ module Seaports
           centre = inside.min_by { |lng, lat| ((lng - centre[0])**2) + ((lat - centre[1])**2) } || centre
         end
         centre.map { |value| value.round(6) }
+      end
+
+      # The lines of a LineString or MultiLineString, or [] for anything else.
+      def lines(geometry)
+        case geometry && geometry["type"]
+        when "LineString" then [geometry["coordinates"]]
+        when "MultiLineString" then geometry["coordinates"]
+        else []
+        end
+      end
+
+      # A line's label: the vertex halfway along the longest of its lines,
+      # which is on the line, as a label for a canal's centreline should be.
+      def line_label_point(geometry)
+        longest = lines(geometry).max_by { |line| line.each_cons(2).sum { |a, b| distance_m(a, b) } }
+        return nil if longest.nil? || longest.empty?
+
+        longest[longest.size / 2]
+      end
+
+      # intersects?, and also true for two copies of one shape, where every
+      # vertex of each sits on the other's edge and no edge properly crosses:
+      # a canal anchorage that a port's outline names again must not slip
+      # past the canal checks.
+      def overlap?(a, b)
+        return true if intersects?(a, b)
+
+        [[a, b], [b, a]].any? do |one, other|
+          point = polygons(one).empty? ? nil : label_point(one)
+          point && contains?(other, *point)
+        end
       end
 
       # Andrew's monotone chain. Returns a closed ring, counter-clockwise.

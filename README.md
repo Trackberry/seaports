@@ -424,6 +424,71 @@ separately from the gem's MIT code: see
 wherever you draw them; the collection's `attribution` member is the line to
 use.
 
+### Canal outlines
+
+A canal is not a port, and its queue is not port congestion. Ships anchored off
+Port Said in the C and V areas are waiting for a Suez convoy, not for a berth
+at Port Said; ships in the Great Bitter Lake are part-way through, waiting for
+the convoy coming the other way to pass. The gem ships outlines for the Suez
+and Panama canals so a tracker can say "waiting to transit Suez since Tuesday"
+rather than "at anchor, Port Said".
+
+```ruby
+Seaports.canal_ids                               # => ["panama", "suez"]
+suez = Seaports.canal("suez")
+suez.anchorages.size                             # => 78
+suez.anchorages_for(:north).map(&:name).first(3) # => ["C1", "C2", "C3"]
+suez.end_name("north")                           # => "Port Said"
+area = Seaports.canal_anchorage_at(31.3585, 32.3350)
+[area.canal, area.name, area.approach]           # => ["suez", "C1", "north"]
+Seaports.canal_anchorage_at(51.0, 1.5)           # => nil, mid-Channel
+suez.waterway.geometry["type"]                   # => "MultiLineString"
+Seaports.canal("panama").collection              # => the GeoJSON FeatureCollection, for a map
+```
+
+Each canal is a `Seaports::Canal` with an `id`, a `name`, its `ends` (`north`
+and `south`: Port Said and Suez, Colón and Balboa) and its areas, each a
+`Seaports::Canal::Area`:
+
+- one `waterway`, the canal's centreline as OpenStreetMap maps it. It is a
+  line, not an area: OpenStreetMap maps most of the Suez Canal's water as sea
+  behind the coastline, and Panama's as Gatún Lake, Miraflores Lake and the locks
+  separately, so neither has one water area for the whole canal. Use it to
+  draw the canal, not to ask whether a ship is in it;
+- the `anchorage`s where ships wait, each with an `approach`: `north` or
+  `south` for the end it serves, `in_transit` for a lake inside the canal
+  (the Great Bitter Lake, Lake Timsah, Panama's Miraflores Lake);
+- `pilot_boarding` places, with an `approach` too.
+
+`canal_anchorage_at(lat, lng)` answers the waiting area a position is in,
+whichever canal it belongs to, or nil. Both canals run roughly north and south,
+Panama from Colón on the Atlantic to Balboa on the Pacific, which is why the
+ends are called that.
+
+The same rule as the port outlines: every shape is an OpenStreetMap feature
+chosen by id, in `data/geometry/canals/sources/<id>.yml`, and built into
+`data/geometry/canals/<id>.geojson` by `rake "seaports:geometry[suez]"` (with
+no argument, `rake seaports:geometry` builds every port and then every canal).
+A canal has no UN/LOCODE position to choose a Geofabrik region by, so the first
+build of a new one from extracts names it: `OSM_SOURCE=extract
+OSM_REGION=africa/egypt`. `rake seaports:check_geometry` checks the canals with
+the ports: shapes, sources and licence, the selection's digest and canonical
+form (`Seaports::Canal::Builder.dump_selection`), a name and an approach on
+every anchorage, no two overlapping anchorages serving different ends, and two
+errors that are the point of the outlines: a canal anchorage that overlaps any
+port's limits or anchorages, and an OpenStreetMap feature that is in both a
+canal's outline and a port's. Building a port runs the same check the other
+way.
+
+What OpenStreetMap does not map is not here: anchorage B in Limon Bay, any
+anchorage outside the Colón breakwaters, a pilot boarding place at the Suez
+end, and anchorages off Port Said East. In Suez Bay only the northbound
+convoy's waiting areas are the canal's: the V berths and the East Waiting Area,
+which the Suez Canal Authority's Rules of Navigation give to incoming ships.
+The West Waiting Area (W1 to W14), for ships awaiting orders, bunkering or
+bound for Suez and Adabiya, and the lettered areas nearer Port Tawfiq are left
+out, so a ship there reads as waiting for no canal.
+
 ### What is deliberately not in it
 
 Only entries UNECE marks with function `1`, "port", are kept. A road terminal,

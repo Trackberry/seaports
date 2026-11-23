@@ -5,6 +5,7 @@ require "date"
 
 require_relative "seaports/version"
 require_relative "seaports/geometry"
+require_relative "seaports/canal"
 
 # UN/LOCODE sea ports: a locode in, a port name and position out.
 #
@@ -186,6 +187,28 @@ module Seaports
     # Every locode with an outline.
     def geometry_locodes
       Geometry.locodes
+    end
+
+    # Every canal with an outline, as a Seaports::Canal: its waterway, the
+    # anchorages where ships wait to transit, and its pilot boarding places.
+    def canals
+      Canal.all
+    end
+
+    # The canal by id ("suez", "panama"), or nil.
+    def canal(id)
+      Canal.find(id)
+    end
+
+    def canal_ids
+      Canal.ids
+    end
+
+    # The canal anchorage a position is in, as a Seaports::Canal::Area whose
+    # +canal+ names the canal and +approach+ the end, or nil. A ship inside
+    # one is waiting to transit, whatever port the nearest coast belongs to.
+    def canal_anchorage_at(lat, lng)
+      Canal.anchorage_at(lat, lng)
     end
 
     # Every port in the table, ordered by locode. Materialised on each call

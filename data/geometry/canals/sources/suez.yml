@@ -1,0 +1,640 @@
+---
+canal: suez
+name: Suez Canal
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted with osmium from Geofabrik's Egypt extract: every seamark anchorage and pilot boarding place
+  between Port Said and Suez Bay, and the ways of the Suez Canal waterway relation. In Suez Bay only the
+  waiting areas for the northbound convoy are kept, following the Suez Canal Authority's Rules of Navigation
+  (Art. 9, Suez), which give incoming ships two areas: the V berths, V1 to V9, and the East Waiting Area,
+  whose berths OpenStreetMap numbers 1 to 29. Left out: the West Waiting Area, W1 to W14, which the rules
+  give to ships awaiting orders, bunkering, under repair or entering the ports of Suez and Adabiya; and
+  the lettered areas north of both waiting areas, nearer Port Tawfiq and Adabiya (the A, B, C, D and H
+  series and two areas named C1), which are in neither. OpenStreetMap tags none of them with a category,
+  so the split is by the names and by which of the rules' buoyed limits each area lies in.
+ends:
+  north: Port Said
+  south: Suez
+features:
+- osm:
+  - way/411577631
+  - way/411577632
+  - way/411577628
+  - way/411577629
+  - way/411577627
+  - way/411577625
+  - way/411577626
+  - way/5038117
+  - way/925360882
+  kind: waterway
+  name: Suez Canal
+  note: >-
+    The member ways of OpenStreetMap's Suez Canal waterway relation (relation 7719838), including the
+    New Suez Canal branch. A centreline: OpenStreetMap maps the canal's water mostly as sea behind the
+    coastline, with water areas only for the lakes and the stretch north of Suez, so there is no one area
+    for the whole canal.
+- osm: way/197417801
+  kind: anchorage
+  name: C1
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417800
+  kind: anchorage
+  name: C2
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417799
+  kind: anchorage
+  name: C3
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417794
+  kind: anchorage
+  name: C4
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417807
+  kind: anchorage
+  name: C5
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417803
+  kind: anchorage
+  name: C6
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417804
+  kind: anchorage
+  name: C7
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417798
+  kind: anchorage
+  name: C8
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417796
+  kind: anchorage
+  name: C9
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417802
+  kind: anchorage
+  name: C10
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417805
+  kind: anchorage
+  name: C11
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417793
+  kind: anchorage
+  name: C12
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417797
+  kind: anchorage
+  name: C13
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417795
+  kind: anchorage
+  name: C14
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417806
+  kind: anchorage
+  name: C15
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the fifteen C berths of the Southern Area, which the
+    Suez Canal Authority's Rules of Navigation give to ships of up to 42 feet draught.
+- osm: way/197417808
+  kind: anchorage
+  name: V1
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the eight V berths of the Northern Area's Zone Two, which
+    the Suez Canal Authority's Rules of Navigation give to VLCCs, car carriers, container ships, bulk
+    carriers and ships of up to 42 feet draught.
+- osm: way/197417809
+  kind: anchorage
+  name: V2
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the eight V berths of the Northern Area's Zone Two, which
+    the Suez Canal Authority's Rules of Navigation give to VLCCs, car carriers, container ships, bulk
+    carriers and ships of up to 42 feet draught.
+- osm: way/197417812
+  kind: anchorage
+  name: V3
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the eight V berths of the Northern Area's Zone Two, which
+    the Suez Canal Authority's Rules of Navigation give to VLCCs, car carriers, container ships, bulk
+    carriers and ships of up to 42 feet draught.
+- osm: way/197417815
+  kind: anchorage
+  name: V4
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the eight V berths of the Northern Area's Zone Two, which
+    the Suez Canal Authority's Rules of Navigation give to VLCCs, car carriers, container ships, bulk
+    carriers and ships of up to 42 feet draught.
+- osm: way/197417811
+  kind: anchorage
+  name: V5
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the eight V berths of the Northern Area's Zone Two, which
+    the Suez Canal Authority's Rules of Navigation give to VLCCs, car carriers, container ships, bulk
+    carriers and ships of up to 42 feet draught.
+- osm: way/197417814
+  kind: anchorage
+  name: V6
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the eight V berths of the Northern Area's Zone Two, which
+    the Suez Canal Authority's Rules of Navigation give to VLCCs, car carriers, container ships, bulk
+    carriers and ships of up to 42 feet draught.
+- osm: way/197417813
+  kind: anchorage
+  name: V7
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the eight V berths of the Northern Area's Zone Two, which
+    the Suez Canal Authority's Rules of Navigation give to VLCCs, car carriers, container ships, bulk
+    carriers and ships of up to 42 feet draught.
+- osm: way/197417810
+  kind: anchorage
+  name: V8
+  approach: north
+  note: >-
+    Seamark anchorage area off Port Said, one of the eight V berths of the Northern Area's Zone Two, which
+    the Suez Canal Authority's Rules of Navigation give to VLCCs, car carriers, container ships, bulk
+    carriers and ships of up to 42 feet draught.
+- osm: way/197417821
+  kind: anchorage
+  name: North Anchorage
+  approach: north
+  note: Seamark anchorage area, the outermost off Port Said, beyond the V areas.
+- osm: way/197764932
+  kind: anchorage
+  name: '1'
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in Lake Timsah at Ismailia, about halfway along the canal. OpenStreetMap names
+    it only by number.
+- osm: way/197764935
+  kind: anchorage
+  name: '2'
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in Lake Timsah at Ismailia, about halfway along the canal. OpenStreetMap names
+    it only by number.
+- osm: way/197764938
+  kind: anchorage
+  name: '3'
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in Lake Timsah at Ismailia, about halfway along the canal. OpenStreetMap names
+    it only by number.
+- osm: way/197764919
+  kind: anchorage
+  name: '4'
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in Lake Timsah at Ismailia, about halfway along the canal. OpenStreetMap names
+    it only by number.
+- osm: way/197764920
+  kind: anchorage
+  name: '5'
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in Lake Timsah at Ismailia, about halfway along the canal. OpenStreetMap names
+    it only by number.
+- osm: way/197764922
+  kind: anchorage
+  name: '6'
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in Lake Timsah at Ismailia, about halfway along the canal. OpenStreetMap names
+    it only by number.
+- osm: way/197891477
+  kind: anchorage
+  name: E1
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891484
+  kind: anchorage
+  name: E2
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891483
+  kind: anchorage
+  name: E3
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891490
+  kind: anchorage
+  name: E4
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891491
+  kind: anchorage
+  name: W1
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891486
+  kind: anchorage
+  name: W1
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891485
+  kind: anchorage
+  name: W2
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891489
+  kind: anchorage
+  name: W3
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891487
+  kind: anchorage
+  name: W4
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/197891488
+  kind: anchorage
+  name: W5
+  approach: in_transit
+  note: >-
+    Seamark anchorage area in the Great Bitter Lake, where a convoy waits for the one coming the other
+    way to pass.
+- osm: way/208960320
+  kind: anchorage
+  name: V1
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960322
+  kind: anchorage
+  name: V2
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960326
+  kind: anchorage
+  name: V3
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960325
+  kind: anchorage
+  name: V4
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960319
+  kind: anchorage
+  name: V5
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960321
+  kind: anchorage
+  name: V6
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960323
+  kind: anchorage
+  name: V7
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960318
+  kind: anchorage
+  name: V8
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960324
+  kind: anchorage
+  name: V9
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the nine V berths south of Conry Rock, which the Suez Canal
+    Authority's Rules of Navigation give to northbound VLCCs, ULCCs, deep-draught container ships, gas
+    carriers and ships over 38 feet draught.
+- osm: way/208960259
+  kind: anchorage
+  name: '1'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960226
+  kind: anchorage
+  name: '2'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960241
+  kind: anchorage
+  name: '3'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960229
+  kind: anchorage
+  name: '4'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960257
+  kind: anchorage
+  name: '5'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960235
+  kind: anchorage
+  name: '6'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960255
+  kind: anchorage
+  name: '7'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960245
+  kind: anchorage
+  name: '8'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960238
+  kind: anchorage
+  name: '9'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960239
+  kind: anchorage
+  name: '10'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960256
+  kind: anchorage
+  name: '11'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960243
+  kind: anchorage
+  name: '12'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960249
+  kind: anchorage
+  name: '13'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960237
+  kind: anchorage
+  name: '14'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960233
+  kind: anchorage
+  name: '15'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960258
+  kind: anchorage
+  name: '16'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960236
+  kind: anchorage
+  name: '17'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960248
+  kind: anchorage
+  name: '18'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960232
+  kind: anchorage
+  name: '19'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960253
+  kind: anchorage
+  name: '20'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960252
+  kind: anchorage
+  name: '21'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960225
+  kind: anchorage
+  name: '22'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960240
+  kind: anchorage
+  name: '23'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960228
+  kind: anchorage
+  name: '24'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960247
+  kind: anchorage
+  name: '25'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960227
+  kind: anchorage
+  name: '26'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960244
+  kind: anchorage
+  name: '27'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960251
+  kind: anchorage
+  name: '28'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: way/208960250
+  kind: anchorage
+  name: '29'
+  approach: south
+  note: >-
+    Seamark anchorage area in Suez Bay, one of the numbered berths inside the buoyed limits of the East
+    Waiting Area, where the Suez Canal Authority's Rules of Navigation send other northbound ships to
+    wait.
+- osm: node/2076573673
+  kind: pilot_boarding
+  name: Port Said Harbour, south of the C anchorages
+  approach: north
+  note: Seamark pilot boarding place, named Port Said Harbour in OpenStreetMap.
+- osm: node/2076574436
+  kind: pilot_boarding
+  name: Port Said, among the V anchorages
+  approach: north
+  note: Seamark pilot boarding place with no name in OpenStreetMap.
+- osm: node/2076574801
+  kind: pilot_boarding
+  name: Port Said Harbour, by the North Anchorage
+  approach: north
+  note: Seamark pilot boarding place, named Port Said Harbour in OpenStreetMap.
