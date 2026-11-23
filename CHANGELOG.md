@@ -3,6 +3,18 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## 1.7.0 — 2026-11-23
+
+Port outlines, for three ports to start: Rotterdam, Antwerp and Dover. `Seaports.geometry(locode)` is the port as GeoJSON, and `Seaports.areas`, `terminals`, `anchorages` and `port_limits` are its features as `Seaports::Geometry::Area`s, each with a kind, name, operator, cargo type, anchorage category, the OpenStreetMap ids it came from, `source`, `licence`, `reviewed_at` and a note. `Seaports.within?(locode, lat, lng, kind:)` and `areas_at` say whether, and in which area, a position is; `Seaports.ports_at(lat, lng)` names the ports whose limits hold it; `Seaports.quays(locode)` lists the locodes that are parts of the port (`NLBOT` for Rotterdam). A port with no outline answers `nil`, `[]` and `false`.
+
+No coordinate in them was typed or generated. A reviewed selection per port, `data/geometry/sources/<LOCODE>.yml`, names OpenStreetMap features by id, and `rake seaports:geometry` fetches their shapes and checks them; `rake seaports:geometry_candidates` lists the features a selection can choose from. OpenStreetMap maps no port limits for any of the three, so their limits are the hull of their terminals, said so in `source`. `.github/workflows/geometry.yml` builds the outline on a pull request that edits a selection and refreshes every port weekly.
+
+The outlines are © OpenStreetMap contributors under the ODbL 1.0, a data licence separate from the gem's MIT code: see `data/geometry/LICENSE.md`. The gemspec now lists both licences.
+
+What the prototype found in OpenStreetMap: Rotterdam and Antwerp are well mapped (every deep-sea container terminal, the Scheldt and Maasmond anchorages, the Kloosterboer cold stores), but no anchorage carries a category and several Antwerp terminals have no cargo type. Dover has its Eastern Docks and its basins, and no anchorage or Western Docks cargo terminal.
+
+Same ports, names and positions as 1.6.1.
+
 ## 1.6.1 — 2026-11-21
 
 Five more alternate names are refused, so 659 of 17,567 ports have alternate names, down from 662:

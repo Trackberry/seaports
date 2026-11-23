@@ -12,7 +12,7 @@ end
 require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
-task default: [:test, :rubocop]
+task default: [:test, "seaports:check_geometry", :rubocop]
 
 namespace :seaports do
   # Where a refresh leaves its evidence. The workflow reads these three files
@@ -225,5 +225,107 @@ namespace :seaports do
 
     content = File.read("CHANGELOG.md")
     File.write("CHANGELOG.md", content.sub(/\n## /, "\n#{entry.join("\n")}\n\n## "))
+  end
+end
+
+namespace :seaports do
+  # Recurring: the draft of a port's selection starts here. Writes every
+  # OpenStreetMap feature near the port that could be part of it to
+  # tmp/geometry/<LOCODE>.candidates.json, ids and tags but no shapes, for a
+  # person or an agent to choose from in data/geometry/sources/<LOCODE>.yml.
+  desc "List the OpenStreetMap features near a port, to choose its outline from"
+  #
+  # With +lat+ and +lng+ it searches around that position instead, and adds
+  # what it finds to the port's file: for anchorages far out, like
+  # Antwerp's off Vlissingen.
+  task :geometry_candidates, [:locode, :radius_km, :lat, :lng] do |_task, args|
+    require "fileutils"
+    require "json"
+    require_relative "lib/seaports/geometry/candidates"
+
+    locode = args.fetch(:locode).upcase
+    radius_km = (args[:radius_km] || 20).to_f
+    candidates =
+      if args[:lat]
+        Seaports::Geometry::Candidates.around(args[:lat], args.fetch(:lng), radius_m: radius_km * 1000)
+      else
+        Seaports::Geometry::Candidates.around_port(locode, radius_km:)
+      end
+    FileUtils.mkdir_p("tmp/geometry")
+    path = "tmp/geometry/#{locode}.candidates.json"
+    earlier = args[:lat] && File.exist?(path) ? JSON.parse(File.read(path)) : []
+    merged = (earlier + candidates.map { |c| c.to_h.transform_keys(&:to_s) }).uniq { |c| c["ref"] }
+    File.write(path, JSON.pretty_generate(merged))
+    puts "#{candidates.size} candidates in #{path}"
+  end
+
+  # Recurring: run it after editing a selection, and weekly from
+  # .github/workflows/geometry.yml to pick up OpenStreetMap's edits. Builds
+  # one port, or every port with a selection, and checks each against the
+  # others already shipped, both ways. A port that fails keeps its old file,
+  # and the task fails after trying the rest.
+  desc "Build port outlines from data/geometry/sources and check them"
+  task :geometry, [:locode] do |_task, args|
+    require_relative "lib/seaports/geometry/builder"
+    require_relative "lib/seaports/geometry/checks"
+
+    builder_class = Seaports::Geometry::Builder
+    checks = Seaports::Geometry::Checks
+    locodes = args[:locode] ? [args[:locode].upcase] : Dir[File.join(builder_class::SOURCES_DIR, "*.yml")].map { |p| File.basename(p, ".yml") }.sort
+    failed = []
+    locodes.each do |locode|
+      collection = builder_class.new(builder_class.read_selection(builder_class.selection_path(locode))).build
+      others = geometry_collections.except(locode)
+      result = checks.run(collection, others:, file_locode: locode)
+      report_geometry(result)
+      # Both ways: new limits that now swallow a neighbour's terminal are as
+      # wrong as a terminal inside a neighbour's limits.
+      swallowed = others.flat_map { |other, theirs| checks.run(theirs, others: { locode => collection }, file_locode: other).errors.grep(/inside #{locode}/) }
+      swallowed.each { |line| puts "  error: #{line}" }
+      next failed << locode unless result.ok? && swallowed.empty?
+
+      File.write(builder_class.output_path(locode), "#{builder_class.dump(collection)}\n")
+    # Any failure is this port's alone: a YAML typo, a deleted feature or an
+    # Overpass outage must not cost the weekly run every port after it.
+    rescue StandardError => e
+      warn "#{locode}: #{e.class}: #{e.message}"
+      failed << locode
+    end
+    abort "Not written: #{failed.join(', ')}" unless failed.empty?
+  end
+
+  # Recurring, and offline: what CI runs. The same checks over every shipped
+  # file, plus that each has a selection it was built from.
+  desc "Check every shipped port outline"
+  task :check_geometry do
+    require_relative "lib/seaports/geometry/builder"
+    require_relative "lib/seaports/geometry/checks"
+
+    collections = geometry_collections
+    results = collections.map { |locode, collection| Seaports::Geometry::Checks.run(collection, others: collections, file_locode: locode) }
+    results.each { |result| report_geometry(result) }
+    orphans = collections.keys.reject { |locode| File.exist?(Seaports::Geometry::Builder.selection_path(locode)) }
+    abort "No selection for #{orphans.join(', ')}" unless orphans.empty?
+
+    # An outline must say what its selection says. A hand-edited GeoJSON (a
+    # feature added, renamed or re-sourced without the selection) fails here;
+    # its shapes are rebuilt from OpenStreetMap by geometry.yml on any pull
+    # request that touches data/geometry.
+    drift = collections.flat_map do |locode, collection|
+      selection = Seaports::Geometry::Builder.read_selection(Seaports::Geometry::Builder.selection_path(locode))
+      Seaports::Geometry::Checks.drift(collection, selection).map { |line| "#{locode}: #{line}" }
+    end
+    drift.each { |line| puts "  error: #{line}" }
+    abort "Port outlines failed their checks" unless results.all?(&:ok?) && drift.empty?
+  end
+
+  def geometry_collections
+    Dir[File.join(Seaports::Geometry::DIR, "*.geojson")].to_h { |path| [File.basename(path, ".geojson"), JSON.parse(File.read(path))] }
+  end
+
+  def report_geometry(result)
+    puts "#{result.locode}: #{result.ok? ? 'ok' : 'FAILED'}"
+    result.errors.each { |line| puts "  error: #{line}" }
+    result.warnings.each { |line| puts "  warning: #{line}" }
   end
 end

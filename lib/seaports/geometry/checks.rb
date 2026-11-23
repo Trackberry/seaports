@@ -1,0 +1,228 @@
+# frozen_string_literal: true
+
+require "date"
+
+require_relative "../../seaports"
+require_relative "planar"
+
+module Seaports
+  module Geometry
+    # What every outline must pass before it ships, and what a reviewer
+    # should look at. +errors+ fail the build (and CI); +warnings+ are gaps to
+    # mention in the pull request: "no anchorage mapped", a terminal with no
+    # cargo type.
+    #
+    # Not checked yet: that anchorages lie on water and terminals touch
+    # land. Natural Earth's coastline is far too coarse for a dock, and
+    # OpenStreetMap's is a 700 MB download, so that waits for the check
+    # against where ships really stop.
+    class Checks
+      # Square metres. Generous on purpose: they catch a node mistaken for a
+      # country, not a big terminal.
+      SIZES = {
+        "terminal" => 500..60_000_000,
+        "anchorage" => 10_000..3_000_000_000,
+        "port_limits" => 100_000..3_000_000_000
+      }.freeze
+
+      INSIDE_KINDS = %w[terminal pilot_boarding].freeze
+
+      Result = Data.define(:locode, :errors, :warnings) do
+        def ok? = errors.empty?
+      end
+
+      # +others+ is { locode => collection } for the overlap check.
+      def self.run(collection, others: {}, file_locode: nil)
+        new(collection, others:, file_locode:).run
+      end
+
+      # Where a shipped outline and the selection it should have been built
+      # from disagree, as lines for a person: a feature missing from either
+      # side or carrying other references, names or cargo, or other quays.
+      # Offline, so CI can run it; it cannot see a hand-moved coordinate,
+      # which geometry.yml catches by rebuilding the outline from
+      # OpenStreetMap.
+      def self.drift(collection, selection)
+        shipped = Array(collection["features"]).reject { |f| f.dig("properties", "kind") == "port_limits" }.map do |feature|
+          props = feature["properties"]
+          signature(props["kind"], props["osm"], props["name"], props["operator"], props["cargo"], props["category"])
+        end
+        selected = Array(selection["features"]).map do |entry|
+          signature(entry["kind"], entry["osm"], entry["name"], entry["operator"], entry["cargo"], entry["category"])
+        end
+        lines = (selected - shipped).map { |sig| "the selection has #{sig.first} #{sig[1].join(', ')} (#{sig[2]}) and the outline does not match it" }
+        lines += (shipped - selected).map { |sig| "the outline has #{sig.first} #{sig[1].join(', ')} (#{sig[2]}), which the selection does not" }
+        lines << "the quays differ from the selection's" unless Array(collection["quays"]).sort == Array(selection["quays"]).sort
+        lines
+      end
+
+      def self.signature(kind, osm, name, operator, cargo, category)
+        [kind, Array(osm).map(&:to_s).sort, name, operator, Array(cargo).sort, category]
+      end
+
+      def initialize(collection, others:, file_locode:)
+        @collection = collection
+        @others = others
+        @file_locode = file_locode
+        @errors = []
+        @warnings = []
+      end
+
+      def run
+        locode = @collection["locode"]
+        check_header(locode)
+        features = Array(@collection["features"])
+        features.each_with_index { |feature, index| check_feature(feature, index) }
+        check_port(locode, features) if @errors.empty?
+        Result.new(locode:, errors: @errors.freeze, warnings: @warnings.freeze)
+      end
+
+      private
+
+      def check_header(locode)
+        @errors << "not a FeatureCollection" unless @collection["type"] == "FeatureCollection"
+        @errors << "locode #{locode.inspect} is not in the sea-port table" unless Seaports.find(locode)
+        @errors << "file is named #{@file_locode} but holds #{locode}" if @file_locode && @file_locode != locode
+        @errors << "attribution is missing" if blank?(@collection["attribution"])
+
+        Array(@collection["quays"]).each do |quay|
+          @errors << "quay #{quay} is not in the sea-port table" unless Seaports.find(quay)
+          @errors << "quay #{quay} is the port itself" if quay == locode
+        end
+      end
+
+      def check_feature(feature, index)
+        props = feature["properties"] || {}
+        where = "#{props['kind']} #{props['name'] || props['osm']&.join(', ') || index + 1}"
+        @errors << "#{where}: kind is not one of #{KINDS.join(', ')}" unless KINDS.include?(props["kind"])
+        %w[source licence reviewed_at].each { |key| @errors << "#{where}: #{key} is missing" if blank?(props[key]) }
+        @errors << "#{where}: reviewed_at #{props['reviewed_at']} is not a date" unless date?(props["reviewed_at"])
+        @warnings << "#{where}: no note" if blank?(props["note"])
+        check_geometry(feature["geometry"], props["kind"], where)
+
+        case props["kind"]
+        when "terminal"
+          @warnings << "#{where}: no name" if blank?(props["name"])
+          @warnings << "#{where}: no cargo type" if Array(props["cargo"]).empty?
+        when "anchorage"
+          @warnings << "#{where}: no category" if blank?(props["category"])
+        end
+      end
+
+      def check_geometry(geometry, kind, where)
+        type = geometry && geometry["type"]
+        if kind == "pilot_boarding"
+          return @errors << "#{where}: a pilot boarding place must be a Point" unless type == "Point"
+
+          return check_position(geometry["coordinates"], where)
+        end
+        return @errors << "#{where}: geometry is a #{type.inspect}, not a Polygon or MultiPolygon" unless %w[Polygon MultiPolygon].include?(type)
+
+        Planar.polygons(geometry).each do |rings|
+          rings.each do |ring|
+            next @errors << "#{where}: a ring has fewer than four positions" if ring.size < 4
+            next @errors << "#{where}: a ring does not close" unless ring.first == ring.last
+
+            ring.each { |position| check_position(position, where) }
+            @errors << "#{where}: a ring crosses itself" if self_intersecting?(ring)
+          end
+        end
+
+        range = SIZES[kind]
+        area = Planar.area_m2(geometry)
+        @errors << "#{where}: #{(area / 1_000_000.0).round(3)} km² is not a plausible size" if range && !range.cover?(area)
+      end
+
+      def check_position(position, where)
+        lng, lat = position
+        valid = lng.is_a?(Numeric) && lat.is_a?(Numeric) && lng.between?(-180, 180) && lat.between?(-90, 90)
+        @errors << "#{where}: #{position.inspect} is not a position" unless valid
+      end
+
+      def check_port(locode, features)
+        limits = features.select { |f| f["properties"]["kind"] == "port_limits" }
+        return @errors << "#{locode} has #{limits.size} port limits, not one" unless limits.size == 1
+
+        outline = limits.first["geometry"]
+        point = Seaports.coordinates(locode)
+        if point && !Planar.contains?(outline, point["lng"], point["lat"])
+          message = "the port limits do not contain the port's own position (#{point['lat']}, #{point['lng']})"
+          # Reviewed: UN/LOCODE places some ports on the city centre, beyond
+          # the last quay. The reason ships in the file, for whoever reads it.
+          reason = @collection["position_outside"]
+          reason.to_s.strip.empty? ? @errors << message : @warnings << "#{message}: #{reason}"
+        end
+
+        features.each do |feature|
+          kind = feature["properties"]["kind"]
+          next unless INSIDE_KINDS.include?(kind)
+
+          lng, lat = Planar.label_point(feature["geometry"])
+          @warnings << "#{kind} #{feature['properties']['name']}: outside the port limits" unless Planar.contains?(outline, lng, lat)
+        end
+        @warnings << "no anchorage mapped" if features.none? { |f| f["properties"]["kind"] == "anchorage" }
+        @warnings << "no terminal mapped" if features.none? { |f| f["properties"]["kind"] == "terminal" }
+        check_overlaps(locode, features)
+      end
+
+      # A terminal of this port inside another port's limits is a terminal
+      # that will be filed under the wrong port, which is the bug outlines
+      # exist to fix. Overlapping limits alone are only worth a look:
+      # neighbouring ports do share water.
+      def check_overlaps(locode, features)
+        mine = features.find { |f| f["properties"]["kind"] == "port_limits" }["geometry"]
+        box = Planar.bbox(mine)
+        @others.each do |other, collection|
+          next if other == locode
+
+          theirs = Array(collection["features"]).find { |f| f.dig("properties", "kind") == "port_limits" }
+          next unless theirs && Planar.bboxes_overlap?(box, Planar.bbox(theirs["geometry"]))
+
+          @warnings << "the port limits overlap #{other}'s"
+          features.each do |feature|
+            next unless feature["properties"]["kind"] == "terminal"
+
+            lng, lat = Planar.label_point(feature["geometry"])
+            next unless Planar.contains?(theirs["geometry"], lng, lat) && !Array(collection["quays"]).include?(locode)
+
+            @errors << "terminal #{feature['properties']['name']} is inside #{other}'s port limits"
+          end
+        end
+      end
+
+      # Every pair of non-adjacent edges. Quadratic, and fine: the biggest
+      # ring here has a few hundred positions.
+      def self_intersecting?(ring)
+        edges = ring.each_cons(2).to_a
+        last = edges.size - 1
+        edges.each_with_index.any? do |a, i|
+          ((i + 2)..last).any? do |j|
+            next false if i.zero? && j == last
+
+            segments_cross?(a, edges[j])
+          end
+        end
+      end
+
+      def segments_cross?((p1, p2), (p3, p4))
+        d1 = direction(p3, p4, p1)
+        d2 = direction(p3, p4, p2)
+        d3 = direction(p1, p2, p3)
+        d4 = direction(p1, p2, p4)
+        ((d1.positive? && d2.negative?) || (d1.negative? && d2.positive?)) &&
+          ((d3.positive? && d4.negative?) || (d3.negative? && d4.positive?))
+      end
+
+      def direction(a, b, c) = ((c[0] - a[0]) * (b[1] - a[1])) - ((b[0] - a[0]) * (c[1] - a[1]))
+
+      def date?(value)
+        Date.iso8601(value.to_s)
+        true
+      rescue Date::Error
+        false
+      end
+
+      def blank?(value) = value.to_s.strip.empty?
+    end
+  end
+end

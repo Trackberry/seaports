@@ -1,0 +1,28 @@
+---
+locode: GBDVR
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[GBDVR,6]. OpenStreetMap maps no anchorage for Dover,
+  and no terminal at the Western Docks, where the cargo terminal is.
+port_limits:
+  derive: hull
+  osm:
+  - relation/18550095
+  - relation/18550093
+  - relation/18550094
+  buffer_m: 300
+  note: >-
+    OpenStreetMap maps no port limits for Dover. These are the hull of the Eastern Docks and the three
+    harbour basins (Outer, Inner and Eastern Docks) inside the breakwaters, so they cover the Western
+    Docks too, which OpenStreetMap does not map as a terminal.
+features:
+- osm: way/167792636
+  kind: terminal
+  name: Eastern Docks
+  operator: Port of Dover
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The ferry terminal: cross-Channel ro-ro and passenger berths 1 to 9. OpenStreetMap maps the berths
+    as points inside it, so they are not separate features here.
