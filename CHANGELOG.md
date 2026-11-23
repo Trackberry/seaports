@@ -5,14 +5,14 @@ pull request, or by hand for a code change; a person merges both.
 
 ## 1.7.2 — 2026-11-23
 
-Port outlines for 9 more ports, so 12 in all: Hamburg (`DEHAM`), Felixstowe (`GBFXT`), London Gateway (`GBLGP`), Southampton (`GBSOU`), Portsmouth (`GBPME`), Algeciras (`ESALG`), Valencia (`ESVLC`), Barcelona (`ESBCN`) and Vigo (`ESVGO`). Each comes from a reviewed selection of OpenStreetMap features, built and checked the same way as the first three.
+Port outlines for 8 more ports, so 11 in all: Hamburg (`DEHAM`), Felixstowe (`GBFXT`), London Gateway (`GBLGP`), Southampton (`GBSOU`), Portsmouth (`GBPME`), Algeciras (`ESALG`), Valencia (`ESVLC`) and Vigo (`ESVGO`). Each comes from a reviewed selection of OpenStreetMap features, built and checked the same way as the first three.
 
 What OpenStreetMap has for them:
 
 - OpenStreetMap maps no port limits for any of them, so every port's limits are the hull of its terminals.
 - Felixstowe is one area, not its Trinity, Landguard and Berth 8-9 terminals.
 - The anchorages of Hamburg (on the Elbe), Felixstowe (Harwich Haven) and Valencia carry no category. Hamburg's and Felixstowe's also serve their neighbours: Brunsbüttel, Cuxhaven and Stade on the Elbe, Harwich and Ipswich in the haven.
-- London Gateway, Southampton, Portsmouth, Algeciras, Barcelona and Vigo have no anchorage mapped.
+- London Gateway, Southampton, Portsmouth, Algeciras and Vigo have no anchorage mapped.
 - Some terminals are mapped as a building or a pier rather than the quay, so a ship moored alongside can fall outside the terminal and only inside the port limits: Southampton's fruit terminal and the Fawley jetty, Portsmouth's Wightlink berth, Valencia's Trasmed terminal and the Algeciras refinery jetty.
 - Several of Hamburg's terminals have no cargo type, and Algeciras's ferry and ro-ro terminal is not mapped as a terminal.
 - Valencia leaves out Sagunto, which is its own locode (`ESSAG`) with no terminal mapped.
