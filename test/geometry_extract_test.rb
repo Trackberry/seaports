@@ -200,7 +200,30 @@ class GeometryExtractTest < Minitest::Test
     error = assert_raises(Osm::Error) do
       extract(stderr: "[ 0:00] Did not find 1 object(s).\nMissing way IDs: 99\n", ok: false).shapes(["way/10", "way/99"], position: [1.5, 1.5])
     end
-    assert_equal "OpenStreetMap has no way/99", error.message
+    assert_match "OpenStreetMap has no way/99 in Geofabrik's continent/west/county", error.message
+    assert_match "OSM_REGION", error.message
+  end
+
+  # way/10 is not in the county's extract at all, and is found in the west
+  # country's; way/11, only ever looked for in the county, is not asked for
+  # again.
+  def test_looks_for_a_missing_feature_in_the_next_regions
+    shape = ->(points) { { "type" => "Polygon", "coordinates" => [points] } }
+    outline = { "features" => [
+      { "properties" => { "osm" => ["way/10"], "source" => "OpenStreetMap way 10" }, "geometry" => shape.([[1.5, 1.5], [3, 3], [1.5, 3], [1.5, 1.5]]) },
+      { "properties" => { "osm" => ["way/11"], "source" => "OpenStreetMap way 11" }, "geometry" => shape.([[1.2, 1.2], [1.8, 1.2], [1.8, 1.8], [1.2, 1.2]]) }
+    ] }
+    calls = []
+    opl = ->(pbf) { pbf.include?("county") ? OPL.lines.reject { |line| line.start_with?("w10 ") }.join : OPL }
+
+    shapes = extract(opl:, calls:).shapes(["way/10", "way/11"], outline:)
+
+    assert_equal ["way/10", "way/11"], shapes.keys
+    getids = calls.select { |args| args[1] == "getid" }.map do |args|
+      pbf = args.index { |arg| arg.end_with?(".pbf") }
+      [args[pbf].split("/").last, args[(pbf + 1)..]]
+    end
+    assert_equal [["county-latest.osm.pbf", ["w10", "w11"]], ["west-latest.osm.pbf", ["w10"]]], getids
   end
 
   def test_an_osmium_failure_is_not_taken_for_a_missing_feature

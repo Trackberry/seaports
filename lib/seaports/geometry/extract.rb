@@ -271,6 +271,8 @@ module Seaports
       # (see Extract.covers) before it is called incomplete or missing.
       def shapes(refs, outline: nil, position: nil, label: nil)
         label ||= "OpenStreetMap"
+        return {} if refs.empty?
+
         refs.each { |ref| Osm.parse_ref(ref) }
         tries = refs.to_h { |ref| [ref, regions_for(ref, outline, position)] }
         objects = {}
@@ -297,8 +299,16 @@ module Seaports
             @out.puts "#{label}: #{e.message.split(':').first}; trying #{tries[ref][step + 1].map(&:path).join(' and ')}"
           end
         end
+        # A region cached days ago beside one downloaded today: the older
+        # one's objects win, which may join two versions of a feature.
+        dates = asked.keys.map { |region| timestamp(pbf(region)) }.uniq
+        @out.puts "#{label}: warning: the extracts read are from #{dates.sort.join(' and ')}; delete tmp/osm for one day's data" if dates.size > 1
         missing = refs - found.keys
-        raise Osm::Error, "OpenStreetMap has no #{missing.join(', ')}" unless missing.empty?
+        unless missing.empty?
+          read = asked.keys.map(&:path).sort.join(", ")
+          raise Osm::Error, "OpenStreetMap has no #{missing.join(', ')} in Geofabrik's #{read}: deleted, or beyond " \
+            "those regions, in which case name one that holds it with OSM_REGION"
+        end
 
         found.slice(*refs)
       end
@@ -386,8 +396,13 @@ module Seaports
         @out.puts "#{label}: #{refs.size} feature(s) from Geofabrik #{region.path} " \
           "(#{(File.size(pbf) / 1_048_576.0).round(1)} MB, OpenStreetMap as of #{timestamp(pbf)})"
         ids = refs.map { |ref| ref.sub(%r{\A(\w)\w*/}, '\1') }
-        stdout, stderr, status = @osmium.call("osmium", "getid", "--add-referenced", "--verbose-ids", "--no-progress",
-          "--output-format", "opl,add_metadata=false", pbf, *ids)
+        stdout, stderr, status =
+          begin
+            @osmium.call("osmium", "getid", "--add-referenced", "--verbose-ids", "--no-progress",
+              "--output-format", "opl,add_metadata=false", pbf, *ids)
+          rescue Errno::ENOENT
+            raise Osm::Error, "osmium-tool is not installed: brew install osmium-tool, or apt-get install osmium-tool"
+          end
         # osmium exits 1 when an id is not in the file, which is an answer
         # here (a feature across two regions is missing from one, and the
         # caller names what is missing from all), and for real failures.
@@ -397,8 +412,6 @@ module Seaports
         end
 
         self.class.objects(stdout)
-      rescue Errno::ENOENT
-        raise Osm::Error, "osmium-tool is not installed: brew install osmium-tool, or apt-get install osmium-tool"
       end
 
       # When Geofabrik cut the extract: the replication timestamp in its

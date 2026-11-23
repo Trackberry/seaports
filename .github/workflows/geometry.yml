@@ -141,13 +141,17 @@ jobs:
       # Geofabrik publishes each region once a day, so a rerun the same day
       # reads the extracts the first run downloaded, and gives the same
       # outlines. Nothing older is restored: the build would download it
-      # again anyway (Extract::MAX_AGE_DAYS).
+      # again anyway (Extract::MAX_AGE_DAYS). Saved by its own step below,
+      # since the run that most needs a rerun is one that failed, and
+      # actions/cache saves only after a success.
       - name: Date the extracts
         id: date
         if: github.event_name != 'pull_request'
         run: echo "today=$(date -u +%F)" >> "$GITHUB_OUTPUT"
-      - uses: actions/cache@v4
+      - name: Restore the day's extracts
+        id: extracts
         if: github.event_name != 'pull_request'
+        uses: actions/cache/restore@v4
         with:
           path: tmp/osm
           key: osm-extracts-${{ steps.date.outputs.today }}
@@ -162,6 +166,13 @@ jobs:
         env:
           OSM_SOURCE: extract
         run: bundle exec rake seaports:geometry
+
+      - name: Keep the day's extracts for a rerun
+        if: always() && github.event_name != 'pull_request' && steps.extracts.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: tmp/osm
+          key: osm-extracts-${{ steps.date.outputs.today }}
 
       - name: Open what moved for review
         id: pull_request
