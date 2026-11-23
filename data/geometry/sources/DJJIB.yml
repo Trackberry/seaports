@@ -1,0 +1,48 @@
+---
+locode: DJJIB
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Djibouti extract around Doraleh and the city. Djibouti's cargo
+  is now handled at Doraleh, west of the city: the container terminal, the multipurpose port and the oil
+  terminal. The historic port by the city centre is left out: Djibouti has moved its traffic to Doraleh
+  and no current source says what cargo it still takes. The oil terminal is left out too: OpenStreetMap
+  maps only its tank farm, Port pétrolier de Doraleh, which has no water within 30 m of it, and not the
+  jetty where tankers berth. OpenStreetMap maps no anchorage for Djibouti.
+quays:
+- DJDCT
+- DJPOD
+position_outside: >-
+  UN/LOCODE places Djibouti off the historic port by the city centre (11.6, 43.1333), about 3 km east
+  of the Doraleh Container Terminal, the easternmost cargo quay mapped here.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Djibouti. These are the hull of the two Doraleh terminals below
+    grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminals kept whole and a
+    30 m margin where they meet the water. What is left is the two terminals and the sea off their quays;
+    the coast road between them is cut away. A scan of OpenStreetMap finds no homes, residential land,
+    schools, hospitals, places of worship or named places inside.
+features:
+- osm: way/266387289
+  kind: terminal
+  name: Doraleh Container Terminal
+  operator: SGTD
+  cargo:
+  - container
+  note: >-
+    Opened in 2009 under DP World. Since 2018 it is run by the state-owned Société de Gestion du Terminal
+    à Conteneurs de Doraleh (SGTD). OpenStreetMap maps the terminal twice over the same ground; this is
+    the named one.
+- osm: way/480879281
+  kind: terminal
+  name: Doraleh Multi-Purpose Port
+  operator: Port de Djibouti S.A.
+  cargo:
+  - general
+  - bulk
+  - ro_ro
+  note: >-
+    Opened in 2017 for break bulk, dry bulk, vehicles and livestock, which moved here from the historic
+    port. OpenStreetMap tags it cargo=container as well.

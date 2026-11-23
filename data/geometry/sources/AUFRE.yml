@@ -1,0 +1,38 @@
+---
+locode: AUFRE
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around Fremantle's Inner Harbour. Fremantle's container
+  trade is at two terminals on North Quay, Patrick and DP World. The car and passenger berths at Victoria
+  Quay are mapped only as unnamed areas and are not listed. Kwinana, the bulk port to the south, has its
+  own locode, AUKWI.
+position_outside: >-
+  UN/LOCODE places Fremantle at (-32.05, 115.75), about 600 m upriver of these limits, beyond the Inner
+  Harbour's container berths.
+port_limits:
+  derive: hull
+  osm: way/705422116
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Fremantle. These are the hull of the two container terminals
+    and the Inner Harbour, the mouth of the Swan River between North Quay and Victoria Quay, grown by
+    200 m, then cut to the water OpenStreetMap maps inside it, with the terminals and the harbour kept
+    whole and a 30 m margin where they meet the water. What is left is the harbour and the two terminals,
+    not central Fremantle or North Fremantle's streets. A scan of OpenStreetMap finds no homes, residential
+    land, schools, hospitals, places of worship or named places inside.
+features:
+- osm: way/1309504626
+  kind: terminal
+  name: Patrick
+  operator: Patrick Terminals
+  cargo:
+  - container
+  note: OpenStreetMap names it Patrick and tags it cargo=container.
+- osm: way/1309504624
+  kind: terminal
+  name: DP World
+  operator: DP World
+  cargo:
+  - container
+  note: OpenStreetMap names it DP World and tags it cargo=container.

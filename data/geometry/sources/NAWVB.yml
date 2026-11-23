@@ -1,0 +1,41 @@
+---
+locode: NAWVB
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Namibia extract around the bay. OpenStreetMap maps the container
+  terminal opened in 2019 on reclaimed land, and the original port behind it as one unnamed industrial
+  area. The North Port liquid bulk terminal, about 6 km up the shore at the SADC Gateway site, is left
+  out: no current source says it is in service, and taking it in would stretch the limits over the town's
+  industrial areas. The fish quays and the Namdock shipyard are not listed as terminals. OpenStreetMap
+  maps no anchorage for Walvis Bay.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Walvis Bay. These are the hull of the container terminal and
+    the multipurpose berths grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminals
+    kept whole and a 30 m margin where they meet the water. What is left is the two terminals and the
+    harbour basin off them. A Mission to Seafarers chapel stands inside the port area, and the shore edge
+    of an unnamed residential area reaches in by under 100 m². A scan of OpenStreetMap finds no other
+    homes, schools, hospitals or named places inside.
+features:
+- osm: relation/12366432
+  kind: terminal
+  name: Walvis Bay New Container Terminal
+  operator: Namport
+  cargo:
+  - container
+  note: >-
+    Built on reclaimed land and opened in 2019, run by the Namibian Ports Authority (Namport). It has
+    three berths, 9 to 11. OpenStreetMap names it Walvis Bay New Container Terminal.
+- osm: way/86628226
+  kind: terminal
+  name: Berths
+  operator: Namport
+  cargo:
+  - general
+  - bulk
+  note: >-
+    The original commercial port behind the container terminal, mapped in OpenStreetMap as one unnamed
+    industrial area. Namport says berths 1 to 8 are multipurpose, with mostly bulk and break bulk.

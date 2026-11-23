@@ -1,0 +1,71 @@
+---
+locode: CNNSA
+reviewed_at: '2026-11-23'
+note: >-
+  Nansha, the deep-water port of Guangzhou on Longxue island. Bills of lading name it as Nansha (CNNSA)
+  or as Guangzhou (CNCAN, which is not a port entry in UN/LOCODE). Guangzhou's river terminals at Huangpu,
+  40 km upstream, have their own locodes and are not here. Drafted from a search of Geofabrik's Guangdong
+  extract. OpenStreetMap maps the four container phases one by one, and also an area for the whole port
+  and one for South China Oceangate that overlap them; those two are left out so that no terminal lies
+  inside another. Phase V and the international general terminal, both still under construction, are left
+  out. The small anchorage areas along the Lingding channel are unnamed in OpenStreetMap and are left
+  out.
+position_outside: >-
+  UN/LOCODE places Nansha at (22.75, 113.5833), at Jiaomen on the Nansha mainland, about 12 km north-west
+  of the container terminals.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Nansha. These are the hull of the terminals below, along the
+    east shore of Longxue island, grown by 300 m and cut to the water OpenStreetMap maps inside it, with
+    the terminals kept whole: the terminals, the basins between them and the river off their quays. A
+    scan of OpenStreetMap finds no homes, residential land, schools, hospitals or places of worship inside,
+    apart from a canteen and dormitory block (食堂及宿舍楼) on the terminals; the named places are labels for
+    Nansha port's phases (南沙港一期, 二期, 三期) on the terminals and Longxue island's outline under them.
+features:
+- osm: relation/20318969
+  kind: terminal
+  name: Guangzhou Port Nansha Phase 1 Terminal
+  operator: Guangzhou Port Group
+  cargo:
+  - container
+  note: >-
+    Named Guangzhou Port Nansha Phase 1 Terminal in OpenStreetMap. OpenStreetMap gives no cargo tag; container
+    is from the port's own description of its Phase I.
+- osm: relation/20318970
+  kind: terminal
+  name: Guangzhou Port Nansha Phase 2 Terminal
+  operator: Guangzhou Port Group
+  cargo:
+  - container
+  note: >-
+    Nansha Phase II, named Guangzhou Port Nansha Phase 2 Terminal in OpenStreetMap. Run by GOCT, a joint
+    venture of Guangzhou Port Group, COSCO Shipping Ports and APM Terminals.
+- osm: relation/20318971
+  kind: terminal
+  name: Guangzhou Port Nansha Phase 3 Terminal
+  operator: Guangzhou Port Group
+  cargo:
+  - container
+  note: >-
+    Named Guangzhou Port Nansha Phase 3 Terminal in OpenStreetMap, which gives no cargo tag; container
+    is from the port's own description of its Phase III.
+- osm: way/1028516090
+  kind: terminal
+  name: Guangzhou Port Nansha Phase 4 Automated Terminal
+  operator: Guangzhou Port Group
+  cargo:
+  - container
+  note: >-
+    The automated container terminal opened in July 2022, named Guangzhou Port Nansha Phase 4 Automated
+    Terminal in OpenStreetMap.
+- osm: way/544835675
+  kind: terminal
+  name: 广州港南沙港区粮食及通用码头
+  operator: Guangzhou Port Group
+  cargo:
+  - bulk
+  - general
+  note: Named 广州港南沙港区粮食及通用码头 in OpenStreetMap, north of the container phases.

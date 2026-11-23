@@ -1,0 +1,62 @@
+---
+locode: LKCMB
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Sri Lanka extract around the harbour. OpenStreetMap maps four of
+  Colombo's container terminals by name. It does not map Jaya Container Terminal, the Sri Lanka Ports
+  Authority's main terminal between the East Container Terminal and Unity, or Colombo West International
+  Terminal beside the Colombo International Container Terminal, so neither is listed, though the water
+  alongside them lies inside the port limits. OpenStreetMap maps no anchorage and no pilot boarding place
+  off Colombo.
+position_outside: >-
+  UN/LOCODE places Colombo at 6.9167, 79.85, by Galle Face Green, about 2.5 km south of the port limits.
+  A ship there is off the city's seafront, not at a terminal.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Colombo. These are the hull of the terminals below, from the
+    Colombo International Container Terminal on the South Harbour to Unity Container Terminal in the north,
+    grown by 200 m and cut to the sea OpenStreetMap maps inside it, with the terminals kept whole: the
+    terminals and the harbour basins inside the breakwaters. The land between the basins and the city
+    behind them are left out. A search of OpenStreetMap found no housing, school, hospital or named place
+    inside them, and one place of worship, on the South Asia Gateway Terminals area.
+features:
+- osm: way/419827607
+  kind: terminal
+  name: Colombo International Container Terminal
+  operator: China Merchants Port Holdings
+  cargo:
+  - container
+  note: >-
+    The deep-water terminal on the South Harbour, run by Colombo International Container Terminals Ltd,
+    a joint venture of China Merchants Port Holdings and the Sri Lanka Ports Authority. Tagged landuse=industrial
+    and named in OpenStreetMap.
+- osm: way/392172069
+  kind: terminal
+  name: East Container Terminal
+  operator: Sri Lanka Ports Authority
+  cargo:
+  - container
+  note: >-
+    On the South Harbour, built and run by the Sri Lanka Ports Authority, whose third berth entered service
+    in January 2026. Named in OpenStreetMap.
+- osm: way/419827606
+  kind: terminal
+  name: South Asia Gateway Terminal
+  operator: South Asia Gateway Terminals
+  cargo:
+  - container
+  note: >-
+    In the main harbour, run by South Asia Gateway Terminals, whose shareholders include John Keells Holdings
+    and the Sri Lanka Ports Authority. OpenStreetMap names it South Asia Gateway Terminal.
+- osm: way/465688543
+  kind: terminal
+  name: Unity Container Terminal
+  operator: Sri Lanka Ports Authority
+  cargo:
+  - container
+  note: >-
+    A two-berth Sri Lanka Ports Authority terminal at the north end of the harbour. Tagged industrial=port
+    and named in OpenStreetMap.

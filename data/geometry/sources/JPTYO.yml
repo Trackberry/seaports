@@ -1,0 +1,54 @@
+---
+locode: JPTYO
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Kanto extract around the Oi, Shinagawa, Aomi and Central Breakwater
+  wharves. OpenStreetMap maps the container terminals as areas but names few of them and gives no operators.
+  The Aomi container berths are mapped only inside a larger unnamed port area that runs north into Odaiba,
+  so they are not a terminal here; the limits cover the water off them. OpenStreetMap maps no anchorage
+  in Tokyo Bay off the port. Kawasaki's container terminal on Higashi-Ogishima is a different port (JPKWS)
+  and is not here; Yokohama (JPYOK) is 20 km south-west.
+position_outside: >-
+  UN/LOCODE places Tokyo at (35.6833, 139.75), in Marunouchi, about 6 km north of the Shinagawa container
+  terminal.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Tokyo. These are the hull of the container terminals below,
+    grown by 200 m and cut to the water OpenStreetMap maps inside it, with the terminals kept whole: the
+    terminals and the water between Shinagawa, Oi, Aomi and the Central Breakwater. The land of Aomi,
+    its berths included, and of Odaiba is left out. A scan of OpenStreetMap finds no schools, hospitals
+    or places of worship inside. The area OpenStreetMap maps as the Shinagawa terminal takes in four apartment
+    blocks at its north-west corner, so they are inside. The named places are district (chōme) labels
+    and reclaimed-island outlines under the terminals, slivers of three more islands and of Odaiba at
+    the edge, and the outlines OpenStreetMap gives Aomi 2 to 4, Ariake 4 and Daiba 1, which reach over
+    the water inside though their land is outside.
+features:
+- osm:
+  - relation/15635213
+  - relation/15635238
+  kind: terminal
+  name: 大井埠頭
+  cargo:
+  - container
+  note: >-
+    Named 大井埠頭 and tagged cargo=container in OpenStreetMap, with its southern berths mapped as a separate,
+    unnamed container terminal; the two are merged here.
+- osm: way/1553106476
+  kind: terminal
+  name: コンテナターミナル
+  cargo:
+  - container
+  note: Named コンテナターミナル and tagged as a container terminal on Shinagawa wharf in OpenStreetMap.
+- osm:
+  - relation/21528799
+  - way/1565750072
+  kind: terminal
+  name: Container terminal
+  cargo:
+  - container
+  note: >-
+    The container berths on the Central Breakwater reclaimed land, mapped as two unnamed areas tagged
+    cargo=container and merged here.

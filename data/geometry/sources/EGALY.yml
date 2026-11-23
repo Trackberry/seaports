@@ -1,0 +1,32 @@
+---
+locode: EGALY
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Egypt extract around the Western Harbour. OpenStreetMap maps the
+  Port of Alexandria as one area and one container terminal inside it, and no anchorage or pilot boarding
+  place. El Dekheila, 7 km west and run by the same port authority, is left out: limits reaching it took
+  in the districts of El Dekheila, Agami and El Qabbari between. It has its own locode, EGEDK.
+position_outside: >-
+  UN/LOCODE places Alexandria on the city centre (31.1833, 29.9167), by the Eastern Harbour about 3 km
+  east of the cargo port. Cargo ships call at the Western Harbour.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Alexandria. These are the hull of the container terminal grown
+    by 300 m, cut to the water OpenStreetMap maps inside it, with the terminal kept whole and a 30 m margin
+    where it meets the water: the container terminal and the Western Harbour water off its quays. The
+    rest of the port, which OpenStreetMap maps as one port-wide area of quays, sheds and yards, is left
+    out with El Mina and the districts behind it. A scan of OpenStreetMap finds no homes, residential
+    land, schools, hospitals, places of worship or named places inside.
+features:
+- osm: way/479424487
+  kind: terminal
+  name: Container Terminal
+  cargo:
+  - container
+  note: >-
+    Mapped as Container Terminal. Two companies run container berths in the port, Alexandria Container
+    and Cargo Handling Company and Hutchison's Alexandria International Container Terminals; OpenStreetMap
+    does not say which this is, so no operator is set.

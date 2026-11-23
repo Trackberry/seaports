@@ -1,0 +1,175 @@
+---
+locode: JPOSA
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Kansai extract around Nanko (Sakishima) and Yumeshima. OpenStreetMap
+  maps Osaka's container berths one by one under the port's own berth codes: C-1 to C-4, C-8 and C-9 at
+  Nanko, and C-10 to C-12 on Yumeshima. It gives no operator for any of them, and maps no anchorage in
+  Osaka Bay. The multipurpose berths C-6 and C-7, the liner berths L-1 to L-7 and the R-1 to R-5 berths
+  on the west side of Nanko are here too. The Nanko ferry terminal is not. Kobe (JPUKB) is 10 km west.
+position_outside: UN/LOCODE places Osaka at (34.6667, 135.5), in the city centre, about 6 km east of the
+  nearest quay.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Osaka. These are the hull of the berths below, from Yumeshima
+    to Nanko, grown by 300 m and cut to the sea OpenStreetMap maps inside it, with the berths kept whole:
+    the berths and the water off them. The land of Sakishima between the berths is left out, with Nanko
+    Port Town and Cosmo Square, which has flats (River Garden) as well as offices. A scan of OpenStreetMap
+    finds no homes, residential land, schools, hospitals or places of worship inside; the named places
+    are the district (chōme) labels on the berths and the outlines of Yumeshima and Sakishima, under them.
+features:
+- osm: way/628733197
+  kind: terminal
+  name: コンテナ埠頭C-1
+  cargo:
+  - container
+  note: Named コンテナ埠頭C-1 and tagged cargo=container in OpenStreetMap.
+- osm: way/628733196
+  kind: terminal
+  name: コンテナ埠頭C-2
+  cargo:
+  - container
+  note: Named コンテナ埠頭C-2 and tagged cargo=container in OpenStreetMap.
+- osm: way/628733195
+  kind: terminal
+  name: コンテナ埠頭C-3
+  cargo:
+  - container
+  note: Named コンテナ埠頭C-3 and tagged cargo=container in OpenStreetMap.
+- osm: way/628427412
+  kind: terminal
+  name: コンテナ埠頭C-4
+  cargo:
+  - container
+  note: Named コンテナ埠頭C-4 and tagged cargo=container in OpenStreetMap.
+- osm: way/628427414
+  kind: terminal
+  name: コンテナ埠頭C-8
+  cargo:
+  - container
+  note: Named コンテナ埠頭C-8 and tagged cargo=container in OpenStreetMap.
+- osm: way/112553676
+  kind: terminal
+  name: コンテナ埠頭C-9
+  cargo:
+  - container
+  note: Named コンテナ埠頭C-9 and tagged cargo=container in OpenStreetMap.
+- osm: way/628692836
+  kind: terminal
+  name: 夢洲コンテナ埠頭C-10
+  cargo:
+  - container
+  note: Named 夢洲コンテナ埠頭C-10 and tagged cargo=container in OpenStreetMap.
+- osm: way/628692834
+  kind: terminal
+  name: 夢洲コンテナ埠頭C-11
+  cargo:
+  - container
+  note: Named 夢洲コンテナ埠頭C-11 and tagged cargo=container in OpenStreetMap.
+- osm: way/567598331
+  kind: terminal
+  name: 夢洲コンテナ埠頭C-12
+  cargo:
+  - container
+  note: Named 夢洲コンテナ埠頭C-12 and tagged cargo=container in OpenStreetMap.
+- osm: way/628757245
+  kind: terminal
+  name: 公共多目的埠頭C-6
+  cargo:
+  - general
+  note: Named 公共多目的埠頭C-6 in OpenStreetMap, which gives no cargo type; general is from the name.
+- osm: way/628757246
+  kind: terminal
+  name: 公共多目的埠頭C-7
+  cargo:
+  - general
+  note: Named 公共多目的埠頭C-7 in OpenStreetMap, which gives no cargo type; general is from the name.
+- osm: way/629666803
+  kind: terminal
+  name: ライナー埠頭L-1
+  cargo:
+  - general
+  note: >-
+    One of the liner berths L-1 to L-7, each mapped as an area named ライナー埠頭 (liner berth), on the west
+    side of Nanko. OpenStreetMap gives no cargo type; general is from the name.
+- osm: way/629666801
+  kind: terminal
+  name: ライナー埠頭L-2
+  cargo:
+  - general
+  note: >-
+    One of the liner berths L-1 to L-7, each mapped as an area named ライナー埠頭 (liner berth), on the west
+    side of Nanko. OpenStreetMap gives no cargo type; general is from the name.
+- osm: way/629666799
+  kind: terminal
+  name: ライナー埠頭L-3
+  cargo:
+  - general
+  note: >-
+    One of the liner berths L-1 to L-7, each mapped as an area named ライナー埠頭 (liner berth), on the west
+    side of Nanko. OpenStreetMap gives no cargo type; general is from the name.
+- osm: way/629666797
+  kind: terminal
+  name: ライナー埠頭L-4
+  cargo:
+  - general
+  note: >-
+    One of the liner berths L-1 to L-7, each mapped as an area named ライナー埠頭 (liner berth), on the west
+    side of Nanko. OpenStreetMap gives no cargo type; general is from the name.
+- osm: way/629666794
+  kind: terminal
+  name: ライナー埠頭L-5
+  cargo:
+  - general
+  note: >-
+    One of the liner berths L-1 to L-7, each mapped as an area named ライナー埠頭 (liner berth), on the west
+    side of Nanko. OpenStreetMap gives no cargo type; general is from the name.
+- osm: way/629666806
+  kind: terminal
+  name: ライナー埠頭L-6
+  cargo:
+  - general
+  note: >-
+    One of the liner berths L-1 to L-7, each mapped as an area named ライナー埠頭 (liner berth), on the west
+    side of Nanko. OpenStreetMap gives no cargo type; general is from the name.
+- osm: way/629666792
+  kind: terminal
+  name: ライナー埠頭L-7
+  cargo:
+  - general
+  note: >-
+    One of the liner berths L-1 to L-7, each mapped as an area named ライナー埠頭 (liner berth), on the west
+    side of Nanko. OpenStreetMap gives no cargo type; general is from the name.
+- osm: way/632077969
+  kind: terminal
+  name: R-1
+  note: >-
+    One of the berths R-1 to R-5, north of the liner berths, on the west side of Nanko. OpenStreetMap
+    gives no cargo type, so none is set here.
+- osm: way/632077967
+  kind: terminal
+  name: R-2
+  note: >-
+    One of the berths R-1 to R-5, north of the liner berths, on the west side of Nanko. OpenStreetMap
+    gives no cargo type, so none is set here.
+- osm: way/632077966
+  kind: terminal
+  name: R-3
+  note: >-
+    One of the berths R-1 to R-5, north of the liner berths, on the west side of Nanko. OpenStreetMap
+    gives no cargo type, so none is set here.
+- osm: way/632077965
+  kind: terminal
+  name: R-4
+  note: >-
+    One of the berths R-1 to R-5, north of the liner berths, on the west side of Nanko. OpenStreetMap
+    gives no cargo type, so none is set here.
+- osm: way/632077970
+  kind: terminal
+  name: R-5
+  note: >-
+    One of the berths R-1 to R-5, north of the liner berths, on the west side of Nanko. OpenStreetMap
+    gives no cargo type, so none is set here.

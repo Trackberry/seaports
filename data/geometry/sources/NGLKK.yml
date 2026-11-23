@@ -1,0 +1,31 @@
+---
+locode: NGLKK
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Nigeria extract around the Lekki Free Trade Zone. Lekki Deep
+  Sea Port has its own locode, NGLKK (Ibeju-Lekki), about 60 km east of Apapa and Tin Can Island. The
+  Dangote refinery's jetty, 10 km further east, is a separate private facility and is left out. OpenStreetMap
+  maps no anchorage for Lekki.
+position_outside: >-
+  UN/LOCODE places Ibeju-Lekki at (6.4333, 4.0), a rounded position a few tens of metres outside the north-west
+  corner of these limits, on the free trade zone's land behind the port.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Lekki. These are the hull of the port below grown by 300 m,
+    cut to the water OpenStreetMap maps inside it, with the port kept whole and a 30 m margin where it
+    meets the water: the port and its basin inside the breakwater, not the free trade zone's land behind
+    it. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of worship
+    or named places inside.
+features:
+- osm: way/785409163
+  kind: terminal
+  name: Lekki Deep Seaport
+  operator: Lekki Freeport Terminal
+  cargo:
+  - container
+  note: >-
+    The deep-water port opened in 2023. Its container terminal is run by Lekki Freeport Terminal, a CMA
+    CGM group company. OpenStreetMap names it Lekki Deep Seaport.

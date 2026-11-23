@@ -1,0 +1,85 @@
+---
+locode: PECLL
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Peru extract around the bay of Callao. OpenStreetMap maps the two
+  concession terminals inside the port area, and the anchorages off it as seamark areas. It does not map
+  the Transportadora Callao mineral concentrates pier, so it is not listed. The Petroperú tank farm and
+  the warehouses inland of the port are left out. The small-craft anchorages by the yacht clubs and the
+  IMARPE and naval anchorages are left out too.
+position_outside: >-
+  UN/LOCODE places Callao on the city centre (-12.05, -77.1333), about 300 m inland of these limits. A
+  ship there would be ashore.
+port_limits:
+  derive: hull
+  osm: way/1037392737
+  buffer_m: 400
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Callao. These are the hull of the Terminal Portuario del Callao
+    area and the two terminals in it grown by 400 m, cut to the water OpenStreetMap maps inside it, with
+    the port area and the terminals kept whole and a 30 m margin where they meet the water. What is left
+    is the port, its harbour basin and the water off the breakwaters; the anchorages in the bay are outside.
+    A scan of OpenStreetMap finds no homes, schools, hospitals, places of worship or named places inside.
+    The margin along the port's landward fence takes in the edge of Barrio Puerto Nuevo, about 0.7 ha,
+    and of an unnamed residential area, about 1.8 ha, none of it more than 40 m inside the limits.
+features:
+- osm: way/575043396
+  kind: anchorage
+  name: Anchorage
+  note: >-
+    Seamark area north-west of the harbour, the largest of the bay's anchorages, unnamed in OpenStreetMap.
+- osm: way/575043394
+  kind: anchorage
+  name: Aligeramiento
+  note: Seamark area for lightering, named Aligeramiento in OpenStreetMap.
+- osm: way/575043398
+  kind: anchorage
+  name: Anchorage
+  category: tanker
+  note: Seamark area tagged as a tanker anchorage, unnamed in OpenStreetMap.
+- osm: way/575043392
+  kind: anchorage
+  name: Anchorage
+  category: quarantine
+  note: Seamark area tagged as a quarantine anchorage, unnamed in OpenStreetMap.
+- osm: way/575043393
+  kind: anchorage
+  name: Anchorage
+  note: Seamark area in the north-west of the bay, unnamed in OpenStreetMap.
+- osm: way/575043412
+  kind: anchorage
+  name: Anchorage
+  note: Seamark area north of the harbour entrance, unnamed in OpenStreetMap.
+- osm: way/575043406
+  kind: anchorage
+  name: Anchorage
+  note: Seamark area in the north of the bay, unnamed in OpenStreetMap.
+- osm: way/575043408
+  kind: anchorage
+  name: Anchorage
+  note: Seamark area north of the harbour, unnamed in OpenStreetMap.
+- osm: way/575043403
+  kind: anchorage
+  name: Anchorage
+  note: Seamark area north of the harbour, nearest the shore, unnamed in OpenStreetMap.
+- osm: way/436413664
+  kind: terminal
+  name: Terminal Norte Multipropósito
+  operator: APM Terminals
+  cargo:
+  - container
+  - bulk
+  - general
+  note: >-
+    The North Multipurpose Terminal (Muelle Norte), mapped as Terminal Norte Multipropósito. APM Terminals
+    has run it under concession since 2011, for containers, bulk and general cargo.
+- osm: way/436413661
+  kind: terminal
+  name: Terminal de Contenedores Muelle Sur
+  operator: DP World
+  cargo:
+  - container
+  note: >-
+    The South container terminal (Muelle Sur), mapped as Terminal de Contenedores Muelle Sur and tagged
+    cargo=container. DP World has run it since 2010 and extended it as the Muelle Bicentenario.

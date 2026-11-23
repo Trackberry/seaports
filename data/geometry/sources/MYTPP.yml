@@ -1,0 +1,37 @@
+---
+locode: MYTPP
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Malaysia, Singapore and Brunei extract around the Pulai estuary.
+  OpenStreetMap maps the port as one area tagged cargo=container, with its 21 numbered operation areas
+  inside it; those are parts of the one terminal, so only the port's area is listed. The Asia Petroleum
+  Hub tank terminal on its own island south of the port and the Tanjung Bin power station's coal jetty
+  are left out as not part of the container port. OpenStreetMap maps no pilot boarding place here.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Tanjung Pelepas. These are the terminal's outline grown by 200
+    m and cut to the water OpenStreetMap maps inside it, with the terminal kept whole: the terminal, the
+    Pulai estuary along its berths and the water off its south-east side. The land on its landward side,
+    Kampung Tanjung Pelepas included, is left out. A scan of OpenStreetMap finds no homes, schools, hospitals,
+    places of worship or named places inside; the shore edge of an unnamed residential area reaches in
+    by about 200 m².
+features:
+- osm: way/1270599273
+  kind: anchorage
+  name: General Purpose
+  category: general
+  note: >-
+    Seamark area south of the port's approach, west of Singapore's Tuas Port, named General Purpose in
+    OpenStreetMap.
+- osm: way/180657424
+  kind: terminal
+  name: Pelabuhan Tanjung Pelepas
+  operator: Pelabuhan Tanjung Pelepas Sdn Bhd
+  cargo:
+  - container
+  note: >-
+    Malaysia's largest container terminal and a transhipment hub, run by Pelabuhan Tanjung Pelepas Sdn
+    Bhd, owned by MMC Corporation and APM Terminals. Tagged cargo=container in OpenStreetMap.

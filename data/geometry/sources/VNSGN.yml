@@ -1,0 +1,96 @@
+---
+locode: VNSGN
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Vietnam extract along the Saigon and Dong Nai rivers. The outline
+  covers the Cat Lai cluster on the Dong Nai river in Thu Duc, where most of Ho Chi Minh City's containers
+  are handled, and the older river ports on the Saigon river in Districts 4 and 7, about 6 km upriver:
+  Vietnam International Container Terminals, Tan Thuan, Ben Nghe, Lotus and the Khanh Hoi wharves of Saigon
+  Port, named here as OpenStreetMap names them. The deep-water terminals at Cai Mep, 60 km away, are a
+  separate port (VNCMT). OpenStreetMap maps no anchorage or pilot boarding place on these rivers.
+quays:
+- VNCLI
+position_outside: >-
+  UN/LOCODE places Ho Chi Minh City at 10.7667, 106.6667, in the city's western districts, about 5 km
+  west of the Khanh Hoi wharves and well inland of every quay. A ship cannot be there.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Ho Chi Minh City. These are the hull of the terminals below,
+    grown by 300 m and cut to the rivers OpenStreetMap maps inside it, with the terminals kept whole:
+    the Saigon river from Khanh Hoi round Thu Thiem to its meeting with the Dong Nai, the Dong Nai past
+    Cat Lai, and the creeks that open off them. Thu Thiem, Cat Lai town and the city are land and left
+    out. A scan of OpenStreetMap finds no homes, schools, hospitals or places of worship inside. Seven
+    residential areas on the banks reach in where they are drawn over the river, by about 2 ha in all,
+    most of it a strip of Khu đô thị Sala in Thu Thiem, none of it more than 40 m inside, and an island's
+    shore by 320 m²; the only named place is a Khu phố 26 neighbourhood label on the river bank.
+features:
+- osm: way/410427637
+  kind: terminal
+  name: Cảng Cát Lái
+  operator: Saigon Newport Corporation
+  cargo:
+  - container
+  note: >-
+    Vietnam's busiest container terminal, run by Saigon Newport Corporation (Tan Cang Sai Gon). OpenStreetMap
+    names it Cang Cat Lai and tags it cargo=container.
+- osm: way/941591564
+  kind: terminal
+  name: Cảng Tân Cảng - Phú Hữu
+  operator: Tan Cang - Phu Huu JSC
+  cargo:
+  - container
+  note: >-
+    Terminal C of the Cat Lai complex, just downstream of the main terminal, run by Tan Cang - Phu Huu
+    JSC, whose main shareholders are Saigon Newport Corporation and Ben Nghe Port. OpenStreetMap names
+    it Cang Tan Cang - Phu Huu and gives no cargo type; container is from Saigon Newport.
+- osm: way/533426624
+  kind: terminal
+  name: Cảng SP-ITC
+  operator: SP-ITC
+  cargo:
+  - container
+  note: >-
+    A container terminal further downstream on the Dong Nai river, opened in 2016. OpenStreetMap gives
+    its official name, Cang Container Quoc te SP-ITC.
+- osm: way/1419594543
+  kind: terminal
+  name: Cảng VICT
+  cargo:
+  - container
+  note: >-
+    Vietnam International Container Terminals, on the Saigon river in District 7, named Cảng VICT in OpenStreetMap
+    with that official name; container is from the name. OpenStreetMap gives no operator.
+- osm: way/1419557203
+  kind: terminal
+  name: Cảng Tân Thuận
+  operator: Công ty Cổ phần Cảng Sài Gòn
+  note: >-
+    Tan Thuan port in District 7, with Saigon Port as operator in OpenStreetMap, which gives no cargo
+    type.
+- osm: way/1419558279
+  kind: terminal
+  name: Cảng Tân Thuận Đông
+  operator: Công ty Cổ phần Dịch vụ Vận tải Sài Gòn
+  note: Tan Thuan Dong port in District 7, with its operator as OpenStreetMap gives it, and no cargo type.
+- osm: way/1419558280
+  kind: terminal
+  name: Cảng Bến Nghé
+  note: Ben Nghe port in District 7, named so in OpenStreetMap, which gives no operator or cargo type.
+- osm: way/220688059
+  kind: terminal
+  name: Cảng Tân Thuận 2
+  note: Named so in OpenStreetMap, which gives no operator or cargo type.
+- osm: way/226937992
+  kind: terminal
+  name: LOTUS PORT
+  operator: LOTUS JVC
+  note: Lotus port in District 7, named so in OpenStreetMap, which gives no cargo type.
+- osm: relation/6946894
+  kind: terminal
+  name: Cảng Sài Gòn Khánh Hội
+  note: >-
+    The Khanh Hoi wharves of Saigon Port on the Saigon river in District 4, named so in OpenStreetMap,
+    which gives no operator or cargo type.

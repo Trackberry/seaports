@@ -418,10 +418,10 @@ class GeometryApiTest < Minitest::Test
   end
 
   def test_a_port_with_no_outline_answers_nothing_rather_than_raising
-    assert_nil Seaports.geometry("AUBNE")
-    assert_empty Seaports.areas("AUBNE")
-    assert_empty Seaports.quays("AUBNE")
-    refute Seaports.within?("AUBNE", -27.4, 153.1)
+    assert_nil Seaports.geometry("MZMPM")
+    assert_empty Seaports.areas("MZMPM")
+    assert_empty Seaports.quays("MZMPM")
+    refute Seaports.within?("MZMPM", -25.97, 32.55)
     assert_nil Seaports.geometry("not a locode")
   end
 

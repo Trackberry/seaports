@@ -1,0 +1,73 @@
+---
+locode: CIABJ
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Ivory Coast extract around the Ébrié lagoon harbour. OpenStreetMap
+  maps the two container terminals at Vridi, the fruit quay and the port's general quays by their berth
+  numbers. The fishing port, the timber port and the shipyards are left out. OpenStreetMap maps no anchorage
+  for Abidjan, and the Vridi canal is the only way in.
+position_outside: >-
+  UN/LOCODE places Abidjan on Le Plateau, the business district on the lagoon (5.3333, -4.0167), about
+  2 km north of the fruit quay, the northernmost cargo quay mapped here. A ship there is in the lagoon
+  off the city, not at a terminal.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Abidjan. These are the hull of the terminals below, from the
+    container terminals at Vridi to the fruit quay in the north, grown by 200 m, then cut to the water
+    OpenStreetMap maps inside it, with the terminals kept whole and a 30 m margin where they meet the
+    water. What is left is the lagoon water off the quays and the six terminals; the land of Treichville
+    and Petit-Bassam between them is cut away. A scan of OpenStreetMap finds no homes, schools, hospitals
+    or places of worship inside. Two residential areas reach in where they are drawn over the shore, by
+    about 200 m² in all; the commune of Treichville and the island of Petit-Bassam, whose outlines take
+    in the port, overlap it; and the named places inside are labels on the quays and the grain terminal.
+features:
+- osm: way/292702360
+  kind: terminal
+  name: Quai à conteneurs (Q21-Q25)
+  operator: Africa Global Logistics
+  cargo:
+  - container
+  note: >-
+    The first container terminal, at Vridi, formerly SETV under Bolloré and now part of Africa Global
+    Logistics. OpenStreetMap names it Quai à conteneurs (Q21-Q25).
+- osm: way/1065537950
+  kind: terminal
+  name: Côte d'Ivoire Terminal
+  operator: Côte d'Ivoire Terminal
+  cargo:
+  - container
+  note: >-
+    The second container terminal, next to Abidjan Terminal, opened in 2022 and run by a joint venture
+    of APM Terminals and Africa Global Logistics. It takes ships of up to 16 m draught.
+- osm: way/336929295
+  kind: terminal
+  name: Quai Fruitier (QB1 – QB2)
+  operator: Eolis
+  cargo:
+  - reefer
+  note: >-
+    The banana and pineapple quay, berths QB1 and QB2, with cold stores behind it. Eolis, a Compagnie
+    Fruitière subsidiary, has held its concession since 2018. OpenStreetMap names it Quai Fruitier (QB1
+    – QB2); the port calls it the terminal fruitier.
+- osm: way/334725252
+  kind: terminal
+  name: Quai Nord (Q1-Q5)
+  cargo:
+  - general
+  note: The port's north quay, berths 1 to 5, as OpenStreetMap names it.
+- osm: way/334787342
+  kind: terminal
+  name: Quai Ouest (Q6-Q14)
+  cargo:
+  - general
+  - bulk
+  note: The port's west quay, berths 6 to 14, tagged cargo=bulk in OpenStreetMap.
+- osm: way/334780863
+  kind: terminal
+  name: Quai Sud (Q16-Q20)
+  cargo:
+  - general
+  note: The port's south quay, berths 16 to 20, as OpenStreetMap names it.

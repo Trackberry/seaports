@@ -1,0 +1,58 @@
+---
+locode: AUMEL
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around Swanson Dock and Webb Dock. Melbourne's container
+  trade is at three terminals: Patrick and DP World either side of Swanson Dock on the Yarra, and Victoria
+  International Container Terminal at Webb Dock East. Car carriers berth at Webb Dock West. The Newport
+  and Yarraville fuel terminals and the Station Pier passenger berths are left out, as is the area OpenStreetMap
+  names Webb Dock North, whose operator is not clear.
+position_outside: >-
+  UN/LOCODE places Melbourne on the city centre (-37.8167, 144.9667), about 4 km east of Swanson Dock.
+  A ship cannot reach it.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Melbourne. These are the hull of the terminals below, from Swanson
+    Dock to Webb Dock, grown by 300 m, then cut to the water OpenStreetMap maps inside it, with the terminals
+    kept whole and a 30 m margin where they meet the water. What is left is the four terminals, Swanson
+    Dock, the lower Yarra, Webb Dock and the water of Hobsons Bay between; Port Melbourne, Williamstown,
+    Docklands and Coode Island are cut away. A scan of OpenStreetMap finds no homes, residential land,
+    schools, hospitals, places of worship or named places inside.
+features:
+- osm: way/1288726753
+  kind: terminal
+  name: East Swanson Dock Intermodal Terminal
+  operator: Patrick Terminals
+  cargo:
+  - container
+  note: >-
+    The container terminal on the east side of Swanson Dock. OpenStreetMap names it East Swanson Dock
+    Intermodal Terminal and tags it cargo=container.
+- osm: way/1307911697
+  kind: terminal
+  name: Container terminal
+  operator: DP World
+  cargo:
+  - container
+  note: >-
+    The container terminal on the west side of Swanson Dock, unnamed in OpenStreetMap and tagged cargo=container.
+- osm: way/510980459
+  kind: terminal
+  name: Victoria International Container Terminal
+  operator: Victoria International Container Terminal
+  cargo:
+  - container
+  note: >-
+    The automated container terminal at Webb Dock East, opened in 2017 and owned by International Container
+    Terminal Services.
+- osm: way/512196774
+  kind: terminal
+  name: Melbourne International RoRo Auto Terminal
+  cargo:
+  - ro_ro
+  note: >-
+    The car and ro-ro terminal at Webb Dock West, tagged cargo=vehicle in OpenStreetMap. Its operator
+    is not given in OpenStreetMap.

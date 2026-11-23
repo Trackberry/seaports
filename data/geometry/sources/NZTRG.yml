@@ -1,0 +1,51 @@
+---
+locode: NZTRG
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik New Zealand extract around Tauranga Harbour. OpenStreetMap maps
+  the Port of Tauranga's two sides of Stella Passage, the Mount Maunganui wharves and the Sulphur Point
+  container terminal, and a pilot boarding place off the harbour entrance. Its only anchorage outside
+  the small-craft moorings is a quarantine anchorage mapped as a point, not an area, so it is not listed.
+position_outside: >-
+  UN/LOCODE places Tauranga at (-37.6833, 176.1667), in the city south of Sulphur Point, about 2 km from
+  the container terminal. A ship there would be in the inner harbour or ashore.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Tauranga. These are the hull of the two sides of the port grown
+    by 300 m, cut to the water OpenStreetMap maps inside it, with the terminals kept whole and a 30 m
+    margin where they meet the water. What is left is the Mount Maunganui wharves, the Sulphur Point container
+    terminal and Stella Passage between them; the town of Mount Maunganui between the wharves is cut away.
+    A scan of OpenStreetMap finds no schools, hospitals or places of worship inside. Six houses stand
+    inside the Mount Maunganui wharves' own outline and two more in the margin beside it, eight wholly
+    inside in all, with the edge of a small residential area; the named places are the Sulphur Point label
+    on the container terminal, and the boundaries of Mount Maunganui and its industrial quarter overlap
+    the wharves.
+features:
+- osm: node/9234532498
+  kind: pilot_boarding
+  name: Tauranga pilot boarding place
+  note: Seamark pilot boarding point north of the harbour entrance, unnamed in OpenStreetMap.
+- osm: relation/13494449
+  kind: terminal
+  name: Port of Tauranga
+  operator: Port of Tauranga
+  cargo:
+  - bulk
+  - general
+  - reefer
+  note: >-
+    Mapped as Port of Tauranga, tagged industrial=port: the wharves on the Mount Maunganui side, for logs,
+    bulk and break-bulk, and the conventional reefer ships that load kiwifruit.
+- osm: way/77594023
+  kind: terminal
+  name: Tauranga Container Terminal
+  operator: Port of Tauranga
+  cargo:
+  - container
+  - reefer
+  note: >-
+    The container terminal at Sulphur Point, tagged cargo=container. The Port of Tauranga lists 3,426
+    reefer points there.

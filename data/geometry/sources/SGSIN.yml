@@ -1,0 +1,157 @@
+---
+locode: SGSIN
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Malaysia, Singapore and Brunei extract along Singapore's south-west
+  coast and a seamark search of the Singapore Strait. The outline covers the two container terminals PSA
+  Singapore runs in the west, Tuas Port and Pasir Panjang, where Singapore's container traffic is consolidating.
+  PSA's city terminals at Keppel and Brani are left out: they are due to move to Tuas by the end of 2027,
+  and taking them in would stretch the limits over Sentosa and the city waterfront. Tanjong Pagar no longer
+  handles containers. Jurong Port (SGJUR), the bulk and general cargo port run by Jurong Port Pte Ltd,
+  and the oil terminals on Jurong Island are left out too: they have their own locodes and are not where
+  Singapore's containers are handled. The anchorages are the Port of Singapore's seamark areas in the
+  western and eastern sectors where cargo ships wait, hold and take on bunkers or stores; small-craft,
+  explosives, laid-up and naval anchorages are left out.
+quays:
+- SGPPT
+- SGTUA
+- SGPAP
+position_outside: >-
+  UN/LOCODE places Singapore at 1.2833, 103.85, on the city centre at Raffles Place, about 7 km east of
+  Pasir Panjang, the easternmost terminal mapped here. A ship there is off the city, not at a terminal.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Singapore. These are the hull of Tuas Port and Pasir Panjang
+    Container Terminal, grown by 200 m and cut to the sea OpenStreetMap maps inside it, with the terminals
+    kept whole: the terminals and the water between them, round Jurong Island and south of it, not the
+    anchorages further out in the Strait. Jurong Island, the Tuas industrial estate and the Pasir Panjang
+    shore are land and left out. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals
+    or places of worship inside. Sultan Shoal, a lighthouse islet, is inside, and the shore edge of Jurong
+    Island reaches in by about 8 ha. The named places are the labels of Tuas View Extension, in a basin
+    of Tuas Port, and of the Western Islands, in the water, a "Port" label on Pasir Panjang Terminal,
+    and the planning-area outlines of Tuas and the Western Islands.
+features:
+- osm: way/182076302
+  kind: anchorage
+  name: Western (AWW)
+  category: general
+  note: Seamark area south of Pasir Panjang, named Western (AWW) in OpenStreetMap.
+- osm: way/182076224
+  kind: anchorage
+  name: Western Holding (AWH)
+  category: waiting
+  note: Seamark area, named Western Holding (AWH) in OpenStreetMap.
+- osm: way/182076269
+  kind: anchorage
+  name: Western Quarantine and Immigration (AWQI)
+  category: quarantine
+  note: Seamark area, named Western Quarantine and Immigration (AWQI) in OpenStreetMap.
+- osm: way/182076176
+  kind: anchorage
+  name: Western Petroleum A (AWPA)
+  category: tanker
+  note: Seamark area, named Western Petroleum A (AWPA) in OpenStreetMap.
+- osm: way/182076274
+  kind: anchorage
+  name: Western Petroleum B (AWPB)
+  category: tanker
+  note: Seamark area, named Western Petroleum B (AWPB) in OpenStreetMap.
+- osm: way/182075846
+  kind: anchorage
+  name: Sudong Holding (ASH)
+  category: waiting
+  note: Seamark area south of Tuas, named Sudong Holding (ASH) in OpenStreetMap.
+- osm: way/182075955
+  kind: anchorage
+  name: Sudong Special Purpose (ASSPU)
+  note: >-
+    Seamark area south of Tuas, named Sudong Special Purpose (ASSPU) in OpenStreetMap, which gives it
+    no category.
+- osm: way/182075709
+  kind: anchorage
+  name: Selat Pauh (ASPLU)
+  note: Seamark area, named Selat Pauh (ASPLU) in OpenStreetMap, which gives it no category.
+- osm: way/1270194214
+  kind: anchorage
+  name: Selat Pauh Petroleum (ASPP)
+  category: tanker
+  note: Seamark area, named Selat Pauh Petroleum (ASPP) in OpenStreetMap.
+- osm: way/182076199
+  kind: anchorage
+  name: Raffles Petroleum (ARP)
+  category: tanker
+  note: Seamark area, named Raffles Petroleum (ARP) in OpenStreetMap.
+- osm: way/182076230
+  kind: anchorage
+  name: Raffles Reserved (ARAFR)
+  note: Seamark area, named Raffles Reserved (ARAFR) in OpenStreetMap, which gives it no category.
+- osm: way/182075788
+  kind: anchorage
+  name: Eastern (AEW)
+  category: general
+  note: Seamark area off the east of the island, named Eastern (AEW) in OpenStreetMap.
+- osm: way/182075884
+  kind: anchorage
+  name: Eastern Holding A (AEHA)
+  category: waiting
+  note: Seamark area, named Eastern Holding A (AEHA) in OpenStreetMap.
+- osm: way/182075887
+  kind: anchorage
+  name: Eastern Holding B (AEHB)
+  category: waiting
+  note: Seamark area, named Eastern Holding B (AEHB) in OpenStreetMap.
+- osm: way/182076112
+  kind: anchorage
+  name: Eastern Holding C (AEHC)
+  category: waiting
+  note: Seamark area, named Eastern Holding C (AEHC) in OpenStreetMap.
+- osm: way/182076291
+  kind: anchorage
+  name: Eastern Special Purposes A (AESPA)
+  note: Seamark area, named Eastern Special Purposes A (AESPA) in OpenStreetMap, which gives it no category.
+- osm: way/182076172
+  kind: anchorage
+  name: Eastern Petroleum A (AEPA)
+  category: tanker
+  note: Seamark area, named Eastern Petroleum A (AEPA) in OpenStreetMap.
+- osm: way/182076286
+  kind: anchorage
+  name: Eastern Petroleum B (AEPB)
+  category: tanker
+  note: Seamark area, named Eastern Petroleum B (AEPB) in OpenStreetMap.
+- osm: way/182076300
+  kind: anchorage
+  name: Eastern Petroleum C (AEPBC)
+  category: tanker
+  note: Seamark area, named Eastern Petroleum C (AEPBC) in OpenStreetMap.
+- osm: node/11799416773
+  kind: pilot_boarding
+  name: Western Boarding Ground A (PWBGA)
+  note: Seamark pilot boarding place west of Tuas, named in OpenStreetMap.
+- osm: node/11799416774
+  kind: pilot_boarding
+  name: Western Boarding Ground B (PWBGB)
+  note: Seamark pilot boarding place south of Tuas, named in OpenStreetMap.
+- osm: way/1004233257
+  kind: terminal
+  name: Tuas Mega Port
+  operator: PSA Singapore
+  cargo:
+  - container
+  note: >-
+    PSA Singapore's automated container port on reclaimed land at Tuas, opened in 2022 and built out in
+    phases into the 2040s. OpenStreetMap names it Tuas Mega Port and tags it cargo=container; the shape
+    takes in phases still being built.
+- osm: relation/15401088
+  kind: terminal
+  name: Pasir Panjang Container Terminal
+  operator: PSA Singapore
+  cargo:
+  - container
+  note: >-
+    PSA Singapore's container terminal on the west coast, which includes the berths PSA runs jointly with
+    shipping lines. OpenStreetMap names it Pasir Panjang Container Terminal and tags it cargo=container.
+    Two smaller overlapping shapes there, way/325897191 and way/868420646, are left out as parts of it.

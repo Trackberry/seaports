@@ -1,0 +1,34 @@
+---
+locode: NZLYT
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around the inner harbour. OpenStreetMap maps the port
+  as one area, Lyttelton Port, run by Lyttelton Port Company; the container terminal at Cashin Quay, the
+  coal berth and the inner harbour wharves are not mapped apart. The harbour itself, 127 km² out to the
+  heads, is not taken in. OpenStreetMap maps no anchorage for cargo ships.
+position_outside: UN/LOCODE places Lyttelton in the town (-43.6, 172.7167), about 250 m up the hill from
+  the port.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Lyttelton. These are the hull of the port area below grown by
+    200 m, cut to the water OpenStreetMap maps inside it, with the port area kept whole and a 30 m margin
+    where it meets the water. What is left is the port and the inner harbour's basins; the town on the
+    hill behind is cut away. A scan of OpenStreetMap finds no homes, schools, hospitals or places of worship
+    inside, only a 6 m² hut on the port's land and 19 m² of a residential area at the edge; the named
+    places are Te Awaparahi, a label on the port's reclaimed land, and the town boundary of Lyttelton,
+    which overlaps the port.
+features:
+- osm: way/162162709
+  kind: terminal
+  name: Lyttelton Port
+  operator: Lyttelton Port Company
+  cargo:
+  - container
+  - bulk
+  - general
+  note: >-
+    The whole port as OpenStreetMap maps it: the Cashin Quay container terminal, the coal berth and the
+    inner harbour wharves.

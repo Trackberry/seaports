@@ -1,0 +1,82 @@
+---
+locode: ECGYE
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Ecuador extract along the Estero Salado south of the city. OpenStreetMap
+  maps the private terminals on Isla Trinitaria by name and the public port, Puerto Marítimo Simón Bolívar,
+  as an unnamed industrial area. It maps no anchorage or pilot boarding place in the Guayas river or the
+  Estero Salado. The bulk and grain terminals further up the Estero (Ecuabulk, Ecuagran, Storeocean) are
+  small yards in OpenStreetMap and are left out. Posorja, at the mouth of the gulf, has its own locode,
+  ECPSJ.
+position_outside: >-
+  UN/LOCODE places Guayaquil on the city centre (-2.1667, -79.9), about 9 km north of the nearest terminal.
+  A ship there would be on the Guayas river at the city's waterfront, not at a cargo quay.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  disjoint: >-
+    Isla Trinitaria lies between the two main parts: Contecon and Fertisa are on the water east of the
+    island, TPG and Naportec on the water west of it, and the two channels meet beyond these limits. The
+    other two parts are TPG's container yards mapped as TPG INARPI 3 and 4, and TPG INARPI 5, 30 to 90
+    m back from the water on the island, which nothing OpenStreetMap maps joins to it.
+  note: >-
+    OpenStreetMap maps no port limits for Guayaquil. These are the hull of the terminals below, from Contecon
+    in the south to TPG in the north-west, grown by 300 m, cut to the water OpenStreetMap maps inside
+    it, with the terminals kept whole and a 30 m margin where they meet the water. What is left is the
+    four terminals and the Estero Salado and its channels alongside. A scan of OpenStreetMap finds no
+    schools, hospitals or places of worship inside. The edges of five houses, about 30 m² in all, and
+    of three residential areas behind the public port (Fertisa, Antártida and Coop. Nuevo Ecuador 1) reach
+    in by about 0.25 ha in all, none of it more than 40 m inside; the named places are labels on the terminals
+    and the outline of Isla Trinitaria, under TPG and Naportec.
+features:
+- osm: way/1054844869
+  kind: terminal
+  name: Container terminal
+  operator: Contecon Guayaquil (ICTSI)
+  cargo:
+  - container
+  - reefer
+  - general
+  note: >-
+    The public port, Puerto Marítimo Simón Bolívar, mapped as an unnamed industrial area that holds the
+    Contecon Guayaquil buildings, gates and banana inspection point. ICTSI's Contecon Guayaquil runs its
+    container and multipurpose berths under concession. The bulk berths in the same area are under a separate
+    concession, Andipuerto's, which was due to end in November 2026.
+- osm:
+  - way/1006788251
+  - way/1006774974
+  - way/1006773727
+  - way/1006773728
+  - way/1006773726
+  kind: terminal
+  name: TPG INARPI 1
+  operator: Inarpi
+  cargo:
+  - container
+  - reefer
+  note: >-
+    A private container terminal on Isla Trinitaria, open since 2006, mapped as five areas named TPG INARPI
+    1 to 5 (Inarpi is the company that runs it), merged here. It handles dry and reefer containers.
+- osm: way/1006774975
+  kind: terminal
+  name: NAPORTEC DOLE
+  operator: Naportec
+  cargo:
+  - container
+  - reefer
+  note: >-
+    A private terminal on Isla Trinitaria, mapped as NAPORTEC DOLE and known as Bananapuerto; it was built
+    for banana exports.
+- osm: way/1006814725
+  kind: terminal
+  name: Terminal Portuario Fertisa
+  operator: Fertisa
+  cargo:
+  - bulk
+  - container
+  note: >-
+    A private multipurpose terminal on Isla Trinitaria, mostly for bulk cargo, that also handles containers.
+    Mapped as Terminal Portuario Fertisa. The area OpenStreetMap names Fertisa - Terminal Portuario P-1,
+    1.2 km east among the Guasmo housing with no water beside it, is a yard rather than a berth and is
+    left out.

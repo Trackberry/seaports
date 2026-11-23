@@ -1,0 +1,37 @@
+---
+locode: INMAA
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik India southern zone extract around the harbour. OpenStreetMap
+  maps Chennai Port as one area, the strip of docks and quays along the shore north of Fort St George,
+  and none of its terminals apart: the two container terminals, DP World's Chennai Container Terminal
+  and PSA's Chennai International Terminals, work inside it. Kasimedu fishing harbour to the north is
+  left out. Ennore and Kattupalli, further north, have their own locodes, INENR and INKAT. OpenStreetMap
+  maps no anchorage off Chennai.
+position_outside: >-
+  UN/LOCODE places Chennai at (13.0833, 80.2833), in the city west of the port's southern end, about 650
+  m outside these limits.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Chennai. These are the hull of the port area below grown by
+    200 m, cut to the water OpenStreetMap maps inside it, with the port area kept whole and a 30 m margin
+    where it meets the water. What is left is the port, its docks and the outer harbour inside the breakwaters;
+    Fort St George, George Town and Royapuram are outside. A scan of OpenStreetMap finds no homes, hospitals,
+    places of worship or named places inside. The margin along the port's landward wall takes in the edges
+    of two unnamed residential areas and of a school's grounds, about 800 m² in all, none of it more than
+    40 m inside the limits.
+features:
+- osm: relation/2882852
+  kind: terminal
+  name: Chennai Port
+  operator: Chennai Port Authority
+  cargo:
+  - container
+  - general
+  - bulk
+  note: >-
+    The whole port as OpenStreetMap maps it: the inner docks, the container terminals on the outer harbour
+    and the bulk and general cargo berths.

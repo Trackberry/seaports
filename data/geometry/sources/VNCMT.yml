@@ -1,0 +1,82 @@
+---
+locode: VNCMT
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Vietnam extract along the Thi Vai river. Cai Mep - Thi Vai is filed
+  under VNCMT, the code carriers give Cai Mep on their schedules and bills of lading; VNVUT is the city
+  of Vung Tau, 20 km south, and the Cai Mep entry VNTOT sits off the river mouth. OpenStreetMap maps the
+  terminals on the east bank of the Thi Vai from Cai Mep north to Phu My, but names only some of them:
+  Cai Mep International Terminal, Gemalink, Tan Cang - Cai Mep Container Terminal and SSIT are not mapped
+  by name, so they are not listed, though the river alongside them lies inside the port limits. The PTSC
+  Phu My supply base and the PETEC fuel depot are left out as not cargo terminals, and Phuoc An port (VNPAP)
+  on the west bank is left out as a separate port. OpenStreetMap maps no anchorage and no pilot boarding
+  place on the river.
+quays:
+- VNSIT
+position_outside: >-
+  UN/LOCODE places Cai Mep at 10.5167, 107.0, on the west side of the Thi Vai river opposite the southern
+  terminals, about 700 m from the river OpenStreetMap maps there and so outside the clipped limits.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Cai Mep - Thi Vai. These are the hull of the terminals below,
+    from the southern Cai Mep berths to Saigon International Terminals Vietnam at Phu My, grown by 200
+    m and cut to the water OpenStreetMap maps inside it, with the terminals kept whole: the terminals,
+    the Thi Vai river along the quays and the creeks that open off it. The mangrove between the channels
+    and Phu My town are land and left out. A search of OpenStreetMap found no housing, school, hospital,
+    place of worship or named place inside them.
+features:
+- osm: way/544398710
+  kind: terminal
+  name: Cảng Cái Mép
+  cargo:
+  - container
+  note: >-
+    The southernmost mapped area on the Cai Mep quay. OpenStreetMap names it only Cang Cai Mep, and the
+    website it gives belongs to SP-PSA, whose port is 6 km north, so which terminal it is and who runs
+    it is not recorded there. Every berth on this stretch of the river handles containers.
+- osm: way/544409313
+  kind: terminal
+  name: Tan Cang – Cai Mep International Terminal
+  operator: Saigon Newport Corporation
+  cargo:
+  - container
+  note: >-
+    TCIT, a deep-water container terminal run by a joint venture led by Saigon Newport Corporation. Named
+    in OpenStreetMap.
+- osm: way/612248731
+  kind: terminal
+  name: Cảng quốc tế SP-PSA
+  operator: SP-PSA
+  cargo:
+  - container
+  - general
+  note: Run by SP-PSA, a joint venture of Saigon Port and PSA. Named in OpenStreetMap.
+- osm: way/612248712
+  kind: terminal
+  name: Cảng Tổng hợp Thị Vải
+  cargo:
+  - general
+  note: >-
+    A general cargo port, named Cang Tong hop Thi Vai in OpenStreetMap, which gives no operator; general
+    cargo is from its name.
+- osm: way/612248649
+  kind: terminal
+  name: Cảng Quốc tế Thị Vải
+  operator: Thi Vai International Port Co Ltd
+  cargo:
+  - general
+  note: >-
+    The general cargo terminal built under the Japanese-funded Cai Mep - Thi Vai port project and opened
+    in 2018, run by Thi Vai International Port Co Ltd. OpenStreetMap names it Cang Quoc te Thi Vai.
+- osm: way/278786602
+  kind: terminal
+  name: Cảng Quốc tế Sài Gòn Việt Nam
+  operator: Hutchison Ports
+  cargo:
+  - container
+  note: >-
+    SITV, the northernmost container terminal on the river, at Phu My, run by Hutchison Ports in a joint
+    venture with Saigon Investment Construction and Commerce Company. Named in OpenStreetMap.

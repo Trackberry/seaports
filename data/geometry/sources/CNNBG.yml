@@ -1,0 +1,80 @@
+---
+locode: CNNBG
+reviewed_at: '2026-11-23'
+note: >-
+  Ningbo, the Ningbo half of Ningbo-Zhoushan port. Bills of lading name it CNNGB, which is not a port
+  entry in UN/LOCODE; Ningbo Pt (CNNBG) is, and Ningbo (CNNBO) and Beilun (CNBEI, CNBLG) are listed as
+  its quays. Drafted from a search of Geofabrik's Zhejiang extract between Zhenhai and Chuanshan. OpenStreetMap
+  names the Beilun and Chuanshan container terminals after the Ningbo-Zhoushan Port companies that run
+  them, and the Meidong container terminal on Meishan island, 12 km south of Chuanshan behind the hills.
+  Zhoushan has its own locode, CNZOS. OpenStreetMap maps no anchorage near Ningbo.
+quays:
+- CNNBO
+- CNBEI
+- CNBLG
+position_outside: >-
+  UN/LOCODE places Ningbo Pt at (29.9167, 121.6667), on the edge of Ningbo city near Zhenhai, about 16
+  km west of the Beilun container terminals.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  disjoint: >-
+    Meidong is on Meishan island's channel, south of the Chuanshan peninsula; its water reaches the sea
+    to the east, outside the hull, and does not meet the Jintang Channel inside it.
+  note: >-
+    OpenStreetMap maps no port limits for Ningbo. These are the hull of the terminals below, grown by
+    300 m and cut to the sea OpenStreetMap maps inside it, with the terminals kept whole: the Jintang
+    Channel shore from Beilun to Chuanshan, the channel round Daxie island, and the water off Meidong.
+    A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of worship or
+    named places inside. Besides Daxie and Meishan islands under the terminals, it takes in the shore
+    edges of a few islands in the channels, Lishenma and Chuanbi among them, by under 5 ha in all, and
+    one unnamed rock.
+features:
+- osm: way/172381552
+  kind: terminal
+  name: Ningbo-Zhoushan Port Group Beilun Second Container Terminal Co.,ltd
+  operator: Ningbo-Zhoushan Port
+  cargo:
+  - container
+  note: Tagged cargo=container. Carriers call it NBSCT, Beilun Phase 3.
+- osm: way/544521509
+  kind: terminal
+  name: Ningbo-Zhoushan Port Group Beilun First Container Terminal Co.,ltd
+  operator: Ningbo-Zhoushan Port
+  cargo:
+  - container
+  note: >-
+    Tagged cargo=container. The area takes in the Phase 2 quay, which carriers call NBCT (Ningbo Beilun
+    International Container Terminals, part-owned by Hutchison Ports); OpenStreetMap does not map it separately.
+- osm: way/544521508
+  kind: terminal
+  name: Container terminal
+  cargo:
+  - container
+  note: >-
+    On Daxie island, tagged cargo=container. OpenStreetMap gives it no name tag, only a name:en in Chinese
+    (宁波舟山港大榭集装箱码头). Carriers know it as Daxie China Merchants International Terminal.
+- osm: way/251732414
+  kind: terminal
+  name: Ningbo-Zhoushan Port Group Beilun Third Container Terminal Co.,ltd
+  operator: Ningbo-Zhoushan Port
+  cargo:
+  - container
+  note: At Chuanshan, tagged cargo=container. Carriers call it NBTCT, Beilun Phase 4.
+- osm: way/1238637119
+  kind: terminal
+  name: 中海油LNG接收站
+  operator: CNOOC
+  cargo:
+  - tanker
+  note: The LNG receiving terminal east of Chuanshan, named 中海油LNG接收站 in OpenStreetMap.
+- osm: way/544521507
+  kind: terminal
+  name: Ningbo-Zhoushan Port Group Meidong Container Terminal Co.,ltd
+  operator: Ningbo-Zhoushan Port
+  cargo:
+  - container
+  note: >-
+    On Meishan island, tagged cargo=container and named 宁波舟山港股份有限公司梅东集装箱码头分公司 (Ningbo-Zhoushan Port, Meidong
+    Container Terminal branch) in OpenStreetMap.

@@ -1,0 +1,100 @@
+---
+locode: TWKHH
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Taiwan extract around Kaohsiung harbour. OpenStreetMap maps the
+  container centres one by one under Taiwan International Ports Corporation's numbering, without operators:
+  each centre is leased to several carriers, so no operator is set. It maps the four numbered anchorages
+  and the dangerous goods anchorage off the harbour, from the Taiwan navy's notice. The pilot boarding
+  area is mapped as an area, not a point, so it is not here.
+position_outside: UN/LOCODE places Kaohsiung at (22.6167, 120.25), at sea off Cijin, about 3 km west of
+  the harbour.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  disjoint: >-
+    The 2nd Container Port is mapped as two areas: the terminal on the harbour, and a yard about 230 m
+    back from the water, 15 m from the terminal, beside the 新生滯洪池 flood detention pond. Nothing OpenStreetMap
+    maps joins the yard to the harbour, so it stands as a part of its own.
+  note: >-
+    OpenStreetMap maps no port limits for Kaohsiung. These are the hull of the 1st to 7th container centres,
+    grown by 200 m and cut to the water OpenStreetMap maps inside it, with the centres kept whole: the
+    harbour channel from the 1st centre down to the second harbour entrance, and the basins between the
+    centres. Cijin and the Qianzhen waterfront are land and left out. A scan of OpenStreetMap finds no
+    homes, schools, hospitals or places of worship inside. It finds two place names on the 6th centre
+    for Hongmaogang (紅毛港), the village cleared to build it, a Tudigong label on the 4th centre, and at
+    the edge 300 m² of an outdoor exhibition area by the 6th centre tagged as housing.
+features:
+- osm: way/1487539863
+  kind: anchorage
+  name: No.1
+  note: Seamark area named "No.1" in OpenStreetMap, off the harbour. OpenStreetMap gives no category.
+- osm: way/1487540629
+  kind: anchorage
+  name: No.2
+  note: Seamark area named "No.2" in OpenStreetMap, off the harbour. OpenStreetMap gives no category.
+- osm: way/1487543744
+  kind: anchorage
+  name: No.3
+  note: Seamark area named "No.3" in OpenStreetMap, off the harbour. OpenStreetMap gives no category.
+- osm: way/1169531705
+  kind: anchorage
+  name: No.4
+  note: Seamark area named "No.4" in OpenStreetMap, off the harbour. OpenStreetMap gives no category.
+- osm: way/1487541636
+  kind: anchorage
+  name: Dangerous Goods Anchorage
+  note: Seamark area named so in OpenStreetMap, which gives no category.
+- osm:
+  - way/198032208
+  - way/208805042
+  kind: terminal
+  name: 2nd Container Port
+  cargo:
+  - container
+  note: >-
+    Mapped as two areas both named 第二貨櫃中心 (2nd Container Port), merged here. OpenStreetMap gives no cargo
+    tag; container is from the name.
+- osm: relation/17726211
+  kind: terminal
+  name: 1st Container Port
+  cargo:
+  - container
+  note: >-
+    Named 第一貨櫃中心 (1st Container Port) in OpenStreetMap, on the inner harbour 4 km north of the 2nd centre;
+    container is from the name.
+- osm: way/198032201
+  kind: terminal
+  name: 3rd Container Port
+  cargo:
+  - container
+  note: Named 第三貨櫃中心 (3rd Container Port) in OpenStreetMap; container is from the name.
+- osm:
+  - way/198032203
+  - relation/9369410
+  kind: terminal
+  name: 4th Container Port
+  cargo:
+  - container
+  note: Mapped as the centre and its extension (第四貨櫃中心擴充), merged here; container is from the name.
+- osm: way/198032205
+  kind: terminal
+  name: 5th Container Port
+  cargo:
+  - container
+  note: Named 第五貨櫃中心 (5th Container Port) in OpenStreetMap; container is from the name.
+- osm: relation/7027966
+  kind: terminal
+  name: 6th Container Port
+  cargo:
+  - container
+  note: Named 第六貨櫃中心 (6th Container Port) in OpenStreetMap; container is from the name.
+- osm: way/1198736067
+  kind: terminal
+  name: 7th Container Port
+  cargo:
+  - container
+  note: >-
+    Named 第七貨櫃中心 (7th Container Port) in OpenStreetMap, which dates its opening to August 2023; container
+    is from the name.

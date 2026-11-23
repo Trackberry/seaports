@@ -1,0 +1,62 @@
+---
+locode: PHMNL
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Philippines extract around Manila Bay. OpenStreetMap maps the
+  three container terminals of the Port of Manila: Manila International Container Terminal between the
+  Pasig and Tondo, South Harbor south of the river mouth, and the container terminal at North Harbor.
+  North Harbor's domestic piers and the Baseco wharves are left out. Manila North Harbour and Manila South
+  Harbour have their own locodes, PHMNN and PHMNS, so they are quays here. OpenStreetMap maps no anchorage
+  area in the bay off Manila.
+quays:
+- PHMNN
+- PHMNS
+position_outside: >-
+  UN/LOCODE places Manila at (14.5833, 120.9667), on the land behind South Harbor, about 160 m outside
+  these limits.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  disjoint: >-
+    South Harbor's basin opens to the bay west of its breakwater, beyond these limits; inside them it
+    is parted from the mouth of the Pasig, and so from the MICT side, by a strip of land about 20 m wide.
+  note: >-
+    OpenStreetMap maps no port limits for Manila. These are the hull of the three container terminals
+    below grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminals kept whole
+    and a 30 m margin where they meet the water. What is left is the terminals, the bay off their quays
+    and the mouth of the Pasig; Parola and Isla Puting Bato between MICT and North Harbor are cut away,
+    all but their edges. Not all of what is left is port: MICT's own outline in OpenStreetMap takes in
+    the Port Town Housing Project, about 4 ha with five apartment blocks, and a point for an annex of
+    the Rosauro Almario elementary school. Next to it a 0.1 ha unnamed residential area is wholly inside,
+    and the edges of Parola (about 0.3 ha), Diego Ville, the Gawad Kalinga village and one more area reach
+    in, with 27 small houses at the edge of Isla Puting Bato. A scan of OpenStreetMap finds no hospitals
+    or places of worship inside.
+features:
+- osm: relation/21501082
+  kind: terminal
+  name: Manila International Container Terminal
+  operator: International Container Terminal Services
+  cargo:
+  - container
+  note: >-
+    The international container terminal, run by International Container Terminal Services (ICTSI) since
+    1988, tagged cargo=container in OpenStreetMap.
+- osm: relation/14226500
+  kind: terminal
+  name: South Harbor Container Terminal
+  operator: Asian Terminals Inc.
+  cargo:
+  - container
+  note: >-
+    The container terminal at South Harbor, run by Asian Terminals Inc., as OpenStreetMap names it and
+    gives its operator.
+- osm: way/331790315
+  kind: terminal
+  name: North Harbor Container Terminal
+  cargo:
+  - container
+  note: >-
+    The container terminal at North Harbor, the domestic port, tagged industrial=port in OpenStreetMap.
+    Manila North Harbour Port Inc. runs North Harbor; OpenStreetMap does not name an operator for the
+    terminal.

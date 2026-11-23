@@ -1,0 +1,45 @@
+---
+locode: GHTEM
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Ghana extract around the harbour. OpenStreetMap maps the port
+  as two unnamed areas tagged industrial=port: Terminal 3 on the reclaimed land west of the old harbour,
+  and the old harbour's quays. The fishing harbours, the canoe basin and the shipyard are left out. The
+  depot OpenStreetMap names Tema Container Terminal is an inland yard, not a quay, so it is left out too.
+  OpenStreetMap maps no anchorage for Tema.
+position_outside: >-
+  UN/LOCODE places Tema at (5.63, 0.02), off the main breakwater east of the old harbour, about 500 m
+  beyond these limits. A ship there is outside the harbour, not at a quay.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Tema. These are the hull of Terminal 3 and the multipurpose
+    berths grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminals kept whole
+    and a 30 m margin where they meet the water. What is left is the water inside the breakwaters and
+    the two terminals; the fishing harbour's land and the town behind are cut away. A scan of OpenStreetMap
+    finds no homes, residential land, schools, hospitals, places of worship or named places inside.
+features:
+- osm: way/666974334
+  kind: terminal
+  name: Container terminal
+  operator: Meridian Port Services
+  cargo:
+  - container
+  note: >-
+    Terminal 3, the deep-water container terminal opened in 2019, with four container berths along a 1.4
+    km quay. Meridian Port Services is a joint venture of APM Terminals, Africa Global Logistics and the
+    Ghana Ports and Harbours Authority. OpenStreetMap maps it as an unnamed industrial=port area.
+- osm: way/941509331
+  kind: terminal
+  name: Berths
+  operator: Ghana Ports and Harbours Authority
+  cargo:
+  - general
+  - container
+  - bulk
+  note: >-
+    The quays of the original harbour, Terminals 1 and 2, mapped in OpenStreetMap as one unnamed industrial=port
+    area. They are multipurpose berths run by the Ghana Ports and Harbours Authority and take break bulk,
+    bulk, vehicles and some containers.

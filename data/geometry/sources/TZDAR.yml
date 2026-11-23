@@ -1,0 +1,43 @@
+---
+locode: TZDAR
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Tanzania extract around the harbour. OpenStreetMap maps the port
+  as two unnamed areas along the west side of the harbour: the container terminal at the southern end
+  and the multipurpose berths north of it. The oil jetties, the Kurasini wharves further south and the
+  ferry terminal are left out. OpenStreetMap maps no anchorage for cargo ships off Dar es Salaam.
+position_outside: >-
+  UN/LOCODE places Dar es Salaam on the city centre by the harbour entrance (-6.8, 39.2833), about 2.5
+  km north of the port's northernmost berth.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Dar es Salaam. These are the hull of the two terminals below
+    grown by 200 m, cut to the water OpenStreetMap maps inside it, with the terminals kept whole and a
+    30 m margin where they meet the water. What is left is the berths and the harbour water off them.
+    A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of worship or
+    named places inside.
+features:
+- osm: relation/15688086
+  kind: terminal
+  name: Container terminal
+  operator: Adani Ports
+  cargo:
+  - container
+  note: >-
+    The four-berth container terminal, which handles most of Tanzania's containers. Adani Ports has run
+    it through Tanzania International Container Terminal Services (TICTS) under a 30-year concession signed
+    in 2024. OpenStreetMap maps it as an unnamed container terminal.
+- osm: relation/15688085
+  kind: terminal
+  name: Berths
+  operator: DP World
+  cargo:
+  - container
+  - general
+  - ro_ro
+  note: >-
+    The multipurpose berths 0 to 7, which DP World took over under a 30-year concession signed in 2023.
+    OpenStreetMap maps them as one unnamed industrial area.

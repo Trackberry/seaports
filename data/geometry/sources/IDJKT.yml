@@ -1,0 +1,67 @@
+---
+locode: IDJKT
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Java extract around Tanjung Priok. Jakarta's port is filed under
+  IDJKT, the code carriers use for Tanjung Priok; UN/LOCODE has no separate code for Tanjung Priok, and
+  IDCTO is the New Priok terminals at the east end of the port. OpenStreetMap maps the Jakarta International
+  Container Terminal, the New Priok Container Terminal One in two parts and the Indonesia Kendaraan Terminal
+  for vehicles, and the older harbour to the west, with its conventional and domestic berths, as one area.
+  All are here. OpenStreetMap maps no anchorage and no pilot boarding place off Tanjung Priok.
+quays:
+- IDCTO
+position_outside: >-
+  UN/LOCODE places Jakarta at -6.1333, 106.8333, in the city about 5 km south-west of the port limits.
+  A ship cannot be there.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Jakarta. These are the hull of the terminals below, grown by
+    200 m and cut to the sea OpenStreetMap maps inside it, with the terminals kept whole: the terminals
+    and the basins of Tanjung Priok inside the breakwaters. The streets of Tanjung Priok and Koja behind
+    the port are land and left out. A scan of OpenStreetMap finds no homes inside. It finds four mosques
+    on the terminal areas (two in the old harbour, one each on the container and vehicle terminals), the
+    Koja place name on the container terminal, and at the edge 30 m² of the MI Swasta Al-Ma'arif school
+    grounds, 0.3 ha of an unnamed residential area and 0.1 ha of an islet's shore.
+features:
+- osm: way/850698169
+  kind: terminal
+  name: Jakarta International Container Terminal
+  operator: Hutchison Ports and Pelindo
+  cargo:
+  - container
+  note: >-
+    Indonesia's largest container terminal, run by Hutchison Ports with the state port company Pelindo.
+    OpenStreetMap maps it as one area with the alternative name Terminal Petikemas Koja, the neighbouring
+    Koja container terminal, so the area may take in both.
+- osm:
+  - way/1416288778
+  - way/1444836020
+  kind: terminal
+  name: New Priok Container Terminal 1
+  operator: New Priok Container Terminal One
+  cargo:
+  - container
+  note: >-
+    NPCT1, the first terminal of the New Priok extension at the east end of the port, run by PT New Priok
+    Container Terminal One. Mapped as two ways in OpenStreetMap, merged here.
+- osm: way/1444836022
+  kind: terminal
+  name: Indonesia Kendaraan Terminal
+  operator: PT Indonesia Kendaraan Terminal
+  cargo:
+  - ro_ro
+  note: >-
+    The vehicle terminal for car imports and exports, run by PT Indonesia Kendaraan Terminal, a Pelindo
+    company. Named in OpenStreetMap, which gives the operator.
+- osm: way/30088883
+  kind: terminal
+  name: Pelabuhan Tanjung Priok
+  cargo:
+  - general
+  note: >-
+    The older harbour west of the container terminals, with its conventional and domestic berths, mapped
+    as one area named Pelabuhan Tanjung Priok (Port of Tanjung Priok) in OpenStreetMap, which gives no
+    operator or cargo type.

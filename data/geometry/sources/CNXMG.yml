@@ -1,0 +1,80 @@
+---
+locode: CNXMG
+reviewed_at: '2026-11-23'
+note: >-
+  Xiamen. Bills of lading name it CNXMN, which is not a port entry in UN/LOCODE; Xiamen Pt (CNXMG) is,
+  and Xiamen (CNXAM) and Haicang (CNXMH) are listed as its quays. Drafted from a search of Geofabrik's
+  Fujian extract. Only Haicang, the container port on the mainland side of the western harbour, is here.
+  OpenStreetMap maps four container terminals there, all tagged cargo=container, but names only one, 远海码头
+  (Xiamen Ocean Gate); it names no operator for any. The Dongdu terminals on Xiamen island are not here:
+  OpenStreetMap maps only a harbour area there (厦门港), not the terminals themselves. Zhangzhou port, across
+  the bay, is a different port.
+quays:
+- CNXAM
+- CNXMH
+position_outside: >-
+  UN/LOCODE places Xiamen Pt at (24.35, 118.2), in open water south-east of Xiamen island, about 20 km
+  from the Haicang terminals.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Xiamen. These are the hull of the Haicang terminals below, grown
+    by 300 m and cut to the sea OpenStreetMap maps inside it, with the terminals kept whole: the terminals
+    and the water off the Haicang waterfront, not the anchorages in the outer harbour. A search of OpenStreetMap
+    found no housing, school, hospital, place of worship or named place inside them.
+features:
+- osm: way/570829146
+  kind: anchorage
+  name: Anchorage No.3 for vessels under 10,000t
+  note: >-
+    Seamark area in the outer harbour, named "Anchorage No.3 for vessels under 10,000t" in OpenStreetMap,
+    from China MSA notice 21/2018. OpenStreetMap gives no category.
+- osm: way/830333387
+  kind: anchorage
+  name: No5
+  note: >-
+    Seamark area off Haicang, named "No5" in OpenStreetMap, from China MSA notice 338/2020. OpenStreetMap
+    gives no category.
+- osm: way/830333388
+  kind: anchorage
+  name: No7
+  category: explosives
+  note: Seamark area for dangerous goods, named "No7" in OpenStreetMap, from China MSA notice 339/2020.
+- osm: way/544588065
+  kind: terminal
+  name: Container terminal
+  cargo:
+  - container
+  note: >-
+    The westernmost Haicang container quay, tagged cargo=container but unnamed in OpenStreetMap. Its operator
+    is not known here.
+- osm: way/544588067
+  kind: terminal
+  name: 远海码头
+  cargo:
+  - container
+  note: Named 远海码头 and tagged cargo=container in OpenStreetMap.
+- osm: way/544588070
+  kind: terminal
+  name: Container terminal
+  cargo:
+  - container
+  note: >-
+    The central Haicang container quay, tagged cargo=container but unnamed in OpenStreetMap. Its operator
+    is not known here.
+- osm: way/544588072
+  kind: terminal
+  name: Container terminal
+  cargo:
+  - container
+  note: >-
+    The eastern Haicang container quay, beside the central one, tagged cargo=container but unnamed in
+    OpenStreetMap. Its operator is not known here.
+- osm: way/472086031
+  kind: terminal
+  name: 厦门港务海通码头
+  note: >-
+    Named 厦门港务海通码头 in OpenStreetMap, east of the container quays near Songyu. OpenStreetMap gives no cargo
+    type, so none is set.

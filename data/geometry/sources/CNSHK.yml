@@ -1,0 +1,82 @@
+---
+locode: CNSHK
+reviewed_at: '2026-11-23'
+note: >-
+  Shekou, the western Shenzhen container port: Shekou, Chiwan and Mawan on the tip of the Nanshan peninsula.
+  Bills of lading name it as Shekou (CNSHK), Chiwan (CNCWN) or Shenzhen (CNSZX, which is not a port entry
+  in UN/LOCODE). Chiwan and Shenzhen Pt (CNSZP), whose UN/LOCODE position is at Mawan, are listed as quays.
+  Eastern Shenzhen is Yantian (CNYTN), 40 km away. Drafted from a search of Geofabrik's Guangdong extract.
+  Dachan Bay Container Terminal, 6 km north of Mawan, is here too.
+quays:
+- CNCWN
+- CNSZP
+position_outside: >-
+  UN/LOCODE places Shekou at (22.4833, 113.9167), in Shekou town on the east side of the peninsula, about
+  3 km from the port limits.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Shekou. These are the hull of the Shekou, Chiwan, Mawan, Haixing
+    and Dachan Bay terminals, grown by 300 m and cut to the sea OpenStreetMap maps inside it, with the
+    terminals kept whole: the terminals and the water off the west shore of the peninsula. Qianhai, the
+    Mawan housing and Shekou town are land and left out. A search of OpenStreetMap found no housing, school,
+    hospital, place of worship or named place inside them.
+features:
+- osm: way/859962984
+  kind: anchorage
+  name: Anchorage for Cargo Ships
+  note: Seamark area west of Chiwan, named so in OpenStreetMap. OpenStreetMap gives no category.
+- osm: way/1034514377
+  kind: anchorage
+  name: Anchorage
+  note: Unnamed seamark area off Mawan, from China MSA notice 264/2017. OpenStreetMap gives no category.
+- osm: way/1356873541
+  kind: anchorage
+  name: Mazhou West Dangerous Goods Anchorage
+  note: Seamark area west of Mazhou island. OpenStreetMap gives no category.
+- osm: relation/15788753
+  kind: terminal
+  name: Shekou Container Terminal
+  operator: China Merchants Port
+  cargo:
+  - container
+  note: Tagged cargo=container and with the short name SCT in OpenStreetMap.
+- osm: relation/13603046
+  kind: terminal
+  name: Chiwan Container Terminal
+  operator: China Merchants Port
+  cargo:
+  - container
+  note: >-
+    Tagged cargo=container and with the short name CCT in OpenStreetMap, which gives Chiwan Container
+    Terminal Co. as its operator, a China Merchants Port company.
+- osm: relation/13603043
+  kind: terminal
+  name: Mawan Container Terminal
+  operator: China Merchants Port
+  cargo:
+  - container
+  note: >-
+    Tagged cargo=container and with the short name MCT in OpenStreetMap, with the same operator as Chiwan.
+    Mawan Smart Port, which China Merchants Port opened in November 2021, is the rebuilt Haixing terminal
+    to the north, not this one.
+- osm: relation/13603042
+  kind: terminal
+  name: Haixing Houbour
+  operator: China Merchants Port
+  cargo:
+  - container
+  note: >-
+    The Mawan berths north of Mawan Container Terminal, tagged as a container terminal in OpenStreetMap
+    (man_made=container_terminal) and named 海星码头 (Haixing) there. China Merchants Port rebuilt it as Mawan
+    Smart Port, its automated container terminal, opened in November 2021.
+- osm: relation/13603040
+  kind: terminal
+  name: 大铲湾集装箱码头一期
+  cargo:
+  - container
+  note: >-
+    North of Mawan, past Qianhai, tagged as a container terminal (man_made=container_terminal) and named
+    大铲湾集装箱码头一期 in OpenStreetMap, which gives no operator.

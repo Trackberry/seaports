@@ -1,0 +1,34 @@
+---
+locode: NGTIN
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Nigeria extract around Lagos harbour. OpenStreetMap maps Tin
+  Can Island as one area and none of its terminals apart: Tin Can Island Container Terminal, Ports and
+  Cargo Handling Services, Five Star Logistics, Josepdam Port Services and Ports and Terminal Multiservices,
+  the ro-ro terminal, all work on it. Apapa, just east across the creek, has its own locode, NGAPP, and
+  its own outline. The Nigerdock shipyard to the south-west is left out.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Tin Can Island. These are the hull of the island grown by 200
+    m, cut to the water OpenStreetMap maps inside it, with the island kept whole and a 30 m margin where
+    it meets the water. What is left is the island and the creek and harbour water off its quays, clear
+    of Apapa's limits to the east. The island's own outline holds a 6 ha area OpenStreetMap maps as residential,
+    unnamed, which is inside the limits. Otherwise a scan of OpenStreetMap finds no homes or hospitals
+    inside; across the creek, the shore edges of two unnamed residential areas, the Sea School grounds
+    and Snake Island reach in by about 0.3 ha in all.
+features:
+- osm: way/182794406
+  kind: terminal
+  name: Tincan Island
+  operator: Nigerian Ports Authority
+  cargo:
+  - container
+  - ro_ro
+  - general
+  note: >-
+    The whole island as OpenStreetMap maps it, named Tincan Island and tagged landuse=industrial. The
+    Nigerian Ports Authority leases its terminals to the operators named above; the ro-ro terminal takes
+    most of Nigeria's imported vehicles.
