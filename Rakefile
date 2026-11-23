@@ -264,15 +264,31 @@ namespace :seaports do
   # one port, or every port with a selection, and checks each against the
   # others already shipped, both ways. A port that fails keeps its old file,
   # and the task fails after trying the rest.
-  desc "Build port outlines from data/geometry/sources and check them"
+  desc "Build port and canal outlines from their selections and check them"
+  #
+  # With an argument it builds that one port (NLRTM) or canal (suez); with
+  # none, every port and then every canal.
   task :geometry, [:locode] do |_task, args|
     require_relative "lib/seaports/geometry/builder"
     require_relative "lib/seaports/geometry/checks"
+    require_relative "lib/seaports/canal/builder"
+    require_relative "lib/seaports/canal/checks"
 
     builder_class = Seaports::Geometry::Builder
     checks = Seaports::Geometry::Checks
-    locodes = args[:locode] ? [args[:locode].upcase] : Dir[File.join(builder_class::SOURCES_DIR, "*.yml")].map { |p| File.basename(p, ".yml") }.sort
+    canal_builder = Seaports::Canal::Builder
+    wanted = args[:locode].to_s.strip
+    canals = wanted.empty? ? canal_selection_ids : canal_selection_ids & [wanted.downcase]
+    locodes =
+      if wanted.empty? then Dir[File.join(builder_class::SOURCES_DIR, "*.yml")].map { |p| File.basename(p, ".yml") }.sort
+      elsif canals.empty? then [wanted.upcase]
+      else []
+      end
+    if canals.empty? && !wanted.empty? && !File.exist?(builder_class.selection_path(wanted.upcase))
+      abort "No port or canal selection for #{wanted}: the canals are #{canal_selection_ids.join(', ')}"
+    end
     extract = osm_extract
+    shipped_canals = canal_collections
     failed = []
     locodes.each do |locode|
       shapes = extract ? { shapes: extract.shapes_for(locode) } : {}
@@ -281,8 +297,12 @@ namespace :seaports do
       result = checks.run(collection, others:, file_locode: locode)
       report_geometry(result)
       # Both ways: new limits that now swallow a neighbour's terminal are as
-      # wrong as a terminal inside a neighbour's limits.
+      # wrong as a terminal inside a neighbour's limits, and limits that take
+      # in a canal's waiting area would file the canal's queue under the port.
       swallowed = others.flat_map { |other, theirs| checks.run(theirs, others: { locode => collection }, file_locode: other).errors.grep(/inside #{locode}/) }
+      swallowed += shipped_canals.flat_map do |id, canal|
+        Seaports::Canal::Checks.new(canal, others: { locode => collection }, file_locode: id).port_conflicts.map { |line| "#{id}: #{line}" }
+      end
       swallowed.each { |line| puts "  error: #{line}" }
       next failed << locode unless result.ok? && swallowed.empty?
 
@@ -293,20 +313,39 @@ namespace :seaports do
       warn "#{locode}: #{e.class}: #{e.message}"
       failed << locode
     end
+    canals.each do |id|
+      shapes = extract ? { shapes: extract.shapes_for_canal(id) } : {}
+      collection = canal_builder.new(canal_builder.read_selection(canal_builder.selection_path(id)), **shapes).build
+      result = Seaports::Canal::Checks.run(collection, others: geometry_collections, file_id: id)
+      report_geometry(result)
+      next failed << id unless result.ok?
+
+      File.write(canal_builder.output_path(id), "#{canal_builder.dump(collection)}\n")
+    rescue StandardError => e
+      warn "#{id}: #{e.class}: #{e.message}"
+      failed << id
+    end
     abort "Not written: #{failed.join(', ')}" unless failed.empty?
   end
 
   # Recurring, and offline: geometry.yml asks it before fetching a port from
   # OpenStreetMap. Succeeds when the shipped outline was built from the
   # selection as it stands, and fails when it was not, or is missing.
-  desc "Whether a port's outline was built from its current selection"
+  desc "Whether a port's or canal's outline was built from its current selection"
   task :geometry_current, [:locode] do |_task, args|
     require_relative "lib/seaports/geometry/builder"
+    require_relative "lib/seaports/canal/builder"
 
-    locode = args[:locode].to_s.upcase
-    abort "#{locode}: the outline is missing or was built from another selection" unless Seaports::Geometry::Builder.current?(locode)
+    wanted = args[:locode].to_s.strip
+    name, current =
+      if canal_selection_ids.include?(wanted.downcase)
+        [wanted.downcase, Seaports::Canal::Builder.current?(wanted.downcase)]
+      else
+        [wanted.upcase, Seaports::Geometry::Builder.current?(wanted.upcase)]
+      end
+    abort "#{name}: the outline is missing or was built from another selection" unless current
 
-    puts "#{locode}: the outline was built from this selection"
+    puts "#{name}: the outline was built from this selection"
   end
 
   # Recurring, and offline: what CI runs. The same checks over every shipped
@@ -343,7 +382,50 @@ namespace :seaports do
       lines.map { |line| "#{locode}: #{line}" }
     end
     drift.each { |line| puts "  error: #{line}" }
-    abort "Port outlines failed their checks" unless results.all?(&:ok?) && drift.empty?
+
+    # Canals: the same, and no waiting area inside a port's limits or shared
+    # with a port's outline.
+    require_relative "lib/seaports/canal/builder"
+    require_relative "lib/seaports/canal/checks"
+    canal_builder = Seaports::Canal::Builder
+    canals = canal_collections
+    canal_results = canals.map { |id, collection| Seaports::Canal::Checks.run(collection, others: collections, file_id: id) }
+    canal_results.each { |result| report_geometry(result) }
+    canal_orphans = canals.keys.reject { |id| File.exist?(canal_builder.selection_path(id)) }
+    abort "No selection for canal #{canal_orphans.join(', ')}" unless canal_orphans.empty?
+
+    canal_drift = canals.flat_map do |id, collection|
+      selection = canal_builder.read_selection(canal_builder.selection_path(id))
+      lines = Seaports::Canal::Checks.drift(collection, selection)
+      begin
+        canal_builder.new(selection).check!
+      rescue Seaports::Geometry::Builder::Invalid => e
+        lines << "the selection fails its checks: #{e.message}"
+      end
+      unless collection["selection_digest"] == canal_builder.digest(selection)
+        lines << "the outline was not built from the selection as it stands: rebuild it with rake seaports:geometry[#{id}]"
+      end
+      unless File.read(canal_builder.selection_path(id)) == canal_builder.dump_selection(selection)
+        lines << "the selection is not in its canonical form: write it with Seaports::Canal::Builder.dump_selection"
+      end
+      lines.map { |line| "#{id}: #{line}" }
+    end
+    unbuilt = canal_selection_ids - canals.keys
+    canal_drift += unbuilt.map { |id| "#{id}: no outline: build it with rake seaports:geometry[#{id}]" }
+    canal_drift.each { |line| puts "  error: #{line}" }
+
+    ok = results.all?(&:ok?) && drift.empty? && canal_results.all?(&:ok?) && canal_drift.empty?
+    abort "Port and canal outlines failed their checks" unless ok
+  end
+
+  def canal_collections
+    require_relative "lib/seaports/canal"
+    Dir[File.join(Seaports::Canal::DIR, "*.geojson")].to_h { |path| [File.basename(path, ".geojson"), JSON.parse(File.read(path))] }
+  end
+
+  def canal_selection_ids
+    require_relative "lib/seaports/canal"
+    Dir[File.join(Seaports::Canal::DIR, "sources", "*.yml")].map { |path| File.basename(path, ".yml") }.sort
   end
 
   # Where seaports:geometry reads OpenStreetMap from: the public Overpass API

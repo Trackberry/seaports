@@ -1,0 +1,118 @@
+---
+canal: panama
+name: Panama Canal
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted with osmium from Geofabrik's Panama extract: every seamark anchorage and pilot boarding place
+  from Limon Bay to the Bay of Panama, and the ways of the Panama Canal route relation. Left out: La Playita,
+  a node rather than an area and used by small craft; an unnamed area by Miraflores (way 865408298) and
+  an unnamed mooring area off Balboa (way 179084944). OpenStreetMap maps no anchorage B in Limon Bay and
+  no anchorage outside the Colón breakwaters.
+ends:
+  north: Colón
+  south: Balboa
+features:
+- osm:
+  - way/179053881
+  - way/1470097954
+  - way/179053884
+  - way/472165634
+  - way/472165631
+  - way/472165630
+  - way/472165629
+  - way/472165627
+  - way/472165626
+  - way/837625228
+  - way/837625225
+  - way/1413388543
+  - way/837625226
+  - way/179053888
+  - way/30687435
+  - way/472165643
+  - way/603141917
+  - way/179053887
+  - way/472165622
+  - way/472165620
+  - way/179053883
+  - way/46978223
+  - way/472165625
+  - way/472165623
+  - way/179053885
+  - way/472165613
+  - way/472165612
+  - way/472165611
+  - way/472165610
+  - way/472165609
+  - way/179053882
+  - way/179053886
+  - way/472165619
+  - way/472165618
+  - way/472165617
+  - way/472165616
+  - way/472165615
+  - way/472165641
+  - way/472165640
+  - way/472165639
+  - way/472165636
+  - way/472165635
+  - way/516775939
+  - way/516778212
+  kind: waterway
+  name: Panama Canal
+  note: >-
+    The member ways of OpenStreetMap's Panama Canal relation (relation 2389520), from Limon Bay to the
+    Bay of Panama. A centreline: OpenStreetMap maps its water as Gatún Lake, Miraflores Lake and the locks,
+    each an area of its own, with no one area for the canal.
+- osm: way/1445268881
+  kind: anchorage
+  name: A
+  approach: north
+  note: >-
+    Seamark anchorage area in Limon Bay inside the Colón breakwaters, named in OpenStreetMap as the anchorage
+    for merchant ships.
+- osm: way/1445268880
+  kind: anchorage
+  name: C
+  approach: north
+  note: Seamark anchorage area in Limon Bay, south of A towards Cristóbal.
+- osm: way/1445268879
+  kind: anchorage
+  name: D
+  approach: north
+  note: Seamark anchorage area in Limon Bay, east of A.
+- osm: way/833933380
+  kind: anchorage
+  name: Ship Holding Area
+  approach: in_transit
+  note: Seamark anchorage area in Miraflores Lake, between the Pedro Miguel and Miraflores locks.
+- osm: way/836793584
+  kind: anchorage
+  name: Cocolí Tie-up Station
+  approach: in_transit
+  note: >-
+    Seamark anchorage area beside the Pedro Miguel locks, on the channel from the Cocolí locks to the
+    Culebra Cut. OpenStreetMap spells it Cocoli Tie up Station.
+- osm: way/830303041
+  kind: anchorage
+  name: Pacific Anchorage
+  approach: south
+  note: Seamark anchorage area in the Bay of Panama, off Balboa and the canal's Pacific entrance.
+- osm: way/830303042
+  kind: anchorage
+  name: Pacific Anchorage Expansion
+  approach: south
+  note: Seamark anchorage area south of the Pacific Anchorage.
+- osm: way/830303038
+  kind: anchorage
+  name: Hazardous Cargo Anchorage
+  approach: south
+  note: >-
+    Seamark anchorage area for ships carrying hazardous cargo, south-west of the Pacific Anchorage. OpenStreetMap
+    spells it Hazardous Carcgo Anchorage.
+- osm: node/7761795096
+  kind: pilot_boarding
+  name: Pacific entrance pilot boarding place
+  approach: south
+  note: >-
+    Seamark pilot boarding place with no name in OpenStreetMap, between the Pacific anchorages and the
+    entrance channel.

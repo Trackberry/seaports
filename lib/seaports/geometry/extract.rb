@@ -257,6 +257,15 @@ module Seaports
         ->(refs) { shapes(refs, outline:, position:, label: locode) }
       end
 
+      # The same for a canal, chosen by its shipped outline alone: a canal has
+      # no UN/LOCODE position, so a new one needs OSM_REGION.
+      def shapes_for_canal(id)
+        require_relative "../canal/builder"
+        path = Canal::Builder.output_path(id)
+        outline = File.exist?(path) ? JSON.parse(File.read(path)) : nil
+        ->(refs) { shapes(refs, outline:, position: nil, label: id) }
+      end
+
       # { ref => geometry } for every reference, as Osm.shapes answers it,
       # and the same errors: Osm::Error for a reference OpenStreetMap does
       # not have. +outline+ is the port's shipped FeatureCollection, or nil,

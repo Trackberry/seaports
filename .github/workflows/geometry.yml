@@ -83,15 +83,22 @@ jobs:
           # Only names shaped like a locode reach rake: a file called
           # "x];sh" must not become a task argument.
           locodes=$(printf '%s\n' "$changed" | sed -nE 's#^data/geometry/(sources/)?([A-Z]{2}[A-Z0-9]{3})\.(yml|geojson)$#\2#p' | sort -u)
+          # Canals the same way, by their lower-case id (suez), from
+          # data/geometry/canals.
+          canals=$(printf '%s\n' "$changed" | sed -nE 's#^data/geometry/canals/(sources/)?([a-z][a-z0-9_]{1,30})\.(yml|geojson)$#\2#p' | sort -u)
           failed=""
-          for locode in $locodes; do
-            if [ ! -f "data/geometry/sources/$locode.yml" ]; then
-              rm -f "data/geometry/$locode.geojson"
+          for locode in $locodes $canals; do
+            case "$locode" in
+              [A-Z]*) dir="data/geometry" ;;
+              *) dir="data/geometry/canals" ;;
+            esac
+            if [ ! -f "$dir/sources/$locode.yml" ]; then
+              rm -f "$dir/$locode.geojson"
               continue
             fi
             # An outline edited without its selection is rebuilt whatever its
             # digest says.
-            if grep -qxF "data/geometry/sources/$locode.yml" <<<"$changed" && bundle exec rake "seaports:geometry_current[$locode]"; then
+            if grep -qxF "$dir/sources/$locode.yml" <<<"$changed" && bundle exec rake "seaports:geometry_current[$locode]"; then
               continue
             fi
             # Overpass's client tries both instances three times, up to about
@@ -186,7 +193,9 @@ jobs:
           body: "The weekly rebuild of `data/geometry` from the OpenStreetMap features each selection names. The diff has one feature per line, so it shows which terminals and anchorages moved."
           labels: data-refresh
           reviewers: edouard
-          add-paths: data/geometry/*.geojson
+          add-paths: |
+            data/geometry/*.geojson
+            data/geometry/canals/*.geojson
 
       - name: Run CI on the refresh
         if: steps.pull_request.outputs.pull-request-operation == 'created' || steps.pull_request.outputs.pull-request-operation == 'updated'

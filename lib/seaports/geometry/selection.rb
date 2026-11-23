@@ -40,13 +40,16 @@ module Seaports
       end
 
       # Keys in a fixed order, dates as ISO strings, a feature's single
-      # reference as a string and several as a list.
-      def dump(selection)
-        canonical = TOP_KEYS.filter_map do |key|
+      # reference as a string and several as a list. +top_keys+ and
+      # +feature_keys+ give the order for another kind of selection: a
+      # canal's (Canal::Builder) has no limits or quays, and its anchorages
+      # say which approach they serve.
+      def dump(selection, top_keys: TOP_KEYS, feature_keys: FEATURE_KEYS)
+        canonical = top_keys.filter_map do |key|
           value = selection[key]
           next if value.nil? || value == []
 
-          [key, canonical_value(key, value)]
+          [key, canonical_value(key, value, feature_keys)]
         end.to_h
         canonical.to_yaml(line_width: 100)
       end
@@ -156,11 +159,12 @@ module Seaports
         text.length > limit ? "#{text[0, limit - 1].rstrip}…" : text
       end
 
-      def canonical_value(key, value)
+      def canonical_value(key, value, feature_keys = FEATURE_KEYS)
         case key
         when "reviewed_at" then value.respond_to?(:iso8601) ? value.iso8601 : value.to_s
         when "port_limits" then ordered(value, LIMIT_KEYS)
-        when "features" then value.map { |feature| ordered(feature, FEATURE_KEYS) }
+        when "features" then value.map { |feature| ordered(feature, feature_keys) }
+        when "ends" then value.is_a?(Hash) ? value.sort.to_h : value
         else value
         end
       end

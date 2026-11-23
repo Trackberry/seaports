@@ -220,21 +220,10 @@ module Seaports
           ((i + 2)..last).any? do |j|
             next false if i.zero? && j == last
 
-            segments_cross?(a, edges[j])
+            Planar.segments_cross?(a, edges[j])
           end
         end
       end
-
-      def segments_cross?((p1, p2), (p3, p4))
-        d1 = direction(p3, p4, p1)
-        d2 = direction(p3, p4, p2)
-        d3 = direction(p1, p2, p3)
-        d4 = direction(p1, p2, p4)
-        ((d1.positive? && d2.negative?) || (d1.negative? && d2.positive?)) &&
-          ((d3.positive? && d4.negative?) || (d3.negative? && d4.positive?))
-      end
-
-      def direction(a, b, c) = ((c[0] - a[0]) * (b[1] - a[1])) - ((b[0] - a[0]) * (c[1] - a[1]))
 
       def date?(value)
         Date.iso8601(value.to_s)

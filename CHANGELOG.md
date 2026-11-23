@@ -3,6 +3,12 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## Unreleased
+
+Canal outlines, a new kind of data beside the port outlines, for the Suez and Panama canals: each canal's centreline, the anchorages where ships wait to transit with the end each serves (`north`, `south` or `in_transit`), and its pilot boarding places, all from OpenStreetMap by id. `Seaports.canals`, `Seaports.canal("suez")` and `Seaports.canal_anchorage_at(lat, lng)` read them; see the README. `rake seaports:geometry` builds them and `rake seaports:check_geometry` checks them, including that no canal anchorage overlaps a port's limits.
+
+A port outline for Ain Sokhna (`EGSOK`, with `EGAIS` as a quay): OpenStreetMap's port area as the limits, DP World Sokhna's terminal and the liquid bulk berths. OpenStreetMap does not map Red Sea Container Terminals yet.
+
 ## 1.7.4 — 2026-11-23
 
 Port outlines for 16 more ports, so 41 in all:

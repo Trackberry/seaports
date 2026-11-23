@@ -59,6 +59,7 @@ module Seaports
         case geometry && geometry["type"]
         when "Point" then [geometry["coordinates"]]
         when "LineString", "MultiPoint" then geometry["coordinates"]
+        when "MultiLineString" then geometry["coordinates"].flatten(1)
         when "Polygon", "MultiPolygon" then polygons(geometry).flatten(1).flatten(1)
         else []
         end
@@ -89,6 +90,7 @@ module Seaports
       # An L-shaped quay's centre is often in the dock beside it.
       def label_point(geometry)
         return geometry["coordinates"] if geometry["type"] == "Point"
+        return line_label_point(geometry) if %w[LineString MultiLineString].include?(geometry["type"])
 
         largest = polygons(geometry).max_by { |rings| ring_area_m2(rings.first) }
         return nil unless largest
@@ -105,6 +107,53 @@ module Seaports
         end
         centre.map { |value| value.round(6) }
       end
+
+      # The lines of a LineString or MultiLineString, or [] for anything else.
+      def lines(geometry)
+        case geometry && geometry["type"]
+        when "LineString" then [geometry["coordinates"]]
+        when "MultiLineString" then geometry["coordinates"]
+        else []
+        end
+      end
+
+      # A line's label: the vertex halfway along the longest of its lines,
+      # which is on the line, as a label for a canal's centreline should be.
+      def line_label_point(geometry)
+        longest = lines(geometry).max_by { |line| line.each_cons(2).sum { |a, b| distance_m(a, b) } }
+        return nil if longest.nil? || longest.empty?
+
+        longest[longest.size / 2]
+      end
+
+      # Whether two areas share any ground: a vertex of either inside the
+      # other, or an edge of one crossing an edge of the other. Areas that
+      # only touch along an edge may answer either way.
+      def overlap?(a, b)
+        return false unless (box_a = bbox(a)) && (box_b = bbox(b)) && bboxes_overlap?(box_a, box_b)
+        return true if positions(a).any? { |lng, lat| contains?(b, lng, lat) }
+        return true if positions(b).any? { |lng, lat| contains?(a, lng, lat) }
+        # Two copies of one shape, where every vertex sits on the other's edge.
+        return true if contains?(b, *label_point(a)) || contains?(a, *label_point(b))
+
+        edges_b = polygons(b).flatten(1).flat_map { |ring| ring.each_cons(2).to_a }
+        polygons(a).flatten(1).any? do |ring|
+          ring.each_cons(2).any? { |edge| edges_b.any? { |other| segments_cross?(edge, other) } }
+        end
+      end
+
+      # Whether two segments cross at a point inside both: touching at an end
+      # or running along each other is not crossing.
+      def segments_cross?((p1, p2), (p3, p4))
+        d1 = direction(p3, p4, p1)
+        d2 = direction(p3, p4, p2)
+        d3 = direction(p1, p2, p3)
+        d4 = direction(p1, p2, p4)
+        ((d1.positive? && d2.negative?) || (d1.negative? && d2.positive?)) &&
+          ((d3.positive? && d4.negative?) || (d3.negative? && d4.positive?))
+      end
+
+      def direction(a, b, c) = ((c[0] - a[0]) * (b[1] - a[1])) - ((b[0] - a[0]) * (c[1] - a[1]))
 
       # Andrew's monotone chain. Returns a closed ring, counter-clockwise.
       def convex_hull(points)

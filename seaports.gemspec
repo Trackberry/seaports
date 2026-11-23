@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
     "rubygems_mfa_required" => "true"
   }
 
-  spec.files = Dir["lib/**/*.rb", "data/*.csv", "data/geometry/*.geojson", "data/geometry/LICENSE.md", "README.md", "CHANGELOG.md", "LICENSE.txt"]
+  spec.files = Dir["lib/**/*.rb", "data/*.csv", "data/geometry/*.geojson", "data/geometry/canals/*.geojson", "data/geometry/LICENSE.md", "README.md", "CHANGELOG.md", "LICENSE.txt"]
   spec.require_paths = ["lib"]
 
   # The only dependency, and only because Ruby 3.4 demoted csv out of the
