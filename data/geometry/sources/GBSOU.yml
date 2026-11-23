@@ -1,0 +1,65 @@
+---
+locode: GBSOU
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[GBSOU,10] and a search of named features and seamarks
+  around Southampton Water and the Solent. OpenStreetMap maps the Western Docks as one area with the container
+  terminal inside it, so the Western Docks go into the port limits rather than being a terminal of their
+  own. OpenStreetMap maps no commercial anchorage for Southampton: the seamark anchorages in the Solent
+  are unnamed points or small areas off Cowes, so none is listed.
+port_limits:
+  derive: hull
+  osm: relation/3513638
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Southampton. These are the hull of the Western Docks and the
+    terminals below, from the container terminal down Southampton Water to Fawley, grown by 500 m to take
+    in the berths' water. Rougher than ABP's harbour limits, which reach out into the Solent.
+features:
+- osm: relation/13590178
+  kind: terminal
+  name: DP World Southampton
+  operator: DP World
+  cargo:
+  - container
+  note: >-
+    Tagged man_made=container_terminal, with no name or operator. Berths 201 to 207 at the west end of
+    the Western Docks.
+- osm: way/10517698
+  kind: terminal
+  name: Canary Islands Fruit Terminal
+  cargo:
+  - reefer
+  note: >-
+    A building on berths 103 and 104 of the Western Docks, as OpenStreetMap names it. Reefer is from the
+    name; OpenStreetMap gives no cargo tag, so check it.
+- osm: relation/3519616
+  kind: terminal
+  name: Eastern Docks
+  operator: Associated British Ports
+  cargo:
+  - ro_ro
+  - passenger
+  - bulk
+  note: >-
+    Tagged name=Port of Southampton, alt_name=Eastern Docks. Holds the Queen Elizabeth II cruise terminal,
+    the Ocean Dock car berths and the grain terminal, which OpenStreetMap maps as buildings inside it,
+    so they are not separate features here.
+- osm: relation/3514372
+  kind: terminal
+  name: Fawley Marine Terminal
+  cargo:
+  - tanker
+  note: >-
+    The refinery jetty at Fawley, tagged man_made=pier and mooring=commercial. OpenStreetMap gives no
+    operator.
+- osm: relation/3518701
+  kind: terminal
+  name: Hamble Oil Terminal
+  cargo:
+  - tanker
+  note: Tagged industrial=oil. OpenStreetMap gives no operator.
+- osm: node/10657032484
+  kind: pilot_boarding
+  name: Southampton E
+  note: Seamark pilot boarding place east of the Nab, named "Southampton E".
