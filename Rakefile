@@ -272,9 +272,11 @@ namespace :seaports do
     builder_class = Seaports::Geometry::Builder
     checks = Seaports::Geometry::Checks
     locodes = args[:locode] ? [args[:locode].upcase] : Dir[File.join(builder_class::SOURCES_DIR, "*.yml")].map { |p| File.basename(p, ".yml") }.sort
+    extract = osm_extract
     failed = []
     locodes.each do |locode|
-      collection = builder_class.new(builder_class.read_selection(builder_class.selection_path(locode))).build
+      shapes = extract ? { shapes: extract.shapes_for(locode) } : {}
+      collection = builder_class.new(builder_class.read_selection(builder_class.selection_path(locode)), **shapes).build
       others = geometry_collections.except(locode)
       result = checks.run(collection, others:, file_locode: locode)
       report_geometry(result)
@@ -342,6 +344,23 @@ namespace :seaports do
     end
     drift.each { |line| puts "  error: #{line}" }
     abort "Port outlines failed their checks" unless results.all?(&:ok?) && drift.empty?
+  end
+
+  # Where seaports:geometry reads OpenStreetMap from: the public Overpass API
+  # (OSM_SOURCE unset or "overpass"), or Geofabrik extracts read with
+  # osmium-tool on this machine (OSM_SOURCE=extract), which neither
+  # rate-limits nor changes between two builds of the same day. With
+  # extracts, OSM_REGION names one Geofabrik region to read every feature
+  # from, and OSM_EXTRACT_MAX_AGE_DAYS how old a cached download may be.
+  def osm_extract
+    case ENV.fetch("OSM_SOURCE", "overpass")
+    when "overpass" then nil
+    when "extract"
+      require_relative "lib/seaports/geometry/extract"
+      Seaports::Geometry::Extract.new(region: ENV["OSM_REGION"],
+        max_age_days: Float(ENV.fetch("OSM_EXTRACT_MAX_AGE_DAYS", Seaports::Geometry::Extract::MAX_AGE_DAYS)))
+    else abort "OSM_SOURCE is overpass or extract, not #{ENV['OSM_SOURCE']}"
+    end
   end
 
   def geometry_collections
