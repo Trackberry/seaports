@@ -67,12 +67,19 @@ module Seaports
       def self.digest(selection) = Digest::SHA256.hexdigest(Selection.dump(selection))
 
       # Whether the shipped outline for +locode+ was built from its selection
-      # as it stands.
+      # as it stands. A selection that fails its offline checks is never
+      # current: the digest covers only known keys, so a misspelt one
+      # ("bufer_m") would otherwise leave the outline looking current and the
+      # edit silently ignored, where a build refuses it.
       def self.current?(locode)
         path = output_path(locode)
         return false unless File.exist?(path) && File.exist?(selection_path(locode))
 
-        JSON.parse(File.read(path))["selection_digest"] == digest(read_selection(selection_path(locode)))
+        selection = read_selection(selection_path(locode))
+        new(selection).check!
+        JSON.parse(File.read(path))["selection_digest"] == digest(selection)
+      rescue Invalid
+        false
       end
 
       # +shapes+ answers Osm.shapes's question; a test passes a lambda.
@@ -94,6 +101,13 @@ module Seaports
         { "type" => "FeatureCollection", "locode" => locode, "quays" => Array(@selection["quays"]).sort,
           "attribution" => ATTRIBUTION, "position_outside" => @selection["position_outside"]&.strip,
           "selection_digest" => self.class.digest(@selection), "features" => ordered }.compact
+      end
+
+      # The selection's own checks, offline: what a build refuses before it
+      # fetches anything. Raises Invalid.
+      def check!
+        check_selection!
+        self
       end
 
       def write(path = self.class.output_path(locode))

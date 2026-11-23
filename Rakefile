@@ -321,12 +321,18 @@ namespace :seaports do
     abort "No selection for #{orphans.join(', ')}" unless orphans.empty?
 
     # An outline must say what its selection says. A hand-edited GeoJSON (a
-    # feature added, renamed or re-sourced without the selection) fails here;
-    # its shapes are rebuilt from OpenStreetMap by geometry.yml on any pull
-    # request that touches data/geometry.
+    # feature added, renamed or re-sourced without the selection) fails here.
+    # A hand-moved coordinate does not: geometry.yml rebuilds from
+    # OpenStreetMap an outline a pull request edits without its selection,
+    # and the weekly run rebuilds them all.
     drift = collections.flat_map do |locode, collection|
       selection = Seaports::Geometry::Builder.read_selection(Seaports::Geometry::Builder.selection_path(locode))
       lines = Seaports::Geometry::Checks.drift(collection, selection)
+      begin
+        Seaports::Geometry::Builder.new(selection).check!
+      rescue Seaports::Geometry::Builder::Invalid => e
+        lines << "the selection fails its checks: #{e.message}"
+      end
       # Catches what the comparison above cannot see, such as a changed
       # buffer_m, and an outline whose selection was edited without a rebuild.
       unless collection["selection_digest"] == Seaports::Geometry::Builder.digest(selection)
