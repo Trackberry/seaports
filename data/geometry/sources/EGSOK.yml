@@ -1,0 +1,38 @@
+---
+locode: EGSOK
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted with osmium from Geofabrik's Egypt extract around Sokhna. OpenStreetMap maps the port area,
+  the DP World terminal and the liquid bulk berths, and nothing for Red Sea Container Terminals, which
+  Hutchison Ports, CMA Terminals and COSCO Shipping Ports opened in January 2026, or for the new basins'
+  quays. The SUMED pipeline terminal south of the port is a separate oil terminal and is left out.
+quays:
+- EGAIS
+port_limits:
+  osm: way/306867431
+  note: >-
+    OpenStreetMap's area for Ain Sokhna Port (industrial=port), about 25 km². Inside it are the harbour
+    and basins 1 to 5 (3 and 5 still under construction in OpenStreetMap), the DP World terminal, the
+    liquid bulk berths, unnamed industrial plots and port buildings, a marina, a helipad, a cattle farmyard
+    and a stretch of railway under construction. No residential area, house, school, hotel or named place
+    other than the port itself is inside. OpenStreetMap's Ain Sokhna place area, which covers the whole
+    coastal district, overlaps it; the Stella di Mare and El Wadi resorts lie to the north, outside.
+features:
+- osm: way/276379238
+  kind: terminal
+  name: DP World Sokhna
+  operator: DP World
+  cargo:
+  - container
+  note: >-
+    DP World Sokhna's container terminal on basin 1, with its gantry cranes, mapped in OpenStreetMap as
+    Mina el-Sokhna. DP World also runs bulk and general cargo berths at Sokhna, which OpenStreetMap does
+    not map apart.
+- osm: way/925360849
+  kind: terminal
+  name: Liquid Bulk Berths
+  cargo:
+  - tanker
+  note: >-
+    Gas berths at the south end of the harbour, named Liquid Bulk Berths in OpenStreetMap. Operator not
+    known.
