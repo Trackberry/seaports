@@ -12,13 +12,17 @@ name: Port outlines
 #   carries its selection's digest (built locally with rake seaports:geometry
 #   and committed with it) is not fetched again: Overpass is slow and
 #   rate-limited, and a batch of ports would otherwise take most of an hour.
-#   Each port gets two tries of ten minutes, and one that still fails does not
-#   stop the others. A selection that fails its checks fails this job, with
-#   the reasons in the log.
+#   An outline the pull request edits without its selection is always
+#   rebuilt, so a hand edit is overwritten as before. Each port gets one build,
+#   whose Overpass client already tries both instances three times, under a
+#   time limit that covers that; one that fails does not stop the others. A
+#   selection that fails its checks fails this job, with the reasons in the
+#   log.
 #
-#   The digest is a fingerprint, not a signature: a hand-moved coordinate in
-#   a committed outline is caught by the weekly rebuild below, which fetches
-#   every port and opens a pull request for whatever moved.
+#   The digest is a fingerprint, not a signature: someone who edits a
+#   selection and its outline together and recomputes the digest gets past
+#   this job. The weekly rebuild below, which fetches every port and opens a
+#   pull request for whatever moved, is what catches that.
 # - Weekly, it rebuilds every port to pick up OpenStreetMap's edits and opens
 #   one pull request with what moved, like refresh.yml does for UN/LOCODE. A
 #   port that could not be built keeps its old outline and fails the run, so
@@ -47,6 +51,9 @@ jobs:
     # built when a maintainer moves it onto a branch here.
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    # A port's build is capped at 20 minutes below; this caps a run where
+    # Overpass is down for every port.
+    timeout-minutes: 120
     # Branch names reach the shell only through these variables, quoted: git
     # allows $( ) ; | in a ref name, and this job can push.
     env:
@@ -77,18 +84,14 @@ jobs:
               rm -f "data/geometry/$locode.geojson"
               continue
             fi
-            if bundle exec rake "seaports:geometry_current[$locode]"; then
+            # An outline edited without its selection is rebuilt whatever its
+            # digest says.
+            if grep -qxF "data/geometry/sources/$locode.yml" <<<"$changed" && bundle exec rake "seaports:geometry_current[$locode]"; then
               continue
             fi
-            built=""
-            for attempt in 1 2; do
-              if timeout 600 bundle exec rake "seaports:geometry[$locode]"; then
-                built=yes
-                break
-              fi
-              echo "$locode: attempt $attempt did not build"
-            done
-            if [ -z "$built" ]; then
+            # Overpass's client tries both instances three times, up to about
+            # 17 minutes; -k kills a build that ignores the TERM.
+            if ! timeout -k 30 1200 bundle exec rake "seaports:geometry[$locode]"; then
               failed="$failed $locode"
             fi
           done
@@ -118,11 +121,13 @@ jobs:
           FAILED: ${{ steps.touched.outputs.failed }}
         run: |
           set -euo pipefail
+          status=0
+          bundle exec rake seaports:check_geometry || status=$?
           if [ -n "${FAILED// /}" ]; then
             echo "::error::Not built from OpenStreetMap:$FAILED. The 'Build the outlines a pull request touches' step's log says why."
-            exit 1
+            status=1
           fi
-          bundle exec rake seaports:check_geometry
+          exit "$status"
 
       # A port that fails keeps its old file; the others still reach the
       # pull request, and the last step fails the run for the ones that did

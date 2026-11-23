@@ -262,6 +262,16 @@ class GeometryBuilderTest < Minitest::Test
     refute_equal Builder.digest(selection), Builder.digest(rebuffered), "a changed buffer, which the drift check cannot see"
   end
 
+  # The digest covers only the keys a selection may have, so a misspelt one
+  # must fail the selection's own checks instead of leaving it current.
+  def test_a_selection_with_an_unknown_key_fails_its_offline_checks
+    typo = selection.merge("features" => selection["features"].map { |f| f["osm"] == "way/1" ? f.merge("bufer_m" => 800) : f })
+
+    assert_equal Builder.digest(selection), Builder.digest(typo)
+    assert Builder.new(selection).check!
+    assert_raises(Builder::Invalid) { Builder.new(typo).check! }
+  end
+
   def test_every_shipped_outline_was_built_from_its_selection_as_it_stands
     locodes = Dir[File.join(Seaports::Geometry::DIR, "*.geojson")].map { |path| File.basename(path, ".geojson") }
 
