@@ -10,6 +10,7 @@ require "uri"
 require_relative "../http"
 require_relative "osm"
 require_relative "planar"
+require_relative "water"
 
 module Seaports
   module Geometry
@@ -147,6 +148,24 @@ module Seaports
           end
         end
 
+        # { ref => { key => value } } for every object in osmium's OPL
+        # output that has tags.
+        def tags(opl)
+          opl.each_line.with_object({}) do |line, found|
+            fields = line.split
+            type = fields.first && TYPES[fields.first[0]]
+            next unless type
+
+            text = fields.drop(1).find { |field| field.start_with?("T") }.to_s[1..]
+            next if text.nil? || text.empty?
+
+            found["#{type}/#{fields.first[1..]}"] = text.split(",").to_h do |pair|
+              key, value = pair.split("=", 2)
+              [unescape(key), unescape(value.to_s)]
+            end
+          end
+        end
+
         # The element Overpass's "out geom" answers for +ref+, from osmium's
         # objects: a node's lat and lon, a way's "geometry", a relation's
         # members with their role, a way member's geometry and a node
@@ -264,6 +283,48 @@ module Seaports
         path = Canal::Builder.output_path(id)
         outline = File.exist?(path) ? JSON.parse(File.read(path)) : nil
         ->(refs) { shapes(refs, outline:, position: nil, label: id) }
+      end
+
+      # A callable with Water.overpass's shape for Builder, for limits with
+      # clip: water.
+      def water_for(locode)
+        ->(bbox) { water(bbox, label: locode) }
+      end
+
+      # What osmium keeps of an extract for Water: the tags Water's Overpass
+      # query asks for, and what those ways and relations reference.
+      WATER_FILTERS = %w[w/natural=coastline nwr/natural=water w/waterway=riverbank,dock,canal r/waterway=riverbank].freeze
+
+      # The coastline and water areas inside +bbox+, [west, south, east,
+      # north], as Water.overpass answers them, from the extracts that hold
+      # the box: cut to it with osmium extract (whole ways and whole
+      # multipolygons, so a river relation is not cut at the edge), then
+      # filtered by tag.
+      def water(bbox, label: "OpenStreetMap")
+        west, south, east, north = bbox
+        points = [[west, south], [east, south], [east, north], [west, north], [(west + east) / 2.0, (south + north) / 2.0]]
+        cover = @region_name ? [named_region] : self.class.covers(regions, points).first
+        elements = {}
+        skipped = []
+        cover.sort_by(&:path).each do |region|
+          source = pbf(region)
+          @out.puts "#{label}: water from Geofabrik #{region.path} (OpenStreetMap as of #{timestamp(source)})"
+          FileUtils.mkdir_p(File.join(@cache_dir, "water"))
+          cut = File.join(@cache_dir, "water", "#{label}-#{region.id}.osm.pbf")
+          osmium!("extract", "--bbox", [west, south, east, north].join(","), "--strategy", "smart", "--overwrite",
+            "--no-progress", "-o", cut, source)
+          opl = osmium!("tags-filter", "--no-progress", "--output-format", "opl,add_metadata=false", "-o", "-", cut, *WATER_FILTERS)
+          objects = self.class.objects(opl)
+          self.class.tags(opl).each do |ref, tags|
+            next if elements.key?(ref) || ref.start_with?("node/")
+
+            elements[ref] = self.class.element(ref, objects).merge("tags" => tags)
+          rescue Incomplete => e
+            skipped << "#{ref}: #{e.message}"
+          end
+        end
+        water = Water.classify(elements.values)
+        water.merge("skipped" => water["skipped"] + skipped)
       end
 
       # { ref => geometry } for every reference, as Osm.shapes answers it,
@@ -430,6 +491,19 @@ module Seaports
         status.success? && !stdout.strip.empty? ? stdout.strip : "an unknown date"
       rescue Errno::ENOENT
         "an unknown date"
+      end
+
+      # osmium's standard output, or Osm::Error with what it said.
+      def osmium!(*arguments)
+        stdout, stderr, status =
+          begin
+            @osmium.call("osmium", *arguments)
+          rescue Errno::ENOENT
+            raise Osm::Error, "osmium-tool is not installed: brew install osmium-tool, or apt-get install osmium-tool"
+          end
+        raise Osm::Error, "osmium #{arguments.first} failed: #{stderr.to_s.strip[0, 300]}" unless status.success?
+
+        stdout
       end
 
       # GET +url+ into +path+ a chunk at a time, since a country's extract

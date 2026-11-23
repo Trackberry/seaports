@@ -28,6 +28,8 @@ jobs:
           ruby-version: "3.4"
           bundler-cache: true
 
+      # GEOS for the clip: water tests, as in ci.yml.
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
       # The suite runs again here rather than trusting the pull request's run,
       # because what ships is this commit, not the one that was reviewed.
       - run: bundle exec rake

@@ -73,6 +73,10 @@ jobs:
         with:
           ruby-version: "3.4"
           bundler-cache: true
+      # GEOS cuts port limits with clip: water down to the water
+      # (Geometry::Clip), through the ffi-geos gem. Build time only.
+      - name: Install GEOS
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
 
       - name: Build the outlines a pull request touches
         id: touched
@@ -143,7 +147,7 @@ jobs:
 
       - name: Install osmium-tool
         if: github.event_name != 'pull_request'
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends osmium-tool
+        run: sudo apt-get install -y --no-install-recommends osmium-tool
 
       # Geofabrik publishes each region once a day, so a rerun the same day
       # reads the extracts the first run downloaded, and gives the same

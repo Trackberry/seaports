@@ -1,0 +1,34 @@
+---
+locode: ZACPT
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik South Africa extract around Table Bay harbour. OpenStreetMap maps
+  the container terminal by name and the harbour basins, and no anchorage or pilot boarding place. It
+  does not map the Multipurpose Terminal or the fruit terminal on Duncan Dock as terminals of their own,
+  so they are not listed, though the limits cover their quays. The V&A Waterfront basins are left out:
+  they serve the cruise terminal, small craft and the waterfront, not cargo.
+position_outside: >-
+  UN/LOCODE places Cape Town at (-33.9167, 18.4167), at the V&A Waterfront and the city's edge, west of
+  the cargo docks. Cargo ships berth in Duncan and Ben Schoeman Docks.
+port_limits:
+  derive: hull
+  osm:
+  - relation/15602643
+  - relation/15602642
+  - relation/15602636
+  buffer_m: 200
+  note: >-
+    OpenStreetMap maps no port limits for Cape Town. These are the hull of the container terminal and
+    the Duncan Dock, Ben Schoeman Dock and Tanker Basin, grown by 200 m: the cargo docks and their quays,
+    but not the V&A Waterfront or the city behind.
+features:
+- osm: way/423037310
+  kind: terminal
+  name: Cape Town Container Terminal
+  operator: Transnet Port Terminals
+  cargo:
+  - container
+  - reefer
+  note: >-
+    Mapped as Cape Town Container Terminal (CTCT), on Ben Schoeman Dock. Transnet Port Terminals runs
+    it. Cape Town handles more fresh fruit than any other South African port.

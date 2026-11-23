@@ -1,0 +1,57 @@
+---
+locode: FRURO
+reviewed_at: '2026-11-23'
+note: >-
+  Rouen's quays run about 15 km along the Seine, from the city basins to Grand-Couronne, and one outline
+  around all of them takes in Petit-Quevilly, Grand-Quevilly and Petit-Couronne. Only the Grand-Couronne
+  quays are mapped here: they hold the port's container terminal (TCMD), its bulk and liquid bulk berths,
+  and are clear of the towns. Left out: the Petit-Couronne quays, where HAROPA lists the Groupe BZ and
+  Simarex grain terminals (an outline reaching them also takes in Val-de-la-Haye across the river); the
+  right-bank port at Croisset, Dieppedalle and Biessard, with the Socomac grain terminal; the Tepsa liquid
+  bulk depots at Grand-Quevilly; and the city basins, with Sénalia's Rouen silos and the cruise berth.
+  OpenStreetMap maps no grain terminal by name and no anchorage for Rouen.
+position_outside: >-
+  UN/LOCODE places Rouen on the city centre (49.45, 1.1), about 10 km upriver of the Grand-Couronne quays.
+  A ship there is in the city, not at a terminal.
+port_limits:
+  derive: hull
+  buffer_m: 250
+  note: >-
+    OpenStreetMap maps no port limits for Rouen. These are the hull of the Grand-Couronne terminals below,
+    grown by 250 m, which takes in the width of the Seine along the quays. The centres of Grand-Couronne,
+    Petit-Couronne, Grand-Quevilly, Val-de-la-Haye and Rouen are outside. On the far bank the 250 m takes
+    in the riverside road at Val-de-la-Haye and Hautot-sur-Seine (Quai Napoléon) and a few houses there.
+features:
+- osm: way/41891460
+  kind: terminal
+  name: Grand-Couronne quays (TCMD)
+  operator: SOMAP and Agence Maritime de Seine (AMS)
+  cargo:
+  - container
+  - ro_ro
+  - general
+  - bulk
+  note: >-
+    One unnamed port area (industrial=port) along the Seine at Grand-Couronne. It holds HAROPA's Terminal
+    conteneurs et marchandises diverses (TCMD), a 41 ha site with 1,150 m of quay for containers, ro-ro
+    and general cargo, run by SOMAP (Marfret) and AMS (Kuhn) according to HAROPA's 2026 container terminal
+    catalogue. The bulk berths with conveyors at its downstream end serve Saipol's oilseed plant.
+- osm: way/561981261
+  kind: terminal
+  name: Saipol Grand-Couronne
+  operator: Saipol
+  cargo:
+  - tanker
+  - bulk
+  note: >-
+    The Saipol (Avril group) rapeseed crushing and biodiesel plant, mapped as man_made=works. HAROPA lists
+    a berth for its biodiesel and oils and handles its dry bulk through the Grand-Couronne terminal.
+- osm: way/1303369262
+  kind: terminal
+  name: Sea-Tank Rouen
+  operator: SEA-Tank (SEA-Invest)
+  cargo:
+  - tanker
+  note: >-
+    A liquid bulk terminal: 26 tanks for vegetable oils, biofuels, liquid fertilisers and chemicals, with
+    two ship berths and one for barges, according to HAROPA. Mapped as landuse=industrial.

@@ -65,6 +65,59 @@ module Seaports
         end
       end
 
+      # Whether two Polygon or MultiPolygon geometries share any area: an
+      # edge of one crosses an edge of the other, or one lies inside the
+      # other. Shapes that only touch along an edge or at a corner may answer
+      # either way, which errs at worst towards one warning too many. Two
+      # outlines whose boxes overlap but whose shapes do not (two ports along
+      # one lagoon) answer false, which a box test cannot.
+      def intersects?(a, b)
+        polygons(a).any? do |mine|
+          polygons(b).any? { |theirs| polygons_intersect?(mine, theirs) }
+        end
+      end
+
+      def polygons_intersect?(mine, theirs)
+        return false unless bboxes_overlap?(ring_bbox(mine.first), ring_bbox(theirs.first))
+
+        mine_shape = { "type" => "Polygon", "coordinates" => mine }
+        theirs_shape = { "type" => "Polygon", "coordinates" => theirs }
+        return true if mine.first.any? { |position| contains?(theirs_shape, *position) }
+        return true if theirs.first.any? { |position| contains?(mine_shape, *position) }
+
+        edges_cross?(mine.flat_map { |ring| ring.each_cons(2).to_a }, theirs.flat_map { |ring| ring.each_cons(2).to_a })
+      end
+
+      # Whether any segment of +mine+ properly crosses any of +theirs+, the
+      # pairs narrowed by their boxes first.
+      def edges_cross?(mine, theirs)
+        boxed = theirs.map { |segment| [segment, segment_bbox(segment)] }
+        mine.any? do |segment|
+          box = segment_bbox(segment)
+          boxed.any? { |other, other_box| bboxes_overlap?(box, other_box) && segments_cross?(segment, other) }
+        end
+      end
+
+      # Whether two segments cross at a point inside both: touching at an end
+      # or running along each other is not crossing.
+      def segments_cross?((p1, p2), (p3, p4))
+        d1 = direction(p3, p4, p1)
+        d2 = direction(p3, p4, p2)
+        d3 = direction(p1, p2, p3)
+        d4 = direction(p1, p2, p4)
+        ((d1.positive? && d2.negative?) || (d1.negative? && d2.positive?)) &&
+          ((d3.positive? && d4.negative?) || (d3.negative? && d4.positive?))
+      end
+
+      def direction(a, b, c) = ((c[0] - a[0]) * (b[1] - a[1])) - ((b[0] - a[0]) * (c[1] - a[1]))
+
+      def segment_bbox(((x1, y1), (x2, y2))) = [[x1, x2].min, [y1, y2].min, [x1, x2].max, [y1, y2].max]
+
+      def ring_bbox(ring)
+        lngs, lats = ring.transpose
+        [lngs.min, lats.min, lngs.max, lats.max]
+      end
+
       def bboxes_overlap?(a, b)
         a[0] <= b[2] && b[0] <= a[2] && a[1] <= b[3] && b[1] <= a[3]
       end
@@ -126,34 +179,18 @@ module Seaports
         longest[longest.size / 2]
       end
 
-      # Whether two areas share any ground: a vertex of either inside the
-      # other, or an edge of one crossing an edge of the other. Areas that
-      # only touch along an edge may answer either way.
+      # intersects?, and also true for two copies of one shape, where every
+      # vertex of each sits on the other's edge and no edge properly crosses:
+      # a canal anchorage that a port's outline names again must not slip
+      # past the canal checks.
       def overlap?(a, b)
-        return false unless (box_a = bbox(a)) && (box_b = bbox(b)) && bboxes_overlap?(box_a, box_b)
-        return true if positions(a).any? { |lng, lat| contains?(b, lng, lat) }
-        return true if positions(b).any? { |lng, lat| contains?(a, lng, lat) }
-        # Two copies of one shape, where every vertex sits on the other's edge.
-        return true if contains?(b, *label_point(a)) || contains?(a, *label_point(b))
+        return true if intersects?(a, b)
 
-        edges_b = polygons(b).flatten(1).flat_map { |ring| ring.each_cons(2).to_a }
-        polygons(a).flatten(1).any? do |ring|
-          ring.each_cons(2).any? { |edge| edges_b.any? { |other| segments_cross?(edge, other) } }
+        [[a, b], [b, a]].any? do |one, other|
+          point = polygons(one).empty? ? nil : label_point(one)
+          point && contains?(other, *point)
         end
       end
-
-      # Whether two segments cross at a point inside both: touching at an end
-      # or running along each other is not crossing.
-      def segments_cross?((p1, p2), (p3, p4))
-        d1 = direction(p3, p4, p1)
-        d2 = direction(p3, p4, p2)
-        d3 = direction(p1, p2, p3)
-        d4 = direction(p1, p2, p4)
-        ((d1.positive? && d2.negative?) || (d1.negative? && d2.positive?)) &&
-          ((d3.positive? && d4.negative?) || (d3.negative? && d4.positive?))
-      end
-
-      def direction(a, b, c) = ((c[0] - a[0]) * (b[1] - a[1])) - ((b[0] - a[0]) * (c[1] - a[1]))
 
       # Andrew's monotone chain. Returns a closed ring, counter-clockwise.
       def convex_hull(points)

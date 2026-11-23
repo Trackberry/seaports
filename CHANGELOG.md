@@ -9,6 +9,25 @@ Canal outlines, a new kind of data beside the port outlines, for the Suez and Pa
 
 A port outline for Ain Sokhna (`EGSOK`, with `EGAIS` as a quay): OpenStreetMap's port area as the limits, DP World Sokhna's terminal and the liquid bulk berths. OpenStreetMap does not map Red Sea Container Terminals yet.
 
+Derived port limits can be cut to the water: `clip: water` under a selection's `port_limits` takes the hull of the terminals down to the sea within OpenStreetMap's coastline and the rivers, docks and basins it maps, keeping the terminals whole. Hulls that took in the towns between and behind the quays (Lyttelton, Tauranga's Mount Maunganui, Rouen's left bank) no longer do. The build refuses a terminal with no water beside it, and clipped limits in separate parts must say why (`disjoint`). Clipping uses GEOS at build time through the ffi-geos gem (`brew install geos`, `apt-get install libgeos-dev`); the gem itself still needs neither. Outlines without `clip` are built byte for byte as before.
+
+The check that two ports' limits overlap now compares their shapes rather than their bounding boxes, so two ports along one lagoon no longer warn.
+
+## 1.7.5 — 2026-11-23
+
+Port outlines for 20 more ports, so 61 in all:
+
+- Latin America: Moín (`CRMOB`), Paita (`PEPAI`), Posorja (`ECPSJ`), Valparaíso (`CLVAP`), San Antonio (`CLSAI`), Santa Marta (`COSMR`), Pecém (`BRPEC`) and Natal (`BRNAT`).
+- Africa: Cape Town (`ZACPT`), Ngqura (`ZAZBA`) and Tanger Med (`MAPTM`).
+- United States: Wilmington, Delaware (`USILG`), Philadelphia (`USPHL`), New York and New Jersey (`USNYC`), Los Angeles (`USLAX`), Oakland (`USOAK`) and Savannah (`USSAV`).
+- France and Spain: Rouen (`FRURO`), Le Havre (`FRLEH`) and Seville (`ESSVQ`).
+
+Each outline was checked against every house, residential area, school, church and hospital OpenStreetMap maps around it, not only town centres, and each limits note says what lies inside. Where one outline could not keep a town out, the port covers its main cluster and the note names what is left out: Rouen is Grand-Couronne only; Le Havre leaves out the CIM oil terminal, the cruise terminal and the Citadelle ferry berth; New York is the Newark Bay terminals, without Port Liberty New York at Howland Hook, Port Liberty Bayonne or the Brooklyn terminals; Philadelphia leaves out Tioga. Le Havre's limits take in the Les Neiges district, which the docks enclose, and Tanger Med's take in two hamlets between Tanger Med 1 and 2; both notes say so.
+
+`USNYC` lists `USEWR` and `USPNJ` as quays. Howland Hook and Staten Island are not quays of it, because their terminal is outside these limits.
+
+Same ports, names and positions as 1.7.4.
+
 ## 1.7.4 — 2026-11-23
 
 Port outlines for 16 more ports, so 41 in all:

@@ -1,0 +1,28 @@
+---
+locode: USSAV
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Georgia extract along the Savannah River between the city and Port
+  Wentworth. OpenStreetMap maps the Garden City Terminal, the port's container terminal, but not the Georgia
+  Ports Authority's Ocean Terminal downriver, and no anchorage or pilot boarding place off the river mouth,
+  so this outline covers Garden City only.
+port_limits:
+  derive: hull
+  buffer_m: 150
+  note: >-
+    OpenStreetMap maps no port limits for Savannah. These are the Garden City Terminal grown by 150 m,
+    which takes in its berths on the Savannah River and the river off them. A search of OpenStreetMap
+    found no homes, residential land, schools, churches, hospitals or named places inside them: the Chapel
+    in the Gardens church and its school are just outside, and the centre of Garden City is about 600
+    m beyond.
+features:
+- osm: way/557412429
+  kind: terminal
+  name: Garden City Terminal
+  operator: Georgia Ports Authority
+  cargo:
+  - container
+  - reefer
+  note: >-
+    The Georgia Ports Authority's container terminal, the largest single container terminal in North America,
+    with a large reefer yard. Tagged industrial=port.

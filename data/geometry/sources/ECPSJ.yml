@@ -1,0 +1,32 @@
+---
+locode: ECPSJ
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Ecuador extract around Posorja. OpenStreetMap maps the DP World
+  terminal, and no anchorage or pilot boarding place. The tuna canneries' quays south of it (Salica, NIRSA)
+  are tagged industrial=port too, but are fishing quays across the town from the terminal, and are left
+  out so that the limits do not take in Posorja town.
+position_outside: >-
+  UN/LOCODE places Posorja on the town (-2.7, -80.25), about 1 km south of the terminal. A ship there
+  would be ashore.
+port_limits:
+  derive: hull
+  buffer_m: 250
+  note: >-
+    OpenStreetMap maps no port limits for Posorja. These are the terminal grown by 250 m, over its quay
+    and the channel alongside, but not the town. A search of OpenStreetMap found no homes, residential
+    land, schools, churches or hospitals inside them. The only places it maps inside are labels within
+    the terminal's own fence: Barrio Lomas del Cangrejal Lote 1B, which covers yards, parking and a fuel
+    station, and one naming the terminal itself.
+features:
+- osm: way/1281259809
+  kind: terminal
+  name: DP World Posorja
+  operator: DP World
+  cargo:
+  - container
+  - reefer
+  note: >-
+    The deep-water container terminal at the mouth of the Gulf of Guayaquil, opened in 2019 and tagged
+    industrial=port with the name DP World Posorja. DP World runs it under a 50-year concession; its 2026
+    expansion added more than 900 reefer plugs.

@@ -1,0 +1,30 @@
+---
+locode: USILG
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Delaware extract around the mouth of the Christina River. OpenStreetMap
+  maps the Port of Wilmington as one area and none of its berths, warehouses or tenants separately, and
+  no anchorage or pilot boarding place on this stretch of the Delaware River.
+position_outside: >-
+  UN/LOCODE places Wilmington in the city (39.7333, -75.55), about 3 km north-west of the marine terminal
+  at the mouth of the Christina River. A ship is never there.
+port_limits:
+  derive: hull
+  buffer_m: 600
+  note: >-
+    OpenStreetMap maps no port limits for Wilmington. These are the Port of Wilmington's marine terminal
+    grown by 600 m, which takes in its berths on the Delaware and the Christina and the water off them.
+features:
+- osm: way/228628615
+  kind: terminal
+  name: Port of Wilmington
+  operator: Enstructure
+  cargo:
+  - reefer
+  - container
+  - ro_ro
+  - bulk
+  note: >-
+    The state-owned marine terminal, run by Enstructure under a concession from the Diamond State Port
+    Corporation since 2023. It is North America's biggest banana port: Chiquita and Dole both run weekly
+    fruit services here. It also handles ro-ro, bulk and project cargo. Tagged industrial=port.

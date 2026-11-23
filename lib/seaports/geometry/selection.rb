@@ -23,7 +23,7 @@ module Seaports
     # which keeps the rule that no shape is typed or generated.
     module Selection
       TOP_KEYS = %w[locode reviewed_at note quays position_outside port_limits features].freeze
-      LIMIT_KEYS = %w[derive osm buffer_m note].freeze
+      LIMIT_KEYS = %w[derive osm buffer_m clip disjoint note].freeze
       FEATURE_KEYS = %w[osm kind name operator cargo category buffer_m note reviewed_at].freeze
       EDITABLE = %w[kind name operator cargo category note].freeze
       TEXT_LIMITS = { "name" => 120, "operator" => 120, "note" => 600 }.freeze

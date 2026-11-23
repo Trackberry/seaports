@@ -24,4 +24,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+      # For the clip: water tests: GEOS, which the ffi-geos gem loads. Only
+      # the outline builder uses it; the gem itself does not.
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
       - run: bundle exec rake
