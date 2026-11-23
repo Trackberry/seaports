@@ -1,0 +1,44 @@
+---
+locode: FRSET
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[FRSET,5] and a name search around the commercial port.
+  OpenStreetMap maps the GNV ferry berth for Morocco only as points, and the cruise terminal only as its
+  building, so both are left out; they sit on the old basins, by the town. OpenStreetMap maps no anchorage
+  off Sète.
+position_outside: >-
+  UN/LOCODE places Sète at (43.4, 3.7), on the Quai d'Alger by the old basins and the town centre, about
+  450 m west of these limits. The old basins hold the ferry and cruise berths, which are not mapped as
+  terminals; reaching them would take the limits into the town.
+port_limits:
+  derive: hull
+  buffer_m: 400
+  note: >-
+    OpenStreetMap maps no port limits for Sète. These are the hull of the terminals below, on the outer
+    commercial basins, grown by 400 m. The old basins by the town, with the ferry and cruise berths, are
+    left out so the limits stop short of the Canal Royal and the town centre.
+features:
+- osm: way/135921885
+  kind: terminal
+  name: Terminal fruitier
+  cargo:
+  - reefer
+  note: >-
+    The fruit terminal, mapped as its warehouse building. OpenStreetMap gives no operator or cargo tag;
+    reefer is from its name.
+- osm: way/1116292605
+  kind: terminal
+  name: Sea Invest Sète
+  operator: SEA-invest
+  cargo:
+  - bulk
+  note: >-
+    Tagged landuse=industrial. Sea-Invest's dry bulk terminal on the Quai minéralier (darse 2); France's
+    register of classified installations (Géorisques) records it as a coal and petroleum coke store.
+- osm: way/1154060978
+  kind: terminal
+  name: GDH poste de déchargement d'hydrocarbures
+  operator: GDH
+  cargo:
+  - tanker
+  note: The GDH oil unloading berth. Tanker is from its name.

@@ -1,0 +1,70 @@
+---
+locode: FRMRS
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[FRMRS,8,43.33,5.35] and a name search for terminals and
+  ferry stations in the east basins. These are the Marseille east basins only: the Fos basins, 50 km west,
+  are FRFOS. OpenStreetMap maps the Mourepiane container and reefer terminal, run by Med Europe Terminal
+  (CMA CGM), only as container basins, not as a terminal, so it is left out and its basins are in the
+  port limits. TCSI Marseille, north of Mourepiane, is a container depot ashore, not a berth, so it is
+  left out too. The one anchorage OpenStreetMap has nearby is an unnamed point off the Frioul islands,
+  with no area.
+position_outside: >-
+  UN/LOCODE places Marseille on the city centre (43.3, 5.4), about 3 km east of the Vieux Port and the
+  La Major ferry station. A ship there is ashore, not at a terminal.
+port_limits:
+  derive: hull
+  osm:
+  - relation/10793150
+  - relation/10793145
+  - relation/10793144
+  - relation/10793142
+  - relation/10793139
+  - way/308613007
+  - relation/10793149
+  - relation/10793152
+  buffer_m: 50
+  note: >-
+    OpenStreetMap maps no port limits for Marseille. These are the hull of the terminals below and the
+    east basins, from the Avant-port Nord to the Bassin de la Grande Joliette, grown by 50 m. The ferry
+    stations stand on the city quay, so the limits stop at the quayside: La Major cathedral, the Joliette
+    docks and the Arenc towers are outside.
+features:
+- osm: way/1030807681
+  kind: terminal
+  name: Terminal Cap Janet
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The ferry and ro-ro terminal for North Africa (the Terminal Maghreb), tagged amenity=ferry_terminal.
+    OpenStreetMap gives no operator.
+- osm: way/67716900
+  kind: terminal
+  name: Gare Maritime d'Arenc
+  operator: La Méridionale
+  cargo:
+  - ro_ro
+  - passenger
+  note: Ferry station for Corsica, tagged cargo=passengers;vehicle. Mapped as the station building only.
+- osm: way/232815850
+  kind: terminal
+  name: Gare Maritime de La Joliette
+  operator: Grand Port Maritime de Marseille
+  cargo:
+  - ro_ro
+  - passenger
+  note: Ferry station, tagged cargo=passengers;vehicle. Mapped as the station building only.
+- osm: way/67717535
+  kind: terminal
+  name: Gare Maritime de La Major
+  cargo:
+  - ro_ro
+  - passenger
+  note: Ferry station, tagged cargo=passengers;vehicle. Mapped as the station building only.
+- osm: way/69627673
+  kind: terminal
+  name: Marseille Provence Cruise Terminal
+  cargo:
+  - passenger
+  note: The cruise terminal at the Porte 4, tagged cargo=passengers.

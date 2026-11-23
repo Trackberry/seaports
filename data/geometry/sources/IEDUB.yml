@@ -1,0 +1,53 @@
+---
+locode: IEDUB
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[IEDUB,8,53.35,-6.15], a search of named features around
+  the port and a seamark search of Dublin Bay. Trackberry's config/port_areas.yml has no entry for Dublin,
+  so no quays are listed. OpenStreetMap names Terminals 1, 2, 4 and 5 only by number and tags none with
+  a cargo type or operator, so neither is set here, though Dublin's ferry and ro-ro berths are among them;
+  the container terminals are named as such but carry no operator either, so DFT and MTL are not named.
+  The oil tank farms on both banks and the car storage yard are left out as not terminals. OpenStreetMap
+  maps no pilot boarding place.
+port_limits:
+  derive: hull
+  osm: way/47864748
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Dublin. These are the hull of the terminals below and Pigeon
+    House Harbour on the Poolbeg peninsula, grown by 500 m. They take in the Liffey from the East Link
+    to the harbour mouth, but not Dublin Bay.
+features:
+- osm: way/1424438277
+  kind: anchorage
+  note: >-
+    The seamark anchorage in Dublin Bay, off the harbour mouth. OpenStreetMap gives it no name and no
+    category.
+- osm: way/61109803
+  kind: terminal
+  name: Container Terminal
+  cargo:
+  - container
+  note: On the south bank. Tagged landuse=industrial only; container is from its name.
+- osm: way/1320144903
+  kind: terminal
+  name: Ocean Pier Container Terminal
+  cargo:
+  - container
+  note: On the north bank. Tagged landuse=industrial only; container is from its name.
+- osm: way/1320153995
+  kind: terminal
+  name: Terminal 1
+  note: Tagged landuse=industrial only. OpenStreetMap gives no cargo type or operator.
+- osm: way/1320378810
+  kind: terminal
+  name: Terminal 2
+  note: Tagged landuse=industrial only. OpenStreetMap gives no cargo type or operator.
+- osm: way/1320089539
+  kind: terminal
+  name: Terminal 4
+  note: Tagged landuse=industrial only. OpenStreetMap gives no cargo type or operator.
+- osm: way/1320025284
+  kind: terminal
+  name: Terminal 5
+  note: Tagged landuse=industrial only. OpenStreetMap gives no cargo type or operator.

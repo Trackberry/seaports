@@ -1,0 +1,46 @@
+---
+locode: ESHUV
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[ESHUV,14,37.17,-6.92] and a search of named features
+  along the Odiel and the Tinto, repeated on 2026-11-23. OpenStreetMap maps the outer port, where Muelle
+  Sur is, as one area named Puerto de Huelva, and the inner port up the Odiel as an unnamed industrial=port
+  area; Muelle Sur and Muelle Juan Gonzalo are only points in them. It maps the refinery's Reina Sofía
+  jetty as a line, and no fruit or reefer terminal. The Capesa and Eiasa jetties are left out: nothing
+  found says what they handle. The La Rábida refinery, the power stations and the chemical plants are
+  left out.
+position_outside: >-
+  UN/LOCODE places Huelva on the city (37.25, -6.95), north of the port areas mapped here. The cargo quays
+  are downstream, on the Odiel and on the Palos de la Frontera bank.
+port_limits:
+  derive: hull
+  osm: way/835855938
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Huelva. These are the hull of the outer port at Muelle Sur and
+    the inner port area on the Odiel, grown by 500 m. They take in the river and the land between, so
+    they are rougher than the legal limits.
+features:
+- osm: way/381834843
+  kind: terminal
+  name: Muelle Sur
+  cargo:
+  - container
+  - general
+  note: >-
+    The outer port on the Palos de la Frontera bank, mapped as an area named Puerto de Huelva and tagged
+    landuse=industrial, with the Muelle Sur point inside it. Cargo is from the port authority: Muelle
+    Sur is its container and general cargo quay, and Yilport Huelva runs the 58,000 m² container terminal
+    on it, with 240 reefer plugs (Fruit Attraction, 2024). The area is larger than that terminal, so no
+    operator is given.
+- osm: way/300707168
+  kind: terminal
+  name: Muelle Reina Sofía
+  operator: Moeve
+  cargo:
+  - tanker
+  buffer_m: 50
+  note: >-
+    The refinery's liquid bulk jetty, mapped as a line tagged man_made=pier, so this area is that line
+    grown by 50 m, enough for a tanker alongside. The port authority's statistics list its berths, Reina
+    Sofía C, W, E and 4º atraque, as CEPSA's liquid bulk jetties; CEPSA has traded as Moeve since 2024.

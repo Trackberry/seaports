@@ -3,6 +3,24 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## 1.7.4 — 2026-11-23
+
+Port outlines for 16 more ports, so 41 in all:
+
+- UK and Ireland: Liverpool (`GBLIV`), Belfast (`GBBEL`), Dublin (`IEDUB`), Cork (`IEORK`), Waterford (`IEWAT`) and Rosslare (`IEROS`).
+- France: Dunkirk (`FRDKK`), Montoir-de-Bretagne for Nantes-Saint-Nazaire (`FRMTX`), Marseille (`FRMRS`), Calais (`FRCQF`) and Sète (`FRSET`).
+- Spain: Bilbao (`ESBIO`), Huelva (`ESHUV`), Santa Cruz de Tenerife (`ESSCT`), Tarragona (`ESTAR`) and Almería (`ESLEI`).
+
+Rotterdam's APM Terminals Maasvlakte II now covers its southern expansion along the Prinses Amaliahaven (OpenStreetMap way 1231452162, under construction and due to open from late 2026), not only the northern quay strip.
+
+Where a port's terminals are spread too far for one outline to keep the towns out, the outline covers the main cluster and says so: Dunkirk is Port Ouest only, Cork is Ringaskiddy only, Waterford is Belview only. Ships at the berths left out read as outside the port. Rouen was drafted and left out: its terminals run 15 km along the Seine with towns behind the quays, and no single outline covers them without taking in Petit-Couronne and Grand-Quevilly.
+
+What OpenStreetMap does not map is left out and said so in the notes: Liverpool's Royal Seaforth container terminal, Marseille's Med Europe Terminal at Mourepiane, Montoir's container terminal, Dunkirk's fruit quays at Port Est, Almería's cargo quays. Several terminals in Dublin have no cargo type.
+
+`OSM_SOURCE=extract rake seaports:geometry[LOCODE]` builds an outline from Geofabrik extracts with osmium instead of Overpass, with the same result; the weekly rebuild now uses it (#19).
+
+Same ports, names and positions as 1.7.3.
+
 ## 1.7.3 — 2026-11-23
 
 Port outlines for 14 more ports, so 25 in all:

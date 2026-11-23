@@ -1,0 +1,66 @@
+---
+locode: GBLIV
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features and seamarks around the Mersey, repeated on 2026-11-23 for container
+  terminal, quay, port and industrial areas and Peel Ports' features around Seaforth. OpenStreetMap maps
+  the Liverpool docks as water basins and draws no land area for the Royal Seaforth container terminal:
+  its cranes stand in no mapped area, and the only industrial area around it is one unnamed polygon over
+  most of the dock estate, too broad to stand for a terminal. Nor does it map the timber, grain and scrap
+  berths, or the Seatruck and CLdN ro-ro berths (points only), so those are left out and only the basins
+  go into the port limits. The two features OpenStreetMap names Port of Liverpool and Royal Seaforth Dock
+  are wind farms, not the port. It maps no anchorage in Liverpool Bay.
+port_limits:
+  derive: hull
+  osm:
+  - way/155260397
+  - way/257001038
+  - way/257001032
+  - way/155267305
+  - way/155267303
+  buffer_m: 500
+  note: >-
+    OpenStreetMap maps no port limits for Liverpool. These are the hull of the terminals below and the
+    Royal Seaforth, Gladstone, Alexandra, Langton and Canada dock basins, from Seaforth down both banks
+    to Tranmere, grown by 500 m. Much smaller than Peel Ports' Mersey limits.
+features:
+- osm: way/36728263
+  kind: terminal
+  name: Liverpool2
+  operator: Peel Ports
+  cargo:
+  - container
+  buffer_m: 100
+  note: >-
+    OpenStreetMap draws only the river quay, as a line tagged man_made=quay, so the terminal is that line
+    grown by 100 m: the crane apron on the land side and the berth where a ship lies on the river side,
+    about 140 m out at the corners at most. It stops well short of the back of the yard. The quay's ZPMC
+    cranes are mapped as points tagged operator=Peel.
+- osm: way/893988113
+  kind: terminal
+  name: Liverpool Biomass Terminal
+  cargo:
+  - bulk
+  note: Tagged industrial=terminal, at Gladstone Dock. OpenStreetMap gives no operator.
+- osm: way/667061582
+  kind: terminal
+  name: Liverpool Cruise Terminal
+  cargo:
+  - passenger
+  note: A building at the Pier Head, tagged amenity=ferry_terminal.
+- osm: way/435290221
+  kind: terminal
+  name: Twelve Quays
+  operator: Stena Line
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The Birkenhead ferry terminal for Belfast and Dublin, tagged amenity=ferry_terminal with no name or
+    operator; a ferry terminal node beside it is named 12 Quays Terminal.
+- osm: way/201148306
+  kind: terminal
+  name: Tranmere Oil Terminal
+  cargo:
+  - tanker
+  note: Tagged industrial=oil, with Wikidata Q7833438. OpenStreetMap gives no operator.
