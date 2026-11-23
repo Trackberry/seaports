@@ -1,0 +1,29 @@
+---
+locode: PEPAI
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Peru extract around Paita Bay. OpenStreetMap maps one terminal,
+  the concession terminal, and no anchorage or pilot boarding place. The other industrial areas along
+  the bay are unnamed in OpenStreetMap and are left out.
+position_outside: >-
+  UN/LOCODE places Paita on the town (-5.09, -81.11), inland of the terminal. A ship there would be ashore.
+port_limits:
+  derive: hull
+  buffer_m: 100
+  note: >-
+    OpenStreetMap maps no port limits for Paita. These are the terminal grown by 100 m, over its quay
+    and the water alongside. A search of OpenStreetMap found no homes, residential land, schools, churches,
+    hospitals or named places inside them: the nearest houses in the town are just outside, and the Nueva
+    Esperanza neighbourhood and its schools are 150 to 240 m beyond the limits.
+features:
+- osm: way/585019362
+  kind: terminal
+  name: Terminal Portuario Euroandinos
+  operator: Terminales Portuarios Euroandinos Paita
+  cargo:
+  - container
+  - reefer
+  note: >-
+    The Paita port terminal, run by Terminales Portuarios Euroandinos (TPE) under a 30-year concession
+    signed in 2009. Tagged cargo=container. The business plans it files with Ositran, Peru's port regulator,
+    include enlarging its reefer container yard.

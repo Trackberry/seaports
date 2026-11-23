@@ -1,0 +1,29 @@
+---
+locode: CLSAI
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Chile extract around San Antonio. OpenStreetMap maps the port as
+  one area, Puerto San Antonio, run by the state port company EPSA, and maps Puerto Panul north of it.
+  It does not map the container terminals inside the port area, San Antonio Terminal Internacional (STI)
+  on the Molo Sur and DP World San Antonio (Puerto Central) on the Costanera Espigón, so they are not
+  listed, though the limits cover their quays. It maps no anchorage or pilot boarding place.
+position_outside: >-
+  UN/LOCODE places San Antonio at (-33.6, -71.6), in the town about 2 km east of the quays. A ship there
+  would be ashore.
+port_limits:
+  derive: hull
+  osm: relation/6703090
+  buffer_m: 50
+  note: >-
+    OpenStreetMap maps no port limits for San Antonio. These are the hull of the Puerto San Antonio area
+    and Puerto Panul, grown by 50 m: they take in the harbour basin, but the port area already reaches
+    the town at Barrancas, so the margin is kept small.
+features:
+- osm: way/140579563
+  kind: terminal
+  name: Puerto Panul
+  cargo:
+  - bulk
+  note: >-
+    A bulk terminal north of the main port, run under its own concession, mapped as Puerto Panul. OpenStreetMap
+    gives no operator.

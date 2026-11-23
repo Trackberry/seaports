@@ -1,0 +1,61 @@
+---
+locode: MAPTM
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Morocco extract around Tanger Med. OpenStreetMap maps the four
+  container terminals and the passenger and ro-ro port, and no anchorage or pilot boarding place near
+  them. It does not map the hydrocarbon terminal or the vehicle terminal separately, so they are not listed.
+  The logistics free zone behind Tanger Med 1 is left out: it is warehouses, not quays.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  note: >-
+    OpenStreetMap maps no port limits for Tanger Med. These are the hull of the terminals below, from
+    TC4 in the west to TC2 in the east, grown by 200 m. They take in the basins of Tanger Med 1 and 2,
+    and the shore between them, where OpenStreetMap places two hamlets, Oued R'mel and Sakia el Houta.
+features:
+- osm: way/467582831
+  kind: terminal
+  name: Tanger Med 1 TC1
+  operator: APM Terminals
+  cargo:
+  - container
+  note: >-
+    Mapped as Tanger Container Port TC1 and tagged cargo=container. APM Terminals has run it since July
+    2007.
+- osm: way/178877402
+  kind: terminal
+  name: Tanger Med 1 TC2
+  operator: Eurogate
+  cargo:
+  - container
+  note: >-
+    Mapped as Tanger Container Port TC2 and tagged cargo=container. Eurogate Tanger has run it since 2008.
+- osm: way/871650115
+  kind: terminal
+  name: Tanger Med 2 TC3
+  operator: Tanger Alliance
+  cargo:
+  - container
+  note: >-
+    Mapped as Port Tanger Med II - TC3 and tagged cargo=container. Tanger Alliance, a joint venture of
+    Marsa Maroc, Eurogate, Contship Italia and Hapag-Lloyd, has run it since 2021.
+- osm: way/365665350
+  kind: terminal
+  name: Tanger Med 2 TC4
+  operator: APM Terminals
+  cargo:
+  - container
+  note: >-
+    Mapped as Port Tanger Med II - TC4 and tagged cargo=container. APM Terminals runs it as APM Terminals
+    MedPort Tangier, opened in 2019.
+- osm: way/178877454
+  kind: terminal
+  name: Tanger Med Passagers
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The passenger and ro-ro port, tagged amenity=ferry_terminal: ferries to Algeciras and other ports
+    of southern Europe, carrying cars and lorry trailers, among them Morocco's fresh produce exports by
+    road.

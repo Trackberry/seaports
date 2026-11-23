@@ -1,0 +1,40 @@
+---
+locode: CRMOB
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of a Geofabrik Costa Rica extract around Moín Bay. OpenStreetMap maps the APM
+  Terminals container terminal and JAPDEVA's Moín terminal, and no anchorage or pilot boarding place.
+  JAPDEVA's Limón terminal, 6 km east in the city, is left out: it is Puerto Limón, CRLIO, and limits
+  reaching it would take in the city. The RECOPE tank farm behind the port and the container yards and
+  bonded stores inland are left out too.
+quays:
+- CRPMN
+position_outside: >-
+  UN/LOCODE places Moín at (10.0, -83.0833), in Moín village just behind JAPDEVA's terminal, about 80
+  m outside these limits. A ship there would be ashore.
+port_limits:
+  derive: hull
+  buffer_m: 100
+  note: >-
+    OpenStreetMap maps no port limits for Moín. These are the hull of the two terminals below, grown by
+    100 m. They take in the bay between them, but not Limón. A search of OpenStreetMap found no homes,
+    residential land, schools, churches, hospitals or named places inside them: Moín village, its school
+    and Loma de Moín are just outside.
+features:
+- osm: way/1453248880
+  kind: terminal
+  name: APM Terminals Moín
+  operator: APM Terminals
+  cargo:
+  - container
+  - reefer
+  note: >-
+    The Moín Container Terminal (TCM), on an artificial island in Moín Bay, opened in February 2019. APM
+    Terminals lists 3,933 reefer plugs there.
+- osm: way/25371549
+  kind: terminal
+  name: Terminal Portuaria Gastón Kogan Kogan
+  operator: JAPDEVA
+  note: >-
+    JAPDEVA's Moín terminal, mapped in OpenStreetMap as Puerto Internacional Moín. OpenStreetMap gives
+    no cargo type, so none is set.

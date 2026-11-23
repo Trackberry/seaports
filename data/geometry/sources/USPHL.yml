@@ -1,0 +1,66 @@
+---
+locode: USPHL
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from searches of Geofabrik's Pennsylvania and New Jersey extracts along the Delaware between
+  the Navy Yard and Gloucester City. Tioga Marine Terminal (way/787261284), 9 km upriver, is left out:
+  the river bends east there, and limits drawn around it and the South Philadelphia terminals would take
+  in most of Camden. OpenStreetMap maps no anchorage or pilot boarding place on this stretch of the Delaware.
+quays:
+- USGLC
+port_limits:
+  derive: hull
+  buffer_m: 50
+  note: >-
+    OpenStreetMap maps no port limits for Philadelphia. These are the hull of the South Philadelphia terminals
+    and the Gloucester Marine Terminal across the river, grown by 50 m, over the Delaware between them.
+    Beside the Gloucester terminal they take in 17 buildings OpenStreetMap maps as houses or residential,
+    on North King, Morris, North Willow, Middlesex, Warren, Hudson and Mercer Streets, the deepest 66
+    m in, but no schools, churches or hospitals. At the north-east corner they take in up to 70 m of the
+    Port of Camden's Broadway Terminal, a separate port.
+features:
+- osm: way/544007426
+  kind: terminal
+  name: Packer Avenue Marine Terminal
+  operator: Greenwich Terminals
+  cargo:
+  - container
+  - reefer
+  - ro_ro
+  note: >-
+    Philadelphia's container terminal, owned by PhilaPort and run by Greenwich Terminals, a Holt company.
+    It has more than 4,000 reefer plugs and on-dock cold stores for imported fruit, and an auto processing
+    yard. Tagged industrial=port.
+- osm: way/707134568
+  kind: terminal
+  name: Pier 82
+  operator: Horizon Stevedoring
+  cargo:
+  - reefer
+  - general
+  note: A PhilaPort breakbulk pier for fruit and vegetables as well as dry cargo. Mapped as man_made=pier.
+- osm: way/707134567
+  kind: terminal
+  name: Pier 84
+  operator: Dependable Distribution Services
+  cargo:
+  - general
+  note: PhilaPort's cocoa import pier. Mapped as man_made=pier.
+- osm: way/707137778
+  kind: terminal
+  name: Southport Auto Terminal
+  operator: Glovis America
+  cargo:
+  - ro_ro
+  note: PhilaPort's car terminal and vehicle processing centre, opened in 2019. Tagged landuse=industrial.
+- osm: way/549167340
+  kind: terminal
+  name: Gloucester Marine Terminal
+  operator: Gloucester Terminals
+  cargo:
+  - reefer
+  - general
+  note: >-
+    Holt's fruit terminal at Gloucester City, New Jersey, at King and Essex Streets: breakbulk Chilean
+    fruit and cold stores. OpenStreetMap tags it landuse=harbour with no name; it is identified by its
+    location.

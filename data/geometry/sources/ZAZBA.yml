@@ -1,0 +1,28 @@
+---
+locode: ZAZBA
+reviewed_at: '2026-11-23'
+note: >-
+  The port of Ngqura, at the mouth of the Coega river; its UN/LOCODE entry is named Coega. Drafted from
+  a search of a Geofabrik South Africa extract around Coega. OpenStreetMap maps the container terminal,
+  and no anchorage or pilot boarding place. The Coega industrial zone and salt pans behind the port are
+  left out.
+position_outside: >-
+  UN/LOCODE places Coega at (-33.7667, 25.6667), inland about 4 km north of the container terminal. A
+  ship there would be ashore.
+port_limits:
+  derive: hull
+  buffer_m: 400
+  note: >-
+    OpenStreetMap maps no port limits for Ngqura. These are the container terminal grown by 400 m, over
+    its berths and the harbour basin alongside.
+features:
+- osm: way/404941868
+  kind: terminal
+  name: Ngqura Container Terminal
+  operator: Transnet Port Terminals
+  cargo:
+  - container
+  - reefer
+  note: >-
+    Mapped as Ngqura Container Terminal, tagged cargo=container with operator Transnet Port Terminals.
+    It has about 1,650 reefer points.
