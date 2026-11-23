@@ -38,6 +38,10 @@ module Harbour
   POND = box(-1150, -1500, -1000, -1400)
   # A terminal whose quay edge is drawn 10 m back from the coastline.
   SETBACK = box(510, -1300, 900, -100)
+  # A quay only 20 m deep on the bay's edge, and a basin the selection lists
+  # that OpenStreetMap does not map as water, 10 m behind the west quay.
+  NARROW = box(-520, -1300, -500, -100)
+  BASIN = box(-1300, -1300, -910, -100)
 
   def water = { "coastline" => [COASTLINE], "areas" => [POND], "skipped" => [] }
 
@@ -64,10 +68,11 @@ class GeometryClipTest < Minitest::Test
     skip "GEOS is not installed: brew install geos"
   end
 
-  def shapes = ->(refs) { { "way/1" => Harbour::WEST, "way/2" => Harbour::EAST, "way/3" => Harbour::INLAND, "way/4" => Harbour::SETBACK }.slice(*refs) }
+  def shapes = ->(refs) { { "way/1" => Harbour::WEST, "way/2" => Harbour::EAST, "way/3" => Harbour::INLAND, "way/4" => Harbour::SETBACK,
+                                   "way/5" => Harbour::NARROW, "way/6" => Harbour::BASIN }.slice(*refs) }
 
   def selection(limits = {}, refs: %w[way/1 way/2])
-    names = { "way/1" => "West Quay", "way/2" => "East Quay", "way/3" => "Inland Depot", "way/4" => "Setback Quay" }
+    names = { "way/1" => "West Quay", "way/2" => "East Quay", "way/3" => "Inland Depot", "way/4" => "Setback Quay", "way/5" => "Narrow Quay" }
     {
       "locode" => "NLRTM", "reviewed_at" => "2026-11-23", "position_outside" => "The test harbour is drawn around it.",
       "port_limits" => { "derive" => "hull", "buffer_m" => 300, "note" => "n" }.merge(limits),
@@ -130,6 +135,24 @@ class GeometryClipTest < Minitest::Test
     assert inside?(clipped, 480, -700), "the bay beside it"
     refute inside?(clipped, 920, -700), "the land behind the set-back quay"
     assert_equal 1, Planar.polygons(clipped).size, "one body of water"
+  end
+
+  # The margin is "within 30 m of both": behind a quay narrower than 30 m the
+  # land still within 30 m of the water comes in, and no more.
+  def test_land_behind_a_narrow_quay_comes_in_only_while_it_is_within_the_margin_of_the_water
+    clipped = limits(build(refs: %w[way/5]))
+
+    assert inside?(clipped, -525, -700), "5 m behind a 20 m quay, 25 m from the water"
+    refute inside?(clipped, -545, -700), "25 m behind it, 45 m from the water"
+  end
+
+  # A basin the selection lists counts as water for the touch check, so it
+  # is bridged to like water: a terminal set back from it joins it.
+  def test_a_terminal_set_back_from_a_listed_basin_joins_it
+    clipped = limits(build({ "clip" => "water", "osm" => "way/6" }, refs: %w[way/1]))
+
+    assert inside?(clipped, -905, -700), "the 10 m gap between the quay and the basin"
+    assert_equal 1, Planar.polygons(clipped).size
   end
 
   def test_the_terminals_are_kept_whole
@@ -257,8 +280,9 @@ class GeometryClipGcTest < Minitest::Test
                                         water: { "coastline" => [input["coastline"]], "areas" => [] })
     GC.stress = true
     geometry = clip.geometry
+    dry = clip.dry_terminals
     GC.stress = false
-    puts geometry["type"]
+    puts [geometry["type"], dry.size].join(" ")
   RUBY
 
   def setup
@@ -268,10 +292,10 @@ class GeometryClipGcTest < Minitest::Test
   def test_clipping_survives_the_collector_running_at_every_allocation
     input = JSON.generate("hull" => Harbour.box(-1500, -2000, 1500, 500), "terminal" => Harbour::WEST, "coastline" => Harbour::COASTLINE)
     lib = File.expand_path("../lib", __dir__)
-    output, status = Open3.capture2e(RbConfig.ruby, "-I", lib, "-e", SCRIPT, stdin_data: input)
+    output, error, status = Open3.capture3(RbConfig.ruby, "-rbundler/setup", "-I", lib, "-e", SCRIPT, stdin_data: input)
 
-    assert status.success?, "ruby died (#{status.inspect}) clipping with the collector running:\n#{output.lines.first(6).join}"
-    assert_equal "Polygon", output.lines.last.strip
+    assert status.success?, "ruby died (#{status.inspect}) clipping with the collector running:\n#{error.lines.first(6).join}"
+    assert_equal "Polygon 0", output.lines.last.strip
   end
 end
 

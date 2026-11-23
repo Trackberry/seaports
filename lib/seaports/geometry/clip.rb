@@ -37,11 +37,15 @@ module Seaports
     # a plane tangent at the hull's centre for the work, and rounded back to
     # six decimals, like every other shape in the files.
     class Clip
-      # A terminal (or a kept area) and the water are each grown by this much
-      # and the two overlaps kept, so that a terminal drawn a few metres back
-      # from the water OpenStreetMap maps still meets it, and simplifying
-      # never nicks it. The margin bridges only between the two: where a
-      # terminal's fence backs onto houses, the houses stay outside.
+      # A terminal (or a kept area) and the water (with the listed basins)
+      # are each grown by this much and the two overlaps kept, so that a
+      # terminal drawn a few metres back from the water OpenStreetMap maps
+      # still meets it. The margin bridges only between the two: land is
+      # taken only where it lies within the margin of both. That is the gap
+      # to the water, about the margin of shore either side of a terminal's
+      # ends, and, behind a terminal narrower than the margin, the strip
+      # still within the margin of the water. Behind a deeper terminal's fence
+      # the houses stay outside.
       KEEP_MARGIN_M = 30
       SIMPLIFY_M = 8
       # Simplifying and rounding to six decimals can nick a terminal the
@@ -113,12 +117,19 @@ module Seaports
       def geometry
         @geometry ||= begin
           kept_areas = union((@terminals.values + @basins).map { |geometry| geos(geometry).make_valid })
-          bridge = kept_areas.buffer(KEEP_MARGIN_M).intersection(water_inside.buffer(KEEP_MARGIN_M))
+          # Listed basins count as water for a terminal, but not for
+          # themselves, or the margin would come back all round them.
+          terminal_areas = union(@terminals.values.map { |geometry| geos(geometry).make_valid })
+          basin_areas = union(@basins.map { |geometry| geos(geometry).make_valid })
+          bridge = union([terminal_areas.buffer(KEEP_MARGIN_M).intersection(waterish.buffer(KEEP_MARGIN_M)),
+                          basin_areas.buffer(KEEP_MARGIN_M).intersection(water_inside.buffer(KEEP_MARGIN_M))])
           cut = hull.intersection(union([water_inside, kept_areas, bridge]))
           parts = polygons(cut).select { |polygon| polygon.intersects?(kept_areas) }.map { |polygon| fill_holes(polygon) }
           raise Failed, "nothing of the hull is left after the cut" if parts.empty?
 
-          simplified(union(parts), kept_areas.buffer(PAD_M))
+          # Padded lightly simplified, so the pad adds no unsimplified arcs.
+          pad = kept_areas.buffer(PAD_M).simplify_preserve_topology(PAD_M / 2.0).intersection(hull)
+          simplified(union(parts), pad)
         end
       end
 
@@ -128,11 +139,15 @@ module Seaports
       # basin the selection lists counts as water: it is listed because it
       # is the port's and OpenStreetMap does not tag it as water.
       def dry_terminals
-        water = union([water_inside] + @basins.map { |geometry| geos(geometry).make_valid })
-        @terminals.reject { |_, geometry| geos(geometry).make_valid.buffer(TOUCH_M).intersects?(water) }.keys
+        @terminals.reject { |_, geometry| geos(geometry).make_valid.buffer(TOUCH_M).intersects?(waterish) }.keys
       end
 
       private
+
+      # The water inside the hull, and the basins the selection lists.
+      def waterish
+        @waterish ||= union([water_inside] + @basins.map { |geometry| geos(geometry).make_valid })
+      end
 
       def area?(geometry) = %w[Polygon MultiPolygon].include?(geometry && geometry["type"])
 
@@ -146,10 +161,17 @@ module Seaports
 
       def simplified(merged, kept)
         [SIMPLIFY_M, SIMPLIFY_M / 2.0, 0].each do |tolerance|
-          shape = tolerance.positive? ? merged.simplify_preserve_topology(tolerance) : merged
-          shape = union([shape, kept])
-          result = to_geojson(shape)
-          return result if geos_lnglat(result).valid?
+          # rgeo raises on invalid input rather than returning it: an invalid
+          # result at one tolerance means trying a smaller one.
+          begin
+            shape = tolerance.positive? ? merged.simplify_preserve_topology(tolerance) : merged
+            next unless shape.valid?
+
+            result = to_geojson(union([shape, kept]))
+            return result if geos_lnglat(result).valid?
+          rescue RGeo::Error::InvalidGeometry
+            next
+          end
         end
         raise Failed, "the clipped limits are not a valid polygon once rounded"
       end
@@ -254,6 +276,8 @@ module Seaports
       # A MultiPolygon from [[ring, ...], ...] positions, through WKT, which
       # GEOS reads as it is given.
       def read(polygons)
+        raise Failed, "a shape with no polygon in it cannot be clipped" if polygons.empty?
+
         text = polygons.map { |rings| "(#{rings.map { |positions| "(#{positions.map { |x, y| "#{x} #{y}" }.join(', ')})" }.join(', ')})" }
         @factory.parse_wkt("MULTIPOLYGON (#{text.join(', ')})")
       end
@@ -268,7 +292,9 @@ module Seaports
             Osm.orient(positions, outer: i.zero?)
           end
         end
-        parts = parts.map { |rings| rings.select { |ring| ring.size >= 4 } }.reject(&:empty?)
+        # A part whose outer ring collapses is dropped with its holes, not
+        # left as a polygon whose first hole has become its outline.
+        parts = parts.select { |rings| rings.first.size >= 4 }.map { |rings| rings.select { |ring| ring.size >= 4 } }
         parts.size == 1 ? { "type" => "Polygon", "coordinates" => parts.first } : { "type" => "MultiPolygon", "coordinates" => parts }
       end
     end

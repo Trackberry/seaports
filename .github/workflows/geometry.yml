@@ -79,6 +79,8 @@ jobs:
         with:
           ruby-version: "3.4"
           bundler-cache: true
+          # Gems built against GEOS never share a cache with ones that were not.
+          cache-version: geos
       - name: rgeo was built with GEOS
         run: |
           bundle exec ruby -e 'require "rgeo"; abort "rgeo has no GEOS (CAPI) support" unless RGeo::Geos.capi_supported?; puts "GEOS #{RGeo::Geos.version}"'

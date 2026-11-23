@@ -337,9 +337,13 @@ port_limits:
 The limits become the hull ∩ (sea ∪ mapped water ∪ the terminals, and any
 areas the selection lists under `osm:`, ∪ the part of those grown by 30 m that
 lies within 30 m of the water). The 30 m only bridges between a terminal and
-the water, so a quay drawn a few metres back from the mapped coastline still
-joins it, while land behind a terminal's fence (housing, say) stays outside
-the limits. The terminals themselves are always kept whole. The sea is the
+the water (listed basins count as water here), so a quay drawn a few metres
+back from the mapped coastline still joins it. Land is taken only where it is
+within 30 m of both, which is the gap to the water, about 30 m of shore either
+side of a terminal's ends, and, behind a terminal narrower than 30 m, the
+strip still within 30 m of the water. Behind the fence of a deeper terminal,
+housing stays outside the limits. The terminals themselves are always kept
+whole (padded by 1 m once simplified, so rounding cannot nick them). The sea is the
 side of OpenStreetMap's coastline (`natural=coastline`, drawn with the land on
 its left) that the coastline says it is; the mapped water is
 `natural=water` (rivers, docks, basins, lakes), `waterway=riverbank` and

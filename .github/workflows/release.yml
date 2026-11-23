@@ -23,13 +23,19 @@ jobs:
     environment: rubygems
     steps:
       - uses: actions/checkout@v5
+      # GEOS for the clip: water tests, as in ci.yml: before bundler builds
+      # rgeo, which otherwise installs without GEOS and says nothing.
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
           bundler-cache: true
+          # Gems built against GEOS never share a cache with ones that were not.
+          cache-version: geos
+      - name: rgeo was built with GEOS
+        run: |
+          bundle exec ruby -e 'require "rgeo"; abort "rgeo has no GEOS (CAPI) support" unless RGeo::Geos.capi_supported?; puts "GEOS #{RGeo::Geos.version}"'
 
-      # GEOS for the clip: water tests, as in ci.yml.
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
       # The suite runs again here rather than trusting the pull request's run,
       # because what ships is this commit, not the one that was reviewed.
       - run: bundle exec rake

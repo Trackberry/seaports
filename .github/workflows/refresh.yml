@@ -33,10 +33,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      # The bundle includes rgeo, which links GEOS when it is built: GEOS goes
+      # in first, or rgeo installs without it and the cache keeps that copy.
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
           bundler-cache: true
+          # Gems built against GEOS never share a cache with ones that were not.
+          cache-version: geos
+      - name: rgeo was built with GEOS
+        run: |
+          bundle exec ruby -e 'require "rgeo"; abort "rgeo has no GEOS (CAPI) support" unless RGeo::Geos.capi_supported?; puts "GEOS #{RGeo::Geos.version}"'
 
       # Each of these reports its own failure as a warning and exits 0, and
       # keeps its three files together or leaves them alone; continue-on-error
