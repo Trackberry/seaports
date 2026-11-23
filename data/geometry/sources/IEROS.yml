@@ -28,5 +28,5 @@ features:
   - passenger
   note: >-
     Berths 1 to 4, each tagged waterway=dock with no cargo tag. Ro-ro and passenger are from the ferry
-    routes OpenStreetMap maps from Rosslare (Stena Line, Irish Ferries, Brittany Ferries, DFDS), so check
-    them. The name Rosslare Europort is from its public transport stop.
+    routes OpenStreetMap maps from Rosslare (Stena Line, Irish Ferries, Brittany Ferries, DFDS), whose
+    ships carry freight and passengers. The name Rosslare Europort is from its public transport stop.

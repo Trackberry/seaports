@@ -27,8 +27,8 @@ port_limits:
   note: >-
     OpenStreetMap maps no port limits for Marseille. These are the hull of the terminals below and the
     east basins, from the Avant-port Nord to the Bassin de la Grande Joliette, grown by 50 m. The ferry
-    stations stand on the city quay, so the limits stop at the quayside: La Major, the Joliette docks
-    and the Arenc towers are outside.
+    stations stand on the city quay, so the limits stop at the quayside: La Major cathedral, the Joliette
+    docks and the Arenc towers are outside.
 features:
 - osm: way/1030807681
   kind: terminal
