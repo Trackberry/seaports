@@ -1,0 +1,33 @@
+---
+locode: NGAPP
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Nigeria extract around Lagos harbour. OpenStreetMap maps the
+  Lagos Port Complex at Apapa as one area, Port of Apapa, and none of its terminals apart: APM Terminals
+  Apapa, ENL Consortium, Apapa Bulk Terminal and the others all work inside it. Tin Can Island, the port
+  just west across the creek, has its own locode, NGTIN, and its own outline. OpenStreetMap maps no anchorage
+  area off Lagos, only an unnamed anchorage point.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Apapa. These are the hull of the port area below grown by 200
+    m, cut to the water OpenStreetMap maps inside it, with the port area kept whole and a 30 m margin
+    where it meets the water. What is left is the port and the harbour water off its quays, clear of Tin
+    Can Island's limits to the west. A scan of OpenStreetMap finds no homes, schools, hospitals, places
+    of worship or named places inside; the shore edges of three unnamed residential areas and of Lagos
+    Island reach in by about 0.25 ha in all, none of it more than 40 m inside the limits.
+features:
+- osm: way/292127150
+  kind: terminal
+  name: Port of Apapa
+  operator: Nigerian Ports Authority
+  cargo:
+  - container
+  - general
+  - bulk
+  note: >-
+    The whole port as OpenStreetMap maps it, named Port of Apapa. The Nigerian Ports Authority leases
+    its terminals: the container terminal to APM Terminals, berths for general cargo to ENL Consortium,
+    and the grain berths to Apapa Bulk Terminal, a Flour Mills of Nigeria company.

@@ -1,0 +1,68 @@
+---
+locode: CNYSA
+reviewed_at: '2026-11-23'
+note: >-
+  Yangshan, the deep-water container port of Shanghai on the Yangshan islands, 30 km offshore and joined
+  to the mainland by the Donghai Bridge. Bills of lading name it as Shanghai (CNSHA, which UN/LOCODE files
+  as an airport, not a port); it has its own outline here because it lies about 70 km from Waigaoqiao,
+  the river port of Shanghai (CNSGH). Drafted from a search of Geofabrik's Zhejiang extract around the
+  islands. OpenStreetMap maps Phases I to III as one area and Phase IV separately, two anchorages west
+  and south-west of the port, and the oil and LNG terminals on Xiaoyangshan.
+position_outside: UN/LOCODE places Yangshan at (30.5833, 122.0667), in open water about 3 km south of
+  the port limits.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Yangshan. These are the hull of the terminals below, grown by
+    300 m and cut to the sea OpenStreetMap maps inside it, with the terminals kept whole: the water along
+    the south face of the islands, from Phase IV to the oil terminal. They do not reach the anchorages.
+    A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of worship or
+    named places inside; the island outlines in them are Lesser Yangshan's and Dawugui's, under the terminals.
+features:
+- osm: way/1478598937
+  kind: anchorage
+  name: No.2
+  note: >-
+    Seamark area named "No.2" in OpenStreetMap, west of the port, from China MSA notice 976/2019. OpenStreetMap
+    gives no category.
+- osm: way/1478598938
+  kind: anchorage
+  name: Anchorage
+  note: >-
+    Unnamed seamark area south-west of the port, beside No. 2, from China MSA notice 977/2019. OpenStreetMap
+    gives no category.
+- osm: way/288011754
+  kind: terminal
+  name: Yangshan Deep-Water Port
+  operator: SIPG
+  cargo:
+  - container
+  note: >-
+    The container quays of Phases I, II and III on Xiaoyangshan, mapped as one area named Yangshan Deep-Water
+    Port and tagged cargo=container. Run by Shanghai International Port Group (SIPG).
+- osm: way/822111020
+  kind: terminal
+  name: 洋山四期自动化码头
+  operator: SIPG
+  cargo:
+  - container
+  note: >-
+    The automated container terminal, opened in December 2017 with seven berths, run by SIPG's Shangdong
+    branch (SIPG and Shanghai government reports). Named 洋山四期自动化码头 in OpenStreetMap.
+- osm: way/1002035296
+  kind: terminal
+  name: 上海LNG站线
+  cargo:
+  - tanker
+  note: >-
+    The LNG receiving terminal on Xiaoyangshan, named 上海LNG站线 in OpenStreetMap. The operator is not given
+    there.
+- osm: way/1002035325
+  kind: terminal
+  name: 洋山申港国际石油储运公司
+  operator: Yangshan Shengang International Petroleum Storage and Transportation
+  cargo:
+  - tanker
+  note: The oil storage terminal on Xiaoyangshan, named 洋山申港国际石油储运公司 in OpenStreetMap.

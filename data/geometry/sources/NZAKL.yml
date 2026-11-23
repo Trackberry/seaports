@@ -1,0 +1,33 @@
+---
+locode: NZAKL
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around the Waitematā waterfront. OpenStreetMap maps Fergusson
+  Container Terminal on its own and the rest of the Port of Auckland as one area, with each berth as a
+  point. The multi-cargo wharves west of Fergusson (Bledisloe, Jellicoe, Freyberg), where car carriers
+  and break bulk berth, are not mapped as their own area, and the Port of Auckland area reaches the downtown
+  ferry wharves and Britomart, so neither is used here: a car carrier at Bledisloe may fall outside these
+  limits. The anchorages OpenStreetMap maps in the harbour are small-craft moorings and an explosives
+  anchorage, so none is listed.
+position_outside: >-
+  UN/LOCODE places Auckland on the Waitematā Harbour (-36.8333, 174.8), about 1.1 km north-east of Fergusson
+  Container Terminal. A ship there is in the harbour, not at the terminal.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Auckland. These are the hull of Fergusson Container Terminal
+    grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminal kept whole and a
+    30 m margin where it meets the water: the terminal, its berths and the harbour off them, not the downtown
+    ferry terminal, Britomart or Parnell. A scan of OpenStreetMap finds no homes, residential land, schools,
+    hospitals or places of worship inside; the only named place is Fergusson Wharf, the terminal's own
+    label, and 4 m² of a hut by the terminal's edge reaches in.
+features:
+- osm: relation/20079115
+  kind: terminal
+  name: Fergusson Container Terminal
+  operator: Port of Auckland
+  cargo:
+  - container
+  note: Auckland's container terminal, at the eastern end of the port, run by Port of Auckland.

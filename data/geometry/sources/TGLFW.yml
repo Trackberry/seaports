@@ -1,0 +1,54 @@
+---
+locode: TGLFW
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Togo extract around the harbour. OpenStreetMap maps Lomé Container
+  Terminal on its own, the quays of the original harbour as one area, and the mineral quay on the east
+  side of the harbour. It maps no anchorage for Lomé, and no oil berth as a terminal.
+position_outside: >-
+  UN/LOCODE places Lomé at (6.1333, 1.2833), a rounded position on the land beside the harbour, about
+  50 m outside these limits.
+port_limits:
+  derive: hull
+  osm:
+  - relation/6625650
+  - relation/9684043
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Lomé. These are the hull of the terminals below and the two
+    harbour basins, the original basin and the new dock in front of Lomé Container Terminal, grown by
+    300 m, then cut to the water OpenStreetMap maps inside it, with the terminals and basins kept whole
+    and a 30 m margin where they meet the water. What is left is the harbour inside the breakwaters, the
+    sea just outside them and the three terminals. A scan of OpenStreetMap finds no homes, residential
+    land, schools, hospitals or places of worship inside; the only named place is Zone Portuaire, a point
+    inside the port's own quays.
+features:
+- osm: way/696787047
+  kind: terminal
+  name: Lomé Container Terminal
+  operator: Lomé Container Terminal SA
+  cargo:
+  - container
+  note: >-
+    The transhipment terminal on the new dock, opened in 2014 under a 35-year concession. It was built
+    by Terminal Investment Limited, the MSC group's terminal arm, with China Merchants Port.
+- osm: way/445479852
+  kind: terminal
+  name: Port autonome de Lomé
+  operator: Port Autonome de Lomé
+  cargo:
+  - container
+  - general
+  note: >-
+    The quays round the original basin, which OpenStreetMap maps as one area under this name and tags
+    cargo=container. Togo Terminal, run by Africa Global Logistics, works containers here, and the port
+    authority's conventional berths take general cargo. OpenStreetMap does not map where one ends and
+    the other begins.
+- osm: relation/6625647
+  kind: terminal
+  name: Quai minéralier
+  cargo:
+  - bulk
+  note: >-
+    The long quay on the east side of the harbour, as OpenStreetMap names it. Its operator is not published.

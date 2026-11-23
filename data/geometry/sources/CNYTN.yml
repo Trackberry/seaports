@@ -1,0 +1,37 @@
+---
+locode: CNYTN
+reviewed_at: '2026-11-23'
+note: >-
+  Yantian, the deep-water container port of eastern Shenzhen. Bills of lading name it as Yantian (CNYTN)
+  or as Shenzhen (CNSZX, which is not a port entry in UN/LOCODE); western Shenzhen, 40 km away across
+  the city, is Shekou (CNSHK). Drafted from a search of Geofabrik's Guangdong extract around Yantian.
+  OpenStreetMap maps the container port as one area, and two anchorages in Dapeng Bay.
+position_outside: >-
+  UN/LOCODE places Yantian at (22.6, 114.3), at Dameisha, about 3 km north-east of the container terminals.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Yantian. These are the outline of the container terminals, grown
+    by 300 m and cut to the sea OpenStreetMap maps inside it, with the terminals kept whole: the terminals
+    and the water off their quays. A search of OpenStreetMap found no housing, school, hospital, place
+    of worship or named place inside them, only three unnamed rocks of under 40 m² each.
+features:
+- osm: way/1172698976
+  kind: anchorage
+  name: Cargo Ship Anchorage No.4
+  note: Seamark area in Dapeng Bay, from China MSA notice 1005/2024. OpenStreetMap gives no category.
+- osm: way/1172698977
+  kind: anchorage
+  name: No.5
+  note: Seamark area named "No.5" in OpenStreetMap, off Dameisha. OpenStreetMap gives no category.
+- osm: way/261283912
+  kind: terminal
+  name: Yantian Port
+  operator: Hutchison Ports
+  cargo:
+  - container
+  note: >-
+    Mapped as one area named Yantian Port and tagged cargo=container. The terminals are run by Yantian
+    International Container Terminals, a Hutchison Ports joint venture with the Yantian Port Group.

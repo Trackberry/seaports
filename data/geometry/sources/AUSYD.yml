@@ -1,0 +1,56 @@
+---
+locode: AUSYD
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around Port Botany. Sydney's container trade is all at
+  Port Botany, and carriers name it AUSYD on bills of lading; AUPBT (Port Botany) and AUBTB (Botany Bay)
+  are the same place under other codes, so they are quays here. The Sydney Harbour wharves (Glebe Island,
+  White Bay) are left out: they are 12 km north and take no containers. The Kurnell fuel terminal across
+  the bay is left out too, and so are the Vopak tank farms behind the bulk liquids berth: OpenStreetMap
+  maps the tanks, which have no water within 30 m, and not the berth.
+quays:
+- AUPBT
+- AUBTB
+position_outside: >-
+  UN/LOCODE places Sydney on the city centre (-33.85, 151.2), about 12 km north of Port Botany. A ship
+  there is in Sydney Harbour, not at a container terminal.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Port Botany. These are the hull of the three container terminals
+    below grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminals kept whole
+    and a 30 m margin where they meet the water. What is left is the terminals and the water off them
+    in Botany Bay, not Botany, Banksmeadow or La Perouse. A scan of OpenStreetMap finds no homes, residential
+    land, schools, hospitals or places of worship inside; the suburb named Port Botany is the terminals'
+    own ground.
+features:
+- osm: way/1274082819
+  kind: anchorage
+  name: Anchorage
+  category: tanker
+  note: Seamark area inside Botany Bay, tagged for tankers and unnamed in OpenStreetMap.
+- osm: way/707542648
+  kind: terminal
+  name: Patrick Terminals
+  operator: Patrick Terminals
+  cargo:
+  - container
+  note: OpenStreetMap names it Patrick Terminals and tags it cargo=container.
+- osm: way/172752701
+  kind: terminal
+  name: DP World Sydney
+  operator: DP World
+  cargo:
+  - container
+  note: OpenStreetMap names it DP World Sydney and tags it cargo=container.
+- osm: way/707542647
+  kind: terminal
+  name: SICTL Hutchinson's Botany Terminal
+  operator: Hutchison Ports
+  cargo:
+  - container
+  note: >-
+    The third container terminal at Port Botany, run by Sydney International Container Terminals, part
+    of Hutchison Ports. OpenStreetMap names it SICTL Hutchinson's Botany Terminal.

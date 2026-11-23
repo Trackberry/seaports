@@ -3,7 +3,24 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
-## Unreleased
+## 1.7.6 — 2026-11-23
+
+Port outlines for 49 more ports, plus Ain Sokhna below, so 111 in all, every one with `clip: water` limits:
+
+- East Asia: Shanghai's Yangshan terminals (`CNYSA`), Ningbo (`CNNBG`), Shenzhen's Yantian (`CNYTN`) and Shekou, Chiwan, Mawan and Dachan Bay (`CNSHK`), Guangzhou's Nansha (`CNNSA`), Xiamen's Haicang terminals (`CNXMG`), Hong Kong (`HKHKG`), Kaohsiung (`TWKHH`), Tokyo (`JPTYO`), Osaka (`JPOSA`) and Kobe (`JPUKB`).
+- South and South-East Asia: Singapore (`SGSIN`), Port Klang (`MYPKG`), Tanjung Pelepas (`MYTPP`), Ho Chi Minh City (`VNSGN`), Cai Mep (`VNCMT`), Hai Phong (`VNHPH`), Jakarta's Tanjung Priok (`IDJKT`), Manila (`PHMNL`), Colombo (`LKCMB`), Nhava Sheva (`INNSA`), Mundra (`INMUN`) and Chennai (`INMAA`).
+- Middle East: Jebel Ali (`AEJEA`) and Jeddah (`SAJED`).
+- Africa: Djibouti (`DJJIB`), Port Said East (`EGPSE`), Alexandria (`EGALY`), Mombasa (`KEMBA`), Dar es Salaam (`TZDAR`), Dakar (`SNDKR`), Abidjan (`CIABJ`), Tema (`GHTEM`), Lomé (`TGLFW`), Lagos's Apapa (`NGAPP`) and Tin Can Island (`NGTIN`), Lekki (`NGLKK`) and Walvis Bay (`NAWVB`).
+- Oceania: Sydney's Port Botany (`AUSYD`), Melbourne (`AUMEL`), Brisbane (`AUBNE`), Fremantle (`AUFRE`), Adelaide (`AUADL`), Auckland (`NZAKL`), Tauranga (`NZTRG`), Lyttelton (`NZLYT`) and Napier (`NZNPE`).
+- South America: Callao (`PECLL`) and Guayaquil (`ECGYE`), held from 1.7.5 because no hull kept central Callao or Guayaquil's Guasmo out; clipped to the water, neither does.
+
+Names are OpenStreetMap's own: a terminal's or anchorage's name is exactly its `name` tag (its `name:en` where `name` is in a non-Latin script and `name:en` exists, its `seamark:name` for an unnamed seamark), and a feature OpenStreetMap leaves unnamed is called "Anchorage", "Container terminal" or "Berths", with the description in its note. Where OpenStreetMap has no English name, a terminal keeps its Chinese or Japanese one, and the note says in English what it is.
+
+Each limits note says what lies inside, from a scan of every house, residential area, school, hospital and place of worship OpenStreetMap maps there. Where the limits come in separate parts, `disjoint` says why. Manila's MICT terminal outline holds the Port Town housing estate and Tokyo's Shinagawa terminal outline four apartment blocks, as OpenStreetMap draws them; both notes say so.
+
+Not outlined, because OpenStreetMap does not map their terminals: Shanghai's Waigaoqiao, Qingdao, Tianjin, Busan, Yokohama, Nagoya, Laem Chabang, Casablanca, Maputo and Port Everglades.
+
+`test/geometry_test.rb` takes Maputo (`MZMPM`) as its port with no outline, now that Brisbane has one.
 
 Canal outlines, a new kind of data beside the port outlines, for the Suez and Panama canals: each canal's centreline, the anchorages where ships wait to transit with the end each serves (`north`, `south` or `in_transit`), and its pilot boarding places, all from OpenStreetMap by id. `Seaports.canals`, `Seaports.canal("suez")` and `Seaports.canal_anchorage_at(lat, lng)` read them; see the README. `rake seaports:geometry` builds them and `rake seaports:check_geometry` checks them, including that no canal anchorage overlaps a port's limits.
 

@@ -1,0 +1,33 @@
+---
+locode: NZNPE
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around Ahuriri. OpenStreetMap maps the port as one area,
+  Napier Port; its container and log wharves are not mapped apart. OpenStreetMap maps no anchorage for
+  Napier.
+position_outside: >-
+  UN/LOCODE places Napier at (-39.4667, 176.9), about 1.2 km north-west of the port, on the shore towards
+  Westshore.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Napier. These are the hull of the port area below grown by 200
+    m, cut to the water OpenStreetMap maps inside it, with the port area kept whole and a 30 m margin
+    where it meets the water: the wharves and the basin inside the breakwater, not Ahuriri or Bluff Hill.
+    A scan of OpenStreetMap finds no homes, residential land, schools, hospitals or places of worship
+    inside; Napier's city boundary overlaps the port and the edge of Ahuriri's reaches in by about 0.2
+    ha.
+features:
+- osm: way/255986242
+  kind: terminal
+  name: Napier Port
+  operator: Napier Port
+  cargo:
+  - container
+  - reefer
+  - general
+  note: >-
+    The whole port as OpenStreetMap maps it. Napier Port ships fruit from Hawke's Bay in reefer containers
+    and on conventional reefer vessels, and logs from the general wharves.

@@ -1,0 +1,65 @@
+---
+locode: INMUN
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's India western zone extract around Mundra. OpenStreetMap maps three
+  of Mundra's container terminals by name and the port as a whole, which also holds its bulk, ro-ro and
+  liquid berths, and a fourth, smaller container terminal area with no name at the east end of the docks.
+  The port-wide area is not used, as it is mostly land. The West Port, Adani's coal terminal 14 km along
+  the coast, is left out: it serves the power stations and is too far from the container berths. OpenStreetMap
+  maps no anchorage and no pilot boarding place off Mundra.
+position_outside: >-
+  UN/LOCODE places Mundra at 22.7283, 69.7067, in the Gulf of Kutch off the south face of the docks. A
+  ship there is in the approach, not at a terminal.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  disjoint: >-
+    Mundra International Container Terminal's quay faces the basin north-east of it, and the two Adani
+    terminals' quays face the Gulf of Kutch to the south. OpenStreetMap's coastline puts port land between
+    them, so the two waters meet only in the gulf, outside the hull.
+  note: >-
+    OpenStreetMap maps no port limits for Mundra. These are the hull of the container terminals below,
+    grown by 300 m and cut to the sea OpenStreetMap maps inside it, with the terminals kept whole: the
+    terminals and the water off their quays. They cover the container berths only, not the bulk, ro-ro
+    and liquid berths elsewhere in the port. A search of OpenStreetMap found no housing, school, hospital,
+    place of worship or named place inside them.
+features:
+- osm: relation/15791329
+  kind: terminal
+  name: Mundra International Container Terminal
+  operator: DP World
+  cargo:
+  - container
+  note: >-
+    DP World's terminal, the first at Mundra, handling containers since 2003. Named in OpenStreetMap,
+    which also gives its short name MICT.
+- osm: relation/15791332
+  kind: terminal
+  name: Container Terminal 3
+  operator: Adani Ports and MSC
+  cargo:
+  - container
+  note: >-
+    Container Terminal 3 in the South Basin, run by Adani International Container Terminal Pvt Ltd, a
+    joint venture of Adani Ports and MSC's Terminal Investment Ltd. OpenStreetMap names it Container Terminal
+    3.
+- osm: relation/15791333
+  kind: terminal
+  name: Container Terminal 4
+  operator: Adani Ports and CMA CGM
+  cargo:
+  - container
+  note: >-
+    Container Terminal 4, run by Adani CMA Mundra Terminal Pvt Ltd, a joint venture of Adani Ports and
+    CMA CGM. OpenStreetMap names it Container Terminal 4.
+- osm: way/1167546138
+  kind: terminal
+  name: Container terminal
+  cargo:
+  - container
+  note: >-
+    A smaller area at the east end of the docks, south of Mundra International Container Terminal, tagged
+    as a container terminal (man_made=container_terminal) in OpenStreetMap, which gives it no name or
+    operator.

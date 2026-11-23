@@ -1,0 +1,40 @@
+---
+locode: AUADL
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around Outer Harbor. Adelaide's container trade is at
+  Flinders Adelaide Container Terminal at Outer Harbor, at the mouth of the Port River; car carriers and
+  cruise ships berth beside it. The inner harbour wharves at Port Adelaide and the Osborne terminal upriver
+  are left out. OpenStreetMap maps no anchorage for Adelaide.
+position_outside: >-
+  UN/LOCODE places Adelaide on the city centre (-34.9167, 138.5833), about 18 km south-east of Outer Harbor.
+  A ship cannot reach it.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Adelaide. These are the hull of the Outer Harbor terminals below
+    grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminals kept whole and a
+    30 m margin where they meet the water: the terminals and the berths off them, not the town of North
+    Haven. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of worship
+    or named places inside.
+features:
+- osm: way/593035092
+  kind: terminal
+  name: Port of Adelaide
+  operator: Flinders Port Holdings
+  cargo:
+  - container
+  note: >-
+    South Australia's container terminal, at Outer Harbor. OpenStreetMap names it Port of Adelaide and
+    tags it cargo=container.
+- osm: way/1309515748
+  kind: terminal
+  name: Berths
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    Unnamed in OpenStreetMap and tagged cargo=vehicle;passengers: the cruise terminal and the berths where
+    car carriers discharge.

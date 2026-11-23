@@ -1,0 +1,75 @@
+---
+locode: SNDKR
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Senegal and Gambia extract around the harbour. OpenStreetMap
+  maps the container terminal and each mole of the port by its number. Mole 10, the fishing mole, is not
+  listed as a terminal, though the limits are drawn round it. The fishing port, the small phosphate quay
+  at Mole 5 and the oil berth are left out. OpenStreetMap maps no anchorage for Dakar.
+port_limits:
+  derive: hull
+  osm: way/934286252
+  buffer_m: 200
+  clip: water
+  disjoint: >-
+    DP World's container terminal is mapped as two areas, Terminal A conteneurs on the water and its extension,
+    a yard about 100 m back from the shore and 30 m from the terminal. Nothing OpenStreetMap maps joins
+    the extension to the water, so it stands as a part of its own.
+  note: >-
+    OpenStreetMap maps no port limits for Dakar. These are the hull of the terminals below and Mole 10,
+    the fishing mole on the west side of the harbour, from Mole 1 in the south to the container terminal
+    extension in the north, grown by 200 m, then cut to the water OpenStreetMap maps inside it, with the
+    terminals and Mole 10 kept whole and a 30 m margin where they meet the water. What is left is the
+    moles and the harbour basins between them; the Plateau, the Médina and Gorée are outside. A scan of
+    OpenStreetMap finds no homes, schools, hospitals, places of worship or named places inside. One residential
+    area overlaps it: a 218 km² multipolygon that covers most of the Cap-Vert peninsula, the port included.
+features:
+- osm:
+  - way/398255535
+  - way/398255534
+  kind: terminal
+  name: Terminal A conteneurs
+  operator: DP World
+  cargo:
+  - container
+  - reefer
+  note: >-
+    The port's container terminal, run by DP World under a concession awarded in 2007. DP World lists
+    a 710 m quay and 560 reefer plugs. OpenStreetMap maps it as Terminal A conteneurs and its extension.
+- osm: way/934286257
+  kind: terminal
+  name: Mole 2
+  operator: Dakar Terminal
+  cargo:
+  - ro_ro
+  note: >-
+    The ro-ro terminal at Mole 2, named El Hadji Malick Sy, under a 25-year concession signed in 2013
+    with what is now Africa Global Logistics. It takes ro-ro, con-ro and car carriers.
+- osm: way/934286249
+  kind: terminal
+  name: Mole 8
+  cargo:
+  - bulk
+  note: Tagged cargo=dry_bulk in OpenStreetMap. Its operator is not published.
+- osm: way/934286251
+  kind: terminal
+  name: Mole 4
+  cargo:
+  - general
+  note: >-
+    Tagged cargo=general in OpenStreetMap. A concession for a multipurpose terminal here was announced
+    in December 2025.
+- osm: way/934286256
+  kind: terminal
+  name: Mole 1
+  cargo:
+  - general
+  note: Tagged cargo=general in OpenStreetMap. Its operator is not published.
+- osm: way/934286258
+  kind: terminal
+  name: Mole 3
+  operator: Port Autonome de Dakar
+  cargo:
+  - general
+  - bulk
+  note: Bulk and general cargo, handled by the port authority itself.

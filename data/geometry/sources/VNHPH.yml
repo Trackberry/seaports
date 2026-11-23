@@ -1,0 +1,46 @@
+---
+locode: VNHPH
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Vietnam extract around Hai Phong. OpenStreetMap maps the port's
+  terminals thinly. This outline covers Lach Huyen, the deep-water terminals on Cat Hai island at the
+  mouth of the Lach Huyen channel, where the largest ships calling at Hai Phong berth, and Dinh Vu port
+  at the tip of the Dinh Vu peninsula 14 km west. The Nam Dinh Vu, Tan Vu, VIP Greenport and other peninsula
+  terminals are not mapped as terminals, so they are not listed, and the older river terminals in the
+  city, Hoang Dieu, Chua Ve, Doan Xa, Nam Hai and Vicoship, are not here either. OpenStreetMap maps no
+  anchorage and no pilot boarding place for Hai Phong.
+position_outside: >-
+  UN/LOCODE places Hai Phong at 20.85, 106.6833, on the city centre by the old Hoang Dieu port, about
+  9 km west of Dinh Vu. A ship there is at a city river berth, not at Dinh Vu or Lach Huyen.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  disjoint: >-
+    Dinh Vu is on the estuary at the tip of the Dinh Vu peninsula and Lach Huyen on the Lach Huyen channel,
+    with Cat Hai island between; OpenStreetMap's water joins them only at sea, south of the hull.
+  note: >-
+    OpenStreetMap maps no port limits for Hai Phong. These are the hull of Dinh Vu and Lach Huyen ports,
+    grown by 300 m and cut to the water OpenStreetMap maps inside it, with the terminals kept whole: the
+    estuary and channel off Dinh Vu, and the water alongside Lach Huyen. Cat Hai island and its town are
+    land and left out. A search of OpenStreetMap found no housing, school, hospital, place of worship
+    or named place inside them.
+features:
+- osm: relation/12582730
+  kind: terminal
+  name: Cảng Lạch Huyện
+  cargo:
+  - container
+  note: >-
+    The deep-water container port on Cat Hai island, where Haiphong International Container Terminal and
+    the berths built beside it since take the largest ships calling at Hai Phong. OpenStreetMap maps it
+    as one area named Cang Lach Huyen and does not say which of those berths it covers, so no operator
+    is given.
+- osm: way/241198354
+  kind: terminal
+  name: Cảng Đình Vũ
+  cargo:
+  - container
+  note: >-
+    Dinh Vu port, at the tip of the Dinh Vu peninsula 14 km west of Lach Huyen, named Cảng Đình Vũ in
+    OpenStreetMap, which gives no operator or cargo type; container is from Dinh Vu Port's own business.

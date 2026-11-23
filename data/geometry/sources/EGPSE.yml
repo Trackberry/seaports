@@ -1,0 +1,34 @@
+---
+locode: EGPSE
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Egypt extract around both banks of the canal entrance. East Port
+  Said has its own locode, EGPSE, which most carriers, Maersk among them, use for the Suez Canal Container
+  Terminal. EGPSD is Port Said proper on the west bank, a separate port with its own container terminal,
+  so it is not a quay of this one. The anchorages and pilot boarding places off Port Said (C1 to C15,
+  V1 to V8 and the North Anchorage) are where ships wait for the canal convoys, for either bank; they
+  belong to the Suez Canal's own outline, not to this port's.
+position_outside: >-
+  UN/LOCODE places East Port Said at (31.2167, 32.35), on the water just north-west of the terminal, about
+  500 m beyond these limits. The dredged channel there is the canal's Port Said bypass, which ships in
+  transit use too, so the limits are not grown to take it in.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for East Port Said. These are the hull of the Suez Canal Container
+    Terminal grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminal kept whole
+    and a 30 m margin where it meets the water: the terminal and its basin and berths, not the canal fairway's
+    far bank or Port Fouad. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals,
+    places of worship or named places inside.
+features:
+- osm: relation/14374467
+  kind: terminal
+  name: SCCT
+  operator: APM Terminals
+  cargo:
+  - container
+  note: >-
+    The transhipment terminal on the east bank at the canal's northern entrance, known as SCCT. APM Terminals
+    runs it. OpenStreetMap names it SCCT and tags it cargo=container.

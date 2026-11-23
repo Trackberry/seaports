@@ -1,0 +1,54 @@
+---
+locode: JPUKB
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Kansai extract around Port Island and Rokko Island. OpenStreetMap
+  maps Kobe's container berths as areas tagged cargo=container but does not name them by berth (PC or
+  RC numbers), so each island's berths are one feature here. It gives no operator, and maps no anchorage
+  off Kobe. The older piers by the city centre (Shinko, Maya, Hyogo) are left out: they are mapped only
+  as unnamed or general port land. Osaka (JPOSA) is 10 km east. A vehicle berth tagged cargo=vehicle on
+  the north-west side of Rokko Island is here too.
+position_outside: >-
+  UN/LOCODE places Kobe at (34.6833, 135.1667), in the city west of Sannomiya, about 5 km from the Port
+  Island container berths.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Kobe. These are the hull of the berths below, on the east side
+    of Port Island and at the west and east ends of Rokko Island, grown by 200 m and cut to the sea OpenStreetMap
+    maps inside it, with the berths kept whole: the berths and the water between the islands. A scan of
+    OpenStreetMap finds no homes, residential land, schools, hospitals or places of worship inside; the
+    named places are a district (chōme) label on the Port Island berths and the outlines of Port Island
+    and Rokko Island, under the berths.
+features:
+- osm:
+  - way/738108921
+  - way/738108931
+  - way/738108935
+  kind: terminal
+  name: コンテナバース
+  cargo:
+  - container
+  note: >-
+    The container berths along the east side of Port Island, mapped as three areas tagged cargo=container
+    and merged here.
+- osm:
+  - relation/11872413
+  - way/869056895
+  kind: terminal
+  name: コンテナ埠頭
+  cargo:
+  - container
+  note: >-
+    The container berths at the west and east ends of Rokko Island, mapped as two areas tagged cargo=container
+    and merged here.
+- osm: way/867671204
+  kind: terminal
+  name: Berths
+  cargo:
+  - ro_ro
+  note: >-
+    An unnamed berth on the north side of Rokko Island, tagged cargo=vehicle in OpenStreetMap, which gives
+    no operator.

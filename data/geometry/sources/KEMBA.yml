@@ -1,0 +1,46 @@
+---
+locode: KEMBA
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of the Geofabrik Kenya extract around Kilindini Harbour. OpenStreetMap maps both
+  container terminals, and the main port as one area that overlaps the first container terminal, so the
+  conventional berths (general cargo, bulk and vehicles) are not a terminal here but are inside the limits.
+  The container freight stations inland, the Kipevu oil terminal and the Mbaraki wharves are left out.
+  OpenStreetMap maps no anchorage for Mombasa.
+position_outside: >-
+  UN/LOCODE places Mombasa on the island's city centre (-4.0667, 39.6667), about 1 km east of the main
+  port's last berths, in the city rather than at a berth.
+port_limits:
+  derive: hull
+  osm: relation/14248643
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Mombasa. These are the hull of the two container terminals below
+    and the main port, which OpenStreetMap maps as one area named Mombasa Port, from the Kipevu Container
+    Terminal in the west to the conventional berths in the east, grown by 200 m, then cut to the water
+    OpenStreetMap maps inside it, with the terminals and the port area kept whole and a 30 m margin where
+    they meet the water. What is left is the port and Kilindini Harbour off its berths. A scan of OpenStreetMap
+    finds no homes, residential land, schools, hospitals, places of worship or named places inside; across
+    the harbour, about 12 ha of the Mtongwe naval base's outline, drawn over the shore, reaches in.
+features:
+- osm: relation/14248641
+  kind: terminal
+  name: Container terminal
+  operator: Kenya Ports Authority
+  cargo:
+  - container
+  note: >-
+    The first container terminal, berths 16 to 19, run by the Kenya Ports Authority. OpenStreetMap maps
+    it as an unnamed container terminal.
+- osm:
+  - relation/14248645
+  - relation/14248644
+  kind: terminal
+  name: Kipevu Container Terminal Phase 1
+  operator: Kenya Ports Authority
+  cargo:
+  - container
+  note: >-
+    The second container terminal, west of the Kipevu oil terminal: berths 20 and 21 opened in 2016 and
+    berth 22 in 2022. OpenStreetMap still tags the berth 22 area as construction.

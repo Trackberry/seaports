@@ -1,0 +1,46 @@
+---
+locode: MYPKG
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Malaysia, Singapore and Brunei extract around Klang. OpenStreetMap
+  maps Port Klang's three port areas: Westports on Pulau Indah, Northport on the north bank of the Klang
+  estuary, and Southpoint, Northport's older conventional wharves in Port Klang town. Southpoint is left
+  out: it handles general cargo and passengers rather than containers. The Port Klang Free Zone beside
+  Westports is a distribution park, not a terminal, and is left out. OpenStreetMap maps no anchorage and
+  no pilot boarding place off Port Klang.
+quays:
+- MYLAU
+position_outside: >-
+  UN/LOCODE places Port Klang at 3.0, 101.4, in Port Klang town beside Southpoint, a few kilometres up
+  the Klang estuary from the container terminals. A ship there is at Southpoint, not at a container terminal.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Port Klang. These are the hull of Westports and Northport, grown
+    by 200 m and cut to the water OpenStreetMap maps inside it, with the terminals kept whole: the terminals
+    and the Klang Strait between them, with the creeks that open off it. Pulau Indah, the mangrove islands
+    in the strait and Port Klang town are land and left out. A scan of OpenStreetMap finds no homes, residential
+    land, schools, hospitals, places of worship or named places inside; Pulau Indah's outline is under
+    Westports, and parts of Pulau Klang's mangrove shore reach in by about 7 ha.
+features:
+- osm: relation/17814676
+  kind: terminal
+  name: Pelabuhan Barat
+  operator: Westports Malaysia
+  cargo:
+  - container
+  note: >-
+    Port Klang's largest container terminal, on Pulau Indah, run by Westports Malaysia Sdn Bhd. It also
+    has conventional and liquid bulk berths. OpenStreetMap names it Pelabuhan Barat (West Port).
+- osm: relation/17038827
+  kind: terminal
+  name: Pelabuhan Utara
+  operator: Northport (Malaysia) Bhd
+  cargo:
+  - container
+  - general
+  note: >-
+    Container and conventional cargo wharves on the north bank of the Klang estuary, run by Northport
+    (Malaysia) Bhd, part of MMC Ports. OpenStreetMap names it Pelabuhan Utara (North Port).

@@ -1,0 +1,36 @@
+---
+locode: INNSA
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's India western zone extract around Nhava Sheva. OpenStreetMap maps
+  Jawaharlal Nehru Port as one area, tagged industrial=port, and none of its five container terminals
+  separately, so the port is listed here as a single terminal area. Mumbai Port (INBOM), across the harbour,
+  is a separate port and stays outside these limits. OpenStreetMap maps no anchorage and no pilot boarding
+  place for Nhava Sheva.
+quays:
+- INNHV
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Jawaharlal Nehru Port. These are its mapped area grown by 300
+    m and cut to the water OpenStreetMap maps inside it, with the port's area kept whole: the port and
+    the water off its berths on the Nhava Sheva channel and the creeks beside it. Sheva village and the
+    land round the port are left out. A search of OpenStreetMap found no housing, school, hospital or
+    place of worship inside them; the only named place is a Jawaharlal Nehru Port Trust label on the port
+    itself.
+features:
+- osm: way/49499133
+  kind: terminal
+  name: Jawaharlal Nehru Port
+  operator: Jawaharlal Nehru Port Authority
+  cargo:
+  - container
+  note: >-
+    India's busiest container port, run by the Jawaharlal Nehru Port Authority. Its container terminals
+    are Nhava Sheva Freeport Terminal, the authority's former Jawaharlal Nehru Port Container Terminal,
+    conceded in July 2022 to JM Baxi and CMA Terminals and run under that name since February 2023, DP
+    World's Nhava Sheva International Container Terminal and Nhava Sheva India Gateway Terminal, APM Terminals'
+    Gateway Terminals India, and PSA's Bharat Mumbai Container Terminals. OpenStreetMap maps none of them
+    separately, so this area is the whole port, liquid cargo berths included.

@@ -1,0 +1,108 @@
+---
+locode: HKHKG
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's Hong Kong extract around Kwai Chung, Tsing Yi and Stonecutters
+  Island. OpenStreetMap maps the Kwai Tsing container port as one area, not terminal by terminal, so Container
+  Terminals 1 to 9 are a single feature here. The River Trade Terminal at Tuen Mun, 15 km west of Kwai
+  Tsing, is here too; the oil terminals on the west side of Tsing Yi are not. The anchorages are the harbour's
+  main cargo-ship ones.
+quays:
+- HKHKC
+position_outside: >-
+  UN/LOCODE places Hong Kong at (22.3167, 114.1667), in Kowloon, about 3 km east of the Kwai Tsing container
+  terminals.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Hong Kong. These are the hull of the terminals below, from Kwai
+    Tsing to the River Trade Terminal, grown by 300 m and cut to the sea OpenStreetMap maps inside it,
+    with the terminals kept whole: the Kwai Tsing basin, the Rambler Channel, the channels round Tsing
+    Yi and Ma Wan, and Urmston Road off Tuen Mun. Tsing Yi, Ma Wan and the Tsuen Wan and Tuen Mun shores
+    are land and left out. A scan of OpenStreetMap finds no homes, schools, hospitals or places of worship
+    inside. Eleven residential areas on the New Territories shore west of Tsuen Wan, Pearl Island Garden
+    and Hong Kong Gold Coast among them, reach in where they are drawn over the water, by about 1,230
+    m² in all, with 12 m² of an apartment block. The named places are Pillar Point, under the River Trade
+    Terminal, the Tai Kok Tau headland on Tsing Yi's shore, lot outlines and a label on the terminals,
+    some 40 rocks and islets in the channels, and slivers of Ma Wan's and Lantau's shores.
+features:
+- osm: way/208575109
+  kind: anchorage
+  name: Western Anchorage No. 1
+  note: Seamark area. OpenStreetMap gives no category.
+- osm: way/208575111
+  kind: anchorage
+  name: Western Anchorage No. 2
+  note: Seamark area. OpenStreetMap gives no category.
+- osm: way/208575116
+  kind: anchorage
+  name: Western Anchorage No. 3
+  note: Seamark area. OpenStreetMap gives no category.
+- osm: way/174591050
+  kind: anchorage
+  name: Kellett Anchorage No.1
+  note: Seamark area. OpenStreetMap gives no category.
+- osm: way/174591043
+  kind: anchorage
+  name: Kellett Anchorage No. 2
+  note: Seamark area. OpenStreetMap gives no category.
+- osm: way/174591045
+  kind: anchorage
+  name: Kellett Anchorage No. 3
+  note: Seamark area. OpenStreetMap gives no category.
+- osm: way/208575112
+  kind: anchorage
+  name: North Lamma Anchorage
+  note: Seamark area. OpenStreetMap gives no category.
+- osm: way/174591051
+  kind: anchorage
+  name: Sham Shui Kok Anchorage No. 1
+  note: Seamark area off north Lantau. OpenStreetMap gives no category.
+- osm: way/174591052
+  kind: anchorage
+  name: Sham Shui Kok Anchorage No. 2
+  note: Seamark area off north Lantau. OpenStreetMap gives no category.
+- osm: way/144734711
+  kind: anchorage
+  name: Western Quarantine and Immigration Anchorage
+  category: quarantine
+  note: Seamark area tagged as a quarantine anchorage.
+- osm: way/144744483
+  kind: anchorage
+  name: Western Dangerous Goods Anchorage
+  category: explosives
+  note: Seamark area for ships carrying dangerous goods.
+- osm: relation/10507292
+  kind: terminal
+  name: Kwai Tsing Container Terminals
+  cargo:
+  - container
+  note: >-
+    Container Terminals 1 to 9 on the Kwai Chung waterfront and Tsing Yi, mapped as one area tagged cargo=container,
+    with Terminal 9 on Tsing Yi as its second part. They are run by Hongkong International Terminals,
+    Modern Terminals, COSCO-HIT, Asia Container Terminals and Goodman DP World, so no single operator
+    is given.
+- osm: way/1317078648
+  kind: terminal
+  name: Rambler Channel Public Cargo Working Area
+  operator: Marine Department
+  cargo:
+  - general
+  note: A government quay where lighters and barges load and discharge, tagged cargo=general.
+- osm: way/1369970977
+  kind: terminal
+  name: Stonecutters Island Public Cargo Working Area
+  operator: Marine Department
+  cargo:
+  - general
+  note: A government quay south of the container terminals, tagged cargo=general.
+- osm: way/257587851
+  kind: terminal
+  name: River Trade Terminal
+  cargo:
+  - general
+  note: >-
+    The terminal at Tuen Mun for river barges to and from the Pearl River Delta, tagged cargo=general
+    and named River Trade Terminal (內河貨運碼頭) in OpenStreetMap, which gives no operator.

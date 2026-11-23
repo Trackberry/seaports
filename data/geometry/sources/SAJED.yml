@@ -1,0 +1,52 @@
+---
+locode: SAJED
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of Geofabrik's GCC states extract around Jeddah. OpenStreetMap maps Jeddah Islamic
+  Port as one harbour area and its three container terminal areas inside it. The general cargo, bulk,
+  ro-ro and livestock berths between them are not mapped as terminals, so they are not listed, though
+  the basins they face lie inside the port limits. The harbour area is not used for the limits, as it
+  is mostly land. OpenStreetMap maps no anchorage and no pilot boarding place off Jeddah.
+position_outside: >-
+  UN/LOCODE places Jeddah at (21.4667, 39.1667), on Jeddah Islamic Port's land between the Red Sea Gateway
+  and Jeddah South terminals, about 200 m east of the harbour water.
+port_limits:
+  derive: hull
+  buffer_m: 200
+  clip: water
+  disjoint: >-
+    Red Sea Gateway Terminal is mapped as two areas 20 m apart: its own quay at the north-west of the
+    port, facing the water north and west of it, and the former North Container Terminal south-east of
+    it, facing the basins. Inside the hull OpenStreetMap's coastline keeps those waters apart, so the
+    north-west quay and its water are a part of their own.
+  note: >-
+    OpenStreetMap maps no port limits for Jeddah. These are the hull of the container terminals, grown
+    by 200 m and cut to the sea OpenStreetMap maps inside it, with the terminals kept whole: the terminals,
+    the port's basins and the channel along its front. The port land between the basins and the city behind
+    are left out. A search of OpenStreetMap found no housing, school, hospital, place of worship or named
+    place inside them.
+features:
+- osm:
+  - way/548517089
+  - way/548517088
+  kind: terminal
+  name: Red Sea Gateway Terminal
+  operator: Red Sea Gateway Terminal
+  cargo:
+  - container
+  note: >-
+    The northern container terminal. Red Sea Gateway Terminal took over the former North Container Terminal
+    next to its own in 2020, under a concession from the Saudi Ports Authority (Mawani) that joins them
+    into one. OpenStreetMap still maps the two as separate areas: Red Sea Gateway Terminal's own at the
+    north-west, and south-east of it the former North Container Terminal, which it names Gulf Container
+    Terminal after Gulftainer, which ran it until then.
+- osm: way/548517090
+  kind: terminal
+  name: Jeddah South Container Terminal
+  operator: DP World
+  cargo:
+  - container
+  - reefer
+  note: >-
+    DP World's terminal at the south of the port, rebuilt and enlarged in 2025, when its reefer capacity
+    was doubled. Named in OpenStreetMap, which gives DP World as the operator.
