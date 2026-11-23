@@ -18,7 +18,8 @@ module Seaports
     # keeps every answer a tracker needs (a ship at a berth, in a dock, in
     # the river between quays) and drops the towns.
     #
-    #   limits = hull ∩ (sea ∪ mapped water ∪ terminals grown by KEEP_MARGIN_M)
+    #   limits = hull ∩ (sea ∪ mapped water ∪ terminals
+    #                    ∪ (terminals grown by KEEP_MARGIN_M ∩ water grown by KEEP_MARGIN_M))
     #
     # The sea comes from OpenStreetMap's coastline, drawn with the land on its
     # left: the coastline and the edge of the box around the hull cut the box
@@ -29,18 +30,27 @@ module Seaports
     # the outline is simplified to within SIMPLIFY_M.
     #
     # Build time only, and the one place the gem uses a geometry library:
-    # GEOS, through the ffi-geos gem, does the overlay, which a hand-rolled
-    # clipper of concave polygons with holes would get wrong at the edges.
-    # The outlines it builds are shipped as plain GeoJSON, so nothing that
-    # reads them needs it. Coordinates are projected to metres on a plane
-    # tangent at the hull's centre for the work, and rounded back to six
-    # decimals, like every other shape in the files.
+    # GEOS, through the rgeo gem's C extension, does the overlay, which a
+    # hand-rolled clipper of concave polygons with holes would get wrong at
+    # the edges. The outlines it builds are shipped as plain GeoJSON, so
+    # nothing that reads them needs it. Coordinates are projected to metres on
+    # a plane tangent at the hull's centre for the work, and rounded back to
+    # six decimals, like every other shape in the files.
     class Clip
-      # A terminal is grown by this much before the cut, so that one drawn a
-      # few metres back from the water OpenStreetMap maps still meets it,
-      # and so that simplifying never nicks it.
+      # A terminal (or a kept area) and the water (with the listed basins)
+      # are each grown by this much and the two overlaps kept, so that a
+      # terminal drawn a few metres back from the water OpenStreetMap maps
+      # still meets it. The margin bridges only between the two: land is
+      # taken only where it lies within the margin of both. That is the gap
+      # to the water, about the margin of shore either side of a terminal's
+      # ends, and, behind a terminal narrower than the margin, the strip
+      # still within the margin of the water. Behind a deeper terminal's fence
+      # the houses stay outside.
       KEEP_MARGIN_M = 30
       SIMPLIFY_M = 8
+      # Simplifying and rounding to six decimals can nick a terminal the
+      # limits run right along: it is put back, padded by this much.
+      PAD_M = 1
       MIN_HOLE_M2 = 10_000
       # The box around the hull the coastline is cut to, a little wider than
       # the hull so its faces reach past every edge of it.
@@ -62,18 +72,25 @@ module Seaports
       # simplify the same shape a vertex differently.
       def self.geos_version
         load_geos!
-        Geos.version
+        RGeo::Geos.version
       end
 
       class Unavailable < StandardError; end
       # A cut that cannot be made: nothing left, or an invalid result.
       class Failed < StandardError; end
 
+      # rgeo installs without GEOS when the library is not there at install
+      # time, and only fails later, on the first geometry it is asked for:
+      # ask at the start instead.
       def self.load_geos!
-        require "ffi-geos"
+        require "rgeo"
+        return if RGeo::Geos.capi_supported?
+
+        raise Unavailable, "clip: water needs GEOS at build time, and the rgeo gem was installed without it: " \
+                           "brew install geos (or apt-get install libgeos-dev), then gem pristine rgeo"
       rescue LoadError => e
         raise Unavailable, "clip: water needs GEOS at build time: brew install geos (or apt-get install libgeos-dev) " \
-                           "and bundle install, for the ffi-geos gem (#{e.message})"
+                           "and bundle install, for the rgeo gem (#{e.message})"
       end
 
       # A terminal "touches water" when water inside the hull lies within its
@@ -93,17 +110,26 @@ module Seaports
         lng0, lat0 = Planar.label_point(hull) || Planar.positions(hull).first
         @origin = [lng0, lat0]
         @scale_x = Planar::M_PER_DEGREE * Math.cos(lat0 * Math::PI / 180.0)
+        @factory = RGeo::Geos.factory(native_interface: :capi, buffer_resolution: 4)
       end
 
       # The clipped limits, a GeoJSON Polygon or MultiPolygon.
       def geometry
         @geometry ||= begin
           kept_areas = union((@terminals.values + @basins).map { |geometry| geos(geometry).make_valid })
-          cut = hull.intersection(union([water_inside, kept_areas.buffer(KEEP_MARGIN_M, quad_segs: 4)]))
+          # Listed basins count as water for a terminal, but not for
+          # themselves, or the margin would come back all round them.
+          terminal_areas = union(@terminals.values.map { |geometry| geos(geometry).make_valid })
+          basin_areas = union(@basins.map { |geometry| geos(geometry).make_valid })
+          bridge = union([terminal_areas.buffer(KEEP_MARGIN_M).intersection(waterish.buffer(KEEP_MARGIN_M)),
+                          basin_areas.buffer(KEEP_MARGIN_M).intersection(water_inside.buffer(KEEP_MARGIN_M))])
+          cut = hull.intersection(union([water_inside, kept_areas, bridge]))
           parts = polygons(cut).select { |polygon| polygon.intersects?(kept_areas) }.map { |polygon| fill_holes(polygon) }
           raise Failed, "nothing of the hull is left after the cut" if parts.empty?
 
-          simplified(union(parts))
+          # Padded lightly simplified, so the pad adds no unsimplified arcs.
+          pad = kept_areas.buffer(PAD_M).simplify_preserve_topology(PAD_M / 2.0).intersection(hull)
+          simplified(union(parts), pad)
         end
       end
 
@@ -113,11 +139,15 @@ module Seaports
       # basin the selection lists counts as water: it is listed because it
       # is the port's and OpenStreetMap does not tag it as water.
       def dry_terminals
-        water = union([water_inside] + @basins.map { |geometry| geos(geometry).make_valid })
-        @terminals.reject { |_, geometry| geos(geometry).make_valid.buffer(TOUCH_M, quad_segs: 4).intersects?(water) }.keys
+        @terminals.reject { |_, geometry| geos(geometry).make_valid.buffer(TOUCH_M).intersects?(waterish) }.keys
       end
 
       private
+
+      # The water inside the hull, and the basins the selection lists.
+      def waterish
+        @waterish ||= union([water_inside] + @basins.map { |geometry| geos(geometry).make_valid })
+      end
 
       def area?(geometry) = %w[Polygon MultiPolygon].include?(geometry && geometry["type"])
 
@@ -129,18 +159,27 @@ module Seaports
         @water_inside ||= water(hull).intersection(hull)
       end
 
-      def simplified(merged)
+      def simplified(merged, kept)
         [SIMPLIFY_M, SIMPLIFY_M / 2.0, 0].each do |tolerance|
-          shape = tolerance.positive? ? merged.topology_preserve_simplify(tolerance) : merged
-          result = to_geojson(shape)
-          return result if geos_lnglat(result).valid?
+          # rgeo raises on invalid input rather than returning it: an invalid
+          # result at one tolerance means trying a smaller one.
+          begin
+            shape = tolerance.positive? ? merged.simplify_preserve_topology(tolerance) : merged
+            next unless shape.valid?
+
+            result = to_geojson(union([shape, kept]))
+            return result if geos_lnglat(result).valid?
+          rescue RGeo::Error::InvalidGeometry
+            next
+          end
         end
         raise Failed, "the clipped limits are not a valid polygon once rounded"
       end
 
       # The sea inside the box around +hull+, and every water area there.
       def water(hull)
-        box = hull.envelope.buffer(BOX_MARGIN_M, quad_segs: 1).envelope
+        west, south, east, north = bounds(hull.envelope)
+        box = box(west - BOX_MARGIN_M, south - BOX_MARGIN_M, east + BOX_MARGIN_M, north + BOX_MARGIN_M)
         areas = Array(@water["areas"]).filter_map do |geometry|
           shape = geos(geometry).make_valid
           shape.intersects?(box) ? shape : nil
@@ -150,14 +189,15 @@ module Seaports
 
       def sea(box)
         lines = Array(@water["coastline"]).select { |line| line.uniq.size >= 2 }.map { |line| line.map { |position| local(position) } }
-        shapes = lines.map { |line| Geos.create_line_string(line) }
+        shapes = lines.map { |positions| line(positions) }
         inside = shapes.each_index.select { |i| shapes[i].intersects?(box) }
         return nil if inside.empty?
 
-        linework = Geos.create_multi_line_string(inside.map { |i| shapes[i].clone }).intersection(box).union(box.boundary)
-        faces = linework.polygonize.map { |face| [face, face.to_prepared, envelope(face)] }
+        linework = @factory.multi_line_string(inside.map { |i| shapes[i] }).intersection(box).union(box.boundary)
+        faces = children(linework.polygonize).map { |face| [face, bounds(face)] }
+        faces.each { |face, _| face.prepare! }
         votes = Hash.new { |hash, index| hash[index] = [0, 0] }
-        prepared_box = box.to_prepared
+        box.prepare!
         inside.each do |i|
           lines[i].each_cons(2) do |(x1, y1), (x2, y2)|
             length = Math.hypot(x2 - x1, y2 - y1)
@@ -168,20 +208,19 @@ module Seaports
             # far outside, and still splits the box into faces.
             mx = (x1 + x2) / 2.0
             my = (y1 + y2) / 2.0
-            unless prepared_box.contains?(Geos.create_point(mx, my))
-              piece = Geos.create_line_string([[x1, y1], [x2, y2]]).intersection(box)
-              next if piece.empty? || !piece.is_a?(Geos::LineString)
+            unless box.contains?(@factory.point(mx, my))
+              piece = line([[x1, y1], [x2, y2]]).intersection(box)
+              next if piece.empty? || piece.geometry_type.type_name != "LineString"
 
-              (ax, ay), (bx, by) = piece.coord_seq.to_a.values_at(0, -1)
-              mx = (ax + bx) / 2.0
-              my = (ay + by) / 2.0
+              mx = (piece.start_point.x + piece.end_point.x) / 2.0
+              my = (piece.start_point.y + piece.end_point.y) / 2.0
             end
 
             # Half a metre to the right of the coastline is sea, to the left land.
             nx = (y2 - y1) / length * 0.5
             ny = -(x2 - x1) / length * 0.5
             [[mx + nx, my + ny, 0], [mx - nx, my - ny, 1]].each do |x, y, side|
-              index = faces.index { |_, prepared, (minx, miny, maxx, maxy)| x.between?(minx, maxx) && y.between?(miny, maxy) && prepared.contains?(Geos.create_point(x, y)) }
+              index = faces.index { |face, (minx, miny, maxx, maxy)| x.between?(minx, maxx) && y.between?(miny, maxy) && face.contains?(@factory.point(x, y)) }
               votes[index][side] += 1 if index
             end
           end
@@ -190,30 +229,38 @@ module Seaports
         seas.empty? ? nil : union(seas)
       end
 
-      def envelope(geometry)
-        xs, ys = geometry.envelope.exterior_ring.coord_seq.to_a.transpose
+      def box(x1, y1, x2, y2) = @factory.polygon(ring([[x1, y1], [x2, y1], [x2, y2], [x1, y2], [x1, y1]]))
+
+      def ring(positions) = @factory.linear_ring(positions.map { |x, y| @factory.point(x, y) })
+
+      def line(positions) = @factory.line_string(positions.map { |x, y| @factory.point(x, y) })
+
+      # [west, south, east, north] of a polygon's outer ring.
+      def bounds(polygon)
+        xs, ys = polygon.exterior_ring.points.map { |point| [point.x, point.y] }.transpose
         [xs.min, ys.min, xs.max, ys.max]
       end
 
-      def union(geometries)
-        geometries = geometries.compact
-        return Geos.create_geometry_collection if geometries.empty?
+      def union(geometries) = @factory.collection(geometries.compact).unary_union
 
-        Geos.create_geometry_collection(geometries.map(&:clone)).unary_union
+      # The parts of a collection; a lone geometry is its own part.
+      def children(geometry)
+        return [geometry] unless geometry.respond_to?(:num_geometries)
+
+        Array.new(geometry.num_geometries) { |i| geometry.geometry_n(i) }
       end
 
       def polygons(geometry)
-        case geometry
-        when Geos::Polygon then [geometry]
-        when Geos::GeometryCollection then geometry.to_a.flat_map { |part| polygons(part) }
+        case geometry.geometry_type.type_name
+        when "Polygon" then [geometry]
+        when "MultiPolygon", "GeometryCollection" then children(geometry).flat_map { |part| polygons(part) }
         else []
         end
       end
 
       def fill_holes(polygon)
-        holes = (0...polygon.num_interior_rings).map { |i| polygon.interior_ring_n(i) }
-        kept = holes.select { |ring| Geos.create_polygon(ring.clone).area >= MIN_HOLE_M2 }
-        Geos.create_polygon(polygon.exterior_ring.clone, *kept.map(&:clone))
+        kept = polygon.interior_rings.select { |hole| @factory.polygon(hole).area >= MIN_HOLE_M2 }
+        @factory.polygon(polygon.exterior_ring, kept)
       end
 
       def local((lng, lat)) = [(lng - @origin[0]) * @scale_x, (lat - @origin[1]) * Planar::M_PER_DEGREE]
@@ -221,23 +268,33 @@ module Seaports
       def lnglat((x, y)) = [(@origin[0] + (x / @scale_x)).round(6), (@origin[1] + (y / Planar::M_PER_DEGREE)).round(6)]
 
       def geos(geometry)
-        projected = Planar.polygons(geometry).map { |rings| rings.map { |ring| ring.map { |position| local(position) } } }
-        Geos::GeoJSONReader.new.read(JSON.generate("type" => "MultiPolygon", "coordinates" => projected))
+        read(Planar.polygons(geometry).map { |rings| rings.map { |positions| positions.map { |position| local(position) } } })
       end
 
-      def geos_lnglat(geometry) = Geos::GeoJSONReader.new.read(JSON.generate(geometry))
+      def geos_lnglat(geometry) = read(Planar.polygons(geometry))
+
+      # A MultiPolygon from [[ring, ...], ...] positions, through WKT, which
+      # GEOS reads as it is given.
+      def read(polygons)
+        raise Failed, "a shape with no polygon in it cannot be clipped" if polygons.empty?
+
+        text = polygons.map { |rings| "(#{rings.map { |positions| "(#{positions.map { |x, y| "#{x} #{y}" }.join(', ')})" }.join(', ')})" }
+        @factory.parse_wkt("MULTIPOLYGON (#{text.join(', ')})")
+      end
 
       # Largest part first; outer rings counter-clockwise and holes
       # clockwise, as Osm writes them.
       def to_geojson(geometry)
         parts = polygons(geometry).sort_by { |polygon| -polygon.area }.map do |polygon|
-          rings = [polygon.exterior_ring] + (0...polygon.num_interior_rings).map { |i| polygon.interior_ring_n(i) }
+          rings = [polygon.exterior_ring] + polygon.interior_rings
           rings.each_with_index.map do |ring, i|
-            positions = ring.coord_seq.to_a.map { |vertex| lnglat(vertex) }.chunk_while { |a, b| a == b }.map(&:first)
+            positions = ring.points.map { |vertex| lnglat([vertex.x, vertex.y]) }.chunk_while { |a, b| a == b }.map(&:first)
             Osm.orient(positions, outer: i.zero?)
           end
         end
-        parts = parts.map { |rings| rings.select { |ring| ring.size >= 4 } }.reject(&:empty?)
+        # A part whose outer ring collapses is dropped with its holes, not
+        # left as a polygon whose first hole has become its outline.
+        parts = parts.select { |rings| rings.first.size >= 4 }.map { |rings| rings.select { |ring| ring.size >= 4 } }
         parts.size == 1 ? { "type" => "Polygon", "coordinates" => parts.first } : { "type" => "MultiPolygon", "coordinates" => parts }
       end
     end

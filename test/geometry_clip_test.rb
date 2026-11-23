@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "minitest/mock"
+require "open3"
 require "seaports/geometry/builder"
 require "seaports/geometry/checks"
 require "seaports/geometry/extract"
@@ -34,12 +36,19 @@ module Harbour
   INLAND = box(-1600, -1300, -1300, -1000)
   # A pond on land inside the hull, far from any terminal.
   POND = box(-1150, -1500, -1000, -1400)
+  # A terminal whose quay edge is drawn 10 m back from the coastline.
+  SETBACK = box(510, -1300, 900, -100)
+  # A quay only 20 m deep on the bay's edge, and a basin the selection lists
+  # that OpenStreetMap does not map as water, 10 m behind the west quay.
+  NARROW = box(-520, -1300, -500, -100)
+  BASIN = box(-1300, -1300, -910, -100)
 
   def water = { "coastline" => [COASTLINE], "areas" => [POND], "skipped" => [] }
 
   def geos?
-    require "ffi-geos"
-    true
+    require "rgeo"
+    # rgeo installs without GEOS when it is missing at install time.
+    RGeo::Geos.capi_supported?
   rescue LoadError
     false
   end
@@ -59,10 +68,11 @@ class GeometryClipTest < Minitest::Test
     skip "GEOS is not installed: brew install geos"
   end
 
-  def shapes = ->(refs) { { "way/1" => Harbour::WEST, "way/2" => Harbour::EAST, "way/3" => Harbour::INLAND }.slice(*refs) }
+  def shapes = ->(refs) { { "way/1" => Harbour::WEST, "way/2" => Harbour::EAST, "way/3" => Harbour::INLAND, "way/4" => Harbour::SETBACK,
+                                   "way/5" => Harbour::NARROW, "way/6" => Harbour::BASIN }.slice(*refs) }
 
   def selection(limits = {}, refs: %w[way/1 way/2])
-    names = { "way/1" => "West Quay", "way/2" => "East Quay", "way/3" => "Inland Depot" }
+    names = { "way/1" => "West Quay", "way/2" => "East Quay", "way/3" => "Inland Depot", "way/4" => "Setback Quay", "way/5" => "Narrow Quay" }
     {
       "locode" => "NLRTM", "reviewed_at" => "2026-11-23", "position_outside" => "The test harbour is drawn around it.",
       "port_limits" => { "derive" => "hull", "buffer_m" => 300, "note" => "n" }.merge(limits),
@@ -101,6 +111,48 @@ class GeometryClipTest < Minitest::Test
 
     assert inside?(clipped, -480, -700), "20 m off the west quay"
     assert inside?(clipped, 480, -700), "20 m off the east quay"
+  end
+
+  # The keep margin only bridges between a terminal and the water: where a
+  # fence backs onto land (housing, say), none of that land is taken in.
+  def test_land_beyond_a_terminals_fence_is_outside_the_limits
+    clipped = limits(build)
+
+    refute inside?(clipped, -905, -700), "5 m behind the west quay's fence"
+    refute inside?(clipped, -920, -700), "20 m behind the west quay's fence"
+    refute inside?(clipped, 920, -700), "20 m behind the east quay's fence"
+    refute inside?(clipped, -700, -90), "10 m north of the west quay, on land"
+    assert inside?(clipped, -899, -700), "the west quay itself"
+  end
+
+  # A quay edge drawn a few metres off the mapped coastline still joins the
+  # water: the margin bridges the gap, and no more.
+  def test_a_terminal_set_back_from_the_coastline_still_joins_the_water
+    clipped = limits(build(refs: %w[way/1 way/4]))
+
+    assert inside?(clipped, 505, -700), "the 10 m gap between the quay and the water"
+    assert inside?(clipped, 505, -1250), "the gap, far down the quay"
+    assert inside?(clipped, 480, -700), "the bay beside it"
+    refute inside?(clipped, 920, -700), "the land behind the set-back quay"
+    assert_equal 1, Planar.polygons(clipped).size, "one body of water"
+  end
+
+  # The margin is "within 30 m of both": behind a quay narrower than 30 m the
+  # land still within 30 m of the water comes in, and no more.
+  def test_land_behind_a_narrow_quay_comes_in_only_while_it_is_within_the_margin_of_the_water
+    clipped = limits(build(refs: %w[way/5]))
+
+    assert inside?(clipped, -525, -700), "5 m behind a 20 m quay, 25 m from the water"
+    refute inside?(clipped, -545, -700), "25 m behind it, 45 m from the water"
+  end
+
+  # A basin the selection lists counts as water for the touch check, so it
+  # is bridged to like water: a terminal set back from it joins it.
+  def test_a_terminal_set_back_from_a_listed_basin_joins_it
+    clipped = limits(build({ "clip" => "water", "osm" => "way/6" }, refs: %w[way/1]))
+
+    assert inside?(clipped, -905, -700), "the 10 m gap between the quay and the basin"
+    assert_equal 1, Planar.polygons(clipped).size
   end
 
   def test_the_terminals_are_kept_whole
@@ -195,10 +247,55 @@ class GeometryClipSeaTest < Minitest::Test
     assert Seaports::Geometry::Planar.contains?(geometry, *Harbour.at(0, 300))
   end
 
+  # rgeo installs without GEOS when the library is missing at install time:
+  # the build says so up front instead of failing on its first geometry.
+  def test_refuses_to_clip_when_rgeo_was_built_without_geos
+    error = RGeo::Geos.stub(:capi_supported?, false) do
+      assert_raises(Seaports::Geometry::Clip::Unavailable) { Seaports::Geometry::Clip.load_geos! }
+    end
+
+    assert_match "installed without it", error.message
+  end
+
   def test_no_coastline_and_no_water_leaves_only_the_terminals
     clip = clip([])
 
     assert_equal ["West"], clip.dry_terminals
+  end
+end
+
+# The harbour clipped with the collector running at every allocation. The
+# first geometry library the build used (ffi-geos) handed out the children of
+# a collection without keeping it alive, so GEOS freed them under the build
+# and Ruby crashed, reliably on Dakar's coastline. Run in a child process so
+# that a regression fails this test instead of killing the suite.
+class GeometryClipGcTest < Minitest::Test
+  SCRIPT = <<~RUBY
+    require "json"
+    require "seaports"
+    require "seaports/geometry/clip"
+
+    input = JSON.parse($stdin.read)
+    clip = Seaports::Geometry::Clip.new(hull: input["hull"], terminals: { "West" => input["terminal"] },
+                                        water: { "coastline" => [input["coastline"]], "areas" => [] })
+    GC.stress = true
+    geometry = clip.geometry
+    dry = clip.dry_terminals
+    GC.stress = false
+    puts [geometry["type"], dry.size].join(" ")
+  RUBY
+
+  def setup
+    skip "GEOS is not installed" unless Harbour.geos? || ENV["CI"]
+  end
+
+  def test_clipping_survives_the_collector_running_at_every_allocation
+    input = JSON.generate("hull" => Harbour.box(-1500, -2000, 1500, 500), "terminal" => Harbour::WEST, "coastline" => Harbour::COASTLINE)
+    lib = File.expand_path("../lib", __dir__)
+    output, error, status = Open3.capture3(RbConfig.ruby, "-rbundler/setup", "-I", lib, "-e", SCRIPT, stdin_data: input)
+
+    assert status.success?, "ruby died (#{status.inspect}) clipping with the collector running:\n#{error.lines.first(6).join}"
+    assert_equal "Polygon 0", output.lines.last.strip
   end
 end
 
