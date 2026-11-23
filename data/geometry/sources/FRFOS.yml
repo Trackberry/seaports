@@ -1,0 +1,61 @@
+---
+locode: FRFOS
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[FRFOS,14] and a name search for Eurofos, Seayard and
+  anchorages around the Golfe de Fos. These are the Fos basins of Marseille-Fos only: Lavéra, Caronte
+  and Port-de-Bouc have their own locodes and are left out, and the east basins are FRMRS. OpenStreetMap
+  maps no anchorage in the Golfe de Fos, and maps Eurofos and Seayard only as the one Graveleau port area.
+  Quai Gloria and Terminal Tellines, south of Graveleau, are left out: OpenStreetMap gives them no cargo
+  or operator.
+position_outside: >-
+  UN/LOCODE places Fos-sur-Mer on the town, about 3 km east of the Fosmax LNG terminal, the easternmost
+  terminal mapped here. A ship there is ashore, not at a terminal.
+port_limits:
+  derive: hull
+  osm:
+  - way/550936528
+  - way/659562920
+  - way/659562923
+  - way/550935527
+  buffer_m: 1000
+  note: >-
+    OpenStreetMap maps no port limits for Fos. These are the hull of the terminals below and the four
+    basins (Darse 1, 2, 3 and Darse sud), grown by 1 km. They take in the industrial land between the
+    docks, so they are rougher than the legal limits.
+features:
+- osm: way/104479008
+  kind: terminal
+  name: Fos container terminals (Graveleau)
+  cargo:
+  - container
+  note: >-
+    Graveleau, tagged industrial=port, on Darse 2: the Fos 2XL container quays run by Eurofos and Seayard.
+    OpenStreetMap does not map the two terminals separately, so no operator is set.
+- osm: way/104479009
+  kind: terminal
+  name: Terminal Minéralier
+  cargo:
+  - bulk
+  note: The Fos ore and coal terminal on Darse 1. OpenStreetMap gives no cargo tag; bulk is from its name.
+- osm: way/224121271
+  kind: terminal
+  name: Terminal pétrolier Fluxel
+  operator: Fluxel
+  cargo:
+  - tanker
+  note: Tagged industrial=port. Tanker is from its name.
+- osm: way/720715853
+  kind: terminal
+  name: Fosmax LNG
+  operator: Elengy
+  cargo:
+  - tanker
+  note: LNG terminal on Darse sud, tagged description=terminal méthanier.
+- osm: way/42014036
+  kind: terminal
+  name: Terminal méthanier de Fos Tonkin
+  operator: Elengy
+  cargo:
+  - tanker
+  note: Tagged cargo=liquid_bulk. LNG terminal at the head of Darse 1.

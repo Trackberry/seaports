@@ -1,0 +1,67 @@
+---
+locode: GBIMM
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features and seamarks around the Humber mouth. OpenStreetMap maps the
+  Immingham dock estate as five unnamed port areas around the enclosed dock, and none of the river terminals
+  (Humber International Terminal, the oil and bulk jetties) as land areas, so they are left out. Grimsby,
+  9 km downstream, and Hull across the river are other ports and are left out. The three anchorages lie
+  at the Humber mouth and serve the whole estuary (Grimsby and Hull too), not Immingham alone; OpenStreetMap
+  gives none of them a category.
+position_outside: >-
+  UN/LOCODE places Immingham at (53.6, -0.2167), south of the town, about 3 km south-west of the enclosed
+  dock. A ship cannot be there.
+port_limits:
+  derive: hull
+  osm: way/210452980
+  buffer_m: 800
+  note: >-
+    OpenStreetMap maps no port limits for Immingham; ABP's Humber limits cover the whole estuary. These
+    are the hull of the dock estate, the enclosed dock, the DFDS berth and Humber Sea Terminal at Killingholme,
+    grown by 800 m to take in the river berths in front of them.
+features:
+- osm:
+  - way/1030152709
+  - way/1030152710
+  - way/1030152711
+  - way/1030152712
+  - way/1030152713
+  kind: terminal
+  name: Port of Immingham
+  operator: Associated British Ports
+  cargo:
+  - bulk
+  - general
+  - container
+  note: >-
+    Five unnamed areas tagged industrial=port around the enclosed dock, merged here. The operator is from
+    the ABP dock offices mapped among them; the cargo types are a guess at the dock's mix, so check them.
+- osm: way/101338872
+  kind: terminal
+  name: DFDS Immingham
+  operator: DFDS
+  cargo:
+  - ro_ro
+  note: >-
+    OpenStreetMap names it DFDS Seaways Ferry Terminal and tags it man_made=pier and amenity=ferry_terminal:
+    the ro-ro berth on the river outside the dock.
+- osm: way/1026425704
+  kind: terminal
+  name: Humber Sea Terminal
+  cargo:
+  - ro_ro
+  note: >-
+    Tagged industrial=port, at North Killingholme, 5 km up the river from the dock. A separate private
+    terminal that carriers usually file under Immingham. OpenStreetMap gives no operator.
+- osm: way/298565809
+  kind: anchorage
+  name: Hawke Anchorage
+  note: Seamark area inside Spurn Head.
+- osm: way/298565812
+  kind: anchorage
+  name: Bull Anchorage
+  note: Seamark area at the Humber mouth.
+- osm: way/343942833
+  kind: anchorage
+  name: Haile Anchorage
+  note: Seamark area at the Humber mouth.

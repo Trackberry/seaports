@@ -1,0 +1,73 @@
+---
+locode: BEZEE
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around the port, off the Wandelaar and at West Hinder,
+  and a name search for terminals tagged landuse=industrial only (ICO, Wallenius Wilhelmsen). OpenStreetMap
+  maps few of Zeebrugge's terminals: the second container terminal has no name, and there is no named
+  ro-ro ferry terminal, cold store or fruit terminal. Quays from Trackberry's config/port_areas.yml. The
+  Wielingen anchorages are shared with the Scheldt ports. OpenStreetMap gives none of the anchorages a
+  category.
+quays:
+- BELSG
+port_limits:
+  derive: hull
+  osm: way/318509353
+  buffer_m: 1500
+  note: >-
+    OpenStreetMap maps no port limits for Zeebrugge. These are the hull of the terminals below and the
+    Verbindingsdok, from the outer harbour to the inner port behind the locks, grown by 1.5 km. They take
+    in the town of Zeebrugge, so they are rougher than the legal port area.
+features:
+- osm: way/129914569
+  kind: anchorage
+  name: West Hinder Anchorage
+  note: Seamark area offshore, about 40 km west-north-west of the port. OpenStreetMap spells it "Achorage".
+- osm: relation/10539931
+  kind: anchorage
+  name: Oostdyck Anchorage
+  note: Seamark area offshore, west of the port.
+- osm: way/233090331
+  kind: anchorage
+  name: Wielingen-Noord
+  note: At the mouth of the Western Scheldt, north-east of the port.
+- osm: relation/10362020
+  kind: anchorage
+  name: Ankergebied Wielingen-Zuid
+  note: At the mouth of the Western Scheldt.
+- osm: node/1432512429
+  kind: pilot_boarding
+  name: Wandelaar Pilot Station
+  note: Tagged seamark:type=pilot_boarding. It serves the Scheldt ports too.
+- osm: way/555444080
+  kind: terminal
+  name: CSP Zeebrugge Terminal
+  operator: Cosco Shipping Ports
+  cargo:
+  - container
+  note: Tagged cargo=container.
+- osm: way/366540027
+  kind: terminal
+  cargo:
+  - container
+  note: >-
+    Tagged cargo=container, with no name or operator. It is on the west side of the Albert II-dok, north
+    of CSP: check which terminal it is and name it.
+- osm:
+  - way/241873308
+  - way/366953480
+  kind: terminal
+  name: ICO
+  note: Mapped as two areas, merged here. OpenStreetMap gives no cargo type or operator.
+- osm: way/1082744847
+  kind: terminal
+  name: Wallenius Wilhelmsen Logistics
+  operator: Wallenius Wilhelmsen
+  note: OpenStreetMap gives no cargo type; the operator is from its name.
+- osm: way/204683781
+  kind: terminal
+  name: Zeebrugge LNG Terminal
+  operator: Fluxys
+  cargo:
+  - tanker
+  note: OpenStreetMap names it "Zeebrugge lng-terminal" and gives no cargo tag; tanker is from its name.

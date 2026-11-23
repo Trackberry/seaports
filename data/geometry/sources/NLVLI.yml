@@ -1,0 +1,77 @@
+---
+locode: NLVLI
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates around Vlissingen-Oost and a name search for terminals
+  tagged landuse=industrial only. OpenStreetMap does not map Kloosterboer Vlissingen, the fruit terminal
+  on the Sloehaven, by name or as a cold store, so it is not a feature: the port limits cover its quay
+  through the harbour basins. Quays from Trackberry's config/port_areas.yml. The Scheldt anchorages are
+  shared with Antwerp, which lists the same ones. OpenStreetMap gives none of them a category.
+quays:
+- NLBOR
+- NLNIU
+- NLANK
+port_limits:
+  derive: hull
+  osm:
+  - way/6284135
+  - way/8048422
+  - way/78411177
+  - way/13865284
+  - way/6284213
+  - way/6284098
+  buffer_m: 1000
+  note: >-
+    OpenStreetMap maps no port limits for Vlissingen. These are the hull of the terminals below and six
+    harbour basins, from the old port by the town to the Sloehaven at Vlissingen-Oost, grown by 1 km.
+    They take in the land between the town and the Sloe, so they are rougher than the legal port area.
+features:
+- osm: relation/10362019
+  kind: anchorage
+  name: Ankergebied Rede Vlissingen
+  note: Off Vlissingen, in the Western Scheldt.
+- osm: way/395278062
+  kind: anchorage
+  name: Springergeul
+  note: Seamark area in the Western Scheldt, south-east of Vlissingen.
+- osm: way/233090331
+  kind: anchorage
+  name: Wielingen-Noord
+  note: At the mouth of the Western Scheldt.
+- osm: relation/10362020
+  kind: anchorage
+  name: Ankergebied Wielingen-Zuid
+  note: At the mouth of the Western Scheldt.
+- osm: way/854930096
+  kind: terminal
+  name: Verbrugge Zeeland Terminals
+  operator: Verbrugge
+  note: OpenStreetMap gives no cargo type; the operator is from its name.
+- osm: way/1226608116
+  kind: terminal
+  name: Verbrugge Scaldia Terminals
+  operator: Verbrugge
+  note: OpenStreetMap gives no cargo type; the operator is from its name.
+- osm: way/854930103
+  kind: terminal
+  name: Vopak Terminal
+  operator: Vopak
+  note: >-
+    OpenStreetMap gives no cargo type; the operator is from its name. Vopak runs tank storage, so check
+    whether it should be tanker.
+- osm: way/854930099
+  kind: terminal
+  name: BOW Terminals
+  note: OpenStreetMap gives no cargo type or operator.
+- osm: way/854930108
+  kind: terminal
+  name: Access World Terminals (AWT)
+  operator: Access World
+  note: OpenStreetMap gives no cargo type; the operator is from its name.
+- osm: relation/10831684
+  kind: terminal
+  name: Vesta Terminal Flushing
+  operator: Vesta Terminals
+  cargo:
+  - tanker
+  note: Tagged cargo=liquid_bulk. The operator is from its name.

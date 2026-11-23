@@ -1,0 +1,42 @@
+---
+locode: ESAGP
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from rake seaports:geometry_candidates[ESAGP,6,36.71,-4.42] and a search of named features around
+  the harbour. OpenStreetMap maps no anchorage off Málaga, so none is listed. The El Palmeral cruise terminal
+  on Muelle 2 is mapped only as a small building (way/193590625) and is not listed; the Levante cruise
+  terminal is.
+port_limits:
+  derive: hull
+  osm: relation/3881070
+  buffer_m: 300
+  note: >-
+    OpenStreetMap maps no port limits for Málaga. These are the hull of the port area (relation/3881070,
+    tagged industrial=port and named Puerto de Málaga) and the terminals below, grown by 300 m.
+features:
+- osm: way/183257786
+  kind: terminal
+  name: Muelle 9
+  cargo:
+  - container
+  - general
+  buffer_m: 100
+  note: >-
+    OpenStreetMap names it Muelle 9 - Polivalente and maps it as man_made=quay; drawn as the quay grown
+    by 100 m if it is mapped as a line. Container is from its use as Málaga's container quay and general
+    from the name, so check both. OpenStreetMap gives no operator.
+- osm: way/808763390
+  kind: terminal
+  name: Terminal de Cruceros de Málaga
+  cargo:
+  - passenger
+  note: The cruise terminal on the Muelle de Levante, tagged port=cruiser and cargo=passengers.
+- osm: way/556239031
+  kind: terminal
+  name: Estación Marítima de Málaga
+  cargo:
+  - ro_ro
+  - passenger
+  note: >-
+    The ferry terminal for the Melilla line, tagged amenity=ferry_terminal. Ro-ro is from that line, so
+    check it. OpenStreetMap gives no operator.

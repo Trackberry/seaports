@@ -1,0 +1,48 @@
+---
+locode: GBTIL
+reviewed_at: '2026-11-23'
+note: >-
+  Drafted from a search of named features and seamarks along the Thames from Purfleet to the estuary.
+  OpenStreetMap maps the Port of Tilbury as one area, not as Tilbury Container Services, the ro-ro berths,
+  the grain terminal and the London Cruise Terminal inside it, so the terminal below is the whole port.
+  London Gateway, 7 km downstream, is GBLGP and is left out; so are the Purfleet and Northfleet wharves
+  upstream, which are not Forth Ports'. The anchorages are the Port of London Authority's in Gravesend
+  and St Clements reaches; OpenStreetMap gives neither a category.
+port_limits:
+  derive: hull
+  buffer_m: 800
+  note: >-
+    OpenStreetMap maps no port limits for Tilbury; the Port of London Authority's limits cover the whole
+    tidal Thames. These are the hull of the Port of Tilbury and Tilbury2, grown by 800 m to take in the
+    river in front of their berths. They stop well short of London Gateway.
+features:
+- osm: way/507312149
+  kind: terminal
+  name: Port of Tilbury
+  operator: Forth Ports
+  cargo:
+  - container
+  - ro_ro
+  - general
+  - bulk
+  - passenger
+  note: >-
+    Tagged industrial=port and operator=Forth Ports, with Wikidata Q1419586. Covers Tilbury Container
+    Services, the enclosed docks, the riverside berths, the grain terminal and the London Cruise Terminal,
+    which OpenStreetMap does not map apart.
+- osm: way/103574419
+  kind: terminal
+  name: Tilbury2
+  operator: Forth Ports
+  cargo:
+  - ro_ro
+  - bulk
+  note: Tagged industrial=port. The ro-ro and construction-materials terminal east of the main port.
+- osm: way/1144343815
+  kind: anchorage
+  name: Gravesend Lower
+  note: Seamark area in Gravesend Reach, off the Tilbury riverside berths.
+- osm: way/1144346047
+  kind: anchorage
+  name: Saint Clement
+  note: Seamark area in St Clements Reach, upstream of the port.

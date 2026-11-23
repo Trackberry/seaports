@@ -3,6 +3,25 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## 1.7.3 — 2026-11-23
+
+Port outlines for 14 more ports, so 25 in all:
+
+- North Sea: Bremerhaven (`DEBRV`), Vlissingen (`NLVLI`) and Zeebrugge (`BEZEE`).
+- UK: Tilbury (`GBTIL`), Sheerness (`GBSHS`), Teesport (`GBTEE`) and Immingham (`GBIMM`).
+- Spain: Barcelona (`ESBCN`), Las Palmas (`ESLPA`), Cartagena (`ESCAR`), Castellón (`ESCAS`) and Málaga (`ESAGP`).
+- France: Fos-sur-Mer (`FRFOS`) and Port-Vendres (`FRPOV`).
+
+What OpenStreetMap has for them:
+
+- Vlissingen shares the Scheldt anchorages with Antwerp (the same features), and Immingham's Hawke, Bull and Haile anchorages serve the whole Humber. No anchorage carries a category.
+- Several ports have no anchorage mapped, and several terminals have no cargo type, among them Zeebrugge's car terminals.
+- Some terminals are missing from OpenStreetMap as areas: Vlissingen's Kloosterboer fruit terminal, Immingham's river jetties and the Humber International Terminal, Cartagena's Escombreras basin, Las Palmas's La Luz container terminal. A ship at one of them reads as inside the port limits, not alongside.
+- Tilbury and Sheerness are each mapped as one area, so their terminals are not told apart.
+- Where a UN/LOCODE point lies in the town rather than the port (Bremerhaven, Teesport, Immingham, Las Palmas, Cartagena, Castellón, Fos), `position_outside` says so.
+
+Same ports, names and positions as 1.7.2.
+
 ## 1.7.2 — 2026-11-23
 
 Port outlines for 8 more ports, so 11 in all: Hamburg (`DEHAM`), Felixstowe (`GBFXT`), London Gateway (`GBLGP`), Southampton (`GBSOU`), Portsmouth (`GBPME`), Algeciras (`ESALG`), Valencia (`ESVLC`) and Vigo (`ESVGO`). Each comes from a reviewed selection of OpenStreetMap features, built and checked the same way as the first three.
