@@ -166,26 +166,31 @@ module Seaports
       # is part of one. An error, since a note that misquotes OpenStreetMap
       # says something untrue, and a rename in OpenStreetMap is the likeliest
       # reason it does.
-      # The name runs to "in OpenStreetMap" within one clause: not across a
-      # semicolon, or a full stop followed by a space, which ends a sentence
-      # ("No.5" and "Co.,ltd" keep theirs).
-      NAMED_CLAIM = /\b[Nn]amed\s+((?:(?!\bnamed\s|;|\.\s).){1,120}?)\s+in\s+(?:OpenStreetMap|OSM)\b/
+      # The name runs to "in OpenStreetMap" within one sentence: not across a
+      # semicolon, or a full stop that ends one, followed by a space and a
+      # capital. A full stop after an abbreviation ("No. 5", "St. Helier")
+      # ends nothing, and one with no space after it ("No.5", "Co.,ltd") is
+      # part of the name. "Is not named X" claims nothing.
+      SENTENCE_END = /(?<!\bNo|\bNos|\bSt|\bSte|\bMt|\bFt|\bNr|\bCo|\bDr|\bPt)\.\s+\p{Lu}/
+      NAMED_CLAIM = /(?<!\bnot\s)\b[Nn]amed\s+((?:(?!\bnamed\s|;|#{SENTENCE_END}).){1,120}?)\s+in\s+(?:OpenStreetMap|OSM)\b/
       NAMES_IT_CLAIM = /\b(?:OpenStreetMap|OSM)\s+(names|calls|spells)\s+it\s+(?:"([^"]+)"|“([^”]+)”|‘([^’]+)’)/
 
       def check_claims(props, tags, where)
         note = props["note"].to_s
         values = tags.values
         claims = note.scan(NAMED_CLAIM).filter_map do |(text)|
-          text = unquote(text)
           next if text.match?(/\A(for|after|as|by)\s/)
 
-          text == "so" ? props["name"].to_s : text
+          # "Named X and tagged cargo=container in OpenStreetMap" claims X:
+          # split before unquoting, so a quoted X keeps its quotes off.
+          whole = unquote(text)
+          first = unquote(text.split(/\s+and\s+/).first)
+          whole == "so" ? [props["name"].to_s] : [whole, first].uniq
         end
-        claims.each do |claim|
-          # "Named X and tagged cargo=container in OpenStreetMap" claims X.
-          next if named?(claim, values) || named?(claim.split(/\s+and\s+/).first, values)
+        claims.each do |candidates|
+          next if candidates.any? { |claim| named?(claim, values) }
 
-          @errors << "#{where}: the note says it is named #{claim.inspect} in OpenStreetMap, which has #{describe_tags(tags)}: correct the note"
+          @errors << "#{where}: the note says it is named #{candidates.first.inspect} in OpenStreetMap, which has #{describe_tags(tags)}: correct the note"
         end
         note.scan(NAMES_IT_CLAIM).each do |verb, plain, curly, single|
           claim = plain || curly || single

@@ -78,7 +78,11 @@ module Seaports
       # Polygon or MultiPolygon: a home, an amenity or a place by its centre
       # (the middle of its bounding box, which is what Overpass's "center"
       # is), a residential area by the part of it inside.
-      def summary(elements, limits)
+      #
+      # +skipped+ counts the elements the source could only give in part (an
+      # extract cut short); a residential area that does not close is counted
+      # with them, and the total is stored when there are any.
+      def summary(elements, limits, skipped: 0)
         # Made on the first element: an empty scan needs no GEOS.
         area = nil
         homes = 0
@@ -103,7 +107,7 @@ module Seaports
           next unless tags["landuse"] == "residential" && element["type"] != "node"
 
           shape = residential_shape(element)
-          next unless shape
+          next skipped += 1 unless shape
 
           own = area.own_m2(shape)
           inside_m2 = area.overlap_m2(shape)
@@ -119,7 +123,7 @@ module Seaports
         largest = residential.sort_by { |entry| [-entry["m2"], entry["osm"]] }.first(LARGEST)
         { "houses" => homes, "residential_m2" => residential.sum { |entry| entry["m2"] }, "residential" => largest,
           "residential_too_large" => too_large, "amenities" => amenities.size, "amenity" => amenities.first(AMENITIES_LISTED),
-          "places" => places.sort_by { |place| [place["name"].to_s, place["osm"]] } }.reject { |_, value| value == [] }
+          "places" => places.sort_by { |place| [place["name"].to_s, place["osm"]] }, "skipped" => skipped }.reject { |key, value| value == [] || (key == "skipped" && value.zero?) }
       end
 
       # Errors and warnings, for Checks, from the +scan+ an outline stores
@@ -141,6 +145,8 @@ module Seaports
                         "the note may now overstate what is inside, and accepts: #{key} can come down"
           end
         end
+        warnings.concat(large_warnings(scan, accepts["too_large"] || {}))
+        warnings << "the scan skipped #{scan['skipped']} element(s) OpenStreetMap maps only in part, which it could not count: the build log names them" if scan["skipped"].to_i.positive?
         accepted_places = Array(accepts["places"]).map(&:to_s)
         found = Array(scan["places"])
         found.reject { |place| accepted_places.include?(place["name"]) || accepted_places.include?(place["osm"]) }.each do |place|
@@ -151,6 +157,24 @@ module Seaports
           warnings << "the selection accepts the place #{name}, which is no longer inside the port limits: the note may now overstate"
         end
         [errors, warnings]
+      end
+
+      # A residential area over RESIDENTIAL_CAP_M2 is not counted, so one
+      # that grows past it (Cartagena's town outline is 9.1 km²) would drop
+      # out of residential_m2 silently: a new one, or one grown by more than a
+      # tenth since its size was accepted, is a warning.
+      def large_warnings(scan, accepted)
+        accepted = accepted.transform_keys(&:to_s)
+        Array(scan["residential_too_large"]).filter_map do |entry|
+          was = accepted[entry["osm"]]
+          what = "#{entry['name'] || entry['osm']} (#{entry['osm']}, #{entry['km2']} km²)"
+          if was.nil?
+            "the residential area #{what} reaches into the port limits and is over #{RESIDENTIAL_CAP_M2 / 1_000_000} km², so not counted: " \
+              "if it is a town's outline, accept it under too_large"
+          elsif entry["km2"].to_f > was * 1.1
+            "the residential area #{what} has grown from the #{was} km² the selection accepts under too_large: check what it now takes in"
+          end
+        end
       end
 
       def tolerance(key, accepted)

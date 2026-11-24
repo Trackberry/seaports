@@ -53,6 +53,8 @@ port_limits:
     - Os Salesianos
     - Romil
     - Vigo
+    too_large:
+      relation/2651249: 20.2
 features:
 - osm: relation/13456267
   kind: terminal

@@ -25,6 +25,8 @@ port_limits:
     and of an unnamed residential area, about 1.8 ha, none of it more than 40 m inside the limits.
   accepts:
     residential_m2: 6940
+    too_large:
+      relation/15080410: 63.9
 features:
 - osm: way/575043396
   kind: anchorage

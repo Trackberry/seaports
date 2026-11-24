@@ -182,8 +182,12 @@ module Seaports
 
           raise Invalid, "#{locode} port_limits exclude #{entry['osm']}: a #{shape['type']} is not an area to take out of the limits"
         end
-        keep = features.select { |f| NAMED_KINDS.include?(f["properties"]["kind"]) && AREAS.include?(f["geometry"]["type"]) }
-                       .to_h { |f| ["#{f['properties']['kind']} #{f['properties']['name'] || f['properties']['osm'].join(', ')}", f["geometry"]] }
+        # By reference as well as name: three anchorages named "Anchorage"
+        # are three things to keep. Points too, a terminal mapped as a node.
+        keep = features.select { |f| NAMED_KINDS.include?(f["properties"]["kind"]) }.to_h do |f|
+          props = f["properties"]
+          [[props["kind"], props["name"], "(#{props['osm'].join(', ')})"].compact.join(" "), f["geometry"]]
+        end
         geometry, conflicts = Clip.subtract(limits["geometry"], areas, keep:)
         unless conflicts.empty?
           raise Invalid, "#{locode} port_limits exclude would cut into #{conflicts.join(', ')}: exclude only what no terminal or anchorage covers"
@@ -261,9 +265,13 @@ module Seaports
         unknown = accepts.keys - Selection::ACCEPT_KEYS
         raise Invalid, "#{where}: unknown keys #{unknown.join(', ')}" unless unknown.empty?
 
-        (Selection::ACCEPT_KEYS - ["places"]).each do |key|
+        (Selection::ACCEPT_KEYS - %w[places too_large]).each do |key|
           next unless accepts.key?(key)
           raise Invalid, "#{where}: #{key} #{accepts[key].inspect} is not a count" unless accepts[key].is_a?(Integer) && !accepts[key].negative?
+        end
+        large = accepts["too_large"]
+        unless large.nil? || (large.is_a?(Hash) && large.all? { |ref, km2| ref.to_s.match?(%r{\A(way|relation)/[1-9]\d*\z}) && km2.is_a?(Numeric) && km2.positive? })
+          raise Invalid, "#{where}: too_large maps each residential area's reference to its size in km², as relation/123: 12.5"
         end
         places = accepts["places"]
         return if places.nil? || (places.is_a?(Array) && places.all? { |place| place.is_a?(String) && !blank?(place) })
@@ -281,9 +289,13 @@ module Seaports
 
       # Each area taken out of the limits names an OpenStreetMap way or
       # relation and says why, like inland.
+      #
+      # Only on limits with clip: water, whose checks (one part, or
+      # disjoint; every terminal whole) see what the cut leaves.
       def check_excludes!(entries)
         where = "#{locode} port_limits exclude"
         raise Invalid, "#{where}: a list of { osm:, why: }" unless entries.is_a?(Array) && !entries.empty?
+        raise Invalid, "#{where}: exclude cuts limits cut to the water, so it needs clip: water" unless @selection.dig("port_limits", "clip") == "water"
 
         entries.each do |entry|
           raise Invalid, "#{where}: each entry is { osm:, why: }" unless entry.is_a?(Hash)
@@ -329,7 +341,10 @@ module Seaports
       # from the same source as the shapes.
       def scan_inside(geometry)
         west, south, east, north = Planar.bbox(geometry)
-        Inside.summary(@inside.call([west, south, east, north].map { |value| value.round(6) }), geometry)
+        # The extract answers { "elements", "skipped" }, Overpass the elements.
+        found = @inside.call([west, south, east, north].map { |value| value.round(6) })
+        elements, skipped = found.is_a?(Hash) ? found.values_at("elements", "skipped") : [found, 0]
+        Inside.summary(elements, geometry, skipped: skipped.to_i)
       rescue StandardError => e
         raise unless (defined?(Clip::Unavailable) && e.is_a?(Clip::Unavailable)) ||
                      (defined?(RGeo::Error::RGeoError) && e.is_a?(RGeo::Error::RGeoError))

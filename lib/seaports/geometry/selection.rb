@@ -27,7 +27,7 @@ module Seaports
       # Each area taken out of the limits: its reference and why.
       EXCLUDE_KEYS = %w[osm why].freeze
       # What the reviewers accepted inside the limits (Inside.compare).
-      ACCEPT_KEYS = %w[houses residential_m2 amenities places].freeze
+      ACCEPT_KEYS = %w[houses residential_m2 amenities places too_large].freeze
       FEATURE_KEYS = %w[osm kind name operator cargo category buffer_m inland note reviewed_at].freeze
       EDITABLE = %w[kind name operator cargo category note].freeze
       TEXT_LIMITS = { "name" => 120, "operator" => 120, "note" => 600 }.freeze

@@ -155,7 +155,13 @@ module Seaports
         # Outer rings only: a block's courtyard would otherwise stay behind
         # as a speck of limits on its own.
         cut = union(areas.flat_map { |geometry| polygons(geos(geometry).make_valid).map { |polygon| @factory.polygon(polygon.exterior_ring) } })
-        conflicts = keep.select { |_, geometry| polygons(geos(geometry).make_valid.intersection(cut)).sum(&:area) > 1 }.keys
+        conflicts = keep.select do |_, geometry|
+          if geometry["type"] == "Point"
+            cut.intersects?(@factory.point(*local(geometry["coordinates"])))
+          else
+            polygons(geos(geometry).make_valid.intersection(cut)).sum(&:area) > 1
+          end
+        end.keys
         return [nil, conflicts] unless conflicts.empty?
 
         parts = polygons(hull.difference(cut))

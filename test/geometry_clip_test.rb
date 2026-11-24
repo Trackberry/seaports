@@ -246,6 +246,24 @@ class GeometryClipTest < Minitest::Test
     assert_match "not an area", error.message
   end
 
+  # Two anchorages named alike are two things to keep, and a point counts:
+  # an exclusion holding either is refused, by reference.
+  def test_an_exclusion_protects_every_feature_by_reference_points_included
+    hull = Harbour.box(-1000, -1500, 1000, 0)
+    keep = { "anchorage Anchorage (way/1)" => Harbour.box(-300, -400, -100, -200), "anchorage Anchorage (way/2)" => MARINA,
+             "terminal Buoy (node/3)" => { "type" => "Point", "coordinates" => Harbour.at(-200, -800) } }
+    _, conflicts = Seaports::Geometry::Clip.subtract(hull, [MARINA, Harbour.box(-250, -850, -150, -750)], keep:)
+
+    assert_equal ["anchorage Anchorage (way/2)", "terminal Buoy (node/3)"], conflicts
+  end
+
+  def test_an_exclusion_needs_limits_cut_to_the_water
+    unclipped = selection({ "exclude" => [{ "osm" => "way/7", "why" => "A marina." }] })
+
+    error = assert_raises(Builder::Invalid) { Builder.new(unclipped).check! }
+    assert_match "needs clip: water", error.message
+  end
+
   def test_an_exclusion_says_why_and_moves_the_digest
     plain = selection({ "clip" => "water" })
     excluding = selection({ "clip" => "water", "exclude" => [{ "osm" => "way/7", "why" => "A marina." }] })

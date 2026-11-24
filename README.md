@@ -381,10 +381,12 @@ port_limits:
 
 Each entry is a way or a relation, mapped as an area, with its reason; the
 area (its outer rings, so a block's courtyard goes with it) is taken out of
-the finished limits, clipped or not. The shape is fetched from the same place
-as the rest, it counts in `selection_digest`, and the build refuses an
-exclusion that is not an area or that would take any part of a terminal or an
-anchorage with it. The outline lists what was taken out under the limits'
+the limits once cut to the water: `exclude` needs `clip: water`, whose checks
+(one part or `disjoint`, every terminal whole) then see what is left. The
+shape is fetched from the same place as the rest, it counts in
+`selection_digest`, and the build refuses an exclusion that is not an area or
+that would take any part of a terminal or an anchorage with it, a point
+included. The outline lists what was taken out under the limits'
 `exclude`.
 
 Clipping is build-time work for [GEOS](https://libgeos.org), through the
@@ -520,7 +522,11 @@ the limits as `inside`:
   residential polygon over 10 km² is listed under `residential_too_large`
   and not counted: at that size it is a town's or an island's whole outline,
   not an estate, and the part of it over the quays says nothing about where
-  the homes are, which `houses` and `places` count on their own;
+  the homes are, which `houses` and `places` count on their own. One that
+  `accepts` does not list under `too_large` (`relation/19803548: 9.1`, its
+  reference and size in km²), or that has grown by more than a tenth since,
+  is a warning: a town outline that grows past the cap leaves
+  `residential_m2` unseen otherwise;
 - `amenities`: schools, hospitals, clinics and places of worship, by the
   same middle, the first ten listed under `amenity`;
 - `places`: the `place` nodes (city, town, village, suburb, neighbourhood,
@@ -547,6 +553,9 @@ by over 2 or 10%, whichever is more; more residential land by over 100 m² or
 listed. A missing `accepts`, or a missing key, accepts nothing. A scan well
 below what is accepted (under half, and past the same margin), or an
 accepted place no longer inside, is a warning: the note may now overstate.
+So is a scan that had to skip elements OpenStreetMap maps only in part (a
+residential relation that does not close, a way the extract cuts short),
+whose count it stores as `skipped`; the build log names them.
 To accept what a refresh found, say it in the note and raise `accepts`;
 `accepts` is left out of `selection_digest`, since it changes no shape, so
 that needs no rebuild.

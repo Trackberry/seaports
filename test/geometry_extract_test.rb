@@ -356,7 +356,9 @@ class GeometryExtractTest < Minitest::Test
   def test_the_inside_scan_cuts_the_box_and_filters_by_the_scans_tags
     opl = "n1 Tplace=hamlet,name=Les%20%Neiges x1.5 y1.5\nn2 T x1.6 y1.5\n"
     calls = []
-    elements = extract(opl:, calls:).inside([1.2, 1.2, 1.8, 1.8], label: "NLRTM")
+    found = extract(opl:, calls:).inside([1.2, 1.2, 1.8, 1.8], label: "NLRTM")
+    elements = found["elements"]
+    assert_equal 0, found["skipped"]
     filter = calls.find { |args| args[1] == "tags-filter" }
 
     assert_equal [{ "type" => "node", "id" => 1, "lat" => 1.5, "lon" => 1.5, "tags" => { "place" => "hamlet", "name" => "Les Neiges" } }], elements

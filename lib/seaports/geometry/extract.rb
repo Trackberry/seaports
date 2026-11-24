@@ -312,7 +312,7 @@ module Seaports
       def inside(bbox, label: "OpenStreetMap")
         elements, skipped = cut(bbox, label:, what: "inside", filters: Inside::FILTERS, nodes: true)
         skipped.each { |line| @out.puts "#{label}: inside skipped #{line}" }
-        elements
+        { "elements" => elements, "skipped" => skipped.size }
       end
 
       # What osmium keeps of an extract for Water: the tags Water's Overpass

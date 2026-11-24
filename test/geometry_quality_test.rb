@@ -190,6 +190,27 @@ class GeometryNoteClaimTest < Minitest::Test
     assert_match 'the note says OpenStreetMap names it "West Hinder", but it has name="West Hinder Achorage"', error
   end
 
+  # An abbreviation's full stop ends no sentence.
+  def test_a_claim_reads_past_an_abbreviation
+    assert_empty claim_errors(run_checks(terminal("No. 5", { "seamark:name" => "No. 5" }, note: "Seamark area named No. 5 in OpenStreetMap.")))
+    assert_empty claim_errors(run_checks(terminal("St. Helier Quay", { "name" => "St. Helier Quay" }, note: "Named St. Helier Quay in OpenStreetMap.")))
+    error = claim_errors(run_checks(terminal("No. 5", { "seamark:name" => "No. 5" }, note: "Seamark area named No. 6 in OpenStreetMap."))).first
+    assert_match 'named "No. 6" in OpenStreetMap', error
+  end
+
+  def test_a_quoted_name_before_and_is_the_claim
+    note = 'Named "No5" and tagged anchorage in OpenStreetMap.'
+
+    assert_empty claim_errors(run_checks(terminal("No5", { "seamark:name" => "No5" }, note:)))
+    refute_empty claim_errors(run_checks(terminal("No6", { "seamark:name" => "No6" }, note:)))
+  end
+
+  def test_not_named_is_no_claim
+    note = "The berth is not named Pier 7 in OpenStreetMap, which gives it no name."
+
+    assert_empty claim_errors(run_checks(terminal("Berths", {}, note:)))
+  end
+
   def test_named_for_something_is_no_claim
     note = "Tagged industrial=port and named for the whole port in OpenStreetMap."
 
@@ -316,6 +337,16 @@ class GeometryInsideScanTest < Minitest::Test
     assert_equal 0, Inside.summary([bowtie], limits)["residential_m2"]
   end
 
+  # A residential relation that does not close, and what the extract could
+  # only give in part, are counted as skipped rather than lost.
+  def test_what_cannot_be_read_is_counted_as_skipped
+    broken = { "type" => "relation", "id" => 9, "tags" => { "landuse" => "residential" },
+               "members" => [{ "type" => "way", "role" => "outer", "geometry" => [{ "lon" => 4.5, "lat" => 51.9 }, { "lon" => 4.51, "lat" => 51.9 }] }] }
+
+    assert_equal 3, Inside.summary([broken], limits, skipped: 2)["skipped"]
+    refute Inside.summary([], limits).key?("skipped")
+  end
+
   def test_an_empty_scan_needs_nothing_but_counts
     assert_equal({ "houses" => 0, "residential_m2" => 0, "amenities" => 0 }, Inside.summary([], limits))
   end
@@ -368,6 +399,30 @@ class GeometryAcceptsTest < Minitest::Test
 
     assert_empty errors
     assert_match "well below the 40 houses the selection accepts: the note may now overstate", warnings.first
+  end
+
+  # Cartagena's town outline is 9.1 km² and counted; grown past 10 km² it
+  # would drop out of residential_m2 unseen, but for this warning.
+  def test_a_residential_area_newly_over_the_cap_is_a_warning
+    cartagena = { "osm" => "relation/19803548", "km2" => 10.5 }
+    _, warnings = Inside.compare(scan("residential_too_large" => [cartagena]), { "residential_m2" => 23_750 })
+
+    assert(warnings.any? { |line| line.include?("relation/19803548, 10.5 km²") && line.include?("not counted") })
+    assert(warnings.any? { |line| line.include?("well below the 23750 m²") })
+  end
+
+  def test_an_accepted_large_residential_area_warns_only_when_it_grows
+    large = { "osm" => "relation/7", "km2" => 12.0 }
+
+    assert_empty Inside.compare(scan("residential_too_large" => [large]), { "too_large" => { "relation/7" => 11.5 } }).last
+    _, warnings = Inside.compare(scan("residential_too_large" => [large.merge("km2" => 14.0)]), { "too_large" => { "relation/7" => 11.5 } })
+    assert_match "has grown from the 11.5 km²", warnings.first
+  end
+
+  def test_skipped_elements_are_a_warning
+    _, warnings = Inside.compare(scan("skipped" => 2), nil)
+
+    assert_match "skipped 2 element(s)", warnings.first
   end
 
   def test_places_are_accepted_by_name_or_reference

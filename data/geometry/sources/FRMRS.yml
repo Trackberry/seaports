@@ -32,6 +32,8 @@ port_limits:
   accepts:
     places:
     - 2e Arrondissement
+    too_large:
+      relation/11324159: 148.1
 features:
 - osm: way/1030807681
   kind: terminal
