@@ -189,8 +189,32 @@ class DiffTest < Minitest::Test
     assert_predicate diff, :ok?
   end
 
-  def port(name, point = [1.0, 2.0], path: "", alternates: [])
-    { name: name, point: point, path: path, alternates: alternates }
+  def port(name, point = [1.0, 2.0], path: "", alternates: [], zone: "")
+    { name: name, point: point, path: path, alternates: alternates, zone: zone }
+  end
+
+  def test_names_a_port_whose_time_zone_changed
+    diff = Seaports::Diff.new(healthy("AAAAA" => port("Ceuta", zone: "Europe/Madrid")), healthy("AAAAA" => port("Ceuta", zone: "Africa/Ceuta")))
+
+    assert_equal [["AAAAA", "Ceuta", "Europe/Madrid", "Africa/Ceuta"]], diff.rezoned
+    assert_predicate diff, :changed?
+    assert_includes diff.summary, "`AAAAA` Ceuta: Europe/Madrid → Africa/Ceuta"
+    assert_includes diff.headline, "1 with a new time zone"
+  end
+
+  def test_a_table_gaining_time_zones_for_the_first_time_passes
+    after = healthy.transform_values { |entry| entry.merge(zone: "Etc/UTC") }
+
+    assert_predicate Seaports::Diff.new(healthy, after), :ok?
+  end
+
+  # Losing them in bulk means the map failed to load, not that ports changed
+  # clocks.
+  def test_refuses_a_table_that_lost_its_time_zones
+    before = healthy.transform_values { |entry| entry.merge(zone: "Etc/UTC") }
+    diff = Seaports::Diff.new(before, healthy)
+
+    assert(diff.failures.any? { |line| line.start_with?("Ports with a time zone fell") })
   end
 
   # A change to the alternate names alone is a change to the table: it ships,

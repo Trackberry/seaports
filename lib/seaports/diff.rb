@@ -44,7 +44,7 @@ module Seaports
         next if locode.empty?
 
         ports[locode] = { name: row["name"].to_s.strip, point: point(row), path: path(row), source: row["coordinate_source"].to_s.strip,
-                         alternates: row["alternate_names"].to_s.split("|").map(&:strip).reject(&:empty?) }
+                         alternates: row["alternate_names"].to_s.split("|").map(&:strip).reject(&:empty?), zone: row["timezone"].to_s.strip }
       end
     end
 
@@ -82,7 +82,7 @@ module Seaports
     end
 
     def changed?
-      !(added.empty? && removed.empty? && renamed.empty? && repositioned.empty? && resubdivided.empty? && renamed_alternates.empty?)
+      !(added.empty? && removed.empty? && renamed.empty? && repositioned.empty? && resubdivided.empty? && renamed_alternates.empty? && rezoned.empty?)
     end
 
     # [locode, name, names added, names removed] for a port that kept its code
@@ -161,10 +161,22 @@ module Seaports
       end
     end
 
+    # [locode, name, was, now] for a port whose time zone changed, each zone
+    # a string ("" for none). A table from before the column existed has
+    # none, so every zone is new.
+    def rezoned
+      @rezoned ||= common.filter_map do |locode|
+        was = @before[locode][:zone].to_s
+        now = @after[locode][:zone].to_s
+        [locode, @after[locode][:name], was, now] if was != now
+      end
+    end
+
     # Empty means the refresh may ship. Anything here is a reason it may not,
     # written the way it should read in an issue.
     def failures
-      [count_failure, shrinkage_failure, region_failure, reassignment_failure, moved_failure, positions_failure, *anchor_failures, *excluded_failures].compact
+      [count_failure, shrinkage_failure, region_failure, zone_failure, reassignment_failure, moved_failure, positions_failure, *anchor_failures,
+       *excluded_failures].compact
     end
 
     def ok?
@@ -181,7 +193,8 @@ module Seaports
         section("Names", renamed_alternates.map { |locode, name, gained, dropped| names_line(locode, name, gained, dropped) }),
         by_source_line,
         section("Coordinates", repositioned.map { |locode, name, kind| "`#{locode}` #{name} — #{POSITION_WORDS.fetch(kind)}" }),
-        section("Subdivision", resubdivided.map { |locode, name, was, now| "`#{locode}` #{name}: #{path_words(was)} → #{path_words(now)}" })
+        section("Subdivision", resubdivided.map { |locode, name, was, now| "`#{locode}` #{name}: #{path_words(was)} → #{path_words(now)}" }),
+        section("Time zone", rezoned.map { |locode, name, was, now| "`#{locode}` #{name}: #{was.empty? ? 'none' : was} → #{now.empty? ? 'none' : now}" })
       ].compact.join("\n\n")
     end
 
@@ -197,7 +210,8 @@ module Seaports
       "#{@after.size} sea ports (#{@before.size} before): " \
         "#{added.size} added, #{removed.size} removed, " \
         "#{renamed.size} renamed, #{repositioned.size} repositioned, " \
-        "#{resubdivided.size} with a new subdivision (#{reassigned.size} moved to another principal one)."
+        "#{resubdivided.size} with a new subdivision (#{reassigned.size} moved to another principal one), " \
+        "#{rezoned.size} with a new time zone."
     end
 
     # A real refresh moves a handful of ports between regions, when UNECE
@@ -300,6 +314,19 @@ module Seaports
       return nil if shrinkage <= MAXIMUM_SHRINKAGE
 
       "Ports with a principal subdivision fell from #{was} to #{now}, past the #{(MAXIMUM_SHRINKAGE * 100).round}% limit."
+    end
+
+    # The same for time zones: losing them in bulk means the map failed to
+    # load, not that ports changed clocks.
+    def zone_failure
+      was = @before.count { |_, port| !port[:zone].to_s.empty? }
+      return nil if was.zero?
+
+      now = @after.count { |_, port| !port[:zone].to_s.empty? }
+      shrinkage = (was - now).to_f / was
+      return nil if shrinkage <= MAXIMUM_SHRINKAGE
+
+      "Ports with a time zone fell from #{was} to #{now}, past the #{(MAXIMUM_SHRINKAGE * 100).round}% limit."
     end
 
     def regioned_count(ports)

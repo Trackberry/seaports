@@ -21,7 +21,7 @@ namespace :seaports do
   REFRESH_DIR = "tmp/refresh"
 
   desc "Rebuild the table from a UN/LOCODE release and report what changed"
-  task :refresh, [:source, :release, :subdivisions, :boundaries] do |_task, args|
+  task :refresh, [:source, :release, :subdivisions, :boundaries, :timezones] do |_task, args|
     require_relative "lib/seaports/builder"
     require_relative "lib/seaports/coordinate_refresh"
     require_relative "lib/seaports/diff"
@@ -33,8 +33,8 @@ namespace :seaports do
     before = File.join(REFRESH_DIR, "before.csv")
     FileUtils.cp(Seaports::TABLE_PATH, before)
 
-    # Three downloads and a hand-edited overrides file: any of them failing is
-    # a refusal for a person to read, the same as a failed gate, not a red
+    # Four downloads and the hand-edited overrides files: any of them failing
+    # is a refusal for a person to read, the same as a failed gate, not a red
     # build nobody is told about.
     begin
       source = Seaports::Builder.fetch(args[:source] || Seaports::Builder::SOURCE_URL)
@@ -45,9 +45,12 @@ namespace :seaports do
       builder = Seaports::Builder.new(source, subdivisions:, boundaries:, overrides: Seaports::Builder.overrides,
         coordinate_overrides: Seaports::Builder.coordinate_overrides,
         fallback_coordinates: Seaports::Builder.fallback_coordinates,
-        alternate_names: Seaports::Builder.alternate_name_layers, rejected_names: Seaports::Builder.rejected_alternate_names)
+        alternate_names: Seaports::Builder.alternate_name_layers, rejected_names: Seaports::Builder.rejected_alternate_names,
+        timezones: port_timezones(args[:timezones]), timezone_overrides: Seaports::Timezones.overrides)
       builder.write(Seaports::TABLE_PATH)
-    rescue StandardError => e
+    # LoadError too: the time zone map needs GEOS, and a refresh run without
+    # it must still be refused for a person to read.
+    rescue StandardError, LoadError => e
       FileUtils.cp(before, Seaports::TABLE_PATH)
       File.write(File.join(REFRESH_DIR, "summary.md"), "**Blocked**\n\nThe rebuild stopped: #{e.class}: #{e.message}\n")
       record "failed", "The rebuild stopped: #{e.class}: #{e.message}"
@@ -83,15 +86,33 @@ namespace :seaports do
   end
 
   # Recurring: run it after adding rows to data/sources/coordinate_overrides.csv
-  # when a refresh is not due. Offline, and it never replaces a position
-  # UN/LOCODE published (the table records which are); the next refresh
-  # rebuilds the same positions itself.
+  # when a refresh is not due, then apply_timezones, since a port's zone can
+  # follow its position. Offline, and it never replaces a position UN/LOCODE
+  # published (the table records which are); the next refresh rebuilds the
+  # same positions itself.
   desc "Write the coordinate files into the shipped table, without a download"
   task :apply_coordinates do
     require_relative "lib/seaports/builder"
 
     changed = Seaports::Builder.apply_coordinates
     puts "Changed #{changed.size} ports: #{changed.first(40).join(', ')}#{changed.size > 40 ? ', ...' : ''}"
+  end
+
+  # Recurring: run it after adding rows to data/sources/timezone_overrides.csv,
+  # or after apply_coordinates, when a refresh is not due. Downloads the time
+  # zone map once into tmp/refresh (or reads +source+, a path to the zip); the
+  # next refresh rebuilds the same zones itself.
+  desc "Write the ports' time zones into the shipped table, without the rest of a refresh"
+  task :apply_timezones, [:source] do |_task, args|
+    require_relative "lib/seaports/builder"
+
+    timezones = port_timezones(args[:source])
+    changed = Seaports::Builder.apply_timezones(timezones)
+    puts "Changed #{changed.size} ports: #{changed.first(40).join(', ')}#{changed.size > 40 ? ', ...' : ''}"
+    # For review, not a failure: most are real exceptions.
+    disagreements = Seaports::Builder.timezone_disagreements(timezones)
+    puts "\n#{disagreements.size} ports placed in another zone than the rest of their subdivision; check each, and override a wrong position:" unless disagreements.empty?
+    disagreements.each { |locode, zone, code, theirs| puts "  #{locode} #{zone}, while #{code}'s other ports are in #{theirs}" }
   end
 
   # Recurring: run it after adding rows to data/sources/alternate_names.csv when
@@ -164,6 +185,30 @@ namespace :seaports do
       File.binwrite(cache, body)
     end
     Seaports::Boundaries.parse(File.read(cache))
+  end
+
+  # The time zone map is a 56 MB zip, kept in tmp/refresh like Natural Earth
+  # so a second run in the same checkout does not download it again. An
+  # explicit +source+ is a path to the zip.
+  def port_timezones(source = nil)
+    require "fileutils"
+    require_relative "lib/seaports/timezones"
+    require_relative "lib/seaports/http"
+
+    zip = source
+    unless zip
+      FileUtils.mkdir_p(REFRESH_DIR)
+      zip = File.join(REFRESH_DIR, "timezones-#{Seaports::Timezones::RELEASE}.geojson.zip")
+      unless File.exist?(zip)
+        status, body, = Seaports::Http.get(Seaports::Timezones::SOURCE_URL)
+        raise "timezone-boundary-builder answered HTTP #{status}" unless status == 200
+
+        # Through a temporary name, so an interrupted download is not kept.
+        File.binwrite("#{zip}.part", body)
+        File.rename("#{zip}.part", zip)
+      end
+    end
+    Seaports::Timezones.parse(Seaports::Timezones.unzip(zip))
   end
 
   def record_coordinates(name, outcome)

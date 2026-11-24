@@ -148,4 +148,45 @@ class SeaportsTest < Minitest::Test
     assert_kind_of Date, Seaports.data_refreshed_on
     assert_operator Seaports.data_refreshed_on, :<=, Date.today
   end
+
+  # The ports Trackberry's customers ship through, and the traps: Spain has
+  # three zones, Lord Howe Island keeps half-hour time inside New South
+  # Wales, and the Louisiana Offshore Oil Port is out at sea.
+  def test_answers_the_time_zone_a_port_keeps
+    assert_equal "Europe/Madrid", Seaports.timezone("ESVLC")
+    assert_equal "Europe/Madrid", Seaports.timezone("ESALG")
+    assert_equal "Atlantic/Canary", Seaports.timezone("ESLPA")
+    assert_equal "Africa/Ceuta", Seaports.timezone("ESCEU")
+    assert_equal "Europe/Amsterdam", Seaports.timezone("NLRTM")
+    assert_equal "America/Los_Angeles", Seaports.timezone("USLAX")
+    assert_equal "America/Chicago", Seaports.timezone("USLO8")
+    assert_equal "Asia/Shanghai", Seaports.timezone("CNXMG")
+    assert_equal "Asia/Dubai", Seaports.timezone("AEABU")
+    assert_equal "Australia/Lord_Howe", Seaports.timezone("AULDH")
+    assert_equal "Australia/Darwin", Seaports.timezone("AUMON")
+    assert_equal "Asia/Dubai", Seaports.find("AEJEA").timezone
+    assert_nil Seaports.timezone("not a locode")
+  end
+
+  def test_a_port_built_without_a_time_zone_has_none
+    assert_nil Seaports::Port.new(locode: "ZZZZZ", name: "Nowhere", coordinates: nil).timezone
+  end
+
+  # The cross-check the zones are built to pass: a Spanish port is in
+  # Europe/Madrid, Africa/Ceuta or Atlantic/Canary, nothing else.
+  def test_every_ports_time_zone_is_one_tzdata_lists_for_its_country
+    require "seaports/timezones"
+    countries = Seaports::Timezones.countries
+    table = CSV.read(Seaports::TABLE_PATH, headers: true)
+    wrong = table.select { |row| row["timezone"] && countries[row["locode"][0, 2]]&.include?(row["timezone"]) == false }
+
+    assert_empty wrong.map { |row| "#{row['locode']} #{row['timezone']}" }
+    assert(table.all? { |row| row["timezone"].nil? ? row["timezone_source"].nil? : Seaports::Timezones::SOURCES.include?(row["timezone_source"]) })
+    # The two codes zone.tab lists nothing for take the map's zone as it is.
+    unlisted = table.reject { |row| countries.key?(row["locode"][0, 2]) || row["timezone"].nil? }
+    assert_equal %w[HM XZ], unlisted.map { |row| row["locode"][0, 2] }.uniq.sort
+    assert(unlisted.all? { |row| row["timezone_source"] == "map" })
+    assert_equal "Etc/GMT-5", Seaports.timezone("HMHEA")
+    assert_operator table.count { |row| row["timezone"] }, :>=, 16_500
+  end
 end

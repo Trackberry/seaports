@@ -19,9 +19,9 @@ module Seaports
     USER_AGENT = "seaports-gem/#{VERSION} (https://github.com/Trackberry/seaports)"
     REDIRECTS = 5
 
-    # The largest body read. The biggest thing fetched is Natural Earth's
-    # 40 MB map; a body past this is the wrong document, and reading it all
-    # would only fill the disk.
+    # The largest body read. The biggest things fetched are the time zone
+    # map, a 56 MB zip, and Natural Earth's 40 MB one; a body past this is
+    # the wrong document, and reading it all would only fill the disk.
     MAX_BYTES = 120 * 1024 * 1024
 
     class TooLarge < StandardError; end

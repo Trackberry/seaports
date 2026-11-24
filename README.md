@@ -31,8 +31,8 @@ out of the default gems.
 ## What is in it
 
 Every entry UN/LOCODE classifies as a sea port: **17,567 ports**, 13,216 of them
-with coordinates and 15,209 with a subdivision, rebuilt from UNECE's
-latest published list whenever it changes.
+with coordinates, 15,209 with a subdivision and 17,038 with a time zone,
+rebuilt from UNECE's latest published list whenever it changes.
 
 ```ruby
 Seaports.count              # => 17567
@@ -268,6 +268,84 @@ and coordinates as before still works. 1.6.0 added `alternate_names` the same
 way, optional and defaulting to a shared empty list. Because it is a new member,
 `Port#to_h`, `Port.members` and `deconstruct`/`deconstruct_keys` gain a key, and
 a `Port` serialised with `Marshal` by 1.5.0 will not load in 1.6.0.
+
+### Time zones
+
+Tracking feeds and emails give times in the port's local time, often with no
+offset ("arrives 05:30"), and when one does send an offset it holds only for
+that date: a winter ETD's `+01:00` is an hour out for a summer arrival. The
+port's IANA time zone gives the right offset for any date:
+
+```ruby
+Seaports.timezone("ESVLC")  # => "Europe/Madrid"
+Seaports.timezone("ESLPA")  # => "Atlantic/Canary"
+Seaports.timezone("USLO8")  # => "America/Chicago"      Louisiana Offshore Oil Port, about 30 km out
+Seaports.timezone("AULDH")  # => "Australia/Lord_Howe"  UTC+10:30, half-hour daylight saving
+
+TZInfo::Timezone.get(Seaports.timezone("ESVLC")).local_to_utc(Time.utc(2026, 7, 1, 5, 30))
+# => 2026-07-01 03:30:00 UTC
+```
+
+The gem returns the zone as a string and does not depend on TZInfo; hand the
+string to whatever time zone library you use. A zone is always one tzdata
+lists for the port's country, so a Spanish port is in `Europe/Madrid`,
+`Africa/Ceuta` or `Atlantic/Canary` and nothing else. The exceptions are the
+ports of the two codes tzdata lists no zone for, `XZ` (installations in
+international waters) and `HM` (Heard and McDonald Islands), which take
+whatever zone the map has where they are, often one of the open sea's:
+`Etc/GMT-5` for Heard Island. Those names keep POSIX's sign, so `Etc/GMT-5`
+is UTC+5. 17,038 ports have one,
+and the table records how each was found (`timezone_source`), best first:
+
+| Source | Ports | How |
+| --- | --- | --- |
+| `override` | 16 | A reviewed list, `data/sources/timezone_overrides.csv`, for ports whose position lands in the wrong zone or nowhere: Juazeiro, in Bahia, lands across the river in Pernambuco's zone, Lord Howe Island has no position and keeps its own time, and two Timor Sea oil fields UN/LOCODE files under the Northern Territory keep Darwin's time rather than that of Western Australia, their nearest coast. Each row says why. |
+| `country` | 11,028 | The country's zone, where tzdata gives it only one. No position needed: every Dutch port is in `Europe/Amsterdam`. |
+| `map` | 5,131 | The zone the port's position falls in on [timezone-boundary-builder](https://github.com/evansiroky/timezone-boundary-builder)'s map, when that zone is one of the country's. The map's land zones reach over each country's territorial sea, so a waterfront position just offshore still lands in its own zone. |
+| `nearest` | 55 | The nearest of the country's zones, within 50 km of a position that landed in another country (Detroit's lands across the river in Toronto's zone), or 250 km of one out at sea (oil terminals on the North West Shelf, in the Gulf of Mexico and off Terengganu). The distance is measured in degrees of latitude, so east-west the reach is shorter, by the cosine of the latitude: 25 and 125 km at 60° N. |
+| `subdivision` | 808 | For a port nothing above places, mostly ports with no position in a country with several zones: the zone every port the map placed in the same subdivision is in, when at least three are and all agree. Bavaria's are all in `Europe/Berlin`, so a Bavarian port with no position is too. Florida's are split between New York and Chicago, so one with no position gets none. |
+
+529 ports have none: ports with no position in a country with several zones
+whose subdivision is split or unknown (Canada 134, Malaysia 88, Indonesia 82,
+Russia 43), and 19 whose position lands in no zone of their own country,
+all but one of them Antarctic stations. A
+caller falls back to an offset the feed sent, or to UTC.
+
+The map is pinned to timezone-boundary-builder's release `2026f`, with
+tzdata's `zone.tab` from the same release vendored as
+`data/sources/zone.tab`. Both are read when the table is built, with GEOS
+through the rgeo gem; nothing is fetched or computed at runtime. A refresh
+places every port again, lists every zone that changed, and refuses a table
+that lost more than 2% of its zones at once. It also lists overrides that
+have outlived their reason: a port that left UN/LOCODE, or one whose
+country or position now gives the same zone. After adding a row to the overrides file, or
+after `rake seaports:apply_coordinates`, `rake seaports:apply_timezones`
+writes the zones into the table without the rest of a refresh, downloading
+the map once into `tmp/refresh`.
+
+Positions are UN/LOCODE's, to the minute, so a port within about two
+kilometres of a line between two of its country's zones may be on the wrong
+side of it. When the table was built, 42 ports the map placed lay within 3 km
+of another of their country's zones. Each was checked against the state or
+province UN/LOCODE files it in, and the 5 on the wrong side are overridden.
+A position can also be wrong by hundreds of kilometres and still land in one
+of the country's zones, so `rake seaports:apply_timezones` also lists every
+port placed by its position in another zone than all the other placed ports
+of its subdivision. Of the 15 it listed, 3 were wrong positions and are
+overridden (Kubekovo, Indonesia Bulk Terminal, and Washington, Louisiana,
+which the World Port Index puts in Alaska). The other 12 keep their own
+clocks: Fort Frances is on Central time in Ontario, Invermere on Mountain
+time in British Columbia, Tornillo on Mountain time in Texas, and Easter
+Island, Fernando de Noronha and Macquarie Island on their own.
+
+The map's zones are © OpenStreetMap contributors and timezone-boundary-builder,
+under the [ODbL](https://www.openstreetmap.org/copyright). `zone.tab` is in the
+public domain.
+
+`Seaports::Port` gained `timezone` in 1.9.0, optional and nil by default, so
+a `Port` built as before still works. It is a new member, so `Port#to_h`,
+`Port.members` and `deconstruct`/`deconstruct_keys` gain a key, and a `Port`
+serialised with `Marshal` by 1.8.0 will not load in 1.9.0.
 
 ### Port outlines
 

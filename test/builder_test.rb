@@ -84,7 +84,8 @@ class BuilderTest < Minitest::Test
     path = File.join(Dir.mktmpdir, "ports.csv")
     Seaports::Builder.new(SOURCE).write(path)
 
-    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source coordinate_source alternate_names], CSV.readlines(path).first
+    assert_equal %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source coordinate_source timezone
+                    timezone_source alternate_names], CSV.readlines(path).first
     assert_equal @locodes, CSV.readlines(path).drop(1).map(&:first)
   end
 
@@ -583,5 +584,66 @@ class BuilderTest < Minitest::Test
         assert_equal [best, lat, lng], [row["coordinate_source"], *row.values_at("lat", "lng").map(&:to_f)], "#{locode} (#{name})"
       end
     end
+  end
+
+  # Answers as Seaports::Timezones does, from a fixed table, and remembers
+  # what it was asked.
+  class FakeTimezones
+    attr_reader :ports
+
+    def initialize(zones)
+      @zones = zones
+    end
+
+    def assign(ports, overrides: {})
+      @ports = ports
+      ports.to_h { |port| [port.locode, overrides[port.locode] ? [overrides[port.locode], "override"] : @zones.fetch(port.locode, [nil, nil])] }
+    end
+
+    def zone_for(country, _lat, _lng)
+      @zones.find { |locode, _| locode.start_with?(country) }&.last || [nil, nil]
+    end
+  end
+
+  def test_writes_each_ports_time_zone_and_how_it_was_found
+    timezones = FakeTimezones.new("NZTRG" => ["Pacific/Auckland", "map"], "AUBNE" => ["Australia/Brisbane", "map"])
+    rows = Seaports::Builder.new(SOURCE, subdivisions: iso, timezones:).rows.to_h { |row| [row.first, row] }
+
+    assert_equal ["Pacific/Auckland", "map"], rows["NZTRG"].values_at(9, 10)
+    assert_equal ["Australia/Brisbane", "map"], rows["AUBNE"].values_at(9, 10)
+    assert_equal [nil, nil], rows["ESVLC"].values_at(9, 10)
+    brisbane = timezones.ports.find { |port| port.locode == "AUBNE" }
+    assert_equal [-27.4667, 153.0167, %w[AU-QLD]], [brisbane.lat, brisbane.lng, brisbane.path]
+    assert_equal Seaports::Builder::HEADERS.size, rows["AUBNE"].size, "the alternate names stay last"
+  end
+
+  def test_leaves_time_zones_empty_without_the_map
+    rows = Seaports::Builder.new(SOURCE).rows
+
+    assert(rows.all? { |row| row.values_at(9, 10) == [nil, nil] })
+  end
+
+  def test_reports_a_timezone_override_that_has_outlived_its_reason
+    timezones = FakeTimezones.new("NZTRG" => ["Pacific/Auckland", "map"])
+    builder = Seaports::Builder.new(SOURCE, timezones:, timezone_overrides: { "NZTRG" => "Pacific/Auckland", "GBOLD" => "Europe/London" })
+
+    assert_includes builder.override_report, "`GBOLD` has a timezone override but is no longer a UN/LOCODE sea port: remove its row."
+    assert_includes builder.override_report, "`NZTRG` is overridden to Pacific/Auckland, which its position gives anyway: its timezone override can go."
+    assert_equal ["Pacific/Auckland", "override"], builder.rows.find { |row| row.first == "NZTRG" }.values_at(9, 10)
+  end
+
+  def test_writes_time_zones_into_the_table_without_a_download
+    path = File.join(Dir.mktmpdir, "ports.csv")
+    Seaports::Builder.new(SOURCE).write(path)
+    timezones = FakeTimezones.new("NZTRG" => ["Pacific/Auckland", "map"])
+
+    changed = Seaports::Builder.apply_timezones(timezones, path, overrides: { "ESVLC" => "Europe/Madrid" })
+    table = CSV.read(path, headers: true).to_h { |row| [row["locode"], row] }
+
+    assert_equal %w[ESVLC NZTRG], changed.sort
+    assert_equal %w[Pacific/Auckland map], table["NZTRG"].values_at("timezone", "timezone_source")
+    assert_equal %w[Europe/Madrid override], table["ESVLC"].values_at("timezone", "timezone_source")
+    assert_equal Seaports::Builder::HEADERS, CSV.readlines(path).first
+    assert_empty Seaports::Builder.apply_timezones(timezones, path, overrides: { "ESVLC" => "Europe/Madrid" })
   end
 end

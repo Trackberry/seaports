@@ -10,6 +10,14 @@ The rows were suggested by `script/suggest_subdivision_overrides.rb` and checked
 
 Those place names come from [OpenStreetMap](https://www.openstreetmap.org/copyright) through its Nominatim search: © OpenStreetMap contributors, available under the Open Database Licence (ODbL).
 
+## timezone_overrides.csv and zone.tab
+
+Reviewed IANA time zones for ports the build places wrongly or not at all: a position on the far side of a line between two of the country's zones (Juazeiro, in Bahia, lands across the river in Pernambuco), a position far from the port (UN/LOCODE's or a fallback dataset's) that lands in the open sea or in another of the country's zones, or a port with no position whose subdivision would give the wrong zone (Lord Howe Island, inside New South Wales, keeps its own time). Columns: `locode`, `timezone`, `note` (required: the place, and why the build's own answer is wrong). An override wins over every other source. The build rejects a malformed locode or zone, a missing note, a port listed twice, and a zone that `zone.tab` does not list for the port's country. Each refresh lists the rows whose port left UN/LOCODE, and those whose country or position now gives the same zone, so they can be removed.
+
+After adding a row, run `rake seaports:apply_timezones` to write the zones into the shipped table without the rest of a refresh. It downloads timezone-boundary-builder's map once into `tmp/refresh`, and needs GEOS, as the outline builder does. It also lists every port placed by its position in another zone than all the other placed ports of its subdivision: most are real exceptions (Fort Frances, Easter Island), and the rest are wrong positions to override.
+
+`zone.tab` is tzdata's list of the zones each country uses, vendored from the tzdata release the map was built from ([`2026f`](https://github.com/eggert/tz/blob/2026f/zone.tab)), in the public domain. Move it together with `Seaports::Timezones::RELEASE`, so every zone the map draws is one the list can vouch for.
+
 ## coordinate_overrides.csv
 
 Reviewed positions for ports UN/LOCODE publishes no coordinates for: the port area (harbour or terminals), not the city centre, to four decimals. Columns: `locode`, `name` (for review, ignored by the build), `lat`, `lng`, `source` (required) and `note`, which opens with `high` or `medium` for how sure the placement is, then names the place.
