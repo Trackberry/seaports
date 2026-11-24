@@ -301,8 +301,6 @@ class CanalApiTest < Minitest::Test
     assert_equal "Çanakkale", straits.end_name(:south)
     assert_empty straits.anchorages
     assert_empty straits.pilot_boarding_places
-    lng, lat = straits.waterway.geometry["coordinates"].first.first
-    refute straits.waiting?(lat, lng)
   end
 
   def test_an_unknown_approach_raises

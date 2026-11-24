@@ -440,8 +440,9 @@ A canal is not a port, and its queue is not port congestion. Ships anchored off
 Port Said in the C and V areas are waiting for a Suez convoy, not for a berth
 at Port Said; ships in the Great Bitter Lake are part-way through, waiting for
 the convoy coming the other way to pass. The gem ships outlines for the Suez,
-Panama and Kiel canals and the Turkish Straits so a tracker can say "waiting to transit Suez since
-Tuesday" rather than "at anchor, Port Said".
+Panama and Kiel canals so a tracker can say "waiting to transit Suez since
+Tuesday" rather than "at anchor, Port Said", and the Turkish Straits' waterway,
+whose waiting areas are not mapped yet.
 
 ```ruby
 Seaports.canal_ids                               # => ["kiel", "panama", "suez", "turkish_straits"]
@@ -519,12 +520,14 @@ The Turkish Straits (`turkish_straits`) are a waterway only, with no waiting
 areas yet. OpenStreetMap maps the Bosporus and the Dardanelles as strait areas
 bounded by the coastline (relations 8926171 and 8926172) and no waterway through
 them, so the waterway is the traffic separation schemes' seamarks: the Istanbul
-Strait's separation line, end to end, and the Çanakkale Strait's separation
-zone, which OpenStreetMap maps only from off Gelibolu to off Çoraklık Burnu.
-The narrows at Çanakkale, the stretch down to the Aegean and the Sea of Marmara
-have no line. OpenStreetMap maps none of the anchorages the Turkish Straits
-Maritime Traffic Regulation (2019) sets at the straits' entrances, and no pilot
-boarding place. The only seamark anchorages there are the two inspection areas
+Strait's separation line, the length of the strait, and the Çanakkale Strait's
+separation zone, which OpenStreetMap maps only from off Gelibolu to off
+Çoraklık Burnu. The Istanbul scheme's separation zones in the approaches beyond
+the strait (ways 1034443807 and 1034443809) are left out. The narrows at
+Çanakkale, the stretch down to the Aegean and the Sea of Marmara have no line.
+OpenStreetMap maps none of the anchorages the Turkish Straits Maritime Traffic
+Regulation (2019) sets at the straits' entrances and, at Karanlık Liman, inside
+the Çanakkale Strait, and no pilot boarding place. The only seamark anchorages there are the two inspection areas
 of the Black Sea Grain Initiative, which ended in July 2023, and they are left
 out.
 
