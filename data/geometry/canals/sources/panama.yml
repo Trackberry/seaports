@@ -91,7 +91,7 @@ features:
   approach: in_transit
   note: >-
     Seamark anchorage area beside the Pedro Miguel locks, on the channel from the Cocolí locks to the
-    Culebra Cut. OpenStreetMap spells it Cocoli Tie up Station.
+    Culebra Cut. OpenStreetMap's name; the station is the Cocolí Tie-up Station.
 - osm: way/830303041
   kind: anchorage
   name: Pacific Anchorage
@@ -107,8 +107,8 @@ features:
   name: Hazardous Carcgo Anchorage
   approach: south
   note: >-
-    Seamark anchorage area for ships carrying hazardous cargo, south-west of the Pacific Anchorage. OpenStreetMap
-    spells it Hazardous Carcgo Anchorage.
+    Seamark anchorage area for ships carrying hazardous cargo, south-west of the Pacific Anchorage. The
+    name is OpenStreetMap's, misspelt there; it is the Hazardous Cargo Anchorage.
 - osm: node/7761795096
   kind: pilot_boarding
   name: Pacific entrance pilot boarding place

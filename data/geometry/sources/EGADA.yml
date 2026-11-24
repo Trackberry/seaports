@@ -1,0 +1,50 @@
+---
+locode: EGADA
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Egypt extract around Suez Bay. Adabiya, on the west shore of Suez
+  Bay, is the bay's cargo port, run by the Suez Canal Economic Zone (SCZONE), and has its own locode.
+  Suez itself (EGSUZ) and Port Tewfik (EGPTK), at the canal's southern entrance, have no outline: OpenStreetMap
+  maps no port area or terminal there, only unnamed piers. The anchorages are OpenStreetMap's two seamark
+  anchorages named C1 off the port, south-south-east of its quays. The lettered areas north towards Port
+  Tewfik are left out. So is the West Waiting Area, W1 to W14: the Suez Canal Authority's Rules of Navigation
+  (Art. 9) give it to ships awaiting orders, bunkering, under repair or entering the ports of Suez and
+  Adabiya, so it is shared and not Adabiya's own. The V berths and the East Waiting Area are the canal's.
+position_outside: >-
+  UN/LOCODE places Adabiya at (29.8667, 32.4667), on land by a quarry about 600 m from the Suez to Ain
+  Sokhna road, about 4.4 km south of the port area.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Adabiya. These are the hull of the Adabiya port area grown by
+    300 m, cut to the water OpenStreetMap maps inside it, with the port area kept whole: the quays and
+    the water off them. The two C1 anchorages lie outside, 2.4 to 2.8 km south-south-east. A scan of OpenStreetMap
+    finds no homes, residential land, schools, hospitals, places of worship or named places inside. Two
+    neighbourhood outlines in OpenStreetMap take in the port area and some of its water: Al Attaka and
+    one with no name.
+features:
+- osm: way/208960312
+  kind: anchorage
+  name: C1
+  note: >-
+    Seamark anchorage off Adabiya, named C1 in OpenStreetMap, which gives it no category. The farther
+    of the two C1 areas from the port, south-south-east of its quays.
+- osm: way/208960300
+  kind: anchorage
+  name: C1
+  note: >-
+    Seamark anchorage off Adabiya, named C1 in OpenStreetMap, which gives it no category. The nearer of
+    the two C1 areas to the port, south-south-east of its quays.
+- osm: way/337053006
+  kind: terminal
+  name: ميناء الأدبية
+  cargo:
+  - bulk
+  - general
+  note: >-
+    The port area, mapped as industrial land named ميناء الأدبية (Adabiya Port) in OpenStreetMap, which
+    gives it no English name. SCZONE, which manages the port, lists eight berths, 1,465 m in all, for
+    dry and liquid bulk, general and project cargo, containers and livestock, and names no single operator
+    for them. OpenStreetMap's area, about 26 ha, is smaller than the 114 ha SCZONE gives for the port.

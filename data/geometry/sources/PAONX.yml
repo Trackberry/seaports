@@ -1,0 +1,33 @@
+---
+locode: PAONX
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Panama extract around Limon Bay and Manzanillo Bay. Colón Container
+  Terminal, Evergreen's terminal at Coco Solo north of Manzanillo International Terminal, is filed under
+  PAONX, Colón, by carriers and port directories. Manzanillo International Terminal (PAMIT) and Cristóbal
+  (PACTB) are separate terminals with their own operators and locodes, so they are separate outlines.
+  The Limon Bay anchorages A, C and D are where ships wait for the canal; they belong to the Panama Canal's
+  outline, and OpenStreetMap maps no anchorage of the port's own.
+position_outside: >-
+  UN/LOCODE places Colón at (9.35, -79.8667), on Enrique Adolfo Jiménez International Airport, Colón's
+  airport at Coco Solo, about 3 km south-east of the terminal and not on the water.
+port_limits:
+  derive: hull
+  buffer_m: 100
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Colón. These are the hull of Colón Container Terminal grown
+    by 100 m, cut to the water OpenStreetMap maps inside it, with the terminal kept whole: the terminal
+    and its berths on Manzanillo Bay. A scan of OpenStreetMap finds no homes, residential land, schools,
+    hospitals, places of worship or named places inside.
+features:
+- osm: way/30686384
+  kind: terminal
+  name: Colon Container Terminal
+  operator: Evergreen
+  cargo:
+  - container
+  note: >-
+    The container terminal at Coco Solo, on a former US Navy base, mapped as a port area (industrial=port,
+    port=cargo) and named Colon Container Terminal (short name CCT) in OpenStreetMap. It is run by Colon
+    Container Terminal S.A., an Evergreen Group company, which opened it in 1997 (cct-pa.com).
