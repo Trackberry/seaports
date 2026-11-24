@@ -151,27 +151,6 @@ module Seaports
         new(hull: limits, terminals: {}, water: { "coastline" => [], "areas" => [] }).subtract(areas, keep)
       end
 
-      # Whether +point+, [lng, lat], lies on the water OpenStreetMap maps: the
-      # sea within its coastline or a water area, as the clip reads them.
-      # +water+ is what Water.overpass answers for ON_WATER_BBOX(point).
-      ON_WATER_M = 500
-
-      def self.on_water_bbox(point)
-        lng, lat = point
-        dlat = ON_WATER_M / Planar::M_PER_DEGREE
-        dlng = dlat / Math.cos(lat * Math::PI / 180.0)
-        fetch_bbox({ "type" => "Polygon", "coordinates" => [[[lng - dlng, lat - dlat], [lng + dlng, lat - dlat], [lng + dlng, lat + dlat],
-                                                              [lng - dlng, lat + dlat], [lng - dlng, lat - dlat]]] })
-      end
-
-      def self.on_water?(point, water)
-        west, south, east, north = on_water_bbox(point)
-        box = { "type" => "Polygon", "coordinates" => [[[west, south], [east, south], [east, north], [west, north], [west, south]]] }
-        new(hull: box, terminals: {}, water:).covers?(point)
-      end
-
-      def covers?(point) = water(hull).contains?(@factory.point(*local(point)))
-
       def subtract(areas, keep)
         # Outer rings only: a block's courtyard would otherwise stay behind
         # as a speck of limits on its own.

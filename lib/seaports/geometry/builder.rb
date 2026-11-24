@@ -105,14 +105,9 @@ module Seaports
       # +shapes+ given, the outline stores no tags or scan, which its checks
       # then call out; left out with it, all four ask Overpass, and the tags
       # come from the shapes' own answer.
-      #
-      # +on_water+ asks +water+ whether the port's UN/LOCODE position lies on
-      # mapped water, stored as "position_on_water"; it defaults to on when
-      # every source is Overpass's.
-      def initialize(selection, shapes: nil, water: Water.method(:overpass), tags: nil, inside: nil, on_water: shapes.nil?)
+      def initialize(selection, shapes: nil, water: Water.method(:overpass), tags: nil, inside: nil)
         @selection = selection
         @water = water
-        @on_water = on_water
         if shapes
           @shapes = shapes
           @tags = tags
@@ -144,7 +139,6 @@ module Seaports
 
         { "type" => "FeatureCollection", "locode" => locode, "quays" => Array(@selection["quays"]).sort,
           "attribution" => ATTRIBUTION, "position_outside" => @selection["position_outside"]&.strip,
-          "position_on_water" => (position_on_water if @on_water),
           "selection_digest" => self.class.digest(@selection), "features" => ordered }.compact
       end
 
@@ -329,23 +323,6 @@ module Seaports
         return nil unless @fetched_tags && NAMED_KINDS.include?(entry["kind"])
 
         @fetched_tags.fetch(refs.first, {})
-      end
-
-      # Whether UN/LOCODE's position for the port lies on the water
-      # OpenStreetMap maps (the sea within its coastline, rivers, docks,
-      # basins), read from the same source as the clip's water: a point on
-      # the water is one ships are at, one on land (a city centre) is not.
-      # nil when the port has no position.
-      def position_on_water
-        require_relative "clip"
-        require_relative "../../seaports"
-        point = Seaports.coordinates(locode) or return nil
-        position = [point["lng"], point["lat"]]
-        Clip.on_water?(position, @water.call(Clip.on_water_bbox(position)))
-      rescue StandardError => e
-        raise unless e.is_a?(Clip::Failed) || e.is_a?(Clip::Unavailable) || (defined?(RGeo::Error::RGeoError) && e.is_a?(RGeo::Error::RGeoError))
-
-        raise Invalid, "#{locode}: the check of whether the port's position is on the water failed: #{e.message}"
       end
 
       # The scan of what OpenStreetMap maps inside the final limits (Inside),

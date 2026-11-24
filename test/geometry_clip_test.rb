@@ -210,30 +210,6 @@ class GeometryClipTest < Minitest::Test
     assert Seaports::Geometry::Checks.run(collection).ok?
   end
 
-  # The bay and the open sea are water; the land beside the bay is not.
-  def test_a_position_is_on_the_water_the_clip_reads
-    clip = Seaports::Geometry::Clip
-
-    assert clip.on_water?(Harbour.at(0, -700), Harbour.water), "in the bay"
-    assert clip.on_water?(Harbour.at(0, 800), Harbour.water), "at sea"
-    refute clip.on_water?(Harbour.at(-1200, -700), Harbour.water), "on the land west of the bay"
-    assert clip.on_water?(Harbour.at(-1075, -1450), Harbour.water), "in the pond, a water area"
-  end
-
-  # The fixture's port position is Rotterdam's, at the mouth of the bay.
-  def test_the_build_stores_whether_the_position_is_on_the_water
-    sel = selection({ "clip" => "water" })
-    tags = ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| f["osm"] == ref }["name"] }] } }
-    asked = []
-    water = ->(bbox) { asked << bbox; Harbour.water }
-    built = ->(on_water) { Builder.new(sel, shapes:, water:, tags:, inside: ->(_bbox) { [] }, on_water:).build }
-
-    assert_equal true, built.call(true)["position_on_water"]
-    refute built.call(false).key?("position_on_water")
-    point = Seaports.coordinates("NLRTM")
-    assert_includes asked, Seaports::Geometry::Clip.on_water_bbox([point["lng"], point["lat"]])
-  end
-
   MARINA = Harbour.box(-200, -1400, 200, -1000)
 
   def build_excluding(entries, extra = {})

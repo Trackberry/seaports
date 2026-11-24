@@ -404,18 +404,10 @@ A port that adopts `clip: water` will often find UN/LOCODE's position, the
 city centre, outside its limits once the land is gone: give the reason in
 `position_outside`, as for Rotterdam.
 
-The build also says whether that position lies on water at all, from the
-same water the clip reads (the sea within OpenStreetMap's coastline and the
-water areas it maps, within 1.5 km of the point): `position_on_water` in the
-file, `Seaports.position_on_water?` in Ruby. A tracker that counts a ship
-near UN/LOCODE's point as in port, for want of an outline, should do so only
-where the point is on water ships use, as Singapore's in Keppel Harbour is,
-and not where it is a city centre, as Antwerp's is.
+`Seaports.position_outside` reads the reason:
 
 ```ruby
 Seaports.position_outside("BEANR")   # => "UN/LOCODE places the port at (51.2167, 4.4167), in the city ..."
-Seaports.position_on_water?("BEANR") # => false
-Seaports.position_on_water?("SGSIN") # => true
 ```
 
 How a port is drafted:

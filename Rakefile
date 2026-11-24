@@ -291,7 +291,7 @@ namespace :seaports do
     shipped_canals = canal_collections
     failed = []
     locodes.each do |locode|
-      sources = extract ? { shapes: extract.shapes_for(locode), water: extract.water_for(locode), tags: extract.tags_for(locode), inside: extract.inside_for(locode), on_water: true } : {}
+      sources = extract ? { shapes: extract.shapes_for(locode), water: extract.water_for(locode), tags: extract.tags_for(locode), inside: extract.inside_for(locode) } : {}
       selection = builder_class.read_selection(builder_class.selection_path(locode))
       builder = builder_class.new(selection, **sources)
       collection = builder.build

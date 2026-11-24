@@ -426,15 +426,11 @@ class GeometryApiTest < Minitest::Test
     assert_predicate collection, :frozen?
   end
 
-  # Antwerp's UN/LOCODE point is the city centre, Rotterdam's on the Nieuwe
-  # Maas: only the second is somewhere a ship can be.
-  def test_says_whether_the_unlocode_position_is_on_the_water
-    assert_equal false, Seaports.position_on_water?("BEANR")
-    assert_equal true, Seaports.position_on_water?("NLRTM")
+  # Antwerp's limits are cut to the water, and UN/LOCODE's point is the city
+  # centre: the reviewed reason says so.
+  def test_says_why_the_unlocode_position_is_outside_the_limits
     assert_match "UN/LOCODE places the port", Seaports.position_outside("BEANR")
-    assert_nil Seaports.position_on_water?("MZMPM")
     assert_nil Seaports.position_outside("MZMPM")
-    assert(Seaports.geometry_locodes.all? { |locode| [true, false].include?(Seaports.position_on_water?(locode)) })
   end
 
   def test_a_port_with_no_outline_answers_nothing_rather_than_raising
