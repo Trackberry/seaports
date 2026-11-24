@@ -24,7 +24,12 @@ name: Port outlines
 #   this job. The weekly rebuild below, which fetches every port and opens a
 #   pull request for whatever moved, is what catches that.
 # - Weekly, it rebuilds every port to pick up OpenStreetMap's edits and opens
-#   one pull request with what moved, like refresh.yml does for UN/LOCODE. A
+#   one pull request with what moved, like refresh.yml does for UN/LOCODE.
+#   When an outline moved, the pull request also bumps the patch version and
+#   adds a changelog entry naming each port that moved, so merging it
+#   publishes the gem (release.yml). A release merged into main while this
+#   runs, or while its pull request waits, makes that bump stale: this run's
+#   last step and restack.yml then run it again on the new main. A
 #   port that could not be built keeps its old outline and fails the run, so
 #   a deleted feature or a failed download is not a quiet green tick. This
 #   job reads Geofabrik's daily extracts with osmium-tool (OSM_SOURCE=extract)
@@ -192,21 +197,64 @@ jobs:
           path: tmp/osm
           key: osm-extracts-${{ steps.date.outputs.today }}
 
+      # A release, like refresh.yml's: when an outline moved, the patch
+      # version after the one this run checked out of main goes into
+      # version.rb and Gemfile.lock, with a changelog entry naming each port
+      # that moved, so merging the pull request publishes the outlines.
+      - name: Decide the release
+        id: release
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          bundle exec rake seaports:geometry_release
+          echo "status=$(cat tmp/geometry_refresh/status)" >> "$GITHUB_OUTPUT"
+          if [ -f tmp/geometry_refresh/version ]; then
+            echo "version=$(cat tmp/geometry_refresh/version)" >> "$GITHUB_OUTPUT"
+          fi
+
+      # An earlier week's pull request that is still open holds outlines this
+      # run no longer produces. Closing it risks losing a review in progress,
+      # so it gets a comment instead. Not after a failed rebuild: a port that
+      # did not build kept its old outline, which says nothing about the
+      # earlier pull request. Once per staleness: not again while no commit
+      # has reached the branch since the last such comment.
+      - name: Mark an earlier refresh pull request stale
+        if: github.event_name != 'pull_request' && steps.release.outputs.status == 'unchanged' && steps.rebuild.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          pr=$(gh pr list --head refresh/geometry --state open --json number --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            exit 0
+          fi
+          # ISO 8601 times in UTC compare as strings. $pushed is jq's.
+          # shellcheck disable=SC2016
+          said=$(gh pr view "$pr" --json comments,commits --jq '
+            ([.commits[].committedDate] | max) as $pushed
+            | [.comments[] | select(.body | startswith("Stale:")) | .createdAt | select(. > $pushed)] | length')
+          if [ "$said" = "0" ]; then
+            gh pr comment "$pr" --body "Stale: this week's rebuild on $(date -u +%Y-%m-%d) moved no outline against main, so this branch no longer matches what OpenStreetMap gives. Close it, or wait for the next run to update it."
+          fi
+
       - name: Open what moved for review
         id: pull_request
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && steps.release.outputs.status == 'ok'
         uses: peter-evans/create-pull-request@v7
         with:
           branch: refresh/geometry
           base: main
           commit-message: "chore(data): refresh the port outlines from OpenStreetMap"
-          title: "Refresh the port outlines from OpenStreetMap"
-          body: "The weekly rebuild of `data/geometry` from the OpenStreetMap features each selection names. The diff has one feature per line, so it shows which terminals and anchorages moved."
+          title: Refresh the port outlines from OpenStreetMap (${{ steps.release.outputs.version }})
+          body-path: tmp/geometry_refresh/summary.md
           labels: data-refresh
           reviewers: edouard
           add-paths: |
             data/geometry/*.geojson
             data/geometry/canals/*.geojson
+            lib/seaports/version.rb
+            Gemfile.lock
+            CHANGELOG.md
 
       - name: Run CI on the refresh
         if: steps.pull_request.outputs.pull-request-operation == 'created' || steps.pull_request.outputs.pull-request-operation == 'updated'
@@ -219,3 +267,24 @@ jobs:
         run: |
           echo "::error::Some port outlines could not be rebuilt and kept their old shapes. The 'Rebuild every outline' step's log says which and why."
           exit 1
+
+      # The bump above was made from main as this run checked it out. A
+      # release merged while it built (the UN/LOCODE refresh, opened at 06:17,
+      # merged at 07:00) makes it stale: the pull request then conflicts on
+      # version.rb and the changelog, which GitHub will not merge. So run
+      # again on the new main, which bumps from the version just released.
+      # restack.yml does the same for a release merged after this run ends.
+      - name: Run again if main released while this ran
+        # Last, and whatever failed above: the new run cancels this one
+        # (concurrency), and this run has said all it had to.
+        if: always() && (steps.pull_request.outputs.pull-request-operation == 'created' || steps.pull_request.outputs.pull-request-operation == 'updated')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STARTED_AT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --quiet origin main
+          if ! git diff --quiet "$STARTED_AT" origin/main -- lib/seaports/version.rb; then
+            echo "::notice::main released a new version while this ran; rebuilding on it so the bump follows it."
+            gh workflow run geometry.yml --ref main
+          fi
