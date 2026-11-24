@@ -163,6 +163,7 @@ class SeaportsTest < Minitest::Test
     assert_equal "Asia/Shanghai", Seaports.timezone("CNXMG")
     assert_equal "Asia/Dubai", Seaports.timezone("AEABU")
     assert_equal "Australia/Lord_Howe", Seaports.timezone("AULDH")
+    assert_equal "Australia/Darwin", Seaports.timezone("AUMON")
     assert_equal "Asia/Dubai", Seaports.find("AEJEA").timezone
     assert_nil Seaports.timezone("not a locode")
   end

@@ -1,6 +1,8 @@
 locode,timezone,note
 ARBUI,America/Argentina/Buenos_Aires,"UN/LOCODE files it in Buenos Aires province (AR-B), which tzdata keeps in this zone; its position, to the minute, lands 1.3 km over the line in the Córdoba zone."
+AUCHV,Australia/Darwin,"Challis Venture oil terminal, in the Timor Sea, filed by UN/LOCODE under the Northern Territory (AU-NT) with its 16 other placed ports, all in Australia/Darwin. The nearest step would take Australia/Perth, the nearest coast, 90 minutes behind."
 AULDH,Australia/Lord_Howe,"Lord Howe Island keeps its own time, UTC+10:30 with a half-hour daylight saving shift. It has no position, and every other port of New South Wales is in Australia/Sydney, which the subdivision step would give it."
+AUMON,Australia/Darwin,"Montara Field, in the Timor Sea, filed by UN/LOCODE under the Northern Territory (AU-NT) with its 16 other placed ports, all in Australia/Darwin. The nearest step would take Australia/Perth, the nearest coast, 90 minutes behind."
 BRJZO,America/Bahia,"Juazeiro is in Bahia (BR-BA), across the São Francisco from Petrolina, Pernambuco; its position lands 0.9 km over the river in the Recife zone."
 BRNOR,America/Araguaina,"Praia Norte is in Tocantins (BR-TO), all of it in America/Araguaina; its position lands 0.1 km over the state line in the Fortaleza zone."
 CADEB,America/Toronto,"Deception Bay is in Nunavik, Quebec (CA-QC), on Eastern time with the rest of Quebec; the map has its position in Nunavut's America/Iqaluit, 1.1 km from Quebec."

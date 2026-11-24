@@ -31,7 +31,7 @@ out of the default gems.
 ## What is in it
 
 Every entry UN/LOCODE classifies as a sea port: **17,567 ports**, 13,216 of them
-with coordinates, 15,209 with a subdivision and 17,030 with a time zone,
+with coordinates, 15,209 with a subdivision and 17,038 with a time zone,
 rebuilt from UNECE's latest published list whenever it changes.
 
 ```ruby
@@ -294,18 +294,18 @@ ports of the two codes tzdata lists no zone for, `XZ` (installations in
 international waters) and `HM` (Heard and McDonald Islands), which take
 whatever zone the map has where they are, often one of the open sea's:
 `Etc/GMT-5` for Heard Island. Those names keep POSIX's sign, so `Etc/GMT-5`
-is UTC+5. 17,030 ports have one,
+is UTC+5. 17,038 ports have one,
 and the table records how each was found (`timezone_source`), best first:
 
 | Source | Ports | How |
 | --- | --- | --- |
-| `override` | 14 | A reviewed list, `data/sources/timezone_overrides.csv`, for ports whose position lands in the wrong zone or nowhere: Juazeiro, in Bahia, lands across the river in Pernambuco's zone, and Lord Howe Island has no position and keeps its own time. Each row says why. |
+| `override` | 16 | A reviewed list, `data/sources/timezone_overrides.csv`, for ports whose position lands in the wrong zone or nowhere: Juazeiro, in Bahia, lands across the river in Pernambuco's zone, Lord Howe Island has no position and keeps its own time, and two Timor Sea oil fields UN/LOCODE files under the Northern Territory keep Darwin's time rather than that of Western Australia, their nearest coast. Each row says why. |
 | `country` | 11,028 | The country's zone, where tzdata gives it only one. No position needed: every Dutch port is in `Europe/Amsterdam`. |
 | `map` | 5,131 | The zone the port's position falls in on [timezone-boundary-builder](https://github.com/evansiroky/timezone-boundary-builder)'s map, when that zone is one of the country's. The map's land zones reach over each country's territorial sea, so a waterfront position just offshore still lands in its own zone. |
-| `nearest` | 57 | The nearest of the country's zones, within 50 km of a position that landed in another country (Detroit's lands across the river in Toronto's zone), or 250 km of one out at sea (oil terminals on the North West Shelf, in the Gulf of Mexico and off Terengganu). The distance is measured in degrees of latitude, so east-west the reach is shorter, by the cosine of the latitude: 25 and 125 km at 60° N. |
-| `subdivision` | 800 | For a port nothing above places, mostly ports with no position in a country with several zones: the zone every port the map placed in the same subdivision is in, when at least three are and all agree. Bavaria's are all in `Europe/Berlin`, so a Bavarian port with no position is too. Florida's are split between New York and Chicago, so one with no position gets none. |
+| `nearest` | 55 | The nearest of the country's zones, within 50 km of a position that landed in another country (Detroit's lands across the river in Toronto's zone), or 250 km of one out at sea (oil terminals on the North West Shelf, in the Gulf of Mexico and off Terengganu). The distance is measured in degrees of latitude, so east-west the reach is shorter, by the cosine of the latitude: 25 and 125 km at 60° N. |
+| `subdivision` | 808 | For a port nothing above places, mostly ports with no position in a country with several zones: the zone every port the map placed in the same subdivision is in, when at least three are and all agree. Bavaria's are all in `Europe/Berlin`, so a Bavarian port with no position is too. Florida's are split between New York and Chicago, so one with no position gets none. |
 
-537 ports have none: ports with no position in a country with several zones
+529 ports have none: ports with no position in a country with several zones
 whose subdivision is split or unknown (Canada 134, Malaysia 88, Indonesia 82,
 Russia 43), and 19 whose position lands in no zone of their own country,
 all but one of them Antarctic stations. A
