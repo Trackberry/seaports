@@ -5,6 +5,7 @@ require "json"
 
 require_relative "../seaports"
 require_relative "alternate_names"
+require_relative "timezones"
 
 module Seaports
   # Rebuilds the shipped sea-port table from a published UN/LOCODE code list.
@@ -24,7 +25,8 @@ module Seaports
     SOURCE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/data/code-list.csv"
     DATAPACKAGE_URL = "https://raw.githubusercontent.com/datasets/un-locode/main/datapackage.json"
 
-    HEADERS = %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source coordinate_source alternate_names].freeze
+    HEADERS = %w[locode name lat lng subdivision principal_subdivision subdivision_path subdivision_source coordinate_source timezone timezone_source
+                 alternate_names].freeze
 
     # Where a port's position came from, best first. "unlocode" is UN/LOCODE's
     # own and always wins; a later regeneration may replace any of the others.
@@ -199,6 +201,38 @@ module Seaports
       changed
     end
 
+    # Writes the ports' time zones into the table at +path+ (see
+    # Seaports::Timezones), without the rest of a refresh: how the zones reach
+    # the table after a reviewed override, or after apply_coordinates moved a
+    # position. Returns the locodes whose zone changed.
+    def self.apply_timezones(timezones, path = Seaports::TABLE_PATH, overrides: Timezones.overrides)
+      table = CSV.read(path, headers: true)
+      zones = timezones.assign(table.map { |row| timezone_port(*row.fields("locode", "lat", "lng", "subdivision_path")) }, overrides:)
+      changed = []
+      rows = table.map do |row|
+        was = row.fields("timezone", "timezone_source")
+        row["timezone"], row["timezone_source"] = zones.fetch(row["locode"])
+        changed << row["locode"] if was != row.fields("timezone", "timezone_source")
+        row.fields(*HEADERS)
+      end
+      CSV.open(path, "w") do |csv|
+        csv << HEADERS
+        rows.each { |row| csv << row }
+      end
+      changed
+    end
+
+    # Timezones#disagreements over the table at +path+, as written.
+    def self.timezone_disagreements(timezones, path = Seaports::TABLE_PATH)
+      table = CSV.read(path, headers: true)
+      ports = table.map { |row| timezone_port(*row.fields("locode", "lat", "lng", "subdivision_path")) }
+      timezones.disagreements(ports, table.to_h { |row| [row["locode"], row.fields("timezone", "timezone_source")] })
+    end
+
+    def self.timezone_port(locode, lat, lng, path)
+      Timezones::Port.new(locode:, lat: lat.to_s.empty? ? nil : lat.to_f, lng: lng.to_s.empty? ? nil : lng.to_f, path: path.to_s.split)
+    end
+
     # Writes the supplementary positions in +layers+ (see coordinate_layers; a
     # flat { locode => [lat, lng] } counts as the "override" layer) into the
     # table at +path+, without a download: how a reviewed row reaches the table
@@ -214,14 +248,14 @@ module Seaports
       layers = { "override" => layers } if layers.values.first.is_a?(Array)
       changed = []
       rows = CSV.read(path, headers: true).map do |row|
-        next row.fields if row["coordinate_source"] == "unlocode" || (row["coordinate_source"].nil? && !row["lat"].to_s.empty?)
+        next row.fields(*HEADERS) if row["coordinate_source"] == "unlocode" || (row["coordinate_source"].nil? && !row["lat"].to_s.empty?)
 
         source, point = layers.lazy.filter_map { |name, points| [name, points[row["locode"]]] if points[row["locode"]] }.first
         was = [row["lat"].to_s, row["lng"].to_s]
         row["lat"], row["lng"] = point
         row["coordinate_source"] = point && source
         changed << row["locode"] if was != [row["lat"].to_s, row["lng"].to_s]
-        row.fields
+        row.fields(*HEADERS)
       end
       CSV.open(path, "w") do |csv|
         csv << HEADERS
@@ -256,9 +290,16 @@ module Seaports
     #
     # +alternate_names+ is a list of { locode => [names] }, best first (see
     # Builder.alternate_name_layers).
+    #
+    # +timezones+ (Seaports::Timezones) places each port in a time zone, with
+    # +timezone_overrides+ ({ locode => zone }) first. Without it the
+    # timezone columns stay empty, like the subdivision ones without
+    # +subdivisions+.
     def initialize(source, subdivisions: nil, boundaries: nil, overrides: {}, coordinate_overrides: {}, fallback_coordinates: [],
-      alternate_names: [], rejected_names: {})
+      alternate_names: [], rejected_names: {}, timezones: nil, timezone_overrides: {})
       @source = source
+      @timezones = timezones
+      @timezone_overrides = timezone_overrides
       @alternate_names = alternate_names
       @rejected_names = rejected_names
       @subdivisions = subdivisions
@@ -271,7 +312,8 @@ module Seaports
     end
 
     # [locode, name, lat, lng, subdivision, principal_subdivision,
-    # subdivision_path, subdivision_source, coordinate_source, alternate_names] per port, deduplicated and sorted
+    # subdivision_path, subdivision_source, coordinate_source, timezone,
+    # timezone_source, alternate_names] per port, deduplicated and sorted
     # by locode. The path is the subdivision and everything above it, space
     # separated, most specific first (see Seaports::Subdivisions#path).
     # Sorted because the file is committed: a stable order means a refresh
@@ -286,7 +328,10 @@ module Seaports
         # The last cell is the port's candidate names until each has been
         # compared with the rest of its country.
         names = AlternateNames.resolve(rows.map { |locode, name, *, candidates| [locode, name, candidates] })
-        rows.map { |row| [*row[0..-2], AlternateNames.dump(names.fetch(row.first, []))] }
+        # So is its time zone, since a port with no position can take the
+        # zone its subdivision's other ports agree on.
+        zones = timezones_for(rows)
+        rows.map { |row| [*row[0..-2], *zones.fetch(row.first, [nil, nil]), AlternateNames.dump(names.fetch(row.first, []))] }
       end
     end
 
@@ -328,10 +373,36 @@ module Seaports
       superseded_points = @coordinates_superseded.uniq.sort.map do |locode, own, override|
         "`#{locode}` now has UN/LOCODE coordinates (#{own.join(', ')}, not #{override.join(', ')}): its coordinate override can go."
       end
-      stale + superseded + stale_points + superseded_points
+      stale + superseded + stale_points + superseded_points + timezone_override_report
     end
 
     private
+
+    # The rows still end in their candidate names here; the path is the
+    # seventh cell.
+    def timezones_for(rows)
+      return {} if @timezones.nil?
+
+      @timezones.assign(rows.map { |locode, _, lat, lng, _, _, path| self.class.timezone_port(locode, lat, lng, path) },
+        overrides: @timezone_overrides)
+    end
+
+    # A time zone override whose port left the table, or that says what the
+    # port's own facts already give, can go.
+    def timezone_override_report
+      return [] if @timezones.nil?
+
+      ports = rows.to_h { |row| [row.first, row] }
+      @timezone_overrides.sort.filter_map do |locode, zone|
+        row = ports[locode]
+        next "`#{locode}` has a timezone override but is no longer a UN/LOCODE sea port: remove its row." if row.nil?
+
+        own, source = @timezones.zone_for(locode[0, 2], row[2], row[3])
+        next unless own == zone
+
+        "`#{locode}` is overridden to #{zone}, which its #{source == 'country' ? 'country' : 'position'} gives anyway: its timezone override can go."
+      end
+    end
 
     # UNECE classifies every entry by function, and position 1 of that string
     # is "port" — the only one a vessel can call at. Keeping the other 98k

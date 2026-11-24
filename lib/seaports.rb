@@ -69,10 +69,23 @@ module Seaports
   # +name+ is "Antwerpen". Never the +name+ itself; [] when there are none.
   # Their sources are in the README. A name is never another port's own name
   # in the same country, and never one that several ports of a country share.
+  #
+  # +timezone+ (added in 1.9.0) is the IANA time zone the port keeps its
+  # clock in, as a string: "Europe/Madrid" for Valencia, "Atlantic/Canary"
+  # for Las Palmas, "America/Chicago" for the Louisiana Offshore Oil Port.
+  # Hand it to TZInfo (or ActiveSupport::TimeZone) for the offset on a given
+  # date, which a fixed offset from one feed message cannot give across a
+  # daylight saving change. Always one of the zones tzdata lists for the
+  # port's country, except in XZ and HM, which it lists none for: their
+  # ports take the map's zone where they are, often the open sea's Etc/GMT
+  # ones, whose sign is POSIX's (Etc/GMT-5 is UTC+5). Nil when nothing places the port: a port with no
+  # position in a country with several zones, unless the other ports of its
+  # subdivision agree on one. How each was found is in the README.
   NO_NAMES = [].freeze
 
-  Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision, :subdivision_path, :alternate_names) do
-    def initialize(locode:, name:, coordinates:, subdivision: nil, principal_subdivision: nil, subdivision_path: [], alternate_names: NO_NAMES)
+  Port = Data.define(:locode, :name, :coordinates, :subdivision, :principal_subdivision, :subdivision_path, :alternate_names, :timezone) do
+    def initialize(locode:, name:, coordinates:, subdivision: nil, principal_subdivision: nil, subdivision_path: [], alternate_names: NO_NAMES,
+      timezone: nil)
       super
     end
   end
@@ -120,6 +133,11 @@ module Seaports
     # code the table does not hold. See Port.
     def alternate_names(locode)
       find(locode)&.alternate_names || NO_NAMES
+    end
+
+    # "Europe/Madrid" for ESVLC, or nil. See Port.
+    def timezone(locode)
+      find(locode)&.timezone
     end
 
     # The port's outline as GeoJSON: a deep-frozen FeatureCollection with
@@ -269,7 +287,7 @@ module Seaports
         ports[locode] = Port.new(locode: locode, name: row["name"], coordinates: point(row),
           subdivision: presence(row["subdivision"]), principal_subdivision: presence(row["principal_subdivision"]),
           subdivision_path: row["subdivision_path"].to_s.split.freeze,
-          alternate_names: names_of(row))
+          alternate_names: names_of(row), timezone: zone_of(row))
       end
     end
 
@@ -278,6 +296,13 @@ module Seaports
     def names_of(row)
       names = row["alternate_names"].to_s.split("|").map(&:strip).reject(&:empty?)
       names.empty? ? NO_NAMES : names.freeze
+    end
+
+    # Interned: 17,000 ports name 360 zones, so they share one string per
+    # zone rather than holding one each.
+    def zone_of(row)
+      zone = presence(row["timezone"])
+      zone && -zone
     end
 
     def point(row)
