@@ -8,10 +8,10 @@ note: >-
   waiting areas for the northbound convoy are kept, following the Suez Canal Authority's Rules of Navigation
   (Art. 9, Suez), which give incoming ships two areas: the V berths, V1 to V9, and the East Waiting Area,
   whose berths OpenStreetMap numbers 1 to 29. Left out: the West Waiting Area, W1 to W14, which the rules
-  do not give to the convoy; and the lettered areas north of both waiting areas, nearer Port Tawfiq and
-  Adabiya (the A, B, C, D and H series and two areas named C1), which are in neither. OpenStreetMap tags
-  none of them with a category, so the split is by the names and by which of the rules' buoyed limits
-  each area lies in.
+  give to ships awaiting orders, bunkering, under repair or entering the ports of Suez and Adabiya; and
+  the lettered areas north of both waiting areas, nearer Port Tawfiq and Adabiya (the A, B, C, D and H
+  series and two areas named C1), which are in neither. OpenStreetMap tags none of them with a category,
+  so the split is by the names and by which of the rules' buoyed limits each area lies in.
 ends:
   north: Port Said
   south: Suez

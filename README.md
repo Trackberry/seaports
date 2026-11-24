@@ -639,9 +639,9 @@ anchorage outside the Colón breakwaters, a pilot boarding place at the Suez
 end, and anchorages off Port Said East. In Suez Bay only the northbound
 convoy's waiting areas are the canal's: the V berths and the East Waiting Area,
 which the Suez Canal Authority's Rules of Navigation give to incoming ships.
-The West Waiting Area (W1 to W14), which the rules do not give to the convoy,
-and the lettered areas nearer Port Tawfiq are left out, so a ship there reads as
-waiting for no canal.
+The West Waiting Area (W1 to W14), for ships awaiting orders, bunkering, under
+repair or bound for Suez and Adabiya, and the lettered areas nearer Port Tawfiq
+are left out, so a ship there reads as waiting for no canal.
 
 At the Kiel Canal only the two roadsteads the Bekanntmachung zur
 Seeschifffahrtsstraßen-Ordnung keeps for ships bound for the locks are the
@@ -805,8 +805,8 @@ Semver, where the data is the product:
 | | |
 | --- | --- |
 | **patch** | code fixes, or a refresh of the port outlines from OpenStreetMap; table unchanged |
-| **minor** | a UN/LOCODE refresh — ports added, renamed, repositioned |
-| **major** | an API change, or a refresh that removes ports known to be load-bearing |
+| **minor** | an additive API change, or a UN/LOCODE refresh — ports added, renamed, repositioned |
+| **major** | a changed or removed API, or a refresh that removes ports known to be load-bearing |
 
 `Seaports.data_refreshed_on` tells you the day your copy's table last changed,
 which is the question a gem version cannot answer. `Seaports.data_release` names
