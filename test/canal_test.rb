@@ -110,6 +110,31 @@ class CanalBuilderTest < Minitest::Test
     assert_raises(Seaports::Geometry::Builder::Invalid) { build(selection(ends: { "north" => "Port Said" })) }
   end
 
+  # The Kiel Canal runs west to east: its ends are west and east, and its
+  # areas take those approaches, not north and south.
+  def test_a_canal_running_west_to_east_has_west_and_east_ends
+    ends = { "west" => "Brunsbüttel", "east" => "Kiel-Holtenau" }
+    features = selection["features"].map { |f| f["approach"] ? f.merge("approach" => "west") : f }
+    collection = build(selection(features, canal: "kiel", ends:))
+
+    assert_equal ends, collection["ends"]
+    assert Checks.run(collection, file_id: "kiel").ok?
+    error = assert_raises(Seaports::Geometry::Builder::Invalid) { build(selection(canal: "kiel", ends:)) }
+    assert_match "approach \"north\" is not one of west, east, in_transit", error.message
+  end
+
+  def test_refuses_ends_that_are_not_opposite
+    assert_raises(Seaports::Geometry::Builder::Invalid) { build(selection(ends: { "north" => "Port Said", "east" => "Suez" })) }
+    assert_raises(Seaports::Geometry::Builder::Invalid) { build(selection(ends: { "north" => "Port Said", "south" => " " })) }
+  end
+
+  def test_a_shipped_area_whose_approach_is_not_one_of_its_canals_ends_is_an_error
+    collection = build
+    collection["features"][1]["properties"]["approach"] = "east"
+
+    assert(Checks.run(collection).errors.any? { |line| line.include?('approach "east" is not one of north, south, in_transit') })
+  end
+
   def test_a_waterway_made_of_a_node_is_refused
     features = selection["features"].map { |f| f["kind"] == "waterway" ? f.merge("osm" => "node/4") : f }
 
@@ -230,13 +255,13 @@ class CanalApiTest < Minitest::Test
   Builder = Seaports::Canal::Builder
 
   def test_lists_the_canals
-    assert_equal %w[panama suez], Seaports.canal_ids
-    assert_equal %w[panama suez], Seaports.canals.map(&:id)
+    assert_equal %w[kiel panama suez], Seaports.canal_ids
+    assert_equal %w[kiel panama suez], Seaports.canals.map(&:id)
   end
 
   def test_finds_a_canal_whatever_the_case_and_answers_nil_for_an_unknown_one
     assert_equal "Suez Canal", Seaports.canal(" SUEZ ").name
-    assert_nil Seaports.canal("kiel")
+    assert_nil Seaports.canal("corinth")
     assert_nil Seaports.canal("../suez")
   end
 
@@ -257,13 +282,25 @@ class CanalApiTest < Minitest::Test
   def test_each_canal_has_one_waterway_and_anchorages_at_both_ends
     Seaports.canals.each do |canal|
       assert_equal "MultiLineString", canal.waterway.geometry["type"], canal.id
-      %w[north south].each { |approach| refute_empty canal.anchorages_for(approach), "#{canal.id} #{approach}" }
       assert_equal 2, canal.ends.size
+      canal.ends.each_key { |approach| refute_empty canal.anchorages_for(approach), "#{canal.id} #{approach}" }
     end
   end
 
   def test_an_unknown_approach_raises
     assert_raises(ArgumentError) { Seaports.canal("suez").anchorages_for(:northbound) }
+    assert_raises(ArgumentError) { Seaports.canal("kiel").anchorages_for(:north) }
+  end
+
+  def test_a_ship_on_the_holtenau_roads_is_waiting_at_the_east_end_of_the_kiel_canal
+    kiel = Seaports.canal("kiel")
+    roads = kiel.anchorages_for(:east).first
+    area = Seaports.canal_anchorage_at(roads.lat, roads.lng)
+
+    assert_equal %w[kiel east], [area.canal, area.approach]
+    assert_equal "Kiel-Holtenau", kiel.end_name(area.approach)
+    assert_equal "Brunsbüttel", kiel.end_name(:west)
+    assert_equal %w[west east in_transit], kiel.approaches
   end
 
   def test_every_label_point_is_inside_its_area_and_every_area_is_licensed
