@@ -137,6 +137,7 @@ jobs:
             data/sources/wpi/provenance.json
             data/sources/wikidata_provenance.json
             lib/seaports/version.rb
+            Gemfile.lock
             CHANGELOG.md
 
       - name: Run CI on the refresh
@@ -144,3 +145,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh workflow run ci.yml --ref refresh/un-locode
+
+      # The bump was made from main as this run checked it out. A release
+      # merged while it ran makes it stale, and the pull request conflicts on
+      # version.rb and the changelog: run again on the new main, which bumps
+      # from the version just released. restack.yml does the same for a
+      # release merged after this run ends.
+      - name: Run again if main released while this ran
+        if: steps.refresh.outputs.status == 'ok' && (steps.pull_request.outputs.pull-request-operation == 'created' || steps.pull_request.outputs.pull-request-operation == 'updated')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STARTED_AT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git fetch --quiet origin main
+          if ! git diff --quiet "$STARTED_AT" origin/main -- lib/seaports/version.rb; then
+            echo "::notice::main released a new version while this ran; refreshing again on it so the bump follows it."
+            gh workflow run refresh.yml --ref main
+          fi

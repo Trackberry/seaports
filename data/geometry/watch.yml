@@ -1,0 +1,170 @@
+# The ports drafted and held, or skipped, because OpenStreetMap did not map
+# their terminals. Weekly, .github/workflows/watch.yml runs
+# `rake seaports:watch`, which asks OpenStreetMap for the named areas within
+# radius_km of each port's UN/LOCODE position (or of the locode named by
+# around, when the terminals are elsewhere) that could be a terminal, and
+# opens an issue labelled port-watch when one appears that nobody has looked
+# at. Nothing here is a coordinate, and nothing the watch finds becomes an
+# outline by itself: draft the port with rake seaports:geometry_candidates.
+#
+# known: the features already looked at when the port was held, which are not
+# enough for an outline (a port area with no terminals in it, a terminal of
+# another port). Features an earlier port-watch issue named count as looked at
+# too, open or closed, so this list only needs the ones from before the watch.
+#
+# Take a port out once it is outlined: the watch skips it and says so.
+ports:
+  - locode: KRPUS
+    name: Busan
+    around: KRBNP
+    radius_km: 12
+    reason: "OpenStreetMap maps only two of Busan New Port's container terminals as areas (Dongwon Global Terminal and a small EUNSAN yard), too few to outline the port."
+    unblock: "The rest of the New Port container terminals mapped as named areas."
+    known:
+      way/712587486: "EUNSAN Container Terminals"
+      way/864163962: "Dongwon Global Terminal"
+  - locode: JPYOK
+    name: Yokohama
+    radius_km: 10
+    reason: "OpenStreetMap maps none of Yokohama's container terminals as areas; the one container terminal within the radius is Kawasaki's Higashi-Ogishima."
+    unblock: "Yokohama's container terminals (Honmoku, Minami-Honmoku, Daikoku) mapped as named areas."
+    known:
+      relation/15635176: "東扇島 Terminal"
+      way/158475244: "横浜市港北土木事務所"
+  - locode: JPNGO
+    name: Nagoya
+    radius_km: 15
+    reason: "OpenStreetMap maps one of Nagoya's container terminals as an area (Nabeta Pier), not the others."
+    unblock: "The other container terminals (Tobishima, Kinjo) mapped as named areas."
+    known:
+      way/194877256: "ブラザー工業 港工場"
+      way/402396106: "港北ポンプ所"
+      way/552566750: "Nabeta Pier Container Terminal"
+      way/704074531: "Toyota Tobishima Wharf Center"
+      way/758854036: "ピア納屋橋"
+  - locode: CNQDG
+    name: Qingdao
+    radius_km: 15
+    reason: "OpenStreetMap maps Qianwan as one port area of some 80 km² (QQCT, relation 6827312), not its container terminals one by one."
+    unblock: "Qingdao's container terminals (Qianwan, Qianwan's automated terminal) mapped as named areas."
+    known:
+      relation/6827312: "Port of Qingdao Qianwan（QQCT）"
+      way/1145936639: "青岛港"
+      way/1258530251: "香港工业园(东京路)"
+      way/1378191242: "港口机械厂"
+      way/1378191253: "远港公司"
+      way/1457959687: "青岛临港木业有限公司"
+      way/1512617613: "邮轮母港停车场"
+      way/1524284182: "中苑旅游码头"
+      way/979347630: "普洛斯青岛前湾港国际物流园"
+  - locode: CNTXG
+    name: Tianjin
+    radius_km: 15
+    reason: "OpenStreetMap maps the Port of Tianjin and its Nanjiang zone as whole port areas, not its container terminals."
+    unblock: "Tianjin's container terminals mapped as named areas inside the port."
+    known:
+      way/1084070326: "天津新港船舶重工有限责任公司"
+      way/1089370626: "Huaneng Lingang Gas Thermal Power Plant"
+      way/136739388: "南疆港区"
+      way/1424329599: "万纬天津东疆港冷链园区"
+      way/1424329602: "天津港首农食品进出口贸易有限公司"
+      way/366042765: "天津港集装箱验放中心"
+      way/476319380: "Port of Tianjin"
+      way/476319391: "Port of Tianjin"
+  - locode: CNSGH
+    name: Shanghai Waigaoqiao
+    radius_km: 25
+    reason: "OpenStreetMap maps the Waigaoqiao Port Zone as one industrial area, not its container terminals. Waigaoqiao's own locode, CNWGQ, has no position, so the search is around Shanghai's."
+    unblock: "Waigaoqiao's container terminals mapped as named areas."
+    known:
+      way/1037077593: "上港集团张华浜码头"
+      way/1237554257: "临港洞泾大厦"
+      way/1245999884: "上海港城电力工程安装有限公司 0 / 5.0 公司"
+      way/1341225364: "张江翔港科创园"
+      way/1379644677: "东港股份上海产业园"
+      way/154618453: "SIPG Jungong Road Dock"
+      way/1553345056: "晟者沙石码头"
+      way/156750260: "Shanghai Port International Cruise Terminal"
+      way/168476034: "Shanghai Container Terminal"
+      way/295100795: "Shanghai International Port (Group) Co., Ltd. Longwu Branch"
+      way/546229833: "环卫码头"
+      way/653753852: "白龙港污水处理厂"
+      way/657623168: "闵吴垃圾码头"
+      way/657772208: "上海关港工业园区"
+      way/74595894: "Waigaoqiao Port Zone"
+      way/74595896: "Waigaoqiao Port Zone"
+  - locode: THLCH
+    name: Laem Chabang
+    radius_km: 8
+    reason: "OpenStreetMap maps Laem Chabang Port as one area with a single terminal (B1) inside it."
+    unblock: "The other Laem Chabang terminals mapped as named areas."
+    known:
+      way/1387959188: "B1 Terminal"
+      way/1481266561: "02R"
+      way/198261241: "Laem Chabang Port"
+  - locode: MACAS
+    name: Casablanca
+    radius_km: 8
+    reason: "OpenStreetMap maps the Port of Casablanca as one area, not its terminals."
+    unblock: "Casablanca's container terminals mapped as named areas."
+    known:
+      way/58216381: "Port of Casablanca"
+  - locode: MZMPM
+    name: Maputo
+    radius_km: 8
+    reason: "OpenStreetMap maps no named terminal or port area at Maputo."
+    unblock: "Maputo's container terminal mapped as a named area."
+  - locode: USPEF
+    name: Port Everglades
+    radius_km: 6
+    reason: "OpenStreetMap maps Port Everglades as two port areas, not its container terminals."
+    unblock: "Port Everglades' container terminals mapped as named areas."
+    known:
+      way/41456764: "Port Everglades"
+      way/542155046: "Port Everglades Power Plant"
+      way/808568520: "Port Everglades"
+  - locode: USLGB
+    name: Long Beach
+    radius_km: 8
+    reason: "OpenStreetMap maps one of Long Beach's container terminals as an area (Berths 206-209), and Terminal Island as a whole, not the others. Los Angeles's terminals, which are already outlined, are left out of the search."
+    unblock: "Long Beach's other container terminals (Piers E, G, J and T) mapped as named areas."
+    known:
+      relation/11842076: "Terminal Island"
+      relation/14285491: "Berths 206-209"
+      way/767648200: "Harbor Cogen"
+      way/80213757: "Harbor Generating Station"
+      way/867561578: "Pier 16"
+  - locode: ZADUR
+    name: Durban
+    radius_km: 8
+    reason: "OpenStreetMap maps the Port of Durban as one area, not its terminals."
+    unblock: "Durban's container terminals (Pier 1, Pier 2) mapped as named areas."
+    known:
+      way/1329900254: "Port of Durban"
+  - locode: EGDAM
+    name: Damietta
+    radius_km: 10
+    reason: "OpenStreetMap maps Damietta Port as one harbour area, not its container terminal."
+    unblock: "Damietta's container terminal mapped as a named area."
+    known:
+      way/1135303467: "Damietta LNG Terminal Power Station"
+      way/97363468: "Damietta Port"
+  - locode: MAAGA
+    name: Agadir
+    radius_km: 6
+    reason: "OpenStreetMap maps no named terminal or port area at Agadir."
+    unblock: "Agadir's commercial port or its terminals mapped as named areas."
+  - locode: COTRB
+    name: Turbo
+    radius_km: 25
+    reason: "OpenStreetMap maps no named terminal or port area on the Gulf of Urabá near Turbo, where the banana and container trade loads."
+    unblock: "A terminal on the gulf, such as Puerto Antioquia, mapped as a named area."
+  - locode: GIGIB
+    name: Gibraltar
+    radius_km: 4
+    reason: "OpenStreetMap maps the Gibdock shipyard and port areas across the border in Spain, not Gibraltar's own cargo and cruise quays."
+    unblock: "Gibraltar's commercial quays mapped as named areas."
+    known:
+      way/1254615022: "Alcaidesa Varadero"
+      way/167275882: "Gibdock"
+      way/702562146: "Instalaciones Portuarias de Campamento"

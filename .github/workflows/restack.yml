@@ -1,0 +1,52 @@
+name: Restack the refresh pull requests on a release
+
+# Two weekly jobs open pull requests that release the gem: refresh.yml
+# (UN/LOCODE, a minor version, Mondays at 06:17) and geometry.yml (the port
+# outlines, a patch, Mondays at 06:41). Each bumps the version it found on
+# main when it ran, so on a Monday when both have something, both pull
+# requests bump from the same version. Merging one releases it, and the
+# other's bump is then stale: it conflicts on version.rb and the changelog,
+# which GitHub will not merge, so it can never publish a version twice.
+#
+# This turns that conflict into a fresh pull request. When a release lands on
+# main (version.rb changed, which only a merged pull request can do), each
+# open refresh pull request that still bumps the version is run again on the
+# new main, by its own workflow, which rebuilds it and bumps from the version
+# just released. A release merged while one of those jobs is still running is
+# caught by the job itself, at its last step.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lib/seaports/version.rb"
+
+permissions:
+  actions: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  restack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run the stale refreshes again on main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          for pair in refresh/un-locode:refresh.yml refresh/geometry:geometry.yml; do
+            branch="${pair%%:*}"
+            workflow="${pair#*:}"
+            pr=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // empty')
+            if [ -z "$pr" ]; then
+              continue
+            fi
+            # A pull request that releases nothing (refresh.yml's "no
+            # release" kind) does not conflict, and is left alone.
+            if gh pr diff "$pr" --name-only | grep -qxF lib/seaports/version.rb; then
+              echo "#$pr ($branch) bumps from a version main has moved past; running $workflow again on main."
+              gh pr comment "$pr" --body "main released a new version, so this pull request's version bump is stale. $workflow is running again on main and will update this branch with a bump from the new version."
+              gh workflow run "$workflow" --ref main
+            fi
+          done

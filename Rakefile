@@ -202,11 +202,10 @@ namespace :seaports do
   # A data refresh is a minor bump: ports appear and get renamed, which is
   # additive for anyone reading a name, and the code did not change.
   def bump_version(release)
-    path = "lib/seaports/version.rb"
-    major, minor, = Seaports::VERSION.split(".").map(&:to_i)
-    version = "#{major}.#{minor + 1}.0"
-
-    File.write(path, Seaports::Builder.stamp_version(File.read(path), version:, release:, refreshed_on: Date.today.iso8601))
+    require_relative "lib/seaports/release"
+    version = Seaports::Release.next_version(Seaports::VERSION, :minor)
+    Seaports::Release.write_version(version,
+      stamp: ->(text) { Seaports::Builder.stamp_version(text, version:, release:, refreshed_on: Date.today.iso8601) })
 
     File.write(File.join(REFRESH_DIR, "version"), "#{version}\n")
     version
@@ -223,8 +222,7 @@ namespace :seaports do
       entry += ["", "Removed: #{diff.removed.join(', ')}."]
     end
 
-    content = File.read("CHANGELOG.md")
-    File.write("CHANGELOG.md", content.sub(/\n## /, "\n#{entry.join("\n")}\n\n## "))
+    Seaports::Release.write_changelog(entry)
   end
 end
 
@@ -455,5 +453,43 @@ namespace :seaports do
     puts "#{result.locode}: #{result.ok? ? 'ok' : 'FAILED'}"
     result.errors.each { |line| puts "  error: #{line}" }
     result.warnings.each { |line| puts "  warning: #{line}" }
+  end
+end
+
+namespace :seaports do
+  # Recurring: geometry.yml runs it after the weekly rebuild. When an outline
+  # moved against the commit checked out (main, as the run found it), it
+  # bumps the patch version in lib/seaports/version.rb and Gemfile.lock and
+  # writes a changelog entry with one line per port that moved, so merging
+  # the pull request releases the outlines. Leaves status, version and
+  # summary.md in tmp/geometry_refresh for the workflow.
+  desc "After a rebuild: bump the patch version and log the outlines that moved"
+  task :geometry_release do
+    require "open3"
+    require_relative "lib/seaports/geometry/changes"
+
+    read_before = lambda do |path|
+      text, _, status = Open3.capture3("git", "show", "HEAD:#{path}")
+      status.success? ? text : nil
+    end
+    ports = Seaports::Geometry::Changes.perform(read_before:)
+    puts ports.empty? ? "No port outline moved." : ports.map(&:line)
+  end
+
+  # Recurring: .github/workflows/watch.yml runs it weekly. Asks
+  # OpenStreetMap for named areas that could be terminals near each port in
+  # data/geometry/watch.yml, and writes the issues to raise for the ones
+  # nobody has looked at to tmp/watch (see Seaports::Geometry::Watch).
+  # +issues+ is the JSON `gh issue list --label port-watch --state all --json
+  # number,state,body,comments` wrote, which says what was raised before.
+  # Never writes an outline.
+  desc "Look for OpenStreetMap terminals at the ports held for want of them"
+  task :watch, [:issues, :watch, :out] do |_task, args|
+    require_relative "lib/seaports/geometry/watch"
+
+    watch = Seaports::Geometry::Watch
+    results = watch.perform(path: args[:watch] || watch::PATH, issues_path: args[:issues], out_dir: args[:out] || "tmp/watch")
+    failed = results.select(&:error).map { |result| result.entry.locode }
+    abort "Not checked: #{failed.join(', ')}" unless failed.empty?
   end
 end

@@ -421,7 +421,26 @@ How a port is drafted:
    branch, so the reviewer sees shapes. Weekly, it rebuilds every port to pick
    up OpenStreetMap's edits, from Geofabrik's extracts, and opens one pull
    request with what moved. The GeoJSON has one feature per line, so that
-   diff shows which terminal moved.
+   diff shows which terminal moved. When an outline moved, that pull request
+   also bumps the patch version and adds a changelog entry with one line per
+   port that moved (`rake seaports:geometry_release`), so merging it
+   publishes the outlines (see [Releases from the weekly
+   jobs](#releases-from-the-weekly-jobs)).
+
+Some ports were drafted and held because OpenStreetMap does not map their
+terminals: Busan New Port, Yokohama, Qingdao and others.
+`data/geometry/watch.yml` lists each with why and what would unblock it, a
+search radius around its UN/LOCODE position (no coordinates are typed in),
+and the features already looked at. Weekly, `.github/workflows/watch.yml` runs
+`rake seaports:watch`, which asks Overpass for the named areas near each that
+could be a terminal (container terminals, named port and harbour areas,
+seamark harbours, industrial areas with a port-like name or operator). When
+one appears that nobody has looked at, it opens an issue labelled
+`port-watch`, "OpenStreetMap now maps terminals at Busan", with each feature's
+id and a link, or comments on the port's open issue. It never writes an
+outline and closes nothing. Each feature is raised once: the issues, open or
+closed, are its memory, so closing one whose features are no use is how to
+say so.
 
 Not checked yet: that anchorages are on water and terminals touch land, and
 that outlines match where ships really stop. Both wait for a record of ship
@@ -606,13 +625,34 @@ Merging that pull request changes `lib/seaports/version.rb`, which is the only
 thing that triggers a release. The gem is published by RubyGems trusted
 publishing, so there is no API key in this repository.
 
+### Releases from the weekly jobs
+
+Two weekly jobs open pull requests that release: this one (a minor version,
+Mondays at 06:17 UTC) and the port outline rebuild in `geometry.yml` (a patch,
+at 06:41). Each bumps the version it found on main when it ran, and writes it
+to `lib/seaports/version.rb` and `Gemfile.lock` with a changelog entry, so on
+a Monday when both find something, both bump from the same version. They can
+never publish the same version twice: the two pull requests change the same
+lines of `version.rb` and the changelog, so once one is merged GitHub will not
+merge the other. Instead of leaving that conflict for a person:
+
+- when a release lands on main, `.github/workflows/restack.yml` runs each open
+  refresh pull request that still bumps the version again on the new main, by
+  its own workflow, which rebuilds it and bumps from the version just
+  released;
+- a job that finds main released while it was running (its pull request
+  merged into a main it no longer starts from) runs itself again on main, as
+  its last step.
+
+`release.yml` still refuses a version already on RubyGems.
+
 ## Versioning
 
 Semver, where the data is the product:
 
 | | |
 | --- | --- |
-| **patch** | code fixes, table unchanged |
+| **patch** | code fixes, or a refresh of the port outlines from OpenStreetMap; table unchanged |
 | **minor** | a UN/LOCODE refresh — ports added, renamed, repositioned |
 | **major** | an API change, or a refresh that removes ports known to be load-bearing |
 

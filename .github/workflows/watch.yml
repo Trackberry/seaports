@@ -1,0 +1,86 @@
+name: Watch the held ports
+
+# Some ports were drafted and held, or skipped, because OpenStreetMap did not
+# map their terminals: data/geometry/watch.yml lists them, with why and what
+# would unblock each. Weekly, this asks OpenStreetMap for the named areas near
+# each that could be a terminal (rake seaports:watch) and, when one appears
+# that nobody has looked at, opens an issue labelled port-watch, or comments
+# on the port's open one. It never writes an outline and closes nothing.
+#
+# What has been looked at is kept in two places, neither of which expires:
+# the known: features in watch.yml, reviewed when the port was held, and the
+# features every earlier port-watch issue named, open or closed. Closing an
+# issue whose features are no use is how a person says so.
+#
+# Overpass, not Geofabrik's extracts: the rebuild in geometry.yml downloads
+# only the regions of ports already outlined, and the held ports are in
+# others (Korea, Japan, China, Thailand), gigabytes each. A dozen small
+# bounding-box queries a week, paced, are well inside Overpass's limits.
+on:
+  schedule:
+    - cron: "7 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      # The bundle includes rgeo, which links GEOS when it is built: GEOS goes
+      # in first, or rgeo installs without it and the shared cache keeps that
+      # copy.
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgeos-dev
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+          # Gems built against GEOS never share a cache with ones that were not.
+          cache-version: geos
+
+      - name: Read the earlier port-watch issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh label create port-watch --color 0E8A16 --description "OpenStreetMap may now map a held port's terminals" --force
+          mkdir -p tmp
+          gh issue list --label port-watch --state all --limit 1000 --json number,state,body,comments > tmp/port-watch-issues.json
+
+      # A port whose query fails is reported by the last step; the others
+      # still get their issues.
+      - name: Ask OpenStreetMap
+        id: watch
+        continue-on-error: true
+        run: bundle exec rake "seaports:watch[tmp/port-watch-issues.json]"
+
+      - name: Raise what is new
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -f tmp/watch/summary.md ]; then
+            cat tmp/watch/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          for body in tmp/watch/*.md; do
+            locode=$(basename "$body" .md)
+            # Only names shaped like a locode: summary.md, or a glob that
+            # matched nothing, is not a port.
+            if ! [[ "$locode" =~ ^[A-Z]{2}[A-Z0-9]{3}$ ]]; then
+              continue
+            fi
+            if [ -f "tmp/watch/$locode.issue" ]; then
+              gh issue comment "$(cat "tmp/watch/$locode.issue")" --body-file "$body"
+            else
+              gh issue create --title "$(cat "tmp/watch/$locode.title")" --body-file "$body" --label port-watch --assignee edouard
+            fi
+          done
+
+      - name: Fail for the ports not checked
+        if: steps.watch.outcome == 'failure'
+        run: |
+          echo "::error::Some held ports could not be checked. The 'Ask OpenStreetMap' step's log says which and why."
+          exit 1
