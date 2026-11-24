@@ -48,7 +48,7 @@ class GeometryChangesTest < Minitest::Test
       "NLRTM" => collection(feature("port_limits", %w[way/1 way/2]), feature("terminal", "way/1", name: "Euromax Terminal"),
         feature("anchorage", "relation/9", name: "4 East Anchorage")),
       "BEANR" => collection(feature("terminal", "way/5", name: "Deurganck")),
-      "suez" => collection(feature("waterway", "way/7", name: "Suez Canal"))
+      "suez" => collection(feature("waterway", "way/7", name: "Suez Canal")).merge("name" => "Suez Canal")
     }
     after = {
       "NLRTM" => collection(feature("port_limits", %w[way/2 way/1], x: 1), feature("terminal", "way/1", name: "Euromax Terminal", x: 1),
@@ -63,6 +63,20 @@ class GeometryChangesTest < Minitest::Test
     assert_equal "Rotterdam (`NLRTM`): the port limits and Euromax Terminal changed; 5 East Anchorage added; 4 East Anchorage removed.",
       ports.first.line
     assert_equal "Suez Canal (`suez`): Suez Canal changed.", ports.last.line
+  end
+
+  def test_a_renamed_feature_is_changed_and_the_collections_own_fields_count
+    before = { "NLRTM" => collection(feature("terminal", "way/1", name: "ECT Delta")).merge("quays" => ["NLBOT"], "selection_digest" => "a") }
+    after = { "NLRTM" => collection(feature("terminal", "way/1", name: "Euromax Terminal")).merge("quays" => %w[NLBOT NLEUR], "selection_digest" => "b") }
+
+    port = Changes.between(before, after, names: { "NLRTM" => "Rotterdam" }).first
+
+    assert_equal ["Euromax Terminal"], port.changed
+    assert_empty port.added
+    assert_equal "Rotterdam (`NLRTM`): Euromax Terminal changed; the outline's quays and selection digest changed.", port.line
+
+    only_fields = Changes.between({ "NLRTM" => collection.merge("quays" => []) }, { "NLRTM" => collection.merge("quays" => ["NLBOT"]) })
+    assert_equal "NLRTM (`NLRTM`): the outline's quays changed.", only_fields.first.line
   end
 
   def test_a_port_new_on_one_side_is_all_added

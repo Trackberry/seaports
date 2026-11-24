@@ -468,10 +468,17 @@ namespace :seaports do
     require "open3"
     require_relative "lib/seaports/geometry/changes"
 
-    read_before = lambda do |path|
-      text, _, status = Open3.capture3("git", "show", "HEAD:#{path}")
-      status.success? ? text : nil
+    # Nil only for a file HEAD does not have (a port outlined for the first
+    # time); any other failure of git stops the task, since reading it as a
+    # new file would log every feature as added.
+    git = lambda do |*arguments|
+      text, error, status = Open3.capture3("git", *arguments)
+      abort "git #{arguments.join(' ')} failed: #{error.strip}" unless status.success?
+
+      text
     end
+    committed = git.call("ls-tree", "-r", "--name-only", "HEAD", "--", "data/geometry").lines(chomp: true)
+    read_before = ->(path) { committed.include?(path) ? git.call("show", "HEAD:#{path}") : nil }
     ports = Seaports::Geometry::Changes.perform(read_before:)
     puts ports.empty? ? "No port outline moved." : ports.map(&:line)
   end
@@ -487,9 +494,23 @@ namespace :seaports do
   task :watch, [:issues, :watch, :out] do |_task, args|
     require_relative "lib/seaports/geometry/watch"
 
+    require "fileutils"
     watch = Seaports::Geometry::Watch
-    results = watch.perform(path: args[:watch] || watch::PATH, issues_path: args[:issues], out_dir: args[:out] || "tmp/watch")
+    out_dir = args[:out] || "tmp/watch"
+    path = args[:watch] || watch::PATH
+    # The workflow reads tmp/watch/error to say why it failed, rather than
+    # parsing this task's output.
+    fail_with = lambda do |message|
+      FileUtils.mkdir_p(out_dir)
+      File.write(File.join(out_dir, "error"), "#{message}\n")
+      abort message
+    end
+    begin
+      results = watch.perform(path:, issues_path: args[:issues], out_dir:)
+    rescue watch::Invalid => e
+      fail_with.call("#{path} is invalid, so no port was checked: #{e.message}")
+    end
     failed = results.select(&:error).map { |result| result.entry.locode }
-    abort "Not checked: #{failed.join(', ')}" unless failed.empty?
+    fail_with.call("Overpass did not answer for #{failed.join(', ')}, so they were not checked; the others were.") unless failed.empty?
   end
 end

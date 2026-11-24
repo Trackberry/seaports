@@ -28,6 +28,12 @@ permissions:
   pull-requests: write
   issues: write
 
+# A run dispatched by restack.yml (or by this workflow's last step) and a
+# scheduled one would both push refresh/un-locode; the newer one wins.
+concurrency:
+  group: refresh-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   refresh:
     runs-on: ubuntu-latest

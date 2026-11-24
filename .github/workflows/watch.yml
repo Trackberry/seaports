@@ -79,8 +79,14 @@ jobs:
             fi
           done
 
-      - name: Fail for the ports not checked
+      # The task leaves why it failed in tmp/watch/error: an invalid
+      # watch.yml (nothing checked), or the ports Overpass would not answer.
+      - name: Fail with what went wrong
         if: steps.watch.outcome == 'failure'
         run: |
-          echo "::error::Some held ports could not be checked. The 'Ask OpenStreetMap' step's log says which and why."
+          if [ -f tmp/watch/error ]; then
+            echo "::error::$(cat tmp/watch/error)"
+          else
+            echo "::error::rake seaports:watch stopped before it could say why. The 'Ask OpenStreetMap' step's log does."
+          fi
           exit 1

@@ -216,14 +216,24 @@ jobs:
       # run no longer produces. Closing it risks losing a review in progress,
       # so it gets a comment instead. Not after a failed rebuild: a port that
       # did not build kept its old outline, which says nothing about the
-      # earlier pull request.
+      # earlier pull request. Once per staleness: not again while no commit
+      # has reached the branch since the last such comment.
       - name: Mark an earlier refresh pull request stale
         if: github.event_name != 'pull_request' && steps.release.outputs.status == 'unchanged' && steps.rebuild.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           pr=$(gh pr list --head refresh/geometry --state open --json number --jq '.[0].number // empty')
-          if [ -n "$pr" ]; then
+          if [ -z "$pr" ]; then
+            exit 0
+          fi
+          # ISO 8601 times in UTC compare as strings. $pushed is jq's.
+          # shellcheck disable=SC2016
+          said=$(gh pr view "$pr" --json comments,commits --jq '
+            ([.commits[].committedDate] | max) as $pushed
+            | [.comments[] | select(.body | startswith("Stale:")) | .createdAt | select(. > $pushed)] | length')
+          if [ "$said" = "0" ]; then
             gh pr comment "$pr" --body "Stale: this week's rebuild on $(date -u +%Y-%m-%d) moved no outline against main, so this branch no longer matches what OpenStreetMap gives. Close it, or wait for the next run to update it."
           fi
 

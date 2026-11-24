@@ -12,19 +12,27 @@ module Seaports
     #
     # A feature is known by its kind and the OpenStreetMap ids it was built
     # from, which is what its selection names, so a terminal whose quay was
-    # redrawn is "changed" rather than one removed and one added. Its label is
-    # its name, or its kind for an unnamed one ("port limits").
+    # redrawn, or renamed, is "changed" rather than one removed and one added.
+    # Its label is its name, or its kind for an unnamed one ("the port
+    # limits").
+    #
+    # The collection's own fields count too (its quays, position_outside, the
+    # selection digest): a rebuild that changes only those still changed what
+    # the gem ships, so the port is listed ("the outline's quays changed")
+    # and released like any other.
     module Changes
       # One port's or canal's changes: +id+ is its locode (NLRTM) or canal id
-      # (suez), and each list holds feature labels.
-      Port = Data.define(:id, :name, :added, :removed, :changed) do
-        def empty? = added.empty? && removed.empty? && changed.empty?
+      # (suez), each list holds feature labels, and +fields+ the collection
+      # fields that differ.
+      Port = Data.define(:id, :name, :added, :removed, :changed, :fields) do
+        def empty? = added.empty? && removed.empty? && changed.empty? && fields.empty?
 
         # "Rotterdam (`NLRTM`): Euromax Terminal and the port limits changed; Anchorage 4 added."
         def line
           parts = { "changed" => changed, "added" => added, "removed" => removed }.filter_map do |verb, labels|
             "#{Changes.sentence(labels)} #{verb}" unless labels.empty?
           end
+          parts << "the outline's #{Changes.sentence(fields.map { |field| field.tr('_', ' ') })} changed" unless fields.empty?
           "#{name} (`#{id}`): #{parts.join('; ')}."
         end
       end
@@ -41,19 +49,29 @@ module Seaports
           new = features(after[id])
           port = Port.new(id:, name: names[id] || collection_name(after[id] || before[id]) || id,
             added: labels(new.keys - old.keys, new), removed: labels(old.keys - new.keys, old),
-            changed: labels((old.keys & new.keys).reject { |key| old[key] == new[key] }, new))
+            changed: labels((old.keys & new.keys).reject { |key| old[key] == new[key] }, new),
+            fields: fields(before[id], after[id]))
           port unless port.empty?
         end
       end
 
-      # { [kind, ids] => [feature, ...] }: two unnamed anchorages built from
-      # the same ids would be one key, so each key holds a list.
+      # The collection fields other than its features that differ, when the
+      # port is on both sides; one on a side only is all added or removed.
+      def fields(old, new)
+        return [] unless old && new
+
+        ((old.keys | new.keys) - ["features"]).sort.reject { |key| old[key] == new[key] }
+      end
+
+      # { [kind, ids] => [feature, ...] }: a feature renamed or redrawn keeps
+      # its key. Two built from the same ids (which a selection does not
+      # allow) would share one, so each key holds a list.
       def features(collection)
         return {} unless collection
 
         collection.fetch("features", []).group_by do |feature|
           properties = feature["properties"] || {}
-          [properties["kind"], Array(properties["osm"]).sort, properties["name"]]
+          [properties["kind"], Array(properties["osm"]).sort]
         end
       end
 

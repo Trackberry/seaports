@@ -43,6 +43,9 @@ class GeometryWatchTest < Minitest::Test
       element("node", 5, { "industrial" => "container_terminal", "name" => "A node is no outline" }),
       element("way", 6, { "industrial" => "container_terminal" }),
       element("way", 7, { "harbour" => "yes", "name" => "Busan Yacht Marina" }),
+      # Overpass's substring match lets these through; whole words do not.
+      element("way", 8, { "landuse" => "industrial", "name" => "Portland Cement", "operator" => "Mosconi Steel" }),
+      element("way", 9, { "landuse" => "industrial", "name" => "港北ポンプ所" }),
       # A terminal Rotterdam's shipped outline is built from: no news here.
       element("way", 597_875_321, { "industrial" => "container_terminal", "name" => "Euromax Terminal" })
     ]
@@ -72,13 +75,15 @@ class GeometryWatchTest < Minitest::Test
   def issues
     [
       { "number" => 12, "state" => "OPEN", "body" => "<!-- port-watch: MZMPM -->\n[way/20](https://www.openstreetmap.org/way/20)",
-        "comments" => [{ "body" => "More: way/21" }] },
+        "comments" => [{ "author" => { "login" => "github-actions" }, "authorAssociation" => "NONE", "body" => "More: way/21" },
+          # A stranger naming a feature does not hide it.
+          { "author" => { "login" => "someone" }, "authorAssociation" => "NONE", "body" => "Seen: way/22" }] },
       { "number" => 9, "state" => "CLOSED", "body" => "<!-- port-watch: KRPUS -->\nway/3 was the old PNC outline, no use.", "comments" => [] },
       { "number" => 3, "state" => "OPEN", "body" => "Not a port-watch issue: way/4", "comments" => [] }
     ]
   end
 
-  def run_task(dir, http:)
+  def run_task(dir, http:, watch: nil)
     issues_path = File.join(dir, "issues.json")
     File.write(issues_path, JSON.generate(issues))
     task = self.class.rake["seaports:watch"]
@@ -88,7 +93,7 @@ class GeometryWatchTest < Minitest::Test
       Watch.stub(:sleep, nil) do
         $stdout = out
         $stderr = StringIO.new
-        task.invoke(issues_path, write_watch(dir), File.join(dir, "out"))
+        task.invoke(issues_path, watch || write_watch(dir), File.join(dir, "out"))
       ensure
         $stdout = STDOUT
         $stderr = STDERR
@@ -139,7 +144,7 @@ class GeometryWatchTest < Minitest::Test
       assert_includes busan, "<!-- port-watch: KRPUS -->"
       assert_includes busan, "[relation/4](https://www.openstreetmap.org/relation/4)"
       assert_includes busan, "`HJNC Container Terminal`"
-      %w[way/1 way/3 node/5 way/6 way/7 way/597875321].each { |ref| refute_includes busan, "[#{ref}]" }
+      %w[way/1 way/3 node/5 way/6 way/7 way/8 way/9 way/597875321].each { |ref| refute_includes busan, "[#{ref}]" }
       assert_includes busan, "OpenStreetMap maps none of Busan New Port's terminals."
       assert_includes busan, "KRBNP's UN/LOCODE position"
       assert_equal "OpenStreetMap now maps terminals at Busan\n", File.read(File.join(out, "KRPUS.title"))
@@ -186,6 +191,26 @@ class GeometryWatchTest < Minitest::Test
       assert_empty results
       assert_includes out.string, "NLRTM: now outlined"
     end
+  end
+
+  def test_an_invalid_watch_list_fails_the_task_and_says_so
+    Dir.mktmpdir do |dir|
+      watch = File.join(dir, "bad.yml")
+      File.write(watch, "ports:\n  - {locode: KRPUS, name: Busan, radius_km: 10, unblock: y}\n")
+      assert_raises(SystemExit) { run_task(dir, http: ->(*) { flunk "nothing is asked of Overpass" }, watch:) }
+
+      assert_match(/bad\.yml is invalid, so no port was checked: KRPUS: reason is missing/, File.read(File.join(dir, "out", "error")))
+    end
+  end
+
+  def test_a_name_or_operator_counts_only_as_a_whole_word_or_a_port_compound
+    assert Watch.portish?({ "landuse" => "industrial", "name" => "Muelle Terminal" })
+    assert Watch.portish?({ "landuse" => "industrial", "name" => "x", "operator" => "MSC Terminal Investment" })
+    assert Watch.portish?({ "landuse" => "industrial", "name" => "上港集团张华浜码头" })
+    assert Watch.portish?({ "landuse" => "port", "name" => "anything" })
+    refute Watch.portish?({ "landuse" => "industrial", "name" => "Portland Cement" })
+    refute Watch.portish?({ "landuse" => "industrial", "name" => "x", "operator" => "Mosconi Steel" })
+    refute Watch.portish?({ "landuse" => "industrial", "name" => "港北ポンプ所" })
   end
 
   def test_names_from_openstreetmap_cannot_break_the_table_or_mention_anyone

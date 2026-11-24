@@ -41,6 +41,10 @@ module Seaports
       MARKER = /<!-- port-watch: ([A-Z]{2}[A-Z0-9]{3}) -->/
       REF = /\b(?:node|way|relation)\/[1-9]\d*\b/
       MAX_RADIUS_KM = 40
+      # How gh names the workflow's own comments, and the associations
+      # GitHub gives the people who run the repository.
+      BOT_LOGINS = %w[github-actions github-actions[bot] app/github-actions].freeze
+      TRUSTED_ASSOCIATIONS = %w[OWNER MEMBER COLLABORATOR].freeze
       # Between two ports' queries, to be gentle with the public Overpass
       # instances; Osm.query already waits and retries when one is busy.
       PAUSE_SECONDS = 10
@@ -48,8 +52,23 @@ module Seaports
       # Areas only: a terminal's outline is a polygon, so a node tagged as one
       # cannot be drafted into a selection. A port area or an industrial area
       # counts only with a name, the sign that someone mapped it as a place.
-      PORTISH = "termin|contain|port|wharf|pier|dock|berth|quay|harbou?r|puerto|porto|港|码头|碼頭|埠頭|부두|터미널"
-      OPERATORS = "port|termin|harbou?r|contain|stevedor|psa|dp world|hutchison|apm|cosco|ictsi|msc|til|evergreen|transnet|marsa"
+      #
+      # Overpass is asked broadly, by substring, for industrial areas whose
+      # name or operator looks like a port's (its regular expressions have no
+      # word boundaries), and PORT_NAME and PORT_OPERATOR then keep only
+      # whole words: "Port" but not "Portland Cement", "MSC" but not
+      # "Mosconi". In Chinese, Japanese and Korean a single 港 is in half
+      # the place names of a port city (港北, Kohoku, is a ward of
+      # Yokohama), so those need a compound that means a quay or terminal.
+      PORTISH = "termin|contain|contentor|contenedor|port|wharf|pier|dock|berth|quay|harbo|puerto|porto|港|码头|碼頭|埠頭|ふ頭|コンテナ|ターミナル|集装箱|부두|터미널|컨테이너"
+      OPERATORS = "port|termin|harbo|contain|stevedor|psa|dp world|hutchison|apm|cosco|ictsi|msc|til|evergreen|transnet|marsa"
+      CJK_PORT = "港湾|港区|港口|码头|碼頭|埠頭|ふ頭|コンテナ|ターミナル|集装箱|부두|터미널|컨테이너"
+      PORT_NAME = /\b(?:terminal(?:e?s)?|container|contentores?|contenedores?|ports?|wharf|piers?|docks?|berths?|quay|harbou?r|puerto|porto)\b|#{CJK_PORT}/i
+      PORT_OPERATOR = /\b(?:ports?|terminals?|harbou?r|container|stevedor\w*|psa|dp world|hutchison|apm|cosco|ictsi|msc|til|evergreen|transnet|marsa maroc|portuaria)\b|#{CJK_PORT}/i
+      # Tags that say "port" by themselves; an industrial area without one
+      # needs PORT_NAME or PORT_OPERATOR.
+      PORT_TAGS = { "man_made" => %w[container_terminal], "industrial" => %w[container_terminal port], "landuse" => %w[port],
+                    "harbour" => %w[yes], "seamark:type" => %w[harbour] }.freeze
       TAGS = [
         '["man_made"="container_terminal"]', '["industrial"="container_terminal"]', '["landuse"="port"]["name"]',
         '["industrial"="port"]["name"]', '["harbour"="yes"]["name"]', '["seamark:type"="harbour"]',
@@ -133,10 +152,20 @@ module Seaports
         tags = element["tags"] || {}
         name = tags["name:en"] || tags["name"] || tags["seamark:name"]
         return nil if element["type"] == "node" || name.to_s.strip.empty? || Candidates.leisure?(tags)
+        return nil unless portish?(tags)
 
         center = element["center"] || Candidates.midpoint(element["bounds"]) || {}
         Candidate.new(ref: "#{element['type']}/#{element['id']}", name: name.strip, tags: tags.slice(*KEPT_TAGS),
           lat: center["lat"]&.round(5), lng: center["lon"]&.round(5), size_km2: Candidates.size_km2(element["bounds"]))
+      end
+
+      # Whether an area's tags say it is a port's, or its name or operator
+      # does in a whole word.
+      def portish?(tags)
+        return true if PORT_TAGS.any? { |key, values| values.include?(tags[key]) }
+
+        tags.values_at("name", "name:en", "seamark:name").compact.any? { |name| name.match?(PORT_NAME) } ||
+          tags["operator"].to_s.match?(PORT_OPERATOR)
       end
 
       # { locode => [refs] } from the port-watch issues, as `gh issue list
@@ -144,9 +173,20 @@ module Seaports
       def reported(issues)
         issues.each_with_object(Hash.new { |hash, key| hash[key] = [] }) do |issue, found|
           locode = issue["body"].to_s[MARKER, 1] or next
-          texts = [issue["body"], *Array(issue["comments"]).map { |comment| comment["body"] }]
+          comments = Array(issue["comments"]).select { |comment| trusted?(comment) }
+          texts = [issue["body"], *comments.map { |comment| comment["body"] }]
           found[locode] |= texts.flat_map { |text| text.to_s.scan(REF) }
         end
+      end
+
+      # A comment whose ids count as looked at: the watch's own, or one by
+      # someone with a hand in the repository. Anyone can comment on a public
+      # issue, and an id in a stranger's comment must not hide a feature. The
+      # issue's body needs no such test: only someone who can triage could
+      # have labelled it port-watch.
+      def trusted?(comment)
+        login = comment.dig("author", "login").to_s
+        BOT_LOGINS.include?(login) || TRUSTED_ASSOCIATIONS.include?(comment["authorAssociation"].to_s)
       end
 
       # The open port-watch issue for +locode+, to comment on, or nil.

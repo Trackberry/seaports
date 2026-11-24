@@ -43,8 +43,11 @@ jobs:
               continue
             fi
             # A pull request that releases nothing (refresh.yml's "no
-            # release" kind) does not conflict, and is left alone.
-            if gh pr diff "$pr" --name-only | grep -qxF lib/seaports/version.rb; then
+            # release" kind) does not conflict, and is left alone. The file
+            # list goes into a variable first, so a failed request fails the
+            # step instead of reading as "no version bump".
+            files=$(gh api "repos/$GH_REPO/pulls/$pr/files" --paginate --jq '.[].filename')
+            if grep -qxF lib/seaports/version.rb <<<"$files"; then
               echo "#$pr ($branch) bumps from a version main has moved past; running $workflow again on main."
               gh pr comment "$pr" --body "main released a new version, so this pull request's version bump is stale. $workflow is running again on main and will update this branch with a bump from the new version."
               gh workflow run "$workflow" --ref main

@@ -30,15 +30,12 @@ ports:
     unblock: "Yokohama's container terminals (Honmoku, Minami-Honmoku, Daikoku) mapped as named areas."
     known:
       relation/15635176: "東扇島 Terminal"
-      way/158475244: "横浜市港北土木事務所"
   - locode: JPNGO
     name: Nagoya
     radius_km: 15
     reason: "OpenStreetMap maps one of Nagoya's container terminals as an area (Nabeta Pier), not the others."
     unblock: "The other container terminals (Tobishima, Kinjo) mapped as named areas."
     known:
-      way/194877256: "ブラザー工業 港工場"
-      way/402396106: "港北ポンプ所"
       way/552566750: "Nabeta Pier Container Terminal"
       way/704074531: "Toyota Tobishima Wharf Center"
       way/758854036: "ピア納屋橋"
@@ -49,25 +46,15 @@ ports:
     unblock: "Qingdao's container terminals (Qianwan, Qianwan's automated terminal) mapped as named areas."
     known:
       relation/6827312: "Port of Qingdao Qianwan（QQCT）"
-      way/1145936639: "青岛港"
-      way/1258530251: "香港工业园(东京路)"
       way/1378191242: "港口机械厂"
-      way/1378191253: "远港公司"
-      way/1457959687: "青岛临港木业有限公司"
-      way/1512617613: "邮轮母港停车场"
       way/1524284182: "中苑旅游码头"
-      way/979347630: "普洛斯青岛前湾港国际物流园"
   - locode: CNTXG
     name: Tianjin
     radius_km: 15
     reason: "OpenStreetMap maps the Port of Tianjin and its Nanjiang zone as whole port areas, not its container terminals."
     unblock: "Tianjin's container terminals mapped as named areas inside the port."
     known:
-      way/1084070326: "天津新港船舶重工有限责任公司"
-      way/1089370626: "Huaneng Lingang Gas Thermal Power Plant"
       way/136739388: "南疆港区"
-      way/1424329599: "万纬天津东疆港冷链园区"
-      way/1424329602: "天津港首农食品进出口贸易有限公司"
       way/366042765: "天津港集装箱验放中心"
       way/476319380: "Port of Tianjin"
       way/476319391: "Port of Tianjin"
@@ -78,19 +65,13 @@ ports:
     unblock: "Waigaoqiao's container terminals mapped as named areas."
     known:
       way/1037077593: "上港集团张华浜码头"
-      way/1237554257: "临港洞泾大厦"
-      way/1245999884: "上海港城电力工程安装有限公司 0 / 5.0 公司"
-      way/1341225364: "张江翔港科创园"
-      way/1379644677: "东港股份上海产业园"
       way/154618453: "SIPG Jungong Road Dock"
       way/1553345056: "晟者沙石码头"
       way/156750260: "Shanghai Port International Cruise Terminal"
       way/168476034: "Shanghai Container Terminal"
       way/295100795: "Shanghai International Port (Group) Co., Ltd. Longwu Branch"
       way/546229833: "环卫码头"
-      way/653753852: "白龙港污水处理厂"
       way/657623168: "闵吴垃圾码头"
-      way/657772208: "上海关港工业园区"
       way/74595894: "Waigaoqiao Port Zone"
       way/74595896: "Waigaoqiao Port Zone"
   - locode: THLCH
@@ -166,5 +147,4 @@ ports:
     unblock: "Gibraltar's commercial quays mapped as named areas."
     known:
       way/1254615022: "Alcaidesa Varadero"
-      way/167275882: "Gibdock"
       way/702562146: "Instalaciones Portuarias de Campamento"
