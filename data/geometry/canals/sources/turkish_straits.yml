@@ -1,0 +1,37 @@
+---
+canal: turkish_straits
+name: Turkish Straits
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Turkey extract: every seamark feature between the Black Sea entrance
+  of the Istanbul Strait (İstanbul Boğazı) and the Aegean entrance of the Çanakkale Strait (Çanakkale
+  Boğazı). The straits run north to south, from the Black Sea at Istanbul through the Sea of Marmara to
+  the Aegean at Çanakkale, so the ends are north and south, after the Turkish Straits Maritime Traffic
+  Regulation (Türk Boğazları Deniz Trafik Düzeni Yönetmeliği, Resmî Gazete 30859, 15 August 2019), whose
+  Article 3 sets the Istanbul Strait's northern limit on the line from Anadolu Feneri to Türkeli Feneri
+  and the Çanakkale Strait's southern limit on the line from Mehmetçik Burnu Feneri to Kumkale Feneri.
+  Waterway only: OpenStreetMap maps none of the anchorages the Regulation's Annex 2 sets at the entrances
+  (D and E at the Istanbul north entrance; A, B, C, F and G at the Istanbul south entrance; A to G at
+  the Çanakkale north entrance; H, Karanlık Liman, inside the Çanakkale Strait; I, J and K at the Çanakkale
+  south entrance), and no pilot boarding place at either strait, though Articles 38 and 46 set boarding
+  and landing positions at both ends of each. The only seamark anchorages there, Turkish Inspection Area
+  N (Black Sea) and Turkish Inspection Area S (Sea of Marmara), are the Black Sea Grain Initiative's inspection
+  areas (IMO Circular Letter No. 4611), not waiting areas for a transit, and are left out.
+ends:
+  north: Istanbul
+  south: Çanakkale
+features:
+- osm:
+  - way/1034443808
+  - way/964569473
+  kind: waterway
+  name: Traffic separation scheme
+  note: >-
+    No OpenStreetMap waterway runs through the straits, and İstanbul Boğazı (relation 8926171) and Çanakkale
+    Boğazı (relation 8926172) are areas bounded by the coastline, so the waterway is drawn from the traffic
+    separation schemes' seamarks. In the Istanbul Strait, the scheme's separation line (way 1034443808),
+    from off İnciburnu Feneri at the Marmara end to between Rumeli Burnu and Anadolu Feneri at the Black
+    Sea end. In the Çanakkale Strait, the scheme's separation zone (way 964569473), drawn as its outline,
+    which OpenStreetMap maps only from off Gelibolu Feneri south to off Çoraklık Burnu: the narrows at
+    Çanakkale and the stretch down to the Aegean entrance have no scheme mapped, and no line crosses the
+    Sea of Marmara. Use it to draw the straits, not to ask whether a ship is in them.
