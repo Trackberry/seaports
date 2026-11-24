@@ -10,12 +10,11 @@ name: Port outlines
 #   its selection as it stands, and commits the result to the same branch, so
 #   the reviewer sees the shapes and not only the ids. A port whose outline
 #   carries its selection's digest (built locally with rake seaports:geometry
-#   and committed with it) is not fetched again: Overpass is slow and
-#   rate-limited, and a batch of ports would otherwise take most of an hour.
-#   An outline the pull request edits without its selection is always
-#   rebuilt, so a hand edit is overwritten as before. Each port gets one build,
-#   whose Overpass client already tries both instances three times, under a
-#   time limit that covers that; one that fails does not stop the others. A
+#   and committed with it) is not fetched again. An outline the pull request
+#   edits without its selection is always rebuilt, so a hand edit is
+#   overwritten as before. Each port is built from Geofabrik's extracts, and
+#   from Overpass only when they cannot build it (below); each build has a
+#   time limit, and one that fails does not stop the others. A
 #   selection that fails its checks fails this job, with the reasons in the
 #   log.
 #
@@ -35,8 +34,11 @@ name: Port outlines
 #   job reads Geofabrik's daily extracts with osmium-tool (OSM_SOURCE=extract)
 #   rather than asking Overpass: every port at once is what Overpass's
 #   rate limits refuse, and an extract gives the same answer to a rerun.
-#   The pull request job stays on Overpass: it builds a port or two, and a
-#   new port has no outline yet to choose its Geofabrik region by.
+#   The pull request job reads the extracts too, since a pull request that
+#   touched many outlines asked Overpass for each in turn for over an hour.
+#   It falls back to Overpass for an outline the extracts cannot build: a
+#   new canal has no outline yet to choose its Geofabrik region by, and a
+#   feature mapped today is not in the extracts until tomorrow.
 on:
   pull_request:
     paths:
@@ -61,8 +63,8 @@ jobs:
     # built when a maintainer moves it onto a branch here.
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    # A port's build is capped at 20 minutes below; this caps a run where
-    # Overpass is down for every port.
+    # Each build is capped at 20 minutes below; this caps a run where the
+    # downloads or Overpass fail for every port.
     timeout-minutes: 120
     # Branch names reach the shell only through these variables, quoted: git
     # allows $( ) ; | in a ref name, and this job can push.
@@ -90,20 +92,20 @@ jobs:
         run: |
           bundle exec ruby -e 'require "rgeo"; abort "rgeo has no GEOS (CAPI) support" unless RGeo::Geos.capi_supported?; puts "GEOS #{RGeo::Geos.version}"'
 
-      # A pull request builds from the extracts too, like the weekly rebuild:
-      # one that touches many outlines asked Overpass for each in turn, for
-      # over an hour, and failed whenever Overpass was down.
+      # A pull request builds from the extracts too (see the header). This
+      # needs the GEOS step's apt-get update above.
       - name: Install osmium-tool
         run: sudo apt-get install -y --no-install-recommends osmium-tool
 
-      # Geofabrik publishes each region once a day, so a rerun the same day
-      # reads the extracts the first run downloaded, and gives the same
-      # outlines. Nothing older is restored: the build would download it
+      # Geofabrik publishes each region once a day, so a weekly rerun the
+      # same day reads the extracts the first run downloaded, and gives the
+      # same outlines. Nothing older is restored: the build would download it
       # again anyway (Extract::MAX_AGE_DAYS). Saved by its own step below,
       # since the run that most needs a rerun is one that failed, and
-      # actions/cache saves only after a success. A pull request restores
-      # main's extracts but does not save its own: GitHub would scope that
-      # cache to the pull request.
+      # actions/cache saves only after a success. A pull request only finds
+      # a cache on a day the weekly job ran, and then restores all of it; it
+      # never saves its own, which GitHub would scope to the pull request, so
+      # each push downloads the regions it needs again.
       - name: Date the extracts
         id: date
         run: echo "today=$(date -u +%F)" >> "$GITHUB_OUTPUT"
@@ -117,8 +119,6 @@ jobs:
       - name: Build the outlines a pull request touches
         id: touched
         if: github.event_name == 'pull_request'
-        env:
-          OSM_SOURCE: extract
         run: |
           set -euo pipefail
           changed=$(git diff --name-only "origin/$BASE_REF...HEAD" -- data/geometry/sources data/geometry)
@@ -143,8 +143,15 @@ jobs:
             if grep -qxF "$dir/sources/$locode.yml" <<<"$changed" && bundle exec rake "seaports:geometry_current[$locode]"; then
               continue
             fi
-            # A region's first download can be slow; -k kills a build that
-            # ignores the TERM.
+            # From the extracts first. Overpass then builds what they cannot:
+            # a new canal (no outline yet to choose its region by), a feature
+            # outside the regions the outline picks, or one mapped since
+            # Geofabrik's daily cut. -k kills a build that ignores the TERM;
+            # a region's first download can be slow.
+            if OSM_SOURCE=extract timeout -k 30 1200 bundle exec rake "seaports:geometry[$locode]"; then
+              continue
+            fi
+            echo "::warning::$locode did not build from the Geofabrik extracts; trying Overpass."
             if ! timeout -k 30 1200 bundle exec rake "seaports:geometry[$locode]"; then
               failed="$failed $locode"
             fi
