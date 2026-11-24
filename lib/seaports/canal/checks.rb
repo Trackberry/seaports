@@ -81,8 +81,8 @@ module Seaports
         @errors << "file is named #{@file_locode} but holds #{id}" if @file_locode && @file_locode != id
         @errors << "attribution is missing" if blank?(@collection["attribution"])
         @errors << "name is missing" if blank?(@collection["name"])
-        ends = @collection["ends"]
-        @errors << "ends must name the north and the south end" unless ends.is_a?(Hash) && ends.keys.sort == %w[north south]
+        @approaches = Canal.approaches_for(@collection["ends"])
+        @errors << "ends must name the north and the south end, or the west and the east" unless @approaches
       end
 
       def check_canal_feature(feature, index)
@@ -98,7 +98,8 @@ module Seaports
         if kind == "waterway"
           check_waterway(feature["geometry"], where)
         else
-          @errors << "#{where}: approach #{props['approach'].inspect} is not one of #{APPROACHES.join(', ')}" unless APPROACHES.include?(props["approach"])
+          approaches = @approaches || APPROACHES
+          @errors << "#{where}: approach #{props['approach'].inspect} is not one of #{approaches.join(', ')}" unless approaches.include?(props["approach"])
           check_geometry(feature["geometry"], kind, where)
         end
       end

@@ -3,6 +3,14 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## Unreleased
+
+A canal outline for the Kiel Canal (`kiel`): the Nord-Ostsee-Kanal waterway relation's ways as its centreline, the Nordwest-Reede off Brunsbüttel and the Holtenau-Reede in the Kiel Fjord as its waiting areas, and the Holtenau pilot boarding place, all from OpenStreetMap by id. Only the roadsteads the Bekanntmachung zur Seeschifffahrtsstraßen-Ordnung keeps for ships bound for the locks are the canal's; the Holtenau-Reede also takes ships waiting for a Kiel berth or for better weather.
+
+A canal's ends can now be `west` and `east` as well as `north` and `south`, since the Kiel Canal runs from Brunsbüttel in the west to Kiel-Holtenau in the east. A canal's areas take its own two ends or `in_transit` as their approach, `Seaports::Canal#approaches` lists them, and `anchorages_for` refuses an approach the canal does not have. `Seaports::Canal::APPROACHES` now lists every canal's approaches, `west` and `east` included. Suez and Panama outlines are unchanged.
+
+The Turkish Straits are not outlined: OpenStreetMap maps the Bosporus and the Dardanelles as straits but none of the anchorages where ships wait to transit them.
+
 ## 1.7.6 — 2026-11-23
 
 Port outlines for 49 more ports, plus Ain Sokhna below, so 111 in all, every one with `clip: water` limits:

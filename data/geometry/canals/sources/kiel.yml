@@ -1,0 +1,75 @@
+---
+canal: kiel
+name: Kiel Canal
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Schleswig-Holstein extract: every seamark anchorage and pilot boarding
+  place in the Elbe from Neufeld to Wischhafen and in the Kiel Fjord, and the ways of the Nord-Ostsee-Kanal
+  waterway relation. The canal runs west to east, from the Elbe at Brunsbüttel to the Kiel Fjord at Kiel-Holtenau,
+  so its ends are west and east. Only the roadsteads the Bekanntmachung zur Seeschifffahrtsstraßen-Ordnung
+  (BAnz AT 31.01.2014 B7, No. 17) keeps for ships bound for the locks are kept: the Nordwestreede von
+  Brunsbüttel (17.2.4) and the Holtenau-Reede (17.3.1). Left out: the Südreede von Brunsbüttel, for ships
+  of up to 120 m (17.2.5); the Nordostreede von Brunsbüttel, for one tide off the Elbehafen quay (17.2.6);
+  the Neufeld-Reede Ost and West and the Wischhafen-Reede, Elbe roadsteads for waiting, bunkering and
+  dangerous goods that the Bekanntmachung does not tie to the canal (17.2.10). OpenStreetMap maps no sidings
+  (Weichen) inside the canal as areas and no pilot boarding place at Brunsbüttel.
+ends:
+  east: Kiel-Holtenau
+  west: Brunsbüttel
+features:
+- osm:
+  - way/1470915264
+  - way/1470915263
+  - way/144489148
+  - way/144489145
+  - way/1470915265
+  - way/30417811
+  - way/1490472671
+  - way/857248328
+  - way/50250427
+  - way/59908473
+  - way/59908544
+  - way/131279454
+  - way/60144851
+  - way/144489146
+  - way/144489147
+  - way/60195293
+  - way/169229639
+  - way/169229643
+  - way/60144854
+  - way/169229640
+  - way/169229642
+  - way/59908522
+  - way/131279453
+  kind: waterway
+  name: Nord-Ostsee-Kanal
+  note: >-
+    The member ways of OpenStreetMap's Nord-Ostsee-Kanal waterway relation (relation 407981), main and
+    side streams, through the locks at Brunsbüttel and Kiel-Holtenau. A centreline: use it to draw the
+    canal, not to ask whether a ship is in it.
+- osm: way/184070450
+  kind: anchorage
+  name: Nordwest-Reede
+  approach: west
+  buffer_m: 300
+  note: >-
+    Seamark anchorage off Brunsbüttel, west of the canal entrance. The Bekanntmachung zur Seeschifffahrtsstraßen-Ordnung
+    (BAnz AT 31.01.2014 B7, No. 17.2.4) lets only ships due to lock into the next free lock use it. OpenStreetMap
+    draws it as an open line along the fairway's northern edge, from buoy 58a (NOK 2 Reede) towards the
+    entrance, so the area is that line grown by 300 m.
+- osm: way/140480375
+  kind: anchorage
+  name: Anchorage
+  approach: east
+  note: >-
+    Seamark anchorage with no name in OpenStreetMap, in the Kiel Fjord off the Holtenau locks: the Holtenau-Reede.
+    The Bekanntmachung zur Seeschifffahrtsstraßen-Ordnung (BAnz AT 31.01.2014 B7, No. 17.3.1) keeps it
+    for ships waiting to lock, for a berth in the port of Kiel or for better weather. The gem has no outline
+    for the port of Kiel; limits for it that take in the roadstead would have to give it up.
+- osm: node/10761367446
+  kind: pilot_boarding
+  name: Holtenau Pilot
+  approach: east
+  note: >-
+    Seamark pilot boarding place in the Kiel Fjord off the Holtenau locks, named in OpenStreetMap by its
+    seamark name. Pilots board from shore, on VHF channel 12.

@@ -68,10 +68,8 @@ module Seaports
         raise Invalid, "#{id}: unknown keys #{unknown.join(', ')}" unless unknown.empty?
         raise Invalid, "#{id}: features must be a list" unless @selection["features"].is_a?(Array)
 
-        ends = @selection["ends"]
-        unless ends.is_a?(Hash) && ends.keys.sort == %w[north south] && ends.values.none? { |name| blank?(name) }
-          raise Invalid, "#{id}: ends must name the north and the south end"
-        end
+        @approaches = Canal.approaches_for(@selection["ends"])
+        raise Invalid, "#{id}: ends must name the north and the south end, or the west and the east" unless @approaches
 
         waterways = @selection["features"].count { |entry| entry["kind"] == "waterway" }
         raise Invalid, "#{id}: #{waterways} waterway features, not one" unless waterways == 1
@@ -89,8 +87,8 @@ module Seaports
         if entry["kind"] == "waterway"
           extra = %w[approach category buffer_m] & entry.keys
           raise Invalid, "#{where}: a waterway takes no #{extra.join(' or ')}" unless extra.empty?
-        elsif !APPROACHES.include?(entry["approach"])
-          raise Invalid, "#{where}: approach #{entry['approach'].inspect} is not one of #{APPROACHES.join(', ')}"
+        elsif !@approaches.include?(entry["approach"])
+          raise Invalid, "#{where}: approach #{entry['approach'].inspect} is not one of #{@approaches.join(', ')}"
         end
         if entry["category"] && !Geometry::ANCHORAGE_CATEGORIES.include?(entry["category"])
           raise Invalid, "#{where}: category #{entry['category']} is not one of #{Geometry::ANCHORAGE_CATEGORIES.join(', ')}"

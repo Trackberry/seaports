@@ -439,12 +439,12 @@ use.
 A canal is not a port, and its queue is not port congestion. Ships anchored off
 Port Said in the C and V areas are waiting for a Suez convoy, not for a berth
 at Port Said; ships in the Great Bitter Lake are part-way through, waiting for
-the convoy coming the other way to pass. The gem ships outlines for the Suez
-and Panama canals so a tracker can say "waiting to transit Suez since Tuesday"
-rather than "at anchor, Port Said".
+the convoy coming the other way to pass. The gem ships outlines for the Suez,
+Panama and Kiel canals so a tracker can say "waiting to transit Suez since
+Tuesday" rather than "at anchor, Port Said".
 
 ```ruby
-Seaports.canal_ids                               # => ["panama", "suez"]
+Seaports.canal_ids                               # => ["kiel", "panama", "suez"]
 suez = Seaports.canal("suez")
 suez.anchorages.size                             # => 78
 suez.anchorages_for(:north).map(&:name).first(3) # => ["C1", "C2", "C3"]
@@ -454,26 +454,28 @@ area = Seaports.canal_anchorage_at(31.3585, 32.3350)
 Seaports.canal_anchorage_at(51.0, 1.5)           # => nil, mid-Channel
 suez.waterway.geometry["type"]                   # => "MultiLineString"
 Seaports.canal("panama").collection              # => the GeoJSON FeatureCollection, for a map
+Seaports.canal("kiel").end_name(:west)           # => "Brunsbüttel"
 ```
 
-Each canal is a `Seaports::Canal` with an `id`, a `name`, its `ends` (`north`
-and `south`: Port Said and Suez, Colón and Balboa) and its areas, each a
-`Seaports::Canal::Area`:
+Each canal is a `Seaports::Canal` with an `id`, a `name`, its two `ends` and
+its areas, each a `Seaports::Canal::Area`. The ends are named for the way the
+canal runs: `north` and `south` for Suez (Port Said and Suez) and Panama (Colón
+on the Atlantic and Balboa on the Pacific), `west` and `east` for the Kiel
+Canal (Brunsbüttel on the Elbe and Kiel-Holtenau on the Kiel Fjord).
+`approaches` lists the canal's two ends and `in_transit`. The areas:
 
 - one `waterway`, the canal's centreline as OpenStreetMap maps it. It is a
   line, not an area: OpenStreetMap maps most of the Suez Canal's water as sea
   behind the coastline, and Panama's as Gatún Lake, Miraflores Lake and the locks
   separately, so neither has one water area for the whole canal. Use it to
   draw the canal, not to ask whether a ship is in it;
-- the `anchorage`s where ships wait, each with an `approach`: `north` or
-  `south` for the end it serves, `in_transit` for a lake inside the canal
-  (the Great Bitter Lake, Lake Timsah, Panama's Miraflores Lake);
+- the `anchorage`s where ships wait, each with an `approach`: one of the
+  canal's ends for the end it serves, `in_transit` for a lake inside the
+  canal (the Great Bitter Lake, Lake Timsah, Panama's Miraflores Lake);
 - `pilot_boarding` places, with an `approach` too.
 
 `canal_anchorage_at(lat, lng)` answers the waiting area a position is in,
-whichever canal it belongs to, or nil. Both canals run roughly north and south,
-Panama from Colón on the Atlantic to Balboa on the Pacific, which is why the
-ends are called that.
+whichever canal it belongs to, or nil.
 
 The same rule as the port outlines: every shape is an OpenStreetMap feature
 chosen by id, in `data/geometry/canals/sources/<id>.yml`, and built into
@@ -498,6 +500,25 @@ which the Suez Canal Authority's Rules of Navigation give to incoming ships.
 The West Waiting Area (W1 to W14), for ships awaiting orders, bunkering or
 bound for Suez and Adabiya, and the lettered areas nearer Port Tawfiq are left
 out, so a ship there reads as waiting for no canal.
+
+At the Kiel Canal only the two roadsteads the Bekanntmachung zur
+Seeschifffahrtsstraßen-Ordnung keeps for ships bound for the locks are the
+canal's: the Nordwest-Reede off Brunsbüttel, for ships due to lock into the
+next free lock, and the Holtenau-Reede in the Kiel Fjord, which OpenStreetMap
+leaves unnamed. The Holtenau-Reede also takes ships waiting for a berth in the
+port of Kiel or for better weather, so a ship there reads as waiting at the
+east end whichever it is waiting for. The Elbe's other roadsteads near Brunsbüttel (the Südreede, the
+Nordostreede off the Elbehafen, the Neufeld roadsteads) serve the river, not
+the canal. OpenStreetMap draws the Nordwest-Reede as an open line along the
+fairway, so its area is that line grown by 300 m. It maps no sidings inside
+the canal as areas, and no pilot boarding place at Brunsbüttel.
+
+The Turkish Straits are not outlined. OpenStreetMap maps the Bosporus and the
+Dardanelles as straits (relations 8926171 and 8926172), but none of the
+anchorages where ships wait to transit them: off the Black Sea entrance, off
+Istanbul in the Sea of Marmara, or off the Dardanelles. The only seamark
+anchorages there are the two inspection areas of the Black Sea Grain
+Initiative, which ended in July 2023.
 
 ### What is deliberately not in it
 
