@@ -450,7 +450,8 @@ How a port is drafted:
    under the same licence, and gives the same GeoJSON as Overpass does for
    the same data.
 4. Each port is a pull request. On one that edits a selection,
-   `.github/workflows/geometry.yml` builds the outline and commits it to the
+   `.github/workflows/geometry.yml` builds the outline, from Geofabrik's extracts
+   and from Overpass only when they cannot, and commits it to the
    branch, so the reviewer sees shapes. Weekly, it rebuilds every port to pick
    up OpenStreetMap's edits, from Geofabrik's extracts, and opens one pull
    request with what moved. The GeoJSON has one feature per line, so that
