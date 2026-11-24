@@ -142,6 +142,52 @@ module Seaports
         @terminals.reject { |_, geometry| geos(geometry).make_valid.buffer(TOUCH_M).intersects?(waterish) }.keys
       end
 
+      # +limits+ less +areas+ (GeoJSON areas the selection excludes: a marina,
+      # a housing estate by the water), as [geometry, conflicts]. +keep+ is a
+      # Hash of name to geometry that must not lose any of itself to the cut,
+      # the terminals and anchorages; their names come back as conflicts, and
+      # the geometry as nil, when any would.
+      def self.subtract(limits, areas, keep: {})
+        new(hull: limits, terminals: {}, water: { "coastline" => [], "areas" => [] }).subtract(areas, keep)
+      end
+
+      # Whether +point+, [lng, lat], lies on the water OpenStreetMap maps: the
+      # sea within its coastline or a water area, as the clip reads them.
+      # +water+ is what Water.overpass answers for ON_WATER_BBOX(point).
+      ON_WATER_M = 500
+
+      def self.on_water_bbox(point)
+        lng, lat = point
+        dlat = ON_WATER_M / Planar::M_PER_DEGREE
+        dlng = dlat / Math.cos(lat * Math::PI / 180.0)
+        fetch_bbox({ "type" => "Polygon", "coordinates" => [[[lng - dlng, lat - dlat], [lng + dlng, lat - dlat], [lng + dlng, lat + dlat],
+                                                              [lng - dlng, lat + dlat], [lng - dlng, lat - dlat]]] })
+      end
+
+      def self.on_water?(point, water)
+        west, south, east, north = on_water_bbox(point)
+        box = { "type" => "Polygon", "coordinates" => [[[west, south], [east, south], [east, north], [west, north], [west, south]]] }
+        new(hull: box, terminals: {}, water:).covers?(point)
+      end
+
+      def covers?(point) = water(hull).contains?(@factory.point(*local(point)))
+
+      def subtract(areas, keep)
+        # Outer rings only: a block's courtyard would otherwise stay behind
+        # as a speck of limits on its own.
+        cut = union(areas.flat_map { |geometry| polygons(geos(geometry).make_valid).map { |polygon| @factory.polygon(polygon.exterior_ring) } })
+        conflicts = keep.select { |_, geometry| polygons(geos(geometry).make_valid.intersection(cut)).sum(&:area) > 1 }.keys
+        return [nil, conflicts] unless conflicts.empty?
+
+        parts = polygons(hull.difference(cut))
+        raise Failed, "nothing of the limits is left after the exclusions" if parts.empty?
+
+        result = to_geojson(union(parts))
+        raise Failed, "the limits less the exclusions are not a valid polygon once rounded" unless geos_lnglat(result).valid?
+
+        [result, []]
+      end
+
       private
 
       # The water inside the hull, and the basins the selection lists.

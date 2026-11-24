@@ -15,11 +15,25 @@ port_limits:
   osm: relation/3513638
   buffer_m: 500
   clip: water
+  exclude:
+  - osm: way/10524063
+    why: >-
+      Hythe Marina Village, mapped as one area for the homes and the marina basin they stand round (landuse=residential,
+      leisure=marina): homes and a leisure marina, not cargo water.
   note: >-
     OpenStreetMap maps no port limits for Southampton. These are the hull of the Western Docks and the
     terminals below, from the container terminal down Southampton Water to Fawley, grown by 500 m, then
     cut to the water OpenStreetMap maps inside it, with the terminals and those areas kept whole and a
-    30 m margin where they meet the water.
+    30 m margin where they meet the water. Hythe Marina Village, its homes and the leisure marina they
+    stand round, is taken out of the limits (see exclude). A scan of OpenStreetMap then finds no homes,
+    schools, hospitals or places of worship inside; the labels of the Eastern and Western Docks stand
+    on the docks, and the edges of three residential areas reach in by about 3,830 m² in all, none of
+    it more than 30 m inside.
+  accepts:
+    residential_m2: 3829
+    places:
+    - Eastern Docks
+    - Western Docks
 features:
 - osm: relation/13590178
   kind: terminal

@@ -210,6 +210,76 @@ class GeometryClipTest < Minitest::Test
     assert Seaports::Geometry::Checks.run(collection).ok?
   end
 
+  # The bay and the open sea are water; the land beside the bay is not.
+  def test_a_position_is_on_the_water_the_clip_reads
+    clip = Seaports::Geometry::Clip
+
+    assert clip.on_water?(Harbour.at(0, -700), Harbour.water), "in the bay"
+    assert clip.on_water?(Harbour.at(0, 800), Harbour.water), "at sea"
+    refute clip.on_water?(Harbour.at(-1200, -700), Harbour.water), "on the land west of the bay"
+    assert clip.on_water?(Harbour.at(-1075, -1450), Harbour.water), "in the pond, a water area"
+  end
+
+  # The fixture's port position is Rotterdam's, at the mouth of the bay.
+  def test_the_build_stores_whether_the_position_is_on_the_water
+    sel = selection({ "clip" => "water" })
+    tags = ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| f["osm"] == ref }["name"] }] } }
+    asked = []
+    water = ->(bbox) { asked << bbox; Harbour.water }
+    built = ->(on_water) { Builder.new(sel, shapes:, water:, tags:, inside: ->(_bbox) { [] }, on_water:).build }
+
+    assert_equal true, built.call(true)["position_on_water"]
+    refute built.call(false).key?("position_on_water")
+    point = Seaports.coordinates("NLRTM")
+    assert_includes asked, Seaports::Geometry::Clip.on_water_bbox([point["lng"], point["lat"]])
+  end
+
+  MARINA = Harbour.box(-200, -1400, 200, -1000)
+
+  def build_excluding(entries, extra = {})
+    sel = selection({ "clip" => "water", "exclude" => entries })
+    more = { "way/7" => MARINA, "way/8" => Harbour.box(-700, -600, -300, -400),
+             "way/9" => { "type" => "LineString", "coordinates" => [Harbour.at(0, -1200), Harbour.at(100, -1200)] } }.merge(extra)
+    tags = ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| f["osm"] == ref }&.dig("name") }.compact] } }
+    Builder.new(sel, shapes: ->(refs) { shapes.call(refs).merge(more.slice(*refs)) }, water: ->(_bbox) { Harbour.water }, tags:,
+      inside: ->(_bbox) { [] }).build
+  end
+
+  # A marina in the bay is not cargo water: excluded, it is out of the
+  # limits, and the outline says what was taken out and why.
+  def test_an_excluded_area_is_taken_out_of_the_limits
+    collection = build_excluding([{ "osm" => "way/7", "why" => "A leisure marina." }])
+    props = collection["features"].first["properties"]
+
+    refute inside?(limits(collection), 0, -1200), "the marina is out"
+    assert inside?(limits(collection), 0, -600), "the rest of the bay is in"
+    assert_equal [{ "osm" => "way/7", "why" => "A leisure marina." }], props["exclude"]
+    assert_match "less way 7 (see exclude)", props["source"]
+    assert Seaports::Geometry::Checks.run(collection).ok?
+  end
+
+  def test_an_exclusion_that_cuts_into_a_terminal_is_refused
+    error = assert_raises(Builder::Invalid) { build_excluding([{ "osm" => "way/8", "why" => "Homes." }]) }
+
+    assert_match "would cut into terminal West Quay", error.message
+  end
+
+  def test_an_exclusion_must_be_an_area
+    error = assert_raises(Builder::Invalid) { build_excluding([{ "osm" => "way/9", "why" => "A line." }]) }
+
+    assert_match "not an area", error.message
+  end
+
+  def test_an_exclusion_says_why_and_moves_the_digest
+    plain = selection({ "clip" => "water" })
+    excluding = selection({ "clip" => "water", "exclude" => [{ "osm" => "way/7", "why" => "A marina." }] })
+
+    refute_equal Builder.digest(plain), Builder.digest(excluding)
+    assert_raises(Builder::Invalid) { Builder.new(selection({ "exclude" => [{ "osm" => "way/7" }] })).check! }
+    assert_raises(Builder::Invalid) { Builder.new(selection({ "exclude" => [{ "osm" => "node/7", "why" => "A point." }] })).check! }
+    assert_raises(Builder::Invalid) { Builder.new(selection({ "exclude" => [{ "osm" => "way/7", "why" => "A marina.", "buffer_m" => 5 }] })).check! }
+  end
+
   def test_inland_is_a_reason_on_a_terminal
     sel = selection({ "clip" => "water" }, refs: %w[way/1 way/3])
     sel["features"].last["inland"] = true

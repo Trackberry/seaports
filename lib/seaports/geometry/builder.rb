@@ -52,6 +52,7 @@ module Seaports
       FEATURE_KEYS = Selection::FEATURE_KEYS
       # The kinds whose names follow OpenStreetMap's, checked by the name rule.
       NAMED_KINDS = %w[terminal anchorage].freeze
+      AREAS = %w[Polygon MultiPolygon].freeze
 
       class Invalid < StandardError; end
 
@@ -104,9 +105,14 @@ module Seaports
       # +shapes+ given, the outline stores no tags or scan, which its checks
       # then call out; left out with it, all four ask Overpass, and the tags
       # come from the shapes' own answer.
-      def initialize(selection, shapes: nil, water: Water.method(:overpass), tags: nil, inside: nil)
+      #
+      # +on_water+ asks +water+ whether the port's UN/LOCODE position lies on
+      # mapped water, stored as "position_on_water"; it defaults to on when
+      # every source is Overpass's.
+      def initialize(selection, shapes: nil, water: Water.method(:overpass), tags: nil, inside: nil, on_water: shapes.nil?)
         @selection = selection
         @water = water
+        @on_water = on_water
         if shapes
           @shapes = shapes
           @tags = tags
@@ -132,11 +138,13 @@ module Seaports
         fetched = fetch_all
         features = @selection.fetch("features").map { |entry| feature(entry, fetched) }
         limits = port_limits(features, fetched)
+        limits = excluded(limits, features, fetched) if limits && excludes.any?
         limits["properties"]["inside"] = scan_inside(limits["geometry"]) if limits && @inside
         ordered = ([limits].compact + features).sort_by.with_index { |f, i| [KINDS.index(f["properties"]["kind"]), i] }
 
         { "type" => "FeatureCollection", "locode" => locode, "quays" => Array(@selection["quays"]).sort,
           "attribution" => ATTRIBUTION, "position_outside" => @selection["position_outside"]&.strip,
+          "position_on_water" => (position_on_water if @on_water),
           "selection_digest" => self.class.digest(@selection), "features" => ordered }.compact
       end
 
@@ -164,7 +172,38 @@ module Seaports
       def all_refs
         refs = @selection.fetch("features").flat_map { |entry| Array(entry["osm"]) }
         limits = @selection["port_limits"] || {}
-        (refs + Array(limits["osm"])).uniq
+        (refs + Array(limits["osm"]) + excludes.map { |entry| entry["osm"] }).uniq
+      end
+
+      def excludes = Array((@selection["port_limits"] || {})["exclude"])
+
+      # The limits less the areas the selection excludes, refused when an
+      # exclusion is not an area or would take any of a terminal or an
+      # anchorage with it.
+      def excluded(limits, features, fetched)
+        require_relative "clip"
+        areas = excludes.map do |entry|
+          shape = fetched.fetch(entry["osm"])
+          next shape if AREAS.include?(shape["type"])
+
+          raise Invalid, "#{locode} port_limits exclude #{entry['osm']}: a #{shape['type']} is not an area to take out of the limits"
+        end
+        keep = features.select { |f| NAMED_KINDS.include?(f["properties"]["kind"]) && AREAS.include?(f["geometry"]["type"]) }
+                       .to_h { |f| ["#{f['properties']['kind']} #{f['properties']['name'] || f['properties']['osm'].join(', ')}", f["geometry"]] }
+        geometry, conflicts = Clip.subtract(limits["geometry"], areas, keep:)
+        unless conflicts.empty?
+          raise Invalid, "#{locode} port_limits exclude would cut into #{conflicts.join(', ')}: exclude only what no terminal or anchorage covers"
+        end
+
+        props = limits["properties"]
+        refs = excludes.map { |entry| entry["osm"].sub("/", " ") }
+        props["source"] = "#{props['source']}, less #{refs.join(', ')} (see exclude)"
+        props["exclude"] = excludes.map { |entry| { "osm" => entry["osm"], "why" => entry["why"].strip } }
+        limits.merge("geometry" => geometry)
+      rescue StandardError => e
+        raise unless e.is_a?(Clip::Failed) || e.is_a?(Clip::Unavailable) || (defined?(RGeo::Error::RGeoError) && e.is_a?(RGeo::Error::RGeoError))
+
+        raise Invalid, "#{locode}: port_limits exclude failed: #{e.message}"
       end
 
       def check_selection!
@@ -184,6 +223,7 @@ module Seaports
         check_buffer!(limits["buffer_m"], "#{locode} port_limits")
         check_clip!(limits)
         check_accepts!(limits["accepts"]) if limits.key?("accepts")
+        check_excludes!(limits["exclude"]) if limits.key?("exclude")
 
         @selection.fetch("features").each_with_index do |entry, index|
           where = "#{locode} feature #{index + 1} (#{entry['name'] || entry['osm']})"
@@ -245,6 +285,22 @@ module Seaports
         raise Invalid, "#{where}: inland is a reason, in words" unless entry["inland"].is_a?(String) && !blank?(entry["inland"])
       end
 
+      # Each area taken out of the limits names an OpenStreetMap way or
+      # relation and says why, like inland.
+      def check_excludes!(entries)
+        where = "#{locode} port_limits exclude"
+        raise Invalid, "#{where}: a list of { osm:, why: }" unless entries.is_a?(Array) && !entries.empty?
+
+        entries.each do |entry|
+          raise Invalid, "#{where}: each entry is { osm:, why: }" unless entry.is_a?(Hash)
+
+          unknown = entry.keys - Selection::EXCLUDE_KEYS
+          raise Invalid, "#{where}: unknown keys #{unknown.join(', ')}" unless unknown.empty?
+          raise Invalid, "#{where}: #{entry['osm'].inspect} is not a way or relation like way/123" unless entry["osm"].to_s.match?(%r{\A(way|relation)/[1-9]\d*\z})
+          raise Invalid, "#{where} #{entry['osm']}: why is a reason, in words" unless entry["why"].is_a?(String) && !blank?(entry["why"])
+        end
+      end
+
       def check_buffer!(value, where)
         return if value.nil? || (value.is_a?(Numeric) && value.positive? && value <= 20_000)
 
@@ -273,6 +329,23 @@ module Seaports
         return nil unless @fetched_tags && NAMED_KINDS.include?(entry["kind"])
 
         @fetched_tags.fetch(refs.first, {})
+      end
+
+      # Whether UN/LOCODE's position for the port lies on the water
+      # OpenStreetMap maps (the sea within its coastline, rivers, docks,
+      # basins), read from the same source as the clip's water: a point on
+      # the water is one ships are at, one on land (a city centre) is not.
+      # nil when the port has no position.
+      def position_on_water
+        require_relative "clip"
+        require_relative "../../seaports"
+        point = Seaports.coordinates(locode) or return nil
+        position = [point["lng"], point["lat"]]
+        Clip.on_water?(position, @water.call(Clip.on_water_bbox(position)))
+      rescue StandardError => e
+        raise unless e.is_a?(Clip::Failed) || e.is_a?(Clip::Unavailable) || (defined?(RGeo::Error::RGeoError) && e.is_a?(RGeo::Error::RGeoError))
+
+        raise Invalid, "#{locode}: the check of whether the port's position is on the water failed: #{e.message}"
       end
 
       # The scan of what OpenStreetMap maps inside the final limits (Inside),

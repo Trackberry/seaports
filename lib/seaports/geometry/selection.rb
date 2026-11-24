@@ -23,7 +23,9 @@ module Seaports
     # which keeps the rule that no shape is typed or generated.
     module Selection
       TOP_KEYS = %w[locode reviewed_at note quays position_outside port_limits features].freeze
-      LIMIT_KEYS = %w[derive osm buffer_m clip disjoint note accepts].freeze
+      LIMIT_KEYS = %w[derive osm buffer_m clip disjoint exclude note accepts].freeze
+      # Each area taken out of the limits: its reference and why.
+      EXCLUDE_KEYS = %w[osm why].freeze
       # What the reviewers accepted inside the limits (Inside.compare).
       ACCEPT_KEYS = %w[houses residential_m2 amenities places].freeze
       FEATURE_KEYS = %w[osm kind name operator cargo category buffer_m inland note reviewed_at].freeze
@@ -168,6 +170,7 @@ module Seaports
           limits = ordered(value, LIMIT_KEYS)
           limits["accepts"] = ordered(limits["accepts"], ACCEPT_KEYS) if limits["accepts"].is_a?(Hash)
           limits.delete("accepts") if limits["accepts"] == {}
+          limits["exclude"] = limits["exclude"].map { |entry| entry.is_a?(Hash) ? ordered(entry, EXCLUDE_KEYS) : entry } if limits["exclude"].is_a?(Array)
           limits
         when "features" then value.map { |feature| ordered(feature, feature_keys) }
         when "ends" then value.is_a?(Hash) ? value.sort.to_h : value

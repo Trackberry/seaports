@@ -13,12 +13,68 @@ port_limits:
   - way/618268543
   buffer_m: 300
   clip: water
+  exclude:
+  - osm: way/99685748
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: way/99695351
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: way/647460026
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: way/647460035
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: way/647460036
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: way/647460047
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: way/647460054
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: way/647460055
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: relation/9035641
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: relation/9035643
+    why: >-
+      An apartment block that Port de Barcelona's mapped area (way/618112529, landuse=harbour) takes in,
+      homes and not port land.
+  - osm: way/646557505
+    why: >-
+      A residential block on the Barceloneta side that the Port de Barcelona and Port Vell areas take
+      in, homes and not port land.
+  - osm: relation/8997107
+    why: >-
+      A residential block on the Barceloneta side that the Port de Barcelona and Port Vell areas take
+      in, homes and not port land.
+  - osm: way/1569275736
+    why: A residential area that Port de Barcelona's mapped area takes in, homes and not port land.
+  - osm: way/770664447
+    why: The edge of a residential area that Port de Barcelona's mapped area takes in.
   note: >-
     OpenStreetMap maps the port authority's areas, Port de Barcelona (landuse=harbour) and Port Vell,
     but on their own they miss the port's own position on the APM quay. These are the hull of those two
     areas and the terminals below, from BEST to Port Vell, grown by 300 m, then cut to the water OpenStreetMap
     maps inside it, with the terminals and those areas kept whole and a 30 m margin where they meet the
-    water.
+    water. The apartment blocks and residential areas that the port authority's mapped areas take in,
+    at the landward edge of Port de Barcelona and on the Barceloneta side of Port Vell, are taken out
+    of the limits (see exclude). A scan of OpenStreetMap then finds no homes, residential land, schools,
+    hospitals, places of worship or named places inside.
 features:
 - osm: way/385316853
   kind: terminal

@@ -107,7 +107,7 @@ module Seaports
 
           own = area.own_m2(shape)
           inside_m2 = area.overlap_m2(shape)
-          next unless inside_m2.positive?
+          next unless inside_m2.round.positive?
 
           entry = { "osm" => ref, "name" => tags["name"] }.compact
           if own > RESIDENTIAL_CAP_M2

@@ -369,6 +369,24 @@ it, usually as a part of its own, which `disjoint` explains: Rotterdam's Cool
 Port and Kloosterboer cold stores, Montoir's coal yard. The reason ships in
 the outline as the terminal's `inland`.
 
+What the clip keeps but is not port, homes beside the water or a leisure
+marina, can be taken out by its OpenStreetMap id:
+
+```yaml
+port_limits:
+  exclude:
+    - osm: way/10524063
+      why: Hythe Marina Village, its homes and the marina they stand round.
+```
+
+Each entry is a way or a relation, mapped as an area, with its reason; the
+area (its outer rings, so a block's courtyard goes with it) is taken out of
+the finished limits, clipped or not. The shape is fetched from the same place
+as the rest, it counts in `selection_digest`, and the build refuses an
+exclusion that is not an area or that would take any part of a terminal or an
+anchorage with it. The outline lists what was taken out under the limits'
+`exclude`.
+
 Clipping is build-time work for [GEOS](https://libgeos.org), through the
 [rgeo](https://github.com/rgeo/rgeo) gem's C extension, in the Gemfile, not
 the gemspec: `brew install geos` or `apt-get install libgeos-dev` before
@@ -385,6 +403,20 @@ vertex with no change in OpenStreetMap.
 A port that adopts `clip: water` will often find UN/LOCODE's position, the
 city centre, outside its limits once the land is gone: give the reason in
 `position_outside`, as for Rotterdam.
+
+The build also says whether that position lies on water at all, from the
+same water the clip reads (the sea within OpenStreetMap's coastline and the
+water areas it maps, within 1.5 km of the point): `position_on_water` in the
+file, `Seaports.position_on_water?` in Ruby. A tracker that counts a ship
+near UN/LOCODE's point as in port, for want of an outline, should do so only
+where the point is on water ships use, as Singapore's in Keppel Harbour is,
+and not where it is a city centre, as Antwerp's is.
+
+```ruby
+Seaports.position_outside("BEANR")   # => "UN/LOCODE places the port at (51.2167, 4.4167), in the city ..."
+Seaports.position_on_water?("BEANR") # => false
+Seaports.position_on_water?("SGSIN") # => true
+```
 
 How a port is drafted:
 
