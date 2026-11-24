@@ -3,7 +3,11 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
-## Unreleased
+## 1.8.0 — 2026-11-24
+
+Port outlines for seven ports at the ends of the Panama and Suez canals, so 118 in all, each the hull of its terminal cut to the water: Manzanillo International Terminal (`PAMIT`), Colón Container Terminal (`PAONX`) and Cristóbal (`PACTB`) at the Panama Canal's Atlantic entrance, Balboa (`PABLB`) and PSA Panama International Terminal at Rodman (`PAROD`) at its Pacific entrance, West Port Said (`EGPSD`), and Adabiya in Suez Bay (`EGADA`), with the two areas OpenStreetMap names C1 that lie at the Adabeya Anchorage of the Suez Canal Authority's Rules of Navigation. The canals' waiting areas stay in the canal outlines, and no port's limits take one in. Balboa's and Rodman's limits overlap by under a hectare in the canal's entrance channel. Cristóbal's accept the label of the Cristóbal neighbourhood, which OpenStreetMap places inside the port area; the other six scans find no homes, residential land, schools, hospitals, places of worship or place labels. Suez and Port Tewfik are not outlined: OpenStreetMap maps no port area or terminal there.
+
+The Panama Canal's notes on the Cocoli Tie up Station and the Hazardous Carcgo Anchorage now say that the names are OpenStreetMap's and give the usual spelling, and the Suez Canal's note on the West Waiting Area says only that the rules do not give it to the convoy. The README warns that a canal's channel can run through a port's limits, as at Balboa and Port Said.
 
 A canal outline for the Kiel Canal (`kiel`): the Nord-Ostsee-Kanal waterway relation's ways as its centreline, the Nordwest-Reede off Brunsbüttel and the Holtenau-Reede in the Kiel Fjord as its waiting areas, and the Holtenau pilot boarding place, all from OpenStreetMap by id. Only the roadsteads the Bekanntmachung zur Seeschifffahrtsstraßen-Ordnung keeps for ships bound for the locks are the canal's; the Holtenau-Reede also takes ships waiting for a Kiel berth or for better weather.
 

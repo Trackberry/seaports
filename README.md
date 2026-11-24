@@ -289,6 +289,7 @@ Seaports.terminals("NLRTM").first.cargo          # => ["container"]
 Seaports.anchorages("BEANR").map(&:name)         # => ["Rede van Antwerpen", ...]
 Seaports.quays("NLRTM")                          # => ["NLAWD", "NLBOT", ...]
 Seaports.ports_at(51.0, 1.5)                     # => [], mid-Channel
+# A canal's channel can run through a port's limits (Balboa, Port Said): check canal_anchorage_at or the ship's speed first.
 Seaports.geometry("GBDVR")                       # => the GeoJSON FeatureCollection, for a map
 ```
 
@@ -638,9 +639,9 @@ anchorage outside the Colón breakwaters, a pilot boarding place at the Suez
 end, and anchorages off Port Said East. In Suez Bay only the northbound
 convoy's waiting areas are the canal's: the V berths and the East Waiting Area,
 which the Suez Canal Authority's Rules of Navigation give to incoming ships.
-The West Waiting Area (W1 to W14), for ships awaiting orders, bunkering or
-bound for Suez and Adabiya, and the lettered areas nearer Port Tawfiq are left
-out, so a ship there reads as waiting for no canal.
+The West Waiting Area (W1 to W14), which the rules do not give to the convoy,
+and the lettered areas nearer Port Tawfiq are left out, so a ship there reads as
+waiting for no canal.
 
 At the Kiel Canal only the two roadsteads the Bekanntmachung zur
 Seeschifffahrtsstraßen-Ordnung keeps for ships bound for the locks are the

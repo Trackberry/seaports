@@ -1,0 +1,34 @@
+---
+locode: PAROD
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Panama extract around the Pacific entrance to the canal. PSA Panama
+  International Terminal is on the west bank of the entrance, on the former Rodman naval station, and
+  carriers file it under PAROD, Rodman. Balboa (PABLB), across the channel, is a separate port with its
+  own operator. The Pacific Anchorage, its expansion and the Hazardous Cargo Anchorage are where ships
+  wait for the canal; they belong to the Panama Canal's outline, and OpenStreetMap maps no anchorage of
+  the port's own.
+position_outside: >-
+  UN/LOCODE places Rodman at (8.95, -79.5667), inside the Port of Balboa area, in Terminal Rosadani, on
+  the east bank of the canal entrance, about 1 km east of the terminal and across the channel from it.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Rodman. These are the hull of PSA Panama International Terminal
+    grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminal kept whole: the terminal
+    and the west side of the canal's entrance channel off it, where they overlap Balboa's limits by under
+    a hectare. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of
+    worship or named places inside.
+features:
+- osm: way/1324216015
+  kind: terminal
+  name: PSA Panama International Terminal
+  operator: PSA International
+  cargo:
+  - container
+  note: >-
+    The container terminal on the former Rodman naval station, mapped as a port (industrial=port, port=cargo)
+    named PSA Panama International Terminal in OpenStreetMap, which gives PSA International as its operator,
+    as PSA's own website does.

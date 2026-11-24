@@ -1,0 +1,40 @@
+---
+locode: PABLB
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Panama extract around the Pacific entrance to the canal. Balboa
+  is the port on the east bank of the entrance, below Ancón Hill. PSA Panama International Terminal on
+  the west bank, at the former Rodman naval station, has its own locode (PAROD) and operator, so it is
+  a separate outline. The Pacific Anchorage, its expansion and the Hazardous Cargo Anchorage are where
+  ships wait for the canal; they belong to the Panama Canal's outline. OpenStreetMap maps no anchorage
+  of the port's own: the unnamed mooring area off the Balboa piers (way 179084944) is left out, as the
+  canal leaves it out. OpenStreetMap maps Terminal Rosadani as an area inside the south end of Puerto
+  de Balboa; it is inside these limits and is not listed as a terminal of its own. The oil terminals further
+  south are separate facilities.
+position_outside: >-
+  UN/LOCODE places Balboa at (8.95, -79.565), on land a few metres outside the port fence, on Avenida
+  Emanuel Vergara at the foot of Cerro Sosa.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Balboa. These are the hull of the Puerto de Balboa area grown
+    by 300 m, cut to the water OpenStreetMap maps inside it, with the port area kept whole: the piers
+    and the water in front of them, which is also the canal's entrance channel, so they overlap Rodman's
+    limits by under a hectare in mid-channel. A scan of OpenStreetMap finds no homes, residential land,
+    schools, hospitals, places of worship or named places inside. OpenStreetMap's Balboa Reach, a locality
+    label for that stretch of the channel, is inside.
+features:
+- osm: way/330811048
+  kind: terminal
+  name: Puerto de Balboa
+  operator: APM Terminals
+  cargo:
+  - container
+  note: >-
+    The port area on the east bank, mapped as a port (industrial=port, port=cargo) named Puerto de Balboa
+    in OpenStreetMap. Panama's Supreme Court annulled Panama Ports Company's concession in January 2026,
+    and APM Terminals has run the port since 23 February 2026 under a temporary contract of up to 18 months,
+    as its customer advisory of 23 February 2026 says. Five of its seven berths are for containers, two
+    multipurpose.

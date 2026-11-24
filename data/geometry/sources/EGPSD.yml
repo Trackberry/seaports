@@ -1,0 +1,38 @@
+---
+locode: EGPSD
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Egypt extract around the west bank of the canal entrance. Port
+  Said (EGPSD) is the old port on the west bank, run as West Port Said by the Suez Canal Economic Zone
+  (SCZONE). East Port Said (EGPSE), across the canal, is a separate port with its own locode and outline.
+  OpenStreetMap maps the container terminal as an area and the harbour's basins (Sherif, Ismail, Hussein,
+  Salt and the Naval Basin) only as named points, so the outline is drawn from the container terminal.
+  The anchorages and pilot boarding places off Port Said are where ships wait for the canal convoys; they
+  belong to the Suez Canal's outline, not to this port's.
+position_outside: >-
+  UN/LOCODE places Port Said at (31.26, 32.3), in the Moustafa Hamza neighbourhood by Port Said railway
+  station, about 570 m north of the container terminal and on land.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Port Said. These are the hull of West Port Said Container Terminal
+    grown by 300 m, cut to the water OpenStreetMap maps inside it, with the terminal kept whole: the terminal
+    and the water in front of it, which takes in a stretch of the canal's channel through Port Said harbour,
+    not the Port Said streets behind or the Ismail, Hussein and Salt basins further east. A scan of OpenStreetMap
+    finds no homes, residential land, schools, hospitals, places of worship or named places inside. OpenStreetMap
+    maps Al Da'era Al Gomrokia, the customs district, as a neighbourhood outline that covers all of the
+    limits.
+features:
+- osm: relation/14374023
+  kind: terminal
+  name: West Port Said Container Terminal
+  operator: Port Said Container & Cargo Handling Co.
+  cargo:
+  - container
+  note: >-
+    The container terminal on the west side of the harbour, mapped as a container terminal (man_made=container_terminal)
+    named West Port Said Container Terminal in OpenStreetMap. OpenStreetMap's Port Said West port area
+    (relation 14374024) covers the same quays and is left out as a duplicate. The public-sector Port Said
+    Container & Cargo Handling Co. runs it, as Lloyd's List and the company's own posts say.

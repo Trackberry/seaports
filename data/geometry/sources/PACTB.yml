@@ -1,0 +1,40 @@
+---
+locode: PACTB
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Panama extract around Limon Bay. Cristóbal is the port on the Colón
+  waterfront at the Atlantic entrance to the canal. Manzanillo International Terminal (PAMIT) and Colón
+  Container Terminal (PAONX), across Manzanillo Bay at Coco Solo, are separate terminals with their own
+  operators and locodes, so they are separate outlines. The Limon Bay anchorages A, C and D are where
+  ships wait for the canal; they belong to the Panama Canal's outline, and OpenStreetMap maps no anchorage
+  of the port's own. The Colón LNG terminal and the oil and power plant sites on Telfers Island to the
+  south are separate facilities and are left out.
+position_outside: >-
+  UN/LOCODE places Cristóbal at (9.35, -79.9), on land just east of the port fence, by the Panama Canal
+  Railway's Atlantic Passenger Station in Colón.
+port_limits:
+  derive: hull
+  buffer_m: 300
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Cristóbal. These are the hull of the Puerto de Cristóbal area
+    grown by 300 m, cut to the water OpenStreetMap maps inside it, with the port area kept whole: the
+    piers and the water of Limon Bay off them, not the Colón streets behind. A scan of OpenStreetMap finds
+    no homes, residential land, schools, hospitals or places of worship inside. The one named place is
+    the label of the Cristóbal neighbourhood, which OpenStreetMap places inside the port area, so no buffer
+    or exclusion can leave it out.
+  accepts:
+    places:
+    - Cristóbal
+features:
+- osm: way/30687159
+  kind: terminal
+  name: Puerto de Cristóbal
+  operator: TiL Panamá
+  cargo:
+  - container
+  note: >-
+    The port area on the Colón waterfront, mapped as industrial land named Puerto de Cristóbal in OpenStreetMap,
+    which links it to Panama Ports Company's website. Panama's Supreme Court annulled Panama Ports Company's
+    concession in January 2026, and since late February 2026 TiL Panamá, part of MSC's Terminal Investment
+    Limited, has run the port under a temporary contract of up to 18 months, as the Panamanian press reports.

@@ -1,0 +1,30 @@
+---
+locode: PAMIT
+reviewed_at: '2026-11-24'
+note: >-
+  Drafted with osmium from Geofabrik's Panama extract around Limon Bay and Manzanillo Bay. Manzanillo
+  International Terminal, on the Coco Solo peninsula east of the Atlantic entrance to the canal, has its
+  own locode, PAMIT, which carriers use for it. Colón Container Terminal next door (PAONX) and Cristóbal
+  across the bay (PACTB) are separate terminals with their own operators and locodes, so they are separate
+  outlines, not quays of this one. The Limon Bay anchorages A, C and D are where ships wait for the canal;
+  they belong to the Panama Canal's outline, and OpenStreetMap maps no anchorage of the port's own.
+port_limits:
+  derive: hull
+  buffer_m: 100
+  clip: water
+  note: >-
+    OpenStreetMap maps no port limits for Manzanillo. These are the hull of Manzanillo International Terminal
+    grown by 100 m, cut to the water OpenStreetMap maps inside it, with the terminal kept whole: the terminal
+    and its berths on Manzanillo Bay. A scan of OpenStreetMap finds no homes, residential land, schools,
+    hospitals, places of worship or named places inside.
+features:
+- osm: way/30686350
+  kind: terminal
+  name: Manzanillo International Terminal
+  operator: SSA Marine
+  cargo:
+  - container
+  note: >-
+    The container terminal on the Coco Solo peninsula, mapped as a port area (industrial=port, port=cargo)
+    and named Manzanillo International Terminal in OpenStreetMap. SSA Marine, which has run it since 1995,
+    names it among its terminals on its website.
