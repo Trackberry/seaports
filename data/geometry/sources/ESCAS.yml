@@ -13,10 +13,19 @@ port_limits:
   derive: hull
   osm: relation/9646829
   buffer_m: 300
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Castellón. These are the hull of the port area (relation/9646829,
-    tagged industrial=port and named Port de Castelló) and the terminal below, grown by 300 m. They leave
-    the anchorages offshore outside.
+    tagged industrial=port and named Port de Castelló) and the terminal below, grown by 300 m, then cut
+    to the water OpenStreetMap maps inside it, with the terminals and those areas kept whole and a 30
+    m margin where they meet the water. A scan of OpenStreetMap finds no homes, schools, hospitals or
+    places of worship inside. The label of el Grau de Castelló, the district behind the port, stands 10
+    m inside the edge, and the edge of an unnamed residential area reaches in by about 1,050 m², none
+    of it more than 10 m inside.
+  accepts:
+    residential_m2: 1053
+    places:
+    - el Grau de Castelló
 features:
 - osm: way/1024857543
   kind: anchorage

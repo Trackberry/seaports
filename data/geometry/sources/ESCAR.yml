@@ -13,9 +13,11 @@ position_outside: >-
 port_limits:
   derive: hull
   buffer_m: 400
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Cartagena. These are the hull of the terminals below, around
-    the town harbour, grown by 400 m. They leave out Escombreras, 3 km east, whose terminals are not mapped.
+    the town harbour, grown by 400 m, then cut to the water OpenStreetMap maps inside it, with the terminals
+    kept whole and a 30 m margin where they meet the water.
 features:
 - osm: relation/14685601
   kind: terminal

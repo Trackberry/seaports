@@ -12,11 +12,14 @@ port_limits:
   derive: hull
   osm: way/215864005
   buffer_m: 400
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Algeciras; the port authority's waters cover the whole bay,
     Gibraltar's included. These are the hull of the Puerto de Algeciras area and the terminals below,
-    from Isla Verde to the San Roque refinery, grown by 400 m. They take in the bay water between, where
-    ships wait, but not Gibraltar.
+    from Isla Verde to the San Roque refinery, grown by 400 m, then cut to the water OpenStreetMap maps
+    inside it, with the terminals and those areas kept whole and a 30 m margin where they meet the water.
+    A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of worship or
+    named places inside.
 features:
 - osm: way/274800035
   kind: terminal

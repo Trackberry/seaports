@@ -12,10 +12,12 @@ position_outside: >-
 port_limits:
   derive: hull
   buffer_m: 100
+  clip: water
   note: >-
-    OpenStreetMap maps no port limits for Valparaíso. These are Terminal 1 grown by 100 m, over its berths
-    and the water alongside. The port sits against the old town, so the margin is kept small enough to
-    leave out Barrio Puerto and Plaza Sotomayor. The Espigón and the Barón pier stay outside.
+    OpenStreetMap maps no port limits for Valparaíso. These are Terminal 1 grown by 100 m, then cut to
+    the water OpenStreetMap maps inside it, with the terminals kept whole and a 30 m margin where they
+    meet the water. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places
+    of worship or named places inside.
 features:
 - osm: relation/14349711
   kind: terminal

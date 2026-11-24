@@ -7,14 +7,19 @@ note: >-
   terminal inside it, so the Western Docks go into the port limits rather than being a terminal of their
   own. OpenStreetMap maps no commercial anchorage for Southampton: the seamark anchorages in the Solent
   are unnamed points or small areas off Cowes, so none is listed.
+position_outside: >-
+  UN/LOCODE places the port at (50.895, -1.435), on land about 280 m from these limits, which are cut
+  to the water.
 port_limits:
   derive: hull
   osm: relation/3513638
   buffer_m: 500
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Southampton. These are the hull of the Western Docks and the
-    terminals below, from the container terminal down Southampton Water to Fawley, grown by 500 m to take
-    in the berths' water. Rougher than ABP's harbour limits, which reach out into the Solent.
+    terminals below, from the container terminal down Southampton Water to Fawley, grown by 500 m, then
+    cut to the water OpenStreetMap maps inside it, with the terminals and those areas kept whole and a
+    30 m margin where they meet the water.
 features:
 - osm: relation/13590178
   kind: terminal

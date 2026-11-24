@@ -10,10 +10,13 @@ note: >-
 port_limits:
   derive: hull
   buffer_m: 500
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Valencia. These are the hull of the terminals below, from the
-    CSP Iberian terminal in the south to the APM terminal in the north, grown by 500 m. They take in the
-    harbour basins between but not the anchorages offshore.
+    CSP Iberian terminal in the south to the APM terminal in the north, grown by 500 m, then cut to the
+    water OpenStreetMap maps inside it, with the terminals kept whole and a 30 m margin where they meet
+    the water. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of
+    worship or named places inside.
 features:
 - osm: way/1010784059
   kind: anchorage

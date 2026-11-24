@@ -21,10 +21,13 @@ port_limits:
   - way/222482977
   - way/223541549
   buffer_m: 600
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Belfast. These are the hull of the terminals and the west-bank
-    quays, from the Victoria Terminals up both banks of the Lagan to Albert Quay, grown by 600 m. Much
-    smaller than Belfast Harbour's limits, which take in the inner lough.
+    quays, from the Victoria Terminals up both banks of the Lagan to Albert Quay, grown by 600 m, then
+    cut to the water OpenStreetMap maps inside it, with the terminals and those areas kept whole and a
+    30 m margin where they meet the water. A scan of OpenStreetMap finds no homes, residential land, schools,
+    hospitals, places of worship or named places inside.
 features:
 - osm: way/744954052
   kind: terminal

@@ -11,10 +11,16 @@ port_limits:
   derive: hull
   osm: way/972535620
   buffer_m: 500
+  clip: water
+  disjoint: >-
+    The customs and agriculture border inspection post behind the berths is kept whole, and OpenStreetMap's
+    water does not join it to the harbour, so it is a part of its own.
   note: >-
     OpenStreetMap maps no port limits for Rosslare. These are the hull of the four berths and the customs
-    and agriculture border inspection post behind them (tagged industrial=port), grown by 500 m to take
-    in the harbour inside the breakwater.
+    and agriculture border inspection post behind them (tagged industrial=port), grown by 500 m, then
+    cut to the water OpenStreetMap maps inside it, with the terminals and those areas kept whole and a
+    30 m margin where they meet the water. A scan of OpenStreetMap finds no homes, residential land, schools,
+    hospitals, places of worship or named places inside.
 features:
 - osm:
   - way/1300233195

@@ -12,11 +12,13 @@ port_limits:
   - way/618112529
   - way/618268543
   buffer_m: 300
+  clip: water
   note: >-
     OpenStreetMap maps the port authority's areas, Port de Barcelona (landuse=harbour) and Port Vell,
     but on their own they miss the port's own position on the APM quay. These are the hull of those two
-    areas and the terminals below, from BEST to Port Vell, grown by 300 m. They take in the foot of Montjuïc
-    between the quays and the coast road.
+    areas and the terminals below, from BEST to Port Vell, grown by 300 m, then cut to the water OpenStreetMap
+    maps inside it, with the terminals and those areas kept whole and a 30 m margin where they meet the
+    water.
 features:
 - osm: way/385316853
   kind: terminal

@@ -15,14 +15,21 @@ quays:
 port_limits:
   derive: hull
   buffer_m: 1500
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Hamburg. These are the hull of the terminals below, from Eurogate
-    and Altenwerder in the west to O'Swaldkai and the cruise centre in the east, grown by 1.5 km. They
-    take in Steinwerder, Wilhelmsburg's port side and the Elbe between, so they are rougher than the legal
-    port area.
+    and Altenwerder in the west to O'Swaldkai and the cruise centre in the east, grown by 1.5 km, then
+    cut to the water OpenStreetMap maps inside it, with the terminals kept whole and a 30 m margin where
+    they meet the water. A scan of OpenStreetMap finds no homes, schools or hospitals inside. The Flussschifferkirche,
+    a church ship moored in the harbour, is inside; the labels of two HafenCity quarters, Am Sandtorkai
+    and Baakenhafen, stand at the water's edge; and the edges of five residential areas, the Peutehafen
+    one among them, reach in by about 500 m² in all, none of it more than 5 m inside.
   accepts:
+    residential_m2: 499
+    amenities: 1
     places:
-    - Steinwerder
+    - Quartier Am Sandtorkai
+    - Quartier Baakenhafen
 features:
 - osm: way/991881631
   kind: anchorage
