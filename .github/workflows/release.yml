@@ -44,12 +44,24 @@ jobs:
         id: version
         run: echo "value=$(ruby -Ilib -rseaports/version -e 'print Seaports::VERSION')" >> "$GITHUB_OUTPUT"
 
-      - name: Stop if this version is already published
+      # Not only a version already published: one below the newest too. Two
+      # release pull requests bumped from the same version, one merged and the
+      # other's conflict resolved by hand, can leave main at 1.7.7 after 1.8.0
+      # shipped. Versions compare as Gem::Version, so 1.7.10 is after 1.7.9.
+      - name: Stop unless this version is newer than every published one
+        env:
+          VERSION: ${{ steps.version.outputs.value }}
         run: |
-          if gem list --remote --exact seaports --all | grep -q "\b${{ steps.version.outputs.value }}\b"; then
-            echo "seaports ${{ steps.version.outputs.value }} is already on RubyGems."
-            exit 1
-          fi
+          set -euo pipefail
+          curl -fsS https://rubygems.org/api/v1/versions/seaports.json -o "$RUNNER_TEMP/published.json"
+          ruby -rjson -e '
+            version = Gem::Version.new(ENV.fetch("VERSION"))
+            published = JSON.parse(File.read(File.join(ENV.fetch("RUNNER_TEMP"), "published.json"))).map { |row| Gem::Version.new(row.fetch("number")) }
+            newest = published.max
+            abort "seaports #{version} is already on RubyGems." if published.include?(version)
+            abort "seaports #{version} is not newer than #{newest}, the newest on RubyGems: bump version.rb past it." if newest && version <= newest
+            puts "seaports #{version} follows #{newest || "nothing published"}."
+          '
 
       - uses: rubygems/release-gem@v1
 

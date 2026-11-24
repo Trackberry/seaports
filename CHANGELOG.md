@@ -5,6 +5,12 @@ pull request, or by hand for a code change; a person merges both.
 
 ## Unreleased
 
+A canal outline for the Kiel Canal (`kiel`): the Nord-Ostsee-Kanal waterway relation's ways as its centreline, the Nordwest-Reede off Brunsbüttel and the Holtenau-Reede in the Kiel Fjord as its waiting areas, and the Holtenau pilot boarding place, all from OpenStreetMap by id. Only the roadsteads the Bekanntmachung zur Seeschifffahrtsstraßen-Ordnung keeps for ships bound for the locks are the canal's; the Holtenau-Reede also takes ships waiting for a Kiel berth or for better weather.
+
+A canal's ends can now be `west` and `east` as well as `north` and `south`, since the Kiel Canal runs from Brunsbüttel in the west to Kiel-Holtenau in the east. A canal's areas take its own two ends or `in_transit` as their approach, `Seaports::Canal#approaches` lists them, and `anchorages_for` refuses an approach the canal does not have. `Seaports::Canal::APPROACHES` now lists every canal's approaches, `west` and `east` included. Suez and Panama outlines are unchanged.
+
+A canal outline for the Turkish Straits (`turkish_straits`), north end Istanbul and south end Çanakkale, with a waterway only: the Istanbul Strait's traffic separation line and the part of the Çanakkale Strait's separation zone OpenStreetMap maps, from off Gelibolu to off Çoraklık Burnu. OpenStreetMap maps none of the anchorages the Turkish Straits Maritime Traffic Regulation sets at the entrances and no pilot boarding place, so the outline has no waiting areas until they are mapped.
+
 Three checks that a reviewer used to make by hand on every outline release are now made by `rake seaports:check_geometry`, offline, from what the build stores in each outline, so the weekly rebuild from OpenStreetMap fails when an edit there breaks one:
 
 - The name rule. The build stores the `name`, `name:en` and `seamark:name` tags of each terminal's and anchorage's OpenStreetMap element (the first listed, for a feature mapped in parts) as `osm_tags`, and a name that is not OpenStreetMap's own is an error: its `name`; its `name:en` where `name` is in another script than Latin, or is missing; its `seamark:name` for an unnamed seamark; "Anchorage", "Container terminal" or "Berths" where OpenStreetMap gives none. Canal anchorages too.

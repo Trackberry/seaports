@@ -35,10 +35,15 @@ module Seaports
 
     def pilot_boarding_places = areas.select { |area| area.kind == "pilot_boarding" }
 
-    # The anchorages that serve one end: "north", "south" or "in_transit".
+    # The approaches this canal's areas take: its two ends, "north" and
+    # "south" or "west" and "east", and "in_transit".
+    def approaches = Canal.approaches_for(ends) || [Canal::IN_TRANSIT]
+
+    # The anchorages that serve one end, "north" or "west" say, or
+    # "in_transit".
     def anchorages_for(approach)
       wanted = approach.to_s
-      known = Canal::APPROACHES
+      known = approaches
       raise ArgumentError, "approach must be one of #{known.join(', ')}, not #{approach.inspect}" unless known.include?(wanted)
 
       anchorages.select { |area| area.approach == wanted }
@@ -62,15 +67,31 @@ module Seaports
   class Canal
     DIR = File.expand_path("../../data/geometry/canals", __dir__)
     KINDS = %w[waterway anchorage pilot_boarding].freeze
-    # Both canals here run roughly north and south: Suez from Port Said to
-    # Suez, Panama from Colón on the Atlantic to Balboa on the Pacific.
-    # "in_transit" is a lake inside the canal where convoys pass each other.
-    APPROACHES = %w[north south in_transit].freeze
+    # A canal's two ends are named for the way it runs: north and south for
+    # Suez (Port Said to Suez) and Panama (Colón on the Atlantic to Balboa on
+    # the Pacific), west and east for the Kiel Canal (Brunsbüttel on the
+    # Elbe to Kiel-Holtenau).
+    END_PAIRS = [%w[north south], %w[west east]].freeze
+    # "in_transit" is water inside the canal where ships wait part-way
+    # through, such as a lake where convoys pass each other.
+    IN_TRANSIT = "in_transit"
+    # Every approach any canal can take, west and east included. One canal
+    # takes only its own ends and "in_transit": see Canal#approaches.
+    APPROACHES = [*END_PAIRS.flatten, IN_TRANSIT].freeze
+
+    # The approaches a canal's areas may take when +ends+ names both ends of
+    # one END_PAIRS pair, each with a name, or nil when it does not.
+    def self.approaches_for(ends)
+      pair = ends.is_a?(Hash) && END_PAIRS.find { |candidate| candidate.sort == ends.keys.sort }
+      return nil if !pair || ends.values.any? { |name| name.to_s.strip.empty? }
+
+      [*pair, IN_TRANSIT]
+    end
     ID = /\A[a-z][a-z0-9_]{1,30}\z/
 
     # One feature of a canal's outline, with Seaports::Geometry::Area's
-    # meaning for the fields they share. +approach+ is one of APPROACHES for
-    # an anchorage or a pilot boarding place, nil for the waterway.
+    # meaning for the fields they share. +approach+ is one of its canal's
+    # approaches for an anchorage or a pilot boarding place, nil for the waterway.
     Area = Data.define(:canal, :kind, :name, :approach, :category, :osm, :source, :licence, :reviewed_at, :note,
       :geometry, :lat, :lng) do
       def contains?(lat, lng)

@@ -452,7 +452,26 @@ How a port is drafted:
    branch, so the reviewer sees shapes. Weekly, it rebuilds every port to pick
    up OpenStreetMap's edits, from Geofabrik's extracts, and opens one pull
    request with what moved. The GeoJSON has one feature per line, so that
-   diff shows which terminal moved.
+   diff shows which terminal moved. When an outline moved, that pull request
+   also bumps the patch version and adds a changelog entry with one line per
+   port that moved (`rake seaports:geometry_release`), so merging it
+   publishes the outlines (see [Releases from the weekly
+   jobs](#releases-from-the-weekly-jobs)).
+
+Some ports were drafted and held because OpenStreetMap does not map their
+terminals: Busan New Port, Yokohama, Qingdao and others.
+`data/geometry/watch.yml` lists each with why and what would unblock it, a
+search radius around its UN/LOCODE position (no coordinates are typed in),
+and the features already looked at. Weekly, `.github/workflows/watch.yml` runs
+`rake seaports:watch`, which asks Overpass for the named areas near each that
+could be a terminal (container terminals, named port and harbour areas,
+seamark harbours, industrial areas with a port-like name or operator). When
+one appears that nobody has looked at, it opens an issue labelled
+`port-watch`, "OpenStreetMap now maps terminals at Busan", with each feature's
+id and a link, or comments on the port's open issue. It never writes an
+outline and closes nothing. Each feature is raised once: the issues, open or
+closed, are its memory, so closing one whose features are no use is how to
+say so.
 
 #### What the checks hold every outline to
 
@@ -548,12 +567,13 @@ use.
 A canal is not a port, and its queue is not port congestion. Ships anchored off
 Port Said in the C and V areas are waiting for a Suez convoy, not for a berth
 at Port Said; ships in the Great Bitter Lake are part-way through, waiting for
-the convoy coming the other way to pass. The gem ships outlines for the Suez
-and Panama canals so a tracker can say "waiting to transit Suez since Tuesday"
-rather than "at anchor, Port Said".
+the convoy coming the other way to pass. The gem ships outlines for the Suez,
+Panama and Kiel canals so a tracker can say "waiting to transit Suez since
+Tuesday" rather than "at anchor, Port Said", and the Turkish Straits' waterway,
+whose waiting areas are not mapped yet.
 
 ```ruby
-Seaports.canal_ids                               # => ["panama", "suez"]
+Seaports.canal_ids                               # => ["kiel", "panama", "suez", "turkish_straits"]
 suez = Seaports.canal("suez")
 suez.anchorages.size                             # => 78
 suez.anchorages_for(:north).map(&:name).first(3) # => ["C1", "C2", "C3"]
@@ -563,26 +583,30 @@ area = Seaports.canal_anchorage_at(31.3585, 32.3350)
 Seaports.canal_anchorage_at(51.0, 1.5)           # => nil, mid-Channel
 suez.waterway.geometry["type"]                   # => "MultiLineString"
 Seaports.canal("panama").collection              # => the GeoJSON FeatureCollection, for a map
+Seaports.canal("kiel").end_name(:west)           # => "Brunsbüttel"
 ```
 
-Each canal is a `Seaports::Canal` with an `id`, a `name`, its `ends` (`north`
-and `south`: Port Said and Suez, Colón and Balboa) and its areas, each a
-`Seaports::Canal::Area`:
+Each canal is a `Seaports::Canal` with an `id`, a `name`, its two `ends` and
+its areas, each a `Seaports::Canal::Area`. The ends are named for the way the
+canal runs: `north` and `south` for Suez (Port Said and Suez) and Panama (Colón
+on the Atlantic and Balboa on the Pacific), `west` and `east` for the Kiel
+Canal (Brunsbüttel on the Elbe and Kiel-Holtenau on the Kiel Fjord), and
+`north` and `south` for the Turkish Straits (Istanbul on the Black Sea and
+Çanakkale on the Aegean).
+`approaches` lists the canal's two ends and `in_transit`. The areas:
 
 - one `waterway`, the canal's centreline as OpenStreetMap maps it. It is a
   line, not an area: OpenStreetMap maps most of the Suez Canal's water as sea
   behind the coastline, and Panama's as Gatún Lake, Miraflores Lake and the locks
   separately, so neither has one water area for the whole canal. Use it to
   draw the canal, not to ask whether a ship is in it;
-- the `anchorage`s where ships wait, each with an `approach`: `north` or
-  `south` for the end it serves, `in_transit` for a lake inside the canal
-  (the Great Bitter Lake, Lake Timsah, Panama's Miraflores Lake);
+- the `anchorage`s where ships wait, each with an `approach`: one of the
+  canal's ends for the end it serves, `in_transit` for a lake inside the
+  canal (the Great Bitter Lake, Lake Timsah, Panama's Miraflores Lake);
 - `pilot_boarding` places, with an `approach` too.
 
 `canal_anchorage_at(lat, lng)` answers the waiting area a position is in,
-whichever canal it belongs to, or nil. Both canals run roughly north and south,
-Panama from Colón on the Atlantic to Balboa on the Pacific, which is why the
-ends are called that.
+whichever canal it belongs to, or nil.
 
 The same rule as the port outlines: every shape is an OpenStreetMap feature
 chosen by id, in `data/geometry/canals/sources/<id>.yml`, and built into
@@ -607,6 +631,33 @@ which the Suez Canal Authority's Rules of Navigation give to incoming ships.
 The West Waiting Area (W1 to W14), for ships awaiting orders, bunkering or
 bound for Suez and Adabiya, and the lettered areas nearer Port Tawfiq are left
 out, so a ship there reads as waiting for no canal.
+
+At the Kiel Canal only the two roadsteads the Bekanntmachung zur
+Seeschifffahrtsstraßen-Ordnung keeps for ships bound for the locks are the
+canal's: the Nordwest-Reede off Brunsbüttel, for ships due to lock into the
+next free lock, and the Holtenau-Reede in the Kiel Fjord, which OpenStreetMap
+leaves unnamed. The Holtenau-Reede also takes ships waiting for a berth in the
+port of Kiel or for better weather, so a ship there reads as waiting at the
+east end whichever it is waiting for. The Elbe's other roadsteads near Brunsbüttel (the Südreede, the
+Nordostreede off the Elbehafen, the Neufeld roadsteads) serve the river, not
+the canal. OpenStreetMap draws the Nordwest-Reede as an open line along the
+fairway, so its area is that line grown by 300 m. It maps no sidings inside
+the canal as areas, and no pilot boarding place at Brunsbüttel.
+
+The Turkish Straits (`turkish_straits`) are a waterway only, with no waiting
+areas yet. OpenStreetMap maps the Bosporus and the Dardanelles as strait areas
+bounded by the coastline (relations 8926171 and 8926172) and no waterway through
+them, so the waterway is the traffic separation schemes' seamarks: the Istanbul
+Strait's separation line, the length of the strait, and the Çanakkale Strait's
+separation zone, which OpenStreetMap maps only from off Gelibolu to off
+Çoraklık Burnu. The Istanbul scheme's separation zones in the approaches beyond
+the strait (ways 1034443807 and 1034443809) are left out. The narrows at
+Çanakkale, the stretch down to the Aegean and the Sea of Marmara have no line.
+OpenStreetMap maps none of the anchorages the Turkish Straits Maritime Traffic
+Regulation (2019) sets at the straits' entrances and, at Karanlık Liman, inside
+the Çanakkale Strait, and no pilot boarding place. The only seamark anchorages there are the two inspection areas
+of the Black Sea Grain Initiative, which ended in July 2023, and they are left
+out.
 
 ### What is deliberately not in it
 
@@ -715,13 +766,34 @@ Merging that pull request changes `lib/seaports/version.rb`, which is the only
 thing that triggers a release. The gem is published by RubyGems trusted
 publishing, so there is no API key in this repository.
 
+### Releases from the weekly jobs
+
+Two weekly jobs open pull requests that release: this one (a minor version,
+Mondays at 06:17 UTC) and the port outline rebuild in `geometry.yml` (a patch,
+at 06:41). Each bumps the version it found on main when it ran, and writes it
+to `lib/seaports/version.rb` and `Gemfile.lock` with a changelog entry, so on
+a Monday when both find something, both bump from the same version. They can
+never publish the same version twice: the two pull requests change the same
+lines of `version.rb` and the changelog, so once one is merged GitHub will not
+merge the other. Instead of leaving that conflict for a person:
+
+- when a release lands on main, `.github/workflows/restack.yml` runs each open
+  refresh pull request that still bumps the version again on the new main, by
+  its own workflow, which rebuilds it and bumps from the version just
+  released;
+- a job that finds main released while it was running (its pull request
+  merged into a main it no longer starts from) runs itself again on main, as
+  its last step.
+
+`release.yml` still refuses a version already on RubyGems.
+
 ## Versioning
 
 Semver, where the data is the product:
 
 | | |
 | --- | --- |
-| **patch** | code fixes, table unchanged |
+| **patch** | code fixes, or a refresh of the port outlines from OpenStreetMap; table unchanged |
 | **minor** | a UN/LOCODE refresh — ports added, renamed, repositioned |
 | **major** | an API change, or a refresh that removes ports known to be load-bearing |
 
