@@ -166,8 +166,11 @@ module Seaports
       # is part of one. An error, since a note that misquotes OpenStreetMap
       # says something untrue, and a rename in OpenStreetMap is the likeliest
       # reason it does.
-      NAMED_CLAIM = /\bnamed\s+((?:(?!\bnamed\s).){1,120}?)\s+in\s+OpenStreetMap/
-      NAMES_IT_CLAIM = /\bOpenStreetMap\s+(names|calls|spells)\s+it\s+(?:"([^"]+)"|“([^”]+)”)/
+      # The name runs to "in OpenStreetMap" within one clause: not across a
+      # semicolon, or a full stop followed by a space, which ends a sentence
+      # ("No.5" and "Co.,ltd" keep theirs).
+      NAMED_CLAIM = /\b[Nn]amed\s+((?:(?!\bnamed\s|;|\.\s).){1,120}?)\s+in\s+(?:OpenStreetMap|OSM)\b/
+      NAMES_IT_CLAIM = /\b(?:OpenStreetMap|OSM)\s+(names|calls|spells)\s+it\s+(?:"([^"]+)"|“([^”]+)”|‘([^’]+)’)/
 
       def check_claims(props, tags, where)
         note = props["note"].to_s
@@ -179,12 +182,13 @@ module Seaports
           text == "so" ? props["name"].to_s : text
         end
         claims.each do |claim|
-          next if named?(claim, values)
+          # "Named X and tagged cargo=container in OpenStreetMap" claims X.
+          next if named?(claim, values) || named?(claim.split(/\s+and\s+/).first, values)
 
           @errors << "#{where}: the note says it is named #{claim.inspect} in OpenStreetMap, which has #{describe_tags(tags)}: correct the note"
         end
-        note.scan(NAMES_IT_CLAIM).each do |verb, plain, curly|
-          claim = plain || curly
+        note.scan(NAMES_IT_CLAIM).each do |verb, plain, curly, single|
+          claim = plain || curly || single
           ok = verb == "spells" ? values.any? { |value| value.include?(claim) } : named?(claim, values)
           next if ok
 

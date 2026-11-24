@@ -307,9 +307,11 @@ module Seaports
 
       # The homes, residential areas, amenities and places inside +bbox+, as
       # Inside.overpass answers them but with whole geometries, cut from the
-      # extracts that hold the box like #water.
+      # extracts that hold the box like #water. What the extract holds only
+      # part of is named in the build log, not counted.
       def inside(bbox, label: "OpenStreetMap")
-        elements, = cut(bbox, label:, what: "inside", filters: Inside::FILTERS, nodes: true)
+        elements, skipped = cut(bbox, label:, what: "inside", filters: Inside::FILTERS, nodes: true)
+        skipped.each { |line| @out.puts "#{label}: inside skipped #{line}" }
         elements
       end
 
@@ -432,8 +434,7 @@ module Seaports
       # kept only when +nodes+.
       def cut(bbox, label:, what:, filters:, nodes: false)
         west, south, east, north = bbox
-        points = [[west, south], [east, south], [east, north], [west, north], [(west + east) / 2.0, (south + north) / 2.0]]
-        cover = @region_name ? [named_region] : self.class.covers(regions, points).first
+        cover = @region_name ? [named_region] : self.class.covers(regions, grid(bbox)).first
         elements = {}
         skipped = []
         cover.sort_by(&:path).each do |region|
@@ -454,6 +455,15 @@ module Seaports
           end
         end
         [elements.values, skipped]
+      end
+
+      # The corners of +bbox+ and a 5 by 5 grid across it: limits that cross
+      # a region's border with every corner on one side still reach the
+      # regions of the other.
+      def grid(bbox)
+        west, south, east, north = bbox
+        steps = (0..4).map { |i| i / 4.0 }
+        steps.product(steps).map { |x, y| [west + ((east - west) * x), south + ((north - south) * y)] }
       end
 
       def named_region

@@ -86,7 +86,12 @@ module Seaports
         places = []
         residential = []
         too_large = []
-        elements.uniq { |element| [element["type"], element["id"]] }.sort_by { |element| [element["type"], element["id"]] }.each do |element|
+        # Overpass answers an element in both of its blocks (a building tagged
+        # landuse=residential), once with a centre and once with geometry:
+        # keep the one with geometry, as the extract gives it.
+        whole = ->(element) { element["geometry"] || element["members"] ? 0 : 1 }
+        elements = elements.sort_by { |element| [element["type"], element["id"], whole.call(element)] }.uniq { |element| [element["type"], element["id"]] }
+        elements.each do |element|
           tags = element["tags"] || {}
           ref = "#{element['type']}/#{element['id']}"
           point = centre(element)
@@ -100,7 +105,7 @@ module Seaports
           shape = residential_shape(element)
           next unless shape
 
-          own = Planar.area_m2(shape)
+          own = area.own_m2(shape)
           inside_m2 = area.overlap_m2(shape)
           next unless inside_m2.positive?
 
@@ -217,6 +222,10 @@ module Seaports
 
           @limits.contains?(@factory.point(*local([lng, lat])))
         end
+
+        # The area of a polygon once made valid, as GEOS measures it: a
+        # self-crossing ring's own shoelace area can be near nothing.
+        def own_m2(geometry) = area(read(geometry).make_valid)
 
         def overlap_m2(geometry)
           west, south, east, north = Planar.bbox(geometry)

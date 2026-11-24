@@ -196,6 +196,19 @@ class GeometryNoteClaimTest < Minitest::Test
     assert_empty claim_errors(run_checks(terminal("Puerto de Las Palmas", { "name" => "Puerto de Las Palmas" }, note:)))
   end
 
+  def test_a_claim_stays_within_its_sentence
+    tags = { "name" => "Berth 5" }
+    across = "It is named Berth 5 by the port; in OpenStreetMap it is a quay. Named Pier 7. It is also mapped in OpenStreetMap as a pier."
+
+    assert_empty claim_errors(run_checks(terminal("Berth 5", tags, note: across)))
+    capital = terminal("Berth 5", tags, note: "Named Pier 7 in OSM, by the river.")
+    assert_equal 1, claim_errors(run_checks(capital)).size
+    single = terminal("Berth 5", tags, note: "OpenStreetMap calls it ‘Pier’.")
+    assert_equal 1, claim_errors(run_checks(single)).size
+    tagged = terminal("Berth 5", tags, note: "Named Berth 5 and tagged cargo=container in OpenStreetMap.")
+    assert_empty claim_errors(run_checks(tagged))
+  end
+
   def test_a_quote_left_behind_by_a_rename_is_a_warning
     limits = feature("port_limits", LIMITS, note: 'The quays of "MSC Terminal Valencia" are kept whole.')
     msc = terminal("MSC Terminal", { "name" => "MSC Terminal" })
@@ -280,6 +293,27 @@ class GeometryInsideScanTest < Minitest::Test
 
     assert_equal 0, scan["residential_m2"]
     assert_equal "Whole town", scan["residential_too_large"].first["name"]
+  end
+
+  # Overpass gives a building tagged landuse=residential twice: with a centre
+  # in its first block and with geometry in its second.
+  def test_an_element_given_twice_keeps_its_geometry
+    whole = square_way(1, 4.5, 51.9, 0.001, { "building" => "residential", "landuse" => "residential" })
+    centre = whole.except("geometry").merge("center" => { "lat" => 51.9, "lon" => 4.5 })
+    expected = Inside.summary([whole], limits)
+
+    assert_operator expected["residential_m2"], :>, 0
+    assert_equal expected, Inside.summary([centre, whole], limits)
+    assert_equal 1, Inside.summary([centre, whole], limits)["houses"]
+  end
+
+  # A town-sized outline drawn as a bowtie has almost no shoelace area.
+  def test_the_size_cap_measures_the_valid_shape
+    corner = [4.47, 51.87]
+    ring = [corner, [4.53, 51.93], [4.53, 51.87], [4.47, 51.93], corner].map { |x, y| { "lon" => x, "lat" => y } }
+    bowtie = { "type" => "way", "id" => 1, "tags" => { "landuse" => "residential" }, "geometry" => ring }
+
+    assert_equal 0, Inside.summary([bowtie], limits)["residential_m2"]
   end
 
   def test_an_empty_scan_needs_nothing_but_counts

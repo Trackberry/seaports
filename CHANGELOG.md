@@ -15,6 +15,8 @@ Every port and both canals are rebuilt so their outlines carry the tags and the 
 
 Of the 111 ports, 38 have nothing inside their limits, and 35 now say under `accepts` what their scan holds and their note discloses. The other 38 hold more than their notes say, every one of them limits without `clip: water`, hulls grown by up to 1.5 km over towns their notes do not mention (Antwerp, Rotterdam, Hamburg, Southampton, Liverpool), and fail `check_geometry` until their notes or their limits are put right.
 
+`Geometry::Builder.new` with `shapes:` given but no `tags:` or `inside:` now builds an outline without `osm_tags` or `inside`, which `check_geometry` then fails: a caller that injects its own shapes passes all four (as `rake seaports:geometry` does with `OSM_SOURCE=extract`), or none, for Overpass. `Extract` now chooses the regions for a box (the water and the scan) by a 5 by 5 grid across it rather than its corners and centre, so limits across a region border read both sides.
+
 `Extract` names its cut files after the region with any slash replaced, so a scan or a clip in a Geofabrik region with a nested id (`us/delaware`) no longer fails to write it.
 
 ## 1.7.6 — 2026-11-23
