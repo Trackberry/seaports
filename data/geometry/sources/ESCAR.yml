@@ -17,7 +17,12 @@ port_limits:
   note: >-
     OpenStreetMap maps no port limits for Cartagena. These are the hull of the terminals below, around
     the town harbour, grown by 400 m, then cut to the water OpenStreetMap maps inside it, with the terminals
-    kept whole and a 30 m margin where they meet the water.
+    kept whole and a 30 m margin where they meet the water. A scan of OpenStreetMap finds no homes, schools,
+    hospitals, places of worship or named places inside. One residential area, the 9 km² outline OpenStreetMap
+    draws for the town (relation/19803548), takes in about 2.3 ha of the limits, 1.4 ha of it on the terminals'
+    own quays, and another area's edge reaches in by about 300 m².
+  accepts:
+    residential_m2: 23750
 features:
 - osm: relation/14685601
   kind: terminal

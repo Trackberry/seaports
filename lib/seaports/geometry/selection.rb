@@ -26,7 +26,7 @@ module Seaports
       LIMIT_KEYS = %w[derive osm buffer_m clip disjoint note accepts].freeze
       # What the reviewers accepted inside the limits (Inside.compare).
       ACCEPT_KEYS = %w[houses residential_m2 amenities places].freeze
-      FEATURE_KEYS = %w[osm kind name operator cargo category buffer_m note reviewed_at].freeze
+      FEATURE_KEYS = %w[osm kind name operator cargo category buffer_m inland note reviewed_at].freeze
       EDITABLE = %w[kind name operator cargo category note].freeze
       TEXT_LIMITS = { "name" => 120, "operator" => 120, "note" => 600 }.freeze
 

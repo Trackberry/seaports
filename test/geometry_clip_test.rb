@@ -196,6 +196,28 @@ class GeometryClipTest < Minitest::Test
     refute_match "West Quay", error.message
   end
 
+  # A cold store or a yard behind its jetties has no berth to touch the
+  # water: inland says so, and the clip keeps it whole, a part of its own.
+  def test_an_inland_terminal_is_kept_whole_without_water_beside_it
+    sel = selection({ "clip" => "water", "disjoint" => "The depot stands back from the water." }, refs: %w[way/1 way/3])
+    sel["features"].last["inland"] = "A depot with no berth."
+    tags = ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| f["osm"] == ref }["name"] }] } }
+    collection = Builder.new(sel, shapes:, water: ->(_bbox) { Harbour.water }, tags:, inside: ->(_bbox) { [] }).build
+    depot = collection["features"].find { |f| f["properties"]["name"] == "Inland Depot" }
+
+    assert_equal "A depot with no berth.", depot["properties"]["inland"]
+    assert Planar.positions(depot["geometry"]).all? { |lng, lat| Planar.contains?(limits(collection), lng, lat) }
+    assert Seaports::Geometry::Checks.run(collection).ok?
+  end
+
+  def test_inland_is_a_reason_on_a_terminal
+    sel = selection({ "clip" => "water" }, refs: %w[way/1 way/3])
+    sel["features"].last["inland"] = true
+    assert_raises(Builder::Invalid) { Builder.new(sel).check! }
+    sel["features"].last.merge!("inland" => "No berth.", "kind" => "anchorage")
+    assert_raises(Builder::Invalid) { Builder.new(sel).check! }
+  end
+
   def test_an_outline_without_clip_is_built_exactly_as_before
     collection = build({})
 

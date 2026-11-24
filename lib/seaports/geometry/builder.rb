@@ -202,6 +202,7 @@ module Seaports
           end
 
           check_buffer!(entry["buffer_m"], where)
+          check_inland!(entry, where) if entry.key?("inland")
         end
       end
 
@@ -234,6 +235,14 @@ module Seaports
         return if places.nil? || (places.is_a?(Array) && places.all? { |place| place.is_a?(String) && !blank?(place) })
 
         raise Invalid, "#{where}: places is a list of the places' names"
+      end
+
+      # A terminal with no berth of its own (a cold store, a warehouse, a yard
+      # its ships reach by a jetty) says why in +inland+: clip: water then
+      # keeps it whole without asking for water beside it.
+      def check_inland!(entry, where)
+        raise Invalid, "#{where}: inland is for a terminal" unless entry["kind"] == "terminal"
+        raise Invalid, "#{where}: inland is a reason, in words" unless entry["inland"].is_a?(String) && !blank?(entry["inland"])
       end
 
       def check_buffer!(value, where)
@@ -345,9 +354,11 @@ module Seaports
         water = @water.call(Clip.fetch_bbox(hull))
         skipped = Array(water["skipped"])
         skipped.each { |line| @notices << "#{locode}: water skipped, #{line}" }
-        named = terminals.to_h { |f| [[f["properties"]["name"], "(#{f['properties']['osm'].join(', ')})"].compact.join(" "), f["geometry"]] }
+        label = ->(f) { [f["properties"]["name"], "(#{f['properties']['osm'].join(', ')})"].compact.join(" ") }
+        named = terminals.to_h { |f| [label.call(f), f["geometry"]] }
         clip = Clip.new(hull:, terminals: named, basins:, water:)
-        dry = clip.dry_terminals
+        inland = terminals.select { |f| f["properties"]["inland"] }.map(&label)
+        dry = clip.dry_terminals - inland
         unless dry.empty?
           # A skipped water relation is the likeliest reason, so say so here:
           # the notices are not printed for a build that fails.
@@ -370,7 +381,8 @@ module Seaports
           "kind" => entry["kind"], "name" => entry["name"], "operator" => entry["operator"],
           "cargo" => Array(entry["cargo"]), "category" => entry["category"], "osm" => refs, "osm_tags" => osm_tags, "source" => source,
           "licence" => LICENCE, "reviewed_at" => (entry["reviewed_at"] || @selection["reviewed_at"]).to_s,
-          "clip" => entry["clip"], "disjoint" => entry["disjoint"]&.strip, "note" => entry["note"]&.strip
+          "inland" => entry["inland"]&.strip, "clip" => entry["clip"], "disjoint" => entry["disjoint"]&.strip,
+          "note" => entry["note"]&.strip
         }
         { "type" => "Feature", "properties" => properties.compact, "geometry" => geometry }
       end

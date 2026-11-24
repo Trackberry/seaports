@@ -16,7 +16,13 @@ port_limits:
   note: >-
     OpenStreetMap's area for the Port of Los Angeles, tagged ref:LOCODE=USLAX: the port's land and the
     channels and basins between its terminals, from the West Basin to Pier 400. It stops at the Long Beach
-    side of Terminal Island and leaves out downtown San Pedro.
+    side of Terminal Island and leaves out downtown San Pedro. These are OpenStreetMap's own port-area
+    limits, and they hold 27 buildings it maps as houses, 2 ha of a residential area (relation/14285484),
+    the College of Oceaneering and a medical and dental clinic.
+  accepts:
+    houses: 27
+    residential_m2: 20391
+    amenities: 2
 features:
 - osm: relation/9256990
   kind: terminal

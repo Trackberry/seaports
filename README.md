@@ -362,6 +362,13 @@ as a line. And the limits must be one body of water unless the selection says
 why not with `disjoint`: a part on its own is usually a terminal whose water
 is not mapped as an area, or one that is not on the water at all.
 
+A terminal with no berth of its own, such as a cold store, a warehouse, or a
+yard whose ships unload at jetties in front of it, says so with `inland: why`
+on the feature. The clip then keeps it whole without asking for water beside
+it, usually as a part of its own, which `disjoint` explains: Rotterdam's Cool
+Port and Kloosterboer cold stores, Montoir's coal yard. The reason ships in
+the outline as the terminal's `inland`.
+
 Clipping is build-time work for [GEOS](https://libgeos.org), through the
 [rgeo](https://github.com/rgeo/rgeo) gem's C extension, in the Gemfile, not
 the gemspec: `brew install geos` or `apt-get install libgeos-dev` before

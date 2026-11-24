@@ -18,6 +18,9 @@ quays:
 - BEMRK
 - BEEKE
 - BEZWL
+position_outside: >-
+  UN/LOCODE places the port at (51.2167, 4.4167), in the city about 1.35 km from these limits, which are
+  cut to the water.
 port_limits:
   derive: hull
   osm:
@@ -27,11 +30,25 @@ port_limits:
   - way/1143855260
   - way/48605572
   buffer_m: 1500
+  clip: water
+  disjoint: >-
+    Katoen Natie's site, which has no berth (see its inland), is four pieces of land away from the water,
+    and the Katoen Natie warehouse by the city is kept whole away from the docks' water, so each is a
+    part of its own.
   note: >-
     OpenStreetMap maps no port limits for Antwerp. These are the hull of the terminals below, four docks
     (Hansadok, Leopolddok, Vierde and Zesde Havendok) and a Katoen Natie warehouse by the city, grown
-    by 1.5 km. They take in the land between the two banks of the Scheldt, so they are rougher than the
-    legal limits.
+    by 1.5 km, then cut to the water OpenStreetMap maps inside it, with the terminals and those areas
+    kept whole and a 30 m margin where they meet the water. A scan of OpenStreetMap finds no homes or
+    hospitals inside. In the docks of the Eilandje, the Kerkschip Sint-Jozef, a church ship, is moored
+    inside the limits, with the quarter's label 60 m inside the edge and a school point, Hondenboot Antwerpen
+    vzw, on the edge; the edges of three residential areas reach in by about 840 m² in all, none of it
+    more than 10 m inside.
+  accepts:
+    residential_m2: 835
+    amenities: 2
+    places:
+    - Eilandje
 features:
 - osm:
   - way/685961770
@@ -99,6 +116,9 @@ features:
   kind: terminal
   name: Katoen Natie
   operator: Katoen Natie
+  inland: >-
+    OpenStreetMap's outline of the site stops about 120 m short of the nearest dock water, the Bevrijdingsdok,
+    with no berth inside it.
   note: OpenStreetMap gives no cargo type.
 - osm: way/89152521
   kind: terminal
