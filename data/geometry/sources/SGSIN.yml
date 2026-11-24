@@ -33,6 +33,11 @@ port_limits:
     Island reaches in by about 8 ha. The named places are the labels of Tuas View Extension, in a basin
     of Tuas Port, and of the Western Islands, in the water, a "Port" label on Pasir Panjang Terminal,
     and the planning-area outlines of Tuas and the Western Islands.
+  accepts:
+    places:
+    - Port
+    - Tuas View Extension
+    - Western Islands
 features:
 - osm: way/182076302
   kind: anchorage

@@ -23,6 +23,8 @@ port_limits:
     places of worship or named places inside. The margin along the port's landward wall takes in the edges
     of two unnamed residential areas and of a school's grounds, about 800 m² in all, none of it more than
     40 m inside the limits.
+  accepts:
+    residential_m2: 668
 features:
 - osm: relation/2882852
   kind: terminal

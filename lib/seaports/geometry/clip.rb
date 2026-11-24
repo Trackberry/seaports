@@ -142,6 +142,37 @@ module Seaports
         @terminals.reject { |_, geometry| geos(geometry).make_valid.buffer(TOUCH_M).intersects?(waterish) }.keys
       end
 
+      # +limits+ less +areas+ (GeoJSON areas the selection excludes: a marina,
+      # a housing estate by the water), as [geometry, conflicts]. +keep+ is a
+      # Hash of name to geometry that must not lose any of itself to the cut,
+      # the terminals and anchorages; their names come back as conflicts, and
+      # the geometry as nil, when any would.
+      def self.subtract(limits, areas, keep: {})
+        new(hull: limits, terminals: {}, water: { "coastline" => [], "areas" => [] }).subtract(areas, keep)
+      end
+
+      def subtract(areas, keep)
+        # Outer rings only: a block's courtyard would otherwise stay behind
+        # as a speck of limits on its own.
+        cut = union(areas.flat_map { |geometry| polygons(geos(geometry).make_valid).map { |polygon| @factory.polygon(polygon.exterior_ring) } })
+        conflicts = keep.select do |_, geometry|
+          if geometry["type"] == "Point"
+            cut.intersects?(@factory.point(*local(geometry["coordinates"])))
+          else
+            polygons(geos(geometry).make_valid.intersection(cut)).sum(&:area) > 1
+          end
+        end.keys
+        return [nil, conflicts] unless conflicts.empty?
+
+        parts = polygons(hull.difference(cut))
+        raise Failed, "nothing of the limits is left after the exclusions" if parts.empty?
+
+        result = to_geojson(union(parts))
+        raise Failed, "the limits less the exclusions are not a valid polygon once rounded" unless geos_lnglat(result).valid?
+
+        [result, []]
+      end
+
       private
 
       # The water inside the hull, and the basins the selection lists.

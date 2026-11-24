@@ -11,6 +11,9 @@ quays:
 - NLBOR
 - NLNIU
 - NLANK
+position_outside: >-
+  UN/LOCODE places the port at (51.45, 3.7), on land about 240 m from these limits, which are cut to the
+  water.
 port_limits:
   derive: hull
   osm:
@@ -21,10 +24,16 @@ port_limits:
   - way/6284213
   - way/6284098
   buffer_m: 1000
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Vlissingen. These are the hull of the terminals below and six
-    harbour basins, from the old port by the town to the Sloehaven at Vlissingen-Oost, grown by 1 km.
-    They take in the land between the town and the Sloe, so they are rougher than the legal port area.
+    harbour basins, from the old port by the town to the Sloehaven at Vlissingen-Oost, grown by 1 km,
+    then cut to the water OpenStreetMap maps inside it, with the terminals and those areas kept whole
+    and a 30 m margin where they meet the water. A scan of OpenStreetMap finds no homes, schools, hospitals,
+    places of worship or named places inside; the edge of an unnamed residential area reaches in by about
+    4,760 m², none of it more than 20 m inside.
+  accepts:
+    residential_m2: 4759
 features:
 - osm: relation/10362019
   kind: anchorage
@@ -36,7 +45,7 @@ features:
   note: Seamark area in the Western Scheldt, south-east of Vlissingen.
 - osm: way/233090331
   kind: anchorage
-  name: Wielingen-Noord
+  name: Ankergebied Wielingen-Noord
   note: At the mouth of the Western Scheldt.
 - osm: relation/10362020
   kind: anchorage
@@ -49,7 +58,7 @@ features:
   note: OpenStreetMap gives no cargo type; the operator is from its name.
 - osm: way/1226608116
   kind: terminal
-  name: Verbrugge Scaldia Terminals
+  name: Verbrugge Scaldia Terminals B.V.
   operator: Verbrugge
   note: OpenStreetMap gives no cargo type; the operator is from its name.
 - osm: way/854930103
@@ -70,7 +79,7 @@ features:
   note: OpenStreetMap gives no cargo type; the operator is from its name.
 - osm: relation/10831684
   kind: terminal
-  name: Vesta Terminal Flushing
+  name: Vesta Terminal Flushing B.V. Sloe
   operator: Vesta Terminals
   cargo:
   - tanker

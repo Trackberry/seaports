@@ -18,22 +18,23 @@ port_limits:
 features:
 - osm: way/1013068241
   kind: anchorage
-  name: Anchorage 1
+  name: '1'
   note: Seamark area named 1 in OpenStreetMap, north-east of the port.
 - osm: way/1013068238
   kind: anchorage
-  name: Anchorage 4
+  name: '4'
   note: Seamark area named 4 in OpenStreetMap, north-east of the port.
 - osm: way/1013068237
   kind: anchorage
-  name: Anchorage 5
+  name: '5'
   note: Seamark area named 5 in OpenStreetMap, north-west of the port.
 - osm: way/189167689
   kind: anchorage
+  name: Anchorage
   note: Seamark area north of the port, unnamed in OpenStreetMap.
 - osm: way/288581158
   kind: terminal
-  name: Terminal de Múltiplo Uso (TMUT)
+  name: Terminal de Múltiplas Utilidades
   cargo:
   - container
   - general

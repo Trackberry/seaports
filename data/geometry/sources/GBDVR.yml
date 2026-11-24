@@ -11,14 +11,17 @@ port_limits:
   - relation/18550093
   - relation/18550094
   buffer_m: 300
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Dover. These are the hull of the Eastern Docks and the three
-    harbour basins (Outer, Inner and Eastern Docks) inside the breakwaters, so they cover the Western
-    Docks too, which OpenStreetMap does not map as a terminal.
+    harbour basins (Outer, Inner and Eastern Docks) inside the breakwaters, grown by 1 km, then cut to
+    the water OpenStreetMap maps inside it, with the terminals and those areas kept whole and a 30 m margin
+    where they meet the water. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals,
+    places of worship or named places inside.
 features:
 - osm: way/167792636
   kind: terminal
-  name: Eastern Docks
+  name: Port of Dover - Eastern Docks
   operator: Port of Dover
   cargo:
   - ro_ro

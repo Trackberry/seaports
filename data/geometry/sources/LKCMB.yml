@@ -22,6 +22,8 @@ port_limits:
     terminals and the harbour basins inside the breakwaters. The land between the basins and the city
     behind them are left out. A search of OpenStreetMap found no housing, school, hospital or named place
     inside them, and one place of worship, on the South Asia Gateway Terminals area.
+  accepts:
+    amenities: 1
 features:
 - osm: way/419827607
   kind: terminal

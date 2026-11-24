@@ -29,6 +29,11 @@ port_limits:
     east basins, from the Avant-port Nord to the Bassin de la Grande Joliette, grown by 50 m. The ferry
     stations stand on the city quay, so the limits stop at the quayside: La Major cathedral, the Joliette
     docks and the Arenc towers are outside.
+  accepts:
+    places:
+    - 2e Arrondissement
+    too_large:
+      relation/11324159: 148.1
 features:
 - osm: way/1030807681
   kind: terminal
@@ -41,7 +46,7 @@ features:
     OpenStreetMap gives no operator.
 - osm: way/67716900
   kind: terminal
-  name: Gare Maritime d'Arenc
+  name: Gare Maritime d'Arenc - la Méridionale
   operator: La Méridionale
   cargo:
   - ro_ro
@@ -64,7 +69,7 @@ features:
   note: Ferry station, tagged cargo=passengers;vehicle. Mapped as the station building only.
 - osm: way/69627673
   kind: terminal
-  name: Marseille Provence Cruise Terminal
+  name: Gare Maritime Marseille Provence Cruise Terminal
   cargo:
   - passenger
   note: The cruise terminal at the Porte 4, tagged cargo=passengers.

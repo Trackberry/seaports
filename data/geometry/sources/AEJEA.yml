@@ -24,6 +24,9 @@ port_limits:
     A scan of OpenStreetMap finds no homes, residential land, schools, hospitals or places of worship
     inside; the named places are a Jebel Ali Port label in the basin and the outlines of Jabal Ali and
     the Jebel Ali North Free Zone, which take in the terminals.
+  accepts:
+    places:
+    - ميناء جبل علي
 features:
 - osm: way/914508042
   kind: terminal

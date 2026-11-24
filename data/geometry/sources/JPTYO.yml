@@ -25,6 +25,16 @@ port_limits:
     and reclaimed-island outlines under the terminals, slivers of three more islands and of Odaiba at
     the edge, and the outlines OpenStreetMap gives Aomi 2 to 4, Ariake 4 and Daiba 1, which reach over
     the water inside though their land is outside.
+  accepts:
+    houses: 4
+    places:
+    - 令和島一丁目
+    - 八潮
+    - 八潮二丁目
+    - 城南島六丁目
+    - 東品川五丁目
+    - 東海六丁目
+    - 港南五丁目
 features:
 - osm:
   - relation/15635213

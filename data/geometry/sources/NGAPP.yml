@@ -18,6 +18,8 @@ port_limits:
     Can Island's limits to the west. A scan of OpenStreetMap finds no homes, schools, hospitals, places
     of worship or named places inside; the shore edges of three unnamed residential areas and of Lagos
     Island reach in by about 0.25 ha in all, none of it more than 40 m inside the limits.
+  accepts:
+    residential_m2: 1362
 features:
 - osm: way/292127150
   kind: terminal

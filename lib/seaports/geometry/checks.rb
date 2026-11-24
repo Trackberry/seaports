@@ -3,6 +3,7 @@
 require "date"
 
 require_relative "../../seaports"
+require_relative "inside"
 require_relative "planar"
 
 module Seaports
@@ -32,9 +33,31 @@ module Seaports
       end
 
       # +others+ is { locode => collection } for the overlap check.
-      def self.run(collection, others: {}, file_locode: nil)
-        new(collection, others:, file_locode:).run
+      # +selection+, the port's, adds the check of the stored scan of what
+      # lies inside the limits against what the selection accepts.
+      def self.run(collection, others: {}, file_locode: nil, selection: nil)
+        new(collection, others:, file_locode:, selection:).run
       end
+
+      # The names the name rule allows a terminal or an anchorage whose
+      # first-listed OpenStreetMap element has +tags+ (Osm.name_tags): its
+      # name; or its name:en, when the name has letters outside the Latin
+      # script and name:en exists; or, for an unnamed seamark, its
+      # seamark:name; or, when OpenStreetMap gives none of these, one of
+      # NEUTRAL_NAMES, with the description in the note. An element with a
+      # name:en and no name is named by its name:en, as no name tag is left
+      # for it to defer to.
+      def self.allowed_names(tags)
+        name, english, seamark = tags.values_at("name", "name:en", "seamark:name")
+        return NEUTRAL_NAMES if [name, english, seamark].all? { |value| value.to_s.strip.empty? }
+
+        allowed = [name].compact
+        allowed << english if english && (name.nil? || non_latin?(name))
+        allowed << seamark if seamark && name.nil?
+        allowed
+      end
+
+      def self.non_latin?(text) = text.match?(/[\p{L}&&[^\p{Latin}]]/)
 
       # Where a shipped outline and the selection it should have been built
       # from disagree, as lines for a person: a feature missing from either
@@ -60,10 +83,11 @@ module Seaports
         [kind, Array(osm).map(&:to_s).sort, name, operator, Array(cargo).sort, category]
       end
 
-      def initialize(collection, others:, file_locode:)
+      def initialize(collection, others:, file_locode:, selection: nil)
         @collection = collection
         @others = others
         @file_locode = file_locode
+        @selection = selection
         @errors = []
         @warnings = []
       end
@@ -73,6 +97,7 @@ module Seaports
         check_header(locode)
         features = Array(@collection["features"])
         features.each_with_index { |feature, index| check_feature(feature, index) }
+        check_quotes(features)
         check_port(locode, features) if @errors.empty?
         Result.new(locode:, errors: @errors.freeze, warnings: @warnings.freeze)
       end
@@ -107,6 +132,118 @@ module Seaports
         when "anchorage"
           @warnings << "#{where}: no category" if blank?(props["category"])
         end
+        check_name(props, where) if NAMED_KINDS.include?(props["kind"])
+      end
+
+      # The kinds the name rule and the note claims apply to.
+      NAMED_KINDS = %w[terminal anchorage].freeze
+      NEUTRAL_NAMES = ["Anchorage", "Container terminal", "Berths"].freeze
+
+      # Names are OpenStreetMap's own (Checks.allowed_names), read from the
+      # tags the build stored as osm_tags, so the weekly refresh fails when
+      # OpenStreetMap renames a feature. Then the note's own claims about
+      # that name.
+      def check_name(props, where)
+        tags = props["osm_tags"]
+        unless tags.is_a?(Hash)
+          return @errors << "#{where}: the outline stores no OpenStreetMap names (osm_tags) to check its name against: " \
+                            "rebuild it with rake seaports:geometry"
+        end
+
+        allowed = self.class.allowed_names(tags)
+        unless allowed.include?(props["name"])
+          given = tags.empty? ? "no name" : tags.map { |key, value| "#{key}=#{value}" }.join(", ")
+          @errors << "#{where}: OpenStreetMap's #{Array(props['osm']).first} has #{given}, so the name must be " \
+                     "#{allowed.map(&:inspect).join(' or ')}, not #{props['name'].inspect}"
+        end
+        check_claims(props, tags, where)
+      end
+
+      # "Named X in OpenStreetMap", and "OpenStreetMap names (or calls) it
+      # "X"", in a feature's own note, must be what OpenStreetMap says: its
+      # name, name:en or seamark:name, perhaps with a gloss in brackets after
+      # it. "Named so" claims the feature's own name; "spells it "X"" that X
+      # is part of one. An error, since a note that misquotes OpenStreetMap
+      # says something untrue, and a rename in OpenStreetMap is the likeliest
+      # reason it does.
+      # The name runs to "in OpenStreetMap" within one sentence: not across a
+      # semicolon, or a full stop that ends one, followed by a space and a
+      # capital. A full stop after an abbreviation ("No. 5", "St. Helier")
+      # ends nothing, and one with no space after it ("No.5", "Co.,ltd") is
+      # part of the name. "Is not named X" claims nothing.
+      SENTENCE_END = /(?<!\bNo|\bNos|\bSt|\bSte|\bMt|\bFt|\bNr|\bCo|\bDr|\bPt)\.\s+\p{Lu}/
+      NAMED_CLAIM = /(?<!\bnot\s)\b[Nn]amed\s+((?:(?!\bnamed\s|;|#{SENTENCE_END}).){1,120}?)\s+in\s+(?:OpenStreetMap|OSM)\b/
+      NAMES_IT_CLAIM = /\b(?:OpenStreetMap|OSM)\s+(names|calls|spells)\s+it\s+(?:"([^"]+)"|“([^”]+)”|‘([^’]+)’)/
+
+      def check_claims(props, tags, where)
+        note = props["note"].to_s
+        values = tags.values
+        claims = note.scan(NAMED_CLAIM).filter_map do |(text)|
+          next if text.match?(/\A(for|after|as|by)\s/)
+
+          # "Named X and tagged cargo=container in OpenStreetMap" claims X:
+          # split before unquoting, so a quoted X keeps its quotes off.
+          whole = unquote(text)
+          first = unquote(text.split(/\s+and\s+/).first)
+          whole == "so" ? [props["name"].to_s] : [whole, first].uniq
+        end
+        claims.each do |candidates|
+          next if candidates.any? { |claim| named?(claim, values) }
+
+          @errors << "#{where}: the note says it is named #{candidates.first.inspect} in OpenStreetMap, which has #{describe_tags(tags)}: correct the note"
+        end
+        note.scan(NAMES_IT_CLAIM).each do |verb, plain, curly, single|
+          claim = plain || curly || single
+          ok = verb == "spells" ? values.any? { |value| value.include?(claim) } : named?(claim, values)
+          next if ok
+
+          @errors << "#{where}: the note says OpenStreetMap #{verb} it #{claim.inspect}, but it has #{describe_tags(tags)}: correct the note"
+        end
+      end
+
+      # A quoted name in a note (in "straight" or “curly” quotes) that is
+      # close to a terminal's or an anchorage's name but no longer equals it
+      # or anything OpenStreetMap calls it: a note left behind by a rename.
+      # And, in a feature's own note, a quoted name that is neither its name
+      # nor OpenStreetMap's. Warnings: a note quotes other things too.
+      def check_quotes(features)
+        named = features.select { |f| NAMED_KINDS.include?(f.dig("properties", "kind")) }.map { |f| f["properties"] }
+        names = named.map { |props| props["name"].to_s }.reject(&:empty?)
+        # The places the limits scan found are quoted too: a "Port" label.
+        places = features.flat_map { |f| Array(f.dig("properties", "inside", "places")).map { |place| place["name"] } }
+        known = names + named.flat_map { |props| (props["osm_tags"] || {}).values } + places.compact
+        features.each do |feature|
+          props = feature["properties"] || {}
+          own = NAMED_KINDS.include?(props["kind"]) ? [props["name"].to_s] + (props["osm_tags"] || {}).values : nil
+          quotes(props["note"]).each do |quoted|
+            next if known.include?(quoted) || (own && own.any? { |value| value.include?(quoted) })
+
+            near = names.find { |name| name.length >= 3 && quoted.length >= 3 && (quoted.downcase.include?(name.downcase) || name.downcase.include?(quoted.downcase)) }
+            where = props["kind"] == "port_limits" ? "the port limits" : "#{props['kind']} #{props['name']}"
+            if near
+              @warnings << "#{where}: the note quotes #{quoted.inspect}, which is no feature's name now: is it #{near.inspect}, renamed?"
+            elsif own
+              @warnings << "#{where}: the note quotes #{quoted.inspect}, which is neither its name nor a name OpenStreetMap gives it"
+            end
+          end
+        end
+      end
+
+      def quotes(note) = note.to_s.scan(/"([^"]{2,120})"|“([^”]{2,120})”/).map { |plain, curly| plain || curly }
+
+      def unquote(text) = text.strip.sub(/\A"(.*)"\z/) { Regexp.last_match(1) }.sub(/\A“(.*)”\z/) { Regexp.last_match(1) }
+
+      # +claim+ is one of +values+, or one of them with a gloss after it
+      # in brackets: "River Trade Terminal (內河貨運碼頭)".
+      def named?(claim, values)
+        return true if values.include?(claim)
+
+        head = claim[/\A(.+?)\s+\(.+\)\z/, 1]
+        head ? values.include?(head) : false
+      end
+
+      def describe_tags(tags)
+        tags.empty? ? "no name for it" : tags.map { |key, value| "#{key}=#{value.inspect}" }.join(", ")
       end
 
       def check_geometry(geometry, kind, where)
@@ -160,11 +297,27 @@ module Seaports
           lng, lat = Planar.label_point(feature["geometry"])
           @warnings << "#{kind} #{feature['properties']['name']}: outside the port limits" unless Planar.contains?(outline, lng, lat)
         end
+        check_inside(limits.first["properties"])
         check_isolated_terminals(features)
         check_clipped(limits.first, features) if limits.first["properties"]["clip"] == "water"
         @warnings << "no anchorage mapped" if features.none? { |f| f["properties"]["kind"] == "anchorage" }
         @warnings << "no terminal mapped" if features.none? { |f| f["properties"]["kind"] == "terminal" }
         check_overlaps(locode, features)
+      end
+
+      # Every limits outline stores the scan of what OpenStreetMap maps
+      # inside (Inside), and with the selection given, the scan must hold no
+      # more than the selection accepts (Inside.compare).
+      def check_inside(props)
+        scan = props["inside"]
+        unless scan.is_a?(Hash)
+          return @errors << "the port limits store no scan of what lies inside them: rebuild with rake seaports:geometry"
+        end
+        return unless @selection
+
+        errors, warnings = Inside.compare(scan, @selection.dig("port_limits", "accepts"))
+        @errors.concat(errors)
+        @warnings.concat(warnings)
       end
 
       # A terminal far from every other terminal of its port is almost always

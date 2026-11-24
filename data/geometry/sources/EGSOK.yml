@@ -20,7 +20,7 @@ port_limits:
 features:
 - osm: way/276379238
   kind: terminal
-  name: DP World Sokhna
+  name: مينا السخنة
   operator: DP World
   cargo:
   - container

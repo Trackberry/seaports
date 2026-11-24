@@ -81,7 +81,9 @@ class GeometryClipTest < Minitest::Test
   end
 
   def build(limits = { "clip" => "water" }, **options)
-    Builder.new(selection(limits, **options), shapes:, water: ->(_bbox) { Harbour.water }).build
+    sel = selection(limits, **options)
+    tags = ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| f["osm"] == ref }&.dig("name") }.compact] } }
+    Builder.new(sel, shapes:, water: ->(_bbox) { Harbour.water }, tags:, inside: ->(_bbox) { [] }).build
   end
 
   def limits(collection) = collection["features"].find { |f| f["properties"]["kind"] == "port_limits" }["geometry"]
@@ -194,6 +196,92 @@ class GeometryClipTest < Minitest::Test
     refute_match "West Quay", error.message
   end
 
+  # A cold store or a yard behind its jetties has no berth to touch the
+  # water: inland says so, and the clip keeps it whole, a part of its own.
+  def test_an_inland_terminal_is_kept_whole_without_water_beside_it
+    sel = selection({ "clip" => "water", "disjoint" => "The depot stands back from the water." }, refs: %w[way/1 way/3])
+    sel["features"].last["inland"] = "A depot with no berth."
+    tags = ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| f["osm"] == ref }["name"] }] } }
+    collection = Builder.new(sel, shapes:, water: ->(_bbox) { Harbour.water }, tags:, inside: ->(_bbox) { [] }).build
+    depot = collection["features"].find { |f| f["properties"]["name"] == "Inland Depot" }
+
+    assert_equal "A depot with no berth.", depot["properties"]["inland"]
+    assert Planar.positions(depot["geometry"]).all? { |lng, lat| Planar.contains?(limits(collection), lng, lat) }
+    assert Seaports::Geometry::Checks.run(collection).ok?
+  end
+
+  MARINA = Harbour.box(-200, -1400, 200, -1000)
+
+  def build_excluding(entries, extra = {})
+    sel = selection({ "clip" => "water", "exclude" => entries })
+    more = { "way/7" => MARINA, "way/8" => Harbour.box(-700, -600, -300, -400),
+             "way/9" => { "type" => "LineString", "coordinates" => [Harbour.at(0, -1200), Harbour.at(100, -1200)] } }.merge(extra)
+    tags = ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| f["osm"] == ref }&.dig("name") }.compact] } }
+    Builder.new(sel, shapes: ->(refs) { shapes.call(refs).merge(more.slice(*refs)) }, water: ->(_bbox) { Harbour.water }, tags:,
+      inside: ->(_bbox) { [] }).build
+  end
+
+  # A marina in the bay is not cargo water: excluded, it is out of the
+  # limits, and the outline says what was taken out and why.
+  def test_an_excluded_area_is_taken_out_of_the_limits
+    collection = build_excluding([{ "osm" => "way/7", "why" => "A leisure marina." }])
+    props = collection["features"].first["properties"]
+
+    refute inside?(limits(collection), 0, -1200), "the marina is out"
+    assert inside?(limits(collection), 0, -600), "the rest of the bay is in"
+    assert_equal [{ "osm" => "way/7", "why" => "A leisure marina." }], props["exclude"]
+    assert_match "less way 7 (see exclude)", props["source"]
+    assert Seaports::Geometry::Checks.run(collection).ok?
+  end
+
+  def test_an_exclusion_that_cuts_into_a_terminal_is_refused
+    error = assert_raises(Builder::Invalid) { build_excluding([{ "osm" => "way/8", "why" => "Homes." }]) }
+
+    assert_match "would cut into terminal West Quay", error.message
+  end
+
+  def test_an_exclusion_must_be_an_area
+    error = assert_raises(Builder::Invalid) { build_excluding([{ "osm" => "way/9", "why" => "A line." }]) }
+
+    assert_match "not an area", error.message
+  end
+
+  # Two anchorages named alike are two things to keep, and a point counts:
+  # an exclusion holding either is refused, by reference.
+  def test_an_exclusion_protects_every_feature_by_reference_points_included
+    hull = Harbour.box(-1000, -1500, 1000, 0)
+    keep = { "anchorage Anchorage (way/1)" => Harbour.box(-300, -400, -100, -200), "anchorage Anchorage (way/2)" => MARINA,
+             "terminal Buoy (node/3)" => { "type" => "Point", "coordinates" => Harbour.at(-200, -800) } }
+    _, conflicts = Seaports::Geometry::Clip.subtract(hull, [MARINA, Harbour.box(-250, -850, -150, -750)], keep:)
+
+    assert_equal ["anchorage Anchorage (way/2)", "terminal Buoy (node/3)"], conflicts
+  end
+
+  def test_an_exclusion_needs_limits_cut_to_the_water
+    unclipped = selection({ "exclude" => [{ "osm" => "way/7", "why" => "A marina." }] })
+
+    error = assert_raises(Builder::Invalid) { Builder.new(unclipped).check! }
+    assert_match "needs clip: water", error.message
+  end
+
+  def test_an_exclusion_says_why_and_moves_the_digest
+    plain = selection({ "clip" => "water" })
+    excluding = selection({ "clip" => "water", "exclude" => [{ "osm" => "way/7", "why" => "A marina." }] })
+
+    refute_equal Builder.digest(plain), Builder.digest(excluding)
+    assert_raises(Builder::Invalid) { Builder.new(selection({ "exclude" => [{ "osm" => "way/7" }] })).check! }
+    assert_raises(Builder::Invalid) { Builder.new(selection({ "exclude" => [{ "osm" => "node/7", "why" => "A point." }] })).check! }
+    assert_raises(Builder::Invalid) { Builder.new(selection({ "exclude" => [{ "osm" => "way/7", "why" => "A marina.", "buffer_m" => 5 }] })).check! }
+  end
+
+  def test_inland_is_a_reason_on_a_terminal
+    sel = selection({ "clip" => "water" }, refs: %w[way/1 way/3])
+    sel["features"].last["inland"] = true
+    assert_raises(Builder::Invalid) { Builder.new(sel).check! }
+    sel["features"].last.merge!("inland" => "No berth.", "kind" => "anchorage")
+    assert_raises(Builder::Invalid) { Builder.new(sel).check! }
+  end
+
   def test_an_outline_without_clip_is_built_exactly_as_before
     collection = build({})
 
@@ -303,9 +391,10 @@ class GeometryClipChecksTest < Minitest::Test
   Checks = Seaports::Geometry::Checks
 
   def feature(kind, geometry, **props)
+    stored = kind == "port_limits" ? { "inside" => { "houses" => 0 } } : { "osm_tags" => { "name" => props[:name] }.compact }
     { "type" => "Feature", "geometry" => geometry,
       "properties" => { "kind" => kind, "source" => "test", "licence" => "ODbL-1.0", "reviewed_at" => "2026-11-23", "note" => "n",
-                        "cargo" => ["bulk"] }.merge(props.transform_keys(&:to_s)) }
+                        "cargo" => ["bulk"] }.merge(stored).merge(props.transform_keys(&:to_s)) }
   end
 
   def collection(limits, terminals)

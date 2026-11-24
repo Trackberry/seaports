@@ -23,13 +23,16 @@ position_outside: >-
 port_limits:
   derive: hull
   buffer_m: 250
+  clip: water
+  disjoint: >-
+    The water OpenStreetMap maps inside the hull does not join the basin of Terminal TNMSC and Terminal
+    de France - GMP to the docks of the other terminals, so the limits are in two parts.
   note: >-
     OpenStreetMap maps no port limits for Le Havre. These are the hull of the terminals below, from Port
-    2000 and Terminal de l'Atlantique to the ro-ro terminals on the Darse de l'Océan, grown by 250 m.
-    Les Neiges, a district of homes and a primary school enclosed by the docks between Terminal de l'Atlantique
-    and Terminal de l'Europe, is inside. Beyond it the only addresses inside are a few premises on Rue
-    Cuvier, by the municipal vehicle garage, and a container depot on the Route des Marais. Saint-François,
-    Saint-Nicolas, L'Eure, Graville, Harfleur and Gonfreville-l'Orcher are outside.
+    2000 and Terminal de l'Atlantique to the ro-ro terminals on the Darse de l'Océan, grown by 250 m,
+    then cut to the water OpenStreetMap maps inside it, with the terminals kept whole and a 30 m margin
+    where they meet the water. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals,
+    places of worship or named places inside.
 features:
 - osm: node/11431822294
   kind: pilot_boarding
@@ -47,7 +50,7 @@ features:
   - way/517454589
   - way/690910919
   kind: terminal
-  name: Terminaux de Normandie
+  name: Terminal TNMSC
   operator: Terminaux à Conteneurs de France (TiL)
   cargo:
   - container
@@ -60,7 +63,7 @@ features:
   - way/261362482
   - way/518702537
   kind: terminal
-  name: Terminal de France
+  name: Terminal de France - GMP
   operator: Générale de Manutention Portuaire (GMP)
   cargo:
   - container

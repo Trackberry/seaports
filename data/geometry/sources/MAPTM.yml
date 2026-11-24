@@ -9,14 +9,22 @@ note: >-
 port_limits:
   derive: hull
   buffer_m: 200
+  clip: water
+  disjoint: >-
+    Tanger Med 1 (TC1 and TC2) and Tanger Med 2 (TC3, TC4 and the passenger port) are separate basins,
+    each inside its own breakwater, so the limits are in two parts.
   note: >-
     OpenStreetMap maps no port limits for Tanger Med. These are the hull of the terminals below, from
-    TC4 in the west to TC2 in the east, grown by 200 m. They take in the basins of Tanger Med 1 and 2,
-    and the shore between them, where OpenStreetMap places two hamlets, Oued R'mel and Sakia el Houta.
+    TC4 in the west to TC2 in the east, grown by 200 m, then cut to the water OpenStreetMap maps inside
+    it, with the terminals kept whole and a 30 m margin where they meet the water. A scan of OpenStreetMap
+    finds no homes, residential land, schools, hospitals or named places inside; one place of worship,
+    a prayer room mapped as a point, stands on the passenger port's land.
+  accepts:
+    amenities: 1
 features:
 - osm: way/467582831
   kind: terminal
-  name: Tanger Med 1 TC1
+  name: Tanger Container Port TC1
   operator: APM Terminals
   cargo:
   - container
@@ -25,7 +33,7 @@ features:
     2007.
 - osm: way/178877402
   kind: terminal
-  name: Tanger Med 1 TC2
+  name: Tanger Container Port TC2
   operator: Eurogate
   cargo:
   - container
@@ -33,7 +41,7 @@ features:
     Mapped as Tanger Container Port TC2 and tagged cargo=container. Eurogate Tanger has run it since 2008.
 - osm: way/871650115
   kind: terminal
-  name: Tanger Med 2 TC3
+  name: Port Tanger Med II - TC3
   operator: Tanger Alliance
   cargo:
   - container
@@ -42,7 +50,7 @@ features:
     Marsa Maroc, Eurogate, Contship Italia and Hapag-Lloyd, has run it since 2021.
 - osm: way/365665350
   kind: terminal
-  name: Tanger Med 2 TC4
+  name: Port Tanger Med II - TC4
   operator: APM Terminals
   cargo:
   - container
@@ -51,7 +59,7 @@ features:
     MedPort Tangier, opened in 2019.
 - osm: way/178877454
   kind: terminal
-  name: Tanger Med Passagers
+  name: Port Passagers Tanger Med
   cargo:
   - ro_ro
   - passenger

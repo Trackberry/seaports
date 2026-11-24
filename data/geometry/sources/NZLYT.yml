@@ -20,6 +20,8 @@ port_limits:
     inside, only a 6 m² hut on the port's land and 19 m² of a residential area at the edge; the named
     places are Te Awaparahi, a label on the port's reclaimed land, and the town boundary of Lyttelton,
     which overlaps the port.
+  accepts:
+    residential_m2: 18
 features:
 - osm: way/162162709
   kind: terminal

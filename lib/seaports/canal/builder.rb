@@ -49,7 +49,7 @@ module Seaports
 
       def build
         check_selection!
-        fetched = @shapes.call(all_refs)
+        fetched = fetch_all
         features = @selection.fetch("features").map { |entry| feature(entry, fetched) }
         ordered = features.sort_by.with_index { |f, i| [KINDS.index(f["properties"]["kind"]), i] }
 
@@ -115,10 +115,10 @@ module Seaports
         { "type" => "MultiLineString", "coordinates" => lines }
       end
 
-      def properties(entry, refs, geometry, source:)
+      def properties(entry, refs, geometry, source:, osm_tags: nil)
         properties = {
           "kind" => entry["kind"], "name" => entry["name"], "approach" => entry["approach"], "category" => entry["category"],
-          "osm" => refs, "source" => source, "licence" => LICENCE,
+          "osm" => refs, "osm_tags" => osm_tags, "source" => source, "licence" => LICENCE,
           "reviewed_at" => (entry["reviewed_at"] || @selection["reviewed_at"]).to_s, "note" => entry["note"]&.strip
         }
         { "type" => "Feature", "properties" => properties.compact, "geometry" => geometry }

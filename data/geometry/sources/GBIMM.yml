@@ -15,10 +15,21 @@ port_limits:
   derive: hull
   osm: way/210452980
   buffer_m: 800
+  clip: water
+  disjoint: >-
+    The enclosed dock behind Immingham's lock, with the container terminal on it, is apart from the Humber
+    inside the hull, and two smaller pieces of its water are parted from it by quays, so the river berths
+    are one part and the dock three more.
   note: >-
     OpenStreetMap maps no port limits for Immingham; ABP's Humber limits cover the whole estuary. These
     are the hull of the dock estate, the enclosed dock, the DFDS berth and Humber Sea Terminal at Killingholme,
-    grown by 800 m to take in the river berths in front of them.
+    grown by 800 m, then cut to the water OpenStreetMap maps inside it, with the terminals and those areas
+    kept whole and a 30 m margin where they meet the water. A scan of OpenStreetMap finds no homes, residential
+    land, schools, hospitals or places of worship inside; the label of North Killingholme Haven, a hamlet
+    on the shore, stands about 45 m inside the edge.
+  accepts:
+    places:
+    - North Killingholme Haven
 features:
 - osm:
   - way/1030152709
@@ -27,7 +38,7 @@ features:
   - way/1030152712
   - way/1030152713
   kind: terminal
-  name: Port of Immingham
+  name: Container terminal
   operator: Associated British Ports
   cargo:
   - bulk
@@ -38,7 +49,7 @@ features:
     the ABP dock offices mapped among them; the cargo types are a guess at the dock's mix, so check them.
 - osm: way/101338872
   kind: terminal
-  name: DFDS Immingham
+  name: DFDS Seaways Ferry Terminal
   operator: DFDS
   cargo:
   - ro_ro

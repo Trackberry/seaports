@@ -23,6 +23,9 @@ port_limits:
     moles and the harbour basins between them; the Plateau, the Médina and Gorée are outside. A scan of
     OpenStreetMap finds no homes, schools, hospitals, places of worship or named places inside. One residential
     area overlaps it: a 218 km² multipolygon that covers most of the Cap-Vert peninsula, the port included.
+  accepts:
+    too_large:
+      relation/7284072: 219.5
 features:
 - osm:
   - way/398255535

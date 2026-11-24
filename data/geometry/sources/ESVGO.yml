@@ -14,10 +14,51 @@ port_limits:
     OpenStreetMap maps no port limits for Vigo. These are the hull of the two terminals below, from Guixar
     to Bouzas, grown by 400 m. They take in the waterfront between them, the cruise and fishing quays
     included, and a strip of the city behind it.
+  accepts:
+    houses: 851
+    amenities: 23
+    places:
+    - A Batería
+    - A Calzada
+    - A Cividá
+    - A Falperra Vella
+    - A Ferrería
+    - A Fonte de Vigo
+    - A Fonte do Galo
+    - A Pedra
+    - A Rúa
+    - A Rúa Alta
+    - A Rúa Nova
+    - A Soidade
+    - As Casas da Praza
+    - Beiramar
+    - Bouzas
+    - Casal de Santos
+    - Guixar
+    - O Alfolís
+    - O Berbés
+    - O Canceleiro
+    - O Caramuxo
+    - O Castelo
+    - O Cordoeiro
+    - O Fiunchal
+    - O Fiunchal de Riba
+    - O Hospital
+    - O Montecelo
+    - O Montecelo Baixo
+    - O Pino Manso
+    - O Pracer
+    - O Roupeiro
+    - Os Cataláns
+    - Os Salesianos
+    - Romil
+    - Vigo
+    too_large:
+      relation/2651249: 20.2
 features:
 - osm: relation/13456267
   kind: terminal
-  name: Guixar
+  name: Terminal de Contedores
   operator: Marítima Dávila
   cargo:
   - container
@@ -26,7 +67,7 @@ features:
     the name.
 - osm: relation/13473990
   kind: terminal
-  name: Termavi
+  name: Terminal Ro-Ro
   operator: Termavi
   cargo:
   - ro_ro

@@ -18,6 +18,8 @@ port_limits:
     Kampung Tanjung Pelepas included, is left out. A scan of OpenStreetMap finds no homes, schools, hospitals,
     places of worship or named places inside; the shore edge of an unnamed residential area reaches in
     by about 200 m².
+  accepts:
+    residential_m2: 214
 features:
 - osm: way/1270599273
   kind: anchorage

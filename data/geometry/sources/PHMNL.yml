@@ -32,6 +32,10 @@ port_limits:
     and the edges of Parola (about 0.3 ha), Diego Ville, the Gawad Kalinga village and one more area reach
     in, with 27 small houses at the edge of Isla Puting Bato. A scan of OpenStreetMap finds no hospitals
     or places of worship inside.
+  accepts:
+    houses: 19
+    residential_m2: 47626
+    amenities: 1
 features:
 - osm: relation/21501082
   kind: terminal

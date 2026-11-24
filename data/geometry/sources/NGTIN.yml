@@ -19,6 +19,8 @@ port_limits:
     unnamed, which is inside the limits. Otherwise a scan of OpenStreetMap finds no homes or hospitals
     inside; across the creek, the shore edges of two unnamed residential areas, the Sea School grounds
     and Snake Island reach in by about 0.3 ha in all.
+  accepts:
+    residential_m2: 61509
 features:
 - osm: way/182794406
   kind: terminal

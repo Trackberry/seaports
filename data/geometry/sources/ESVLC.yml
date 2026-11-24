@@ -10,20 +10,23 @@ note: >-
 port_limits:
   derive: hull
   buffer_m: 500
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Valencia. These are the hull of the terminals below, from the
-    CSP Iberian terminal in the south to the APM terminal in the north, grown by 500 m. They take in the
-    harbour basins between but not the anchorages offshore.
+    CSP Iberian terminal in the south to the APM terminal in the north, grown by 500 m, then cut to the
+    water OpenStreetMap maps inside it, with the terminals kept whole and a 30 m margin where they meet
+    the water. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of
+    worship or named places inside.
 features:
 - osm: way/1010784059
   kind: anchorage
-  name: North Anchorage
+  name: Anchorage
   note: >-
     Seamark area with anchor berths N1 to N4, unnamed in OpenStreetMap; the name is from those berths.
     OpenStreetMap gives no category.
 - osm: way/1010784058
   kind: anchorage
-  name: South Anchorage
+  name: Anchorage
   note: >-
     Seamark area with anchor berths S1 to S16, unnamed in OpenStreetMap; the name is from those berths.
     OpenStreetMap gives no category.
@@ -40,21 +43,21 @@ features:
   note: Tagged cargo=container. The operator is from the name, so check it.
 - osm: relation/21216348
   kind: terminal
-  name: MSC Terminal Valencia
+  name: MSC Terminal
   operator: MSC
   cargo:
   - container
   note: OpenStreetMap names it "MSC Terminal" and tags it cargo=container.
 - osm: relation/21216340
   kind: terminal
-  name: APM Terminals Valencia
+  name: APM Terminals
   operator: APM Terminals
   cargo:
   - container
   note: OpenStreetMap names it "APM Terminals" and tags it cargo=container.
 - osm: relation/16611362
   kind: terminal
-  name: Ro-ro terminal
+  name: Berths
   cargo:
   - ro_ro
   note: >-
@@ -62,7 +65,7 @@ features:
     once someone checks which it is.
 - osm: way/150545987
   kind: terminal
-  name: Trasmed Valencia Terminal
+  name: Terminal Acciona-Trasmediterránea
   operator: Trasmed
   cargo:
   - ro_ro

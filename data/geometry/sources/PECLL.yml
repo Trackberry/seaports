@@ -23,6 +23,10 @@ port_limits:
     A scan of OpenStreetMap finds no homes, schools, hospitals, places of worship or named places inside.
     The margin along the port's landward fence takes in the edge of Barrio Puerto Nuevo, about 0.7 ha,
     and of an unnamed residential area, about 1.8 ha, none of it more than 40 m inside the limits.
+  accepts:
+    residential_m2: 6940
+    too_large:
+      relation/15080410: 63.9
 features:
 - osm: way/575043396
   kind: anchorage

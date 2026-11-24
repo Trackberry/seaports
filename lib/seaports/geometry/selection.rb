@@ -23,8 +23,12 @@ module Seaports
     # which keeps the rule that no shape is typed or generated.
     module Selection
       TOP_KEYS = %w[locode reviewed_at note quays position_outside port_limits features].freeze
-      LIMIT_KEYS = %w[derive osm buffer_m clip disjoint note].freeze
-      FEATURE_KEYS = %w[osm kind name operator cargo category buffer_m note reviewed_at].freeze
+      LIMIT_KEYS = %w[derive osm buffer_m clip disjoint exclude note accepts].freeze
+      # Each area taken out of the limits: its reference and why.
+      EXCLUDE_KEYS = %w[osm why].freeze
+      # What the reviewers accepted inside the limits (Inside.compare).
+      ACCEPT_KEYS = %w[houses residential_m2 amenities places too_large].freeze
+      FEATURE_KEYS = %w[osm kind name operator cargo category buffer_m inland note reviewed_at].freeze
       EDITABLE = %w[kind name operator cargo category note].freeze
       TEXT_LIMITS = { "name" => 120, "operator" => 120, "note" => 600 }.freeze
 
@@ -162,7 +166,12 @@ module Seaports
       def canonical_value(key, value, feature_keys = FEATURE_KEYS)
         case key
         when "reviewed_at" then value.respond_to?(:iso8601) ? value.iso8601 : value.to_s
-        when "port_limits" then ordered(value, LIMIT_KEYS)
+        when "port_limits"
+          limits = ordered(value, LIMIT_KEYS)
+          limits["accepts"] = ordered(limits["accepts"], ACCEPT_KEYS) if limits["accepts"].is_a?(Hash)
+          limits.delete("accepts") if limits["accepts"] == {}
+          limits["exclude"] = limits["exclude"].map { |entry| entry.is_a?(Hash) ? ordered(entry, EXCLUDE_KEYS) : entry } if limits["exclude"].is_a?(Array)
+          limits
         when "features" then value.map { |feature| ordered(feature, feature_keys) }
         when "ends" then value.is_a?(Hash) ? value.sort.to_h : value
         else value

@@ -157,6 +157,13 @@ module Seaports
       geometry(locode)&.fetch("quays", nil) || NO_NAMES
     end
 
+    # Why the port's limits leave out UN/LOCODE's own position for it, as
+    # reviewed ("UN/LOCODE places the port at ..., on land ..."), or nil when
+    # they hold it or the port has no outline.
+    def position_outside(locode)
+      geometry(locode)&.fetch("position_outside", nil)
+    end
+
     # Whether a position is inside one of the port's areas: any of them, or
     # only those of +kind+ (:port_limits, :anchorage or :terminal). False for
     # a port with no outline, which says nothing about the ship: ask

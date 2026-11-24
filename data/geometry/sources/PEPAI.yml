@@ -15,10 +15,13 @@ port_limits:
     and the water alongside. A search of OpenStreetMap found no homes, residential land, schools, churches,
     hospitals or named places inside them: the nearest houses in the town are just outside, and the Nueva
     Esperanza neighbourhood and its schools are 150 to 240 m beyond the limits.
+  accepts:
+    too_large:
+      way/121109577: 12.7
 features:
 - osm: way/585019362
   kind: terminal
-  name: Terminal Portuario Euroandinos
+  name: Terminales Portuarios Euroandinos
   operator: Terminales Portuarios Euroandinos Paita
   cargo:
   - container

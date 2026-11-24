@@ -19,6 +19,9 @@ port_limits:
     harbour basin off them. A Mission to Seafarers chapel stands inside the port area, and the shore edge
     of an unnamed residential area reaches in by under 100 m². A scan of OpenStreetMap finds no other
     homes, schools, hospitals or named places inside.
+  accepts:
+    residential_m2: 78
+    amenities: 1
 features:
 - osm: relation/12366432
   kind: terminal

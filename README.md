@@ -284,7 +284,7 @@ Seaports.geometry_locodes                        # => ["BEANR", "GBDVR", "NLRTM"
 Seaports.within?("NLRTM", 51.955, 4.03)          # => true, on the Maasvlakte
 Seaports.within?("NLRTM", 51.955, 4.03, kind: :anchorage)  # => false
 Seaports.areas_at("NLRTM", 51.977, 4.033).map(&:name)
-# => ["Euromax Terminal", nil]   the terminal, then the port limits
+# => ["Hutchison ECT Euromax Terminal", nil]   the terminal, then the port limits
 Seaports.terminals("NLRTM").first.cargo          # => ["container"]
 Seaports.anchorages("BEANR").map(&:name)         # => ["Rede van Antwerpen", ...]
 Seaports.quays("NLRTM")                          # => ["NLAWD", "NLBOT", ...]
@@ -362,6 +362,33 @@ as a line. And the limits must be one body of water unless the selection says
 why not with `disjoint`: a part on its own is usually a terminal whose water
 is not mapped as an area, or one that is not on the water at all.
 
+A terminal with no berth of its own, such as a cold store, a warehouse, or a
+yard whose ships unload at jetties in front of it, says so with `inland: why`
+on the feature. The clip then keeps it whole without asking for water beside
+it, usually as a part of its own, which `disjoint` explains: Rotterdam's Cool
+Port and Kloosterboer cold stores, Montoir's coal yard. The reason ships in
+the outline as the terminal's `inland`.
+
+What the clip keeps but is not port, homes beside the water or a leisure
+marina, can be taken out by its OpenStreetMap id:
+
+```yaml
+port_limits:
+  exclude:
+    - osm: way/10524063
+      why: Hythe Marina Village, its homes and the marina they stand round.
+```
+
+Each entry is a way or a relation, mapped as an area, with its reason; the
+area (its outer rings, so a block's courtyard goes with it) is taken out of
+the limits once cut to the water: `exclude` needs `clip: water`, whose checks
+(one part or `disjoint`, every terminal whole) then see what is left. The
+shape is fetched from the same place as the rest, it counts in
+`selection_digest`, and the build refuses an exclusion that is not an area or
+that would take any part of a terminal or an anchorage with it, a point
+included. The outline lists what was taken out under the limits'
+`exclude`.
+
 Clipping is build-time work for [GEOS](https://libgeos.org), through the
 [rgeo](https://github.com/rgeo/rgeo) gem's C extension, in the Gemfile, not
 the gemspec: `brew install geos` or `apt-get install libgeos-dev` before
@@ -378,6 +405,12 @@ vertex with no change in OpenStreetMap.
 A port that adopts `clip: water` will often find UN/LOCODE's position, the
 city centre, outside its limits once the land is gone: give the reason in
 `position_outside`, as for Rotterdam.
+
+`Seaports.position_outside` reads the reason:
+
+```ruby
+Seaports.position_outside("BEANR")   # => "UN/LOCODE places the port at (51.2167, 4.4167), in the city ..."
+```
 
 How a port is drafted:
 
@@ -441,6 +474,91 @@ id and a link, or comments on the port's open issue. It never writes an
 outline and closes nothing. Each feature is raised once: the issues, open or
 closed, are its memory, so closing one whose features are no use is how to
 say so.
+
+#### What the checks hold every outline to
+
+Three rules used to be a reviewer's job on every release, and are now
+checked by `rake seaports:check_geometry` from what the build stores in the
+outline, offline. The build fetches what they need from the same place as
+the shapes (Overpass, or the Geofabrik extract), so the weekly rebuild fails
+when an OpenStreetMap edit breaks one of them.
+
+**Names are OpenStreetMap's own.** The build stores, on every terminal and
+anchorage, the `name`, `name:en` and `seamark:name` tags of its OpenStreetMap
+element (the first one listed, for a feature mapped in parts) as `osm_tags`.
+Its `name` in the selection must then be exactly one of:
+
+- the element's `name`;
+- its `name:en`, when `name` has letters outside the Latin script (Chinese,
+  Japanese, Arabic; Vietnamese is Latin) and `name:en` exists, or when
+  `name:en` is the only name it has;
+- its `seamark:name`, for a seamark with no `name`;
+- when OpenStreetMap gives none of the three, "Anchorage", "Container
+  terminal" or "Berths", with the description in the note.
+
+Anything else is an error that says which names are allowed. The same rule
+applies to a canal's anchorages. Pilot boarding places keep the names their
+notes give them.
+
+**Notes quote OpenStreetMap truthfully.** A feature's note that says it is
+"named X in OpenStreetMap" (or "named so", meaning its own name), or that
+"OpenStreetMap names it" or "calls it" "X", must give one of those tags, with
+a gloss in brackets after it allowed; "spells it "X"" must quote part of one.
+A claim the stored tags do not bear out is an error, since the likeliest
+reason is that OpenStreetMap renamed the feature. A quoted name in any note
+that is close to a feature's name but no longer equals it, or a quoted name
+in a feature's own note that is neither its name nor one OpenStreetMap gives
+it, is a warning: notes quote other things too.
+
+**The limits note says what lies inside.** The build scans the final limits
+for what OpenStreetMap maps there that is not port, and stores the summary on
+the limits as `inside`:
+
+- `houses`: buildings tagged `house`, `detached`, `residential`,
+  `apartments`, `dormitory` or `terrace`, counted by the middle of their
+  bounding box;
+- `residential_m2`: the square metres of `landuse=residential` inside the
+  limits, with the three largest areas named under `residential`. A
+  residential polygon over 10 km² is listed under `residential_too_large`
+  and not counted: at that size it is a town's or an island's whole outline,
+  not an estate, and the part of it over the quays says nothing about where
+  the homes are, which `houses` and `places` count on their own. One that
+  `accepts` does not list under `too_large` (`relation/19803548: 9.1`, its
+  reference and size in km²), or that has grown by more than a tenth since,
+  is a warning: a town outline that grows past the cap leaves
+  `residential_m2` unseen otherwise;
+- `amenities`: schools, hospitals, clinics and places of worship, by the
+  same middle, the first ten listed under `amenity`;
+- `places`: the `place` nodes (city, town, village, suburb, neighbourhood,
+  hamlet, quarter), with their names.
+
+What reviewers read in that scan and the note discloses goes in the
+selection, under the limits' `accepts`:
+
+```yaml
+port_limits:
+  derive: hull
+  buffer_m: 250
+  note: ... Les Neiges, a district of homes and a primary school enclosed by the docks, is inside ...
+  accepts:
+    houses: 7
+    residential_m2: 271254
+    amenities: 1
+    places: [Les Neiges]   # by name, or node/123 for a place with no name
+```
+
+A scan that holds more than `accepts` is an error: more houses than accepted
+by over 2 or 10%, whichever is more; more residential land by over 100 m² or
+10%; any school, hospital, clinic or place of worship more; any place not
+listed. A missing `accepts`, or a missing key, accepts nothing. A scan well
+below what is accepted (under half, and past the same margin), or an
+accepted place no longer inside, is a warning: the note may now overstate.
+So is a scan that had to skip elements OpenStreetMap maps only in part (a
+residential relation that does not close, a way the extract cuts short),
+whose count it stores as `skipped`; the build log names them.
+To accept what a refresh found, say it in the note and raise `accepts`;
+`accepts` is left out of `selection_digest`, since it changes no shape, so
+that needs no rebuild.
 
 Not checked yet: that anchorages are on water and terminals touch land, and
 that outlines match where ships really stop. Both wait for a record of ship

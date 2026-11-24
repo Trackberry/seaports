@@ -10,18 +10,24 @@ note: >-
   category.
 quays:
 - BELSG
+position_outside: >-
+  UN/LOCODE places the port at (51.3333, 3.2), on land about 30 m from these limits, which are cut to
+  the water.
 port_limits:
   derive: hull
   osm: way/318509353
   buffer_m: 1500
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Zeebrugge. These are the hull of the terminals below and the
-    Verbindingsdok, from the outer harbour to the inner port behind the locks, grown by 1.5 km. They take
-    in the town of Zeebrugge, so they are rougher than the legal port area.
+    Verbindingsdok, from the outer harbour to the inner port behind the locks, grown by 1.5 km, then cut
+    to the water OpenStreetMap maps inside it, with the terminals and those areas kept whole and a 30
+    m margin where they meet the water. A scan of OpenStreetMap finds no homes, residential land, schools,
+    hospitals, places of worship or named places inside.
 features:
 - osm: way/129914569
   kind: anchorage
-  name: West Hinder Anchorage
+  name: West Hinder Achorage
   note: Seamark area offshore, about 40 km west-north-west of the port. OpenStreetMap spells it "Achorage".
 - osm: relation/10539931
   kind: anchorage
@@ -29,7 +35,7 @@ features:
   note: Seamark area offshore, west of the port.
 - osm: way/233090331
   kind: anchorage
-  name: Wielingen-Noord
+  name: Ankergebied Wielingen-Noord
   note: At the mouth of the Western Scheldt, north-east of the port.
 - osm: relation/10362020
   kind: anchorage
@@ -48,6 +54,7 @@ features:
   note: Tagged cargo=container.
 - osm: way/366540027
   kind: terminal
+  name: Container terminal
   cargo:
   - container
   note: >-
@@ -66,7 +73,7 @@ features:
   note: OpenStreetMap gives no cargo type; the operator is from its name.
 - osm: way/204683781
   kind: terminal
-  name: Zeebrugge LNG Terminal
+  name: Zeebrugge lng-terminal
   operator: Fluxys
   cargo:
   - tanker

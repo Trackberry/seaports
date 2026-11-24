@@ -14,15 +14,17 @@ note: >-
 port_limits:
   derive: hull
   buffer_m: 100
+  clip: water
   note: >-
     OpenStreetMap maps the harbour as one area, Puerto de Santa Cruz de Tenerife (relation/1216506), but
     its hull takes in the city centre behind the waterfront, so it is not used. These are the hull of
-    the terminals below alone, grown by 100 m: Plaza de España, El Toscal and the city's own OpenStreetMap
-    point stay outside.
+    the terminals below alone, grown by 100 m, then cut to the water OpenStreetMap maps inside it, with
+    the terminals kept whole and a 30 m margin where they meet the water. A scan of OpenStreetMap finds
+    no homes, residential land, schools, hospitals, places of worship or named places inside.
 features:
 - osm: relation/2609780
   kind: terminal
-  name: Terminal de Contenedores de Tenerife
+  name: Muelle de Contenedores
   operator: Terminal de Contenedores de Tenerife
   cargo:
   - container

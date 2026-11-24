@@ -60,7 +60,7 @@ features:
   cargo:
   - general
   note: >-
-    A general cargo port, named Cang Tong hop Thi Vai in OpenStreetMap, which gives no operator; general
+    A general cargo port, named Cảng Tổng hợp Thị Vải in OpenStreetMap, which gives no operator; general
     cargo is from its name.
 - osm: way/612248649
   kind: terminal

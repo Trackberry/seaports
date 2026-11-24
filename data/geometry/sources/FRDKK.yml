@@ -35,7 +35,7 @@ features:
     as relation/13293438, not used here.
 - osm: node/4175657703
   kind: terminal
-  name: DFDS Dunkerque ferry terminal
+  name: Terminal ferry 5625 DFDS
   operator: DFDS
   cargo:
   - ro_ro
@@ -47,7 +47,7 @@ features:
     mapped beside it; Ro-Ro 4, about 450 m south-west, falls outside.
 - osm: way/1549523183
   kind: terminal
-  name: Dunkerque LNG
+  name: Dunkerque terminal méthanier
   cargo:
   - tanker
   note: >-

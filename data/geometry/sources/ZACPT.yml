@@ -17,14 +17,17 @@ port_limits:
   - relation/15602642
   - relation/15602636
   buffer_m: 200
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Cape Town. These are the hull of the container terminal and
-    the Duncan Dock, Ben Schoeman Dock and Tanker Basin, grown by 200 m: the cargo docks and their quays,
-    but not the V&A Waterfront or the city behind.
+    the Duncan Dock, Ben Schoeman Dock and Tanker Basin, grown by 200 m, then cut to the water OpenStreetMap
+    maps inside it, with the terminals and those areas kept whole and a 30 m margin where they meet the
+    water. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places of worship
+    or named places inside.
 features:
 - osm: way/423037310
   kind: terminal
-  name: Cape Town Container Terminal
+  name: Cape Town Container Terminal (CTCT)
   operator: Transnet Port Terminals
   cargo:
   - container

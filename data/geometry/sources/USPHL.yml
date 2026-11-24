@@ -18,10 +18,12 @@ port_limits:
     on North King, Morris, North Willow, Middlesex, Warren, Hudson and Mercer Streets, the deepest 66
     m in, but no schools, churches or hospitals. At the north-east corner they take in up to 70 m of the
     Port of Camden's Broadway Terminal, a separate port.
+  accepts:
+    houses: 13
 features:
 - osm: way/544007426
   kind: terminal
-  name: Packer Avenue Marine Terminal
+  name: Packer Avenue Marine Terminal/Philadelphia Auto Processing Facility
   operator: Greenwich Terminals
   cargo:
   - container
@@ -55,7 +57,7 @@ features:
   note: PhilaPort's car terminal and vehicle processing centre, opened in 2019. Tagged landuse=industrial.
 - osm: way/549167340
   kind: terminal
-  name: Gloucester Marine Terminal
+  name: Berths
   operator: Gloucester Terminals
   cargo:
   - reefer

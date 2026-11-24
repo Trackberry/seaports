@@ -11,6 +11,19 @@ port_limits:
   note: >-
     OpenStreetMap maps no port limits for Port-Vendres. These are the fruit terminal grown by 600 m, which
     takes in the inner harbour and part of the town around it, so they are rougher than the legal limits.
+  accepts:
+    houses: 201
+    residential_m2: 729996
+    amenities: 4
+    places:
+    - Port-Vendres
+    - Résidence Carouflor
+    - Résidence Le Glacis
+    - Résidence Le Glacis 2
+    - Résidence Les Néréides
+    - Résidence Méditerranée
+    - Résidence l'Horloge
+    - Résidence les Angéliques
 features:
 - osm: way/42304307
   kind: terminal

@@ -11,9 +11,12 @@ position_outside: >-
 port_limits:
   derive: hull
   buffer_m: 150
+  clip: water
   note: >-
-    OpenStreetMap maps no port limits for Santa Marta. These are the port area grown by 150 m, over its
-    berths and the water alongside; the port backs onto the old town, so the margin is kept small.
+    OpenStreetMap maps no port limits for Santa Marta. These are the port area grown by 150 m, then cut
+    to the water OpenStreetMap maps inside it, with the port area kept whole and a 30 m margin where they
+    meet the water. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals, places
+    of worship or named places inside.
 features:
 - osm: way/687259694
   kind: terminal

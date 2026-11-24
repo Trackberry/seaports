@@ -16,14 +16,23 @@ port_limits:
   derive: hull
   osm: way/545376168
   buffer_m: 800
+  clip: water
+  disjoint: >-
+    The coal terminal stands back from the Loire behind its jetties (see its inland), and the water SEA-invest
+    and Idea Services Vrac lie on is not joined to the estuary inside the hull, so each is a part of its
+    own.
   note: >-
     OpenStreetMap maps no port limits for Montoir. These are the hull of the terminals below and the unnamed
-    industrial area behind the Montoir quays, grown by 800 m. They take in the industrial land between
-    the quays, so they are rougher than the legal limits.
+    industrial area behind the Montoir quays, grown by 800 m, then cut to the water OpenStreetMap maps
+    inside it, with the terminals and those areas kept whole and a 30 m margin where they meet the water.
+    A scan of OpenStreetMap finds no homes, schools, hospitals, places of worship or named places inside;
+    the edges of five residential areas reach in by about 500 m² in all, none of it more than 5 m inside.
+  accepts:
+    residential_m2: 501
 features:
 - osm: node/428646911
   kind: terminal
-  name: Montoir ro-ro terminal
+  name: Autoroute de la mer / Autovía marítima (Gijon - Saint-Nazaire)
   cargo:
   - ro_ro
   buffer_m: 300
@@ -35,7 +44,7 @@ features:
     the point's cargo=passengers tag is not followed.
 - osm: way/545376169
   kind: terminal
-  name: Terminal Méthanier de Montoir
+  name: Terminal Méthanier Elengy
   operator: Elengy
   cargo:
   - tanker
@@ -45,10 +54,13 @@ features:
   name: Terminal charbonnier
   cargo:
   - bulk
+  inland: >-
+    The stockyard lies about 70 m back from the Loire; ships unload at the jetties in front of it (man_made=pier),
+    which OpenStreetMap maps as land.
   note: The coal terminal. OpenStreetMap gives no operator or cargo tag; bulk is from its name.
 - osm: way/1553540912
   kind: terminal
-  name: SEA-invest Montoir
+  name: SEA-invest
   operator: SEA-invest
   cargo:
   - bulk

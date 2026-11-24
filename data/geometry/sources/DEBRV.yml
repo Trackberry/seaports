@@ -20,6 +20,21 @@ port_limits:
     OpenStreetMap maps no port limits for Bremerhaven. These are the hull of the terminals below and two
     harbour basins (Neuer Hafen and Kaiserhafen I), grown by 1 km. They take in the Weser along the quays
     and the town behind them, so they are rougher than the legal port area.
+  accepts:
+    houses: 3240
+    residential_m2: 3730290
+    amenities: 40
+    places:
+    - Bremerhaven
+    - Eckernfeld
+    - Eckernfeldsiedlung
+    - Goethequartier
+    - Lehe
+    - Mitte
+    - Stadtbremisches Überseehafengebiet
+    - Strödackersiedlung
+    - Twischkamp
+    - Weddewarden
 features:
 - osm: way/303440598
   kind: anchorage

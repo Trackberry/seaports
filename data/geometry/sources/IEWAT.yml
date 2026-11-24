@@ -13,10 +13,12 @@ position_outside: >-
 port_limits:
   derive: hull
   buffer_m: 500
+  clip: water
   note: >-
-    OpenStreetMap maps no port limits for Waterford. These are the hull of Belview, grown by 500 m: the
-    river berths at Belview only. The city quays (Frank Cassin Wharf), which the port lists for cruise
-    and project cargo, are left out, so the limits do not reach the city.
+    OpenStreetMap maps no port limits for Waterford. These are the hull of Belview, grown by 500 m, then
+    cut to the water OpenStreetMap maps inside it, with the terminals kept whole and a 30 m margin where
+    they meet the water. A scan of OpenStreetMap finds no homes, residential land, schools, hospitals,
+    places of worship or named places inside.
 features:
 - osm: way/46605667
   kind: terminal

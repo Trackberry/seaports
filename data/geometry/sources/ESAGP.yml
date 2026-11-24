@@ -10,13 +10,20 @@ port_limits:
   derive: hull
   osm: relation/3881070
   buffer_m: 300
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Málaga. These are the hull of the port area (relation/3881070,
-    tagged industrial=port and named Puerto de Málaga) and the terminals below, grown by 300 m.
+    tagged industrial=port and named Puerto de Málaga) and the terminals below, grown by 300 m, then cut
+    to the water OpenStreetMap maps inside it, with the terminals and those areas kept whole and a 30
+    m margin where they meet the water. A scan of OpenStreetMap finds no homes, residential land, schools,
+    hospitals or named places inside; one place of worship, the Capilla de la Virgen del Puerto, stands
+    about 20 m inside the edge.
+  accepts:
+    amenities: 1
 features:
 - osm: way/183257786
   kind: terminal
-  name: Muelle 9
+  name: Muelle 9 - Polivalente
   cargo:
   - container
   - general

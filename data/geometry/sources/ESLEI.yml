@@ -19,7 +19,7 @@ port_limits:
 features:
 - osm: way/196310297
   kind: terminal
-  name: Estación Marítima de Almería
+  name: Terminal portuaria
   cargo:
   - ro_ro
   - passenger

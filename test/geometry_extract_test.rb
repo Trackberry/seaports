@@ -337,4 +337,32 @@ class GeometryExtractTest < Minitest::Test
 
     assert_equal [["continent/west/county"]], source.regions_for("way/10", nil, nil).map { |cover| cover.map(&:path) }
   end
+
+  # The names the name rule reads come from the objects the shapes were
+  # read from, with no second pass over the extract.
+  def test_the_names_come_from_the_same_read_as_the_shapes
+    named = OPL.sub("w10 Tlanduse=port ", "w10 Tlanduse=port,name=Port%20%Nord,name:en=North%20%Port,operator=X ")
+    calls = []
+    source = extract(opl: named, calls:)
+    source.shapes(["way/10", "node/9"], position: [1.5, 1.5])
+    reads = calls.size
+
+    assert_equal({ "way/10" => { "name" => "Port Nord", "name:en" => "North Port" }, "node/9" => {} },
+      source.tags_for("NLRTM").call(["way/10", "node/9"]))
+    assert_equal reads, calls.size
+  end
+
+  # The scan keeps nodes, unlike the water: a place is a node.
+  def test_the_inside_scan_cuts_the_box_and_filters_by_the_scans_tags
+    opl = "n1 Tplace=hamlet,name=Les%20%Neiges x1.5 y1.5\nn2 T x1.6 y1.5\n"
+    calls = []
+    found = extract(opl:, calls:).inside([1.2, 1.2, 1.8, 1.8], label: "NLRTM")
+    elements = found["elements"]
+    assert_equal 0, found["skipped"]
+    filter = calls.find { |args| args[1] == "tags-filter" }
+
+    assert_equal [{ "type" => "node", "id" => 1, "lat" => 1.5, "lon" => 1.5, "tags" => { "place" => "hamlet", "name" => "Les Neiges" } }], elements
+    assert_equal Seaports::Geometry::Inside::FILTERS, filter.last(Seaports::Geometry::Inside::FILTERS.size)
+    assert(calls.any? { |args| args[1] == "extract" && args.include?("1.2,1.2,1.8,1.8") })
+  end
 end

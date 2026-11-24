@@ -25,6 +25,10 @@ port_limits:
     homes, schools, hospitals or places of worship inside. It finds two place names on the 6th centre
     for Hongmaogang (紅毛港), the village cleared to build it, a Tudigong label on the 4th centre, and at
     the edge 300 m² of an outdoor exhibition area by the 6th centre tagged as housing.
+  accepts:
+    residential_m2: 301
+    places:
+    - 紅毛港
 features:
 - osm: way/1487539863
   kind: anchorage

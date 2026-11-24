@@ -14,10 +14,13 @@ port_limits:
   derive: hull
   osm: way/44854146
   buffer_m: 300
+  clip: water
   note: >-
     OpenStreetMap maps no port limits for Las Palmas. These are the hull of the port area (way/44854146,
     tagged industrial=port and named Puerto de la Luz y de Las Palmas) and the terminals below, grown
-    by 300 m.
+    by 300 m, then cut to the water OpenStreetMap maps inside it, with the terminals and those areas kept
+    whole and a 30 m margin where they meet the water. A scan of OpenStreetMap finds no homes, residential
+    land, schools, hospitals, places of worship or named places inside.
 features:
 - osm: way/1530867665
   kind: terminal
@@ -30,7 +33,7 @@ features:
     so check it.
 - osm: way/1034806337
   kind: terminal
-  name: Santa Catalina Terminal
+  name: Puerto de la Luz y de Las Palmas
   cargo:
   - passenger
   note: >-
@@ -38,7 +41,7 @@ features:
     port in OpenStreetMap. It is the cruise quay; passenger is from that, so check it.
 - osm: relation/14403207
   kind: terminal
-  name: Baleària Las Palmas Terminal
+  name: Terminal Baleária Canarias Terminal
   operator: Baleària
   cargo:
   - ro_ro
