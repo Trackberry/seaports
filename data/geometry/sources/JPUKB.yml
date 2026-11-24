@@ -22,6 +22,9 @@ port_limits:
     OpenStreetMap finds no homes, residential land, schools, hospitals or places of worship inside; the
     named places are a district (chōme) label on the Port Island berths and the outlines of Port Island
     and Rokko Island, under the berths.
+  accepts:
+    places:
+    - 港島九丁目
 features:
 - osm:
   - way/738108921

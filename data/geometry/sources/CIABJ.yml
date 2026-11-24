@@ -23,6 +23,8 @@ port_limits:
     or places of worship inside. Two residential areas reach in where they are drawn over the shore, by
     about 200 m² in all; the commune of Treichville and the island of Petit-Bassam, whose outlines take
     in the port, overlap it; and the named places inside are labels on the quays and the grain terminal.
+  accepts:
+    residential_m2: 215
 features:
 - osm: way/292702360
   kind: terminal

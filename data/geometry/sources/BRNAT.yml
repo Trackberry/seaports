@@ -17,22 +17,24 @@ port_limits:
     margin is kept small. A search of OpenStreetMap found two buildings mapped as houses on Rua Chile
     inside the margin, within 40 m of its edge, and no residential land, schools, churches, hospitals
     or named places. The Hospital dos Pescadores and the Isabel Gondim school are just outside.
+  accepts:
+    houses: 2
 features:
 - osm: way/189330201
   kind: anchorage
-  name: Anchorage No 1
+  name: No 1
   note: Seamark area named No 1 in OpenStreetMap, offshore of the river mouth.
 - osm: way/189330202
   kind: anchorage
-  name: Anchorage No 2
+  name: No 2
   note: Seamark area named No 2 in OpenStreetMap, inside the river mouth.
 - osm: way/189330194
   kind: anchorage
-  name: Anchorage No 3
+  name: No 3
   note: Seamark area named No 3 in OpenStreetMap, off the river mouth.
 - osm: way/288581157
   kind: anchorage
-  name: Anchorage No 3 (outer)
+  name: No 3
   note: A second seamark area also named No 3 in OpenStreetMap, east of the first.
 - osm: way/291018553
   kind: terminal

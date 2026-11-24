@@ -21,7 +21,7 @@ port_limits:
 features:
 - osm: relation/18549955
   kind: terminal
-  name: Moll de la Química
+  name: Berths
   cargo:
   - tanker
   note: >-

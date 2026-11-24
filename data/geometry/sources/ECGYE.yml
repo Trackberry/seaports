@@ -29,6 +29,14 @@ port_limits:
     of three residential areas behind the public port (Fertisa, Antártida and Coop. Nuevo Ecuador 1) reach
     in by about 0.25 ha in all, none of it more than 40 m inside; the named places are labels on the terminals
     and the outline of Isla Trinitaria, under TPG and Naportec.
+  accepts:
+    residential_m2: 2379
+    places:
+    - Puerto Marítimo "Libertador Simón Bolívar"
+    - Terminal Portuaria - Andipuerto
+    - Terminal Portuaria Fertisa
+    - Terminal Portuario BananaPuerto
+    - Terminal Portuario Guayaquil - TPG
 features:
 - osm: way/1054844869
   kind: terminal

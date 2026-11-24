@@ -30,7 +30,7 @@ features:
     so check it.
 - osm: way/1034806337
   kind: terminal
-  name: Santa Catalina Terminal
+  name: Puerto de la Luz y de Las Palmas
   cargo:
   - passenger
   note: >-
@@ -38,7 +38,7 @@ features:
     port in OpenStreetMap. It is the cruise quay; passenger is from that, so check it.
 - osm: relation/14403207
   kind: terminal
-  name: Baleària Las Palmas Terminal
+  name: Terminal Baleária Canarias Terminal
   operator: Baleària
   cargo:
   - ro_ro

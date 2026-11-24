@@ -20,7 +20,7 @@ port_limits:
 features:
 - osm: way/385316853
   kind: terminal
-  name: BEST Barcelona
+  name: Barcelona Europe South Terminal
   operator: Hutchison Ports BEST
   cargo:
   - container
@@ -48,7 +48,7 @@ features:
   note: Tagged cargo=container and operator Grupo Mestre.
 - osm: way/618306608
   kind: terminal
-  name: Barcelona Cruise Terminals
+  name: Terminals de Passatgers
   cargo:
   - passenger
   note: >-
@@ -56,7 +56,7 @@ features:
     OpenStreetMap. Passenger is from the name.
 - osm: way/618634980
   kind: terminal
-  name: Terminal F1 Baleària
+  name: Terminal F1 Balearia
   operator: Baleària
   cargo:
   - ro_ro
@@ -71,7 +71,7 @@ features:
   note: Tagged port=roro. The ferry terminal for the Balearic lines; OpenStreetMap gives no operator.
 - osm: way/618739591
   kind: terminal
-  name: Terminal F3 Grimaldi
+  name: Terminal F3
   operator: Grimaldi Lines
   cargo:
   - ro_ro
@@ -86,7 +86,7 @@ features:
   note: Tagged cargo=vehicle.
 - osm: relation/21416850
   kind: terminal
-  name: SETRAM Barcelona
+  name: SETRAM
   operator: SETRAM
   cargo:
   - ro_ro
@@ -100,21 +100,21 @@ features:
   note: Tagged cargo=liquid_bulk.
 - osm: way/620358645
   kind: terminal
-  name: Tepsa Barcelona
+  name: Tepsa
   operator: Tepsa
   cargo:
   - tanker
   note: Tagged industrial=port only; tanker is from the operator's trade, so check it.
 - osm: way/620358628
   kind: terminal
-  name: Meroil Barcelona
+  name: Meroil
   operator: Meroil
   cargo:
   - tanker
   note: Tagged industrial=port only; tanker is from the operator's trade, so check it.
 - osm: way/278024072
   kind: terminal
-  name: CLH Barcelona
+  name: Exolum Barcelona
   operator: Exolum
   cargo:
   - tanker
@@ -123,14 +123,14 @@ features:
     check it.
 - osm: way/619523285
   kind: terminal
-  name: Decal Barcelona
+  name: Decal España
   operator: Decal
   cargo:
   - tanker
   note: Tagged industrial=port only; tanker is from the operator's trade, so check it.
 - osm: relation/8603118
   kind: terminal
-  name: Enagás Barcelona LNG Terminal
+  name: Enagás ,SA
   operator: Enagás
   cargo:
   - tanker
@@ -144,7 +144,7 @@ features:
   note: Tagged cargo=dry_bulk.
 - osm: way/618798111
   kind: terminal
-  name: Bunge Ibérica Barcelona
+  name: Bunge Ibérica
   operator: Bunge
   cargo:
   - bulk

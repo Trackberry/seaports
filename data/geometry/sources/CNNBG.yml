@@ -49,7 +49,7 @@ features:
     International Container Terminals, part-owned by Hutchison Ports); OpenStreetMap does not map it separately.
 - osm: way/544521508
   kind: terminal
-  name: Container terminal
+  name: 宁波舟山港大榭集装箱码头
   cargo:
   - container
   note: >-

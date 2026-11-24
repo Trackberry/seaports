@@ -48,19 +48,19 @@ features:
   - way/464334826
   - way/464334825
   kind: anchorage
-  name: Everingen
+  name: Everingen A
   note: Everingen A, B and C, in the Western Scheldt.
 - osm: relation/10362019
   kind: anchorage
-  name: Rede van Vlissingen
+  name: Ankergebied Rede Vlissingen
   note: Off Vlissingen, about 60 km downriver.
 - osm: way/233090331
   kind: anchorage
-  name: Wielingen-Noord
+  name: Ankergebied Wielingen-Noord
   note: At the mouth of the Western Scheldt, more than 15 nautical miles from Antwerp.
 - osm: relation/10362020
   kind: anchorage
-  name: Wielingen-Zuid
+  name: Ankergebied Wielingen-Zuid
   note: At the mouth of the Western Scheldt.
 - osm: relation/21119001
   kind: terminal
@@ -79,7 +79,7 @@ features:
     it.
 - osm: relation/21119005
   kind: terminal
-  name: MSC PSA European Terminal (MPET)
+  name: 'MPET : MSC PSA European Terminal'
   operator: PSA / TIL
   cargo:
   - container
@@ -93,7 +93,7 @@ features:
   note: On the Deurganckdok, left bank. Container is from its operator.
 - osm: way/89143911
   kind: terminal
-  name: Antwerp Euroterminal
+  name: Antwerp Euroterminal NV
   note: OpenStreetMap gives no cargo type or operator.
 - osm: relation/5496745
   kind: terminal

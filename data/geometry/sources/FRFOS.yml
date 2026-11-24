@@ -26,7 +26,7 @@ port_limits:
 features:
 - osm: way/104479008
   kind: terminal
-  name: Fos container terminals (Graveleau)
+  name: Graveleau
   cargo:
   - container
   note: >-
@@ -47,7 +47,7 @@ features:
   note: Tagged industrial=port. Tanker is from its name.
 - osm: way/720715853
   kind: terminal
-  name: Fosmax LNG
+  name: Fosmax LNG Elengy
   operator: Elengy
   cargo:
   - tanker

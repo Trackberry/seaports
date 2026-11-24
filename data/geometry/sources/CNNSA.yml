@@ -24,6 +24,8 @@ port_limits:
     scan of OpenStreetMap finds no homes, residential land, schools, hospitals or places of worship inside,
     apart from a canteen and dormitory block (食堂及宿舍楼) on the terminals; the named places are labels for
     Nansha port's phases (南沙港一期, 二期, 三期) on the terminals and Longxue island's outline under them.
+  accepts:
+    houses: 1
 features:
 - osm: relation/20318969
   kind: terminal

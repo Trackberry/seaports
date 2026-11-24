@@ -20,25 +20,25 @@ port_limits:
 features:
 - osm: way/1024857543
   kind: anchorage
-  name: North Anchorage
+  name: Anchorage
   note: >-
     Seamark area, unnamed in OpenStreetMap; the name is from where it lies, north-east of the harbour
     entrance. OpenStreetMap gives no category.
 - osm: way/1024857542
   kind: anchorage
-  name: Outer North Anchorage
+  name: Anchorage
   note: >-
     Seamark area, unnamed in OpenStreetMap; the name is from where it lies, further offshore than the
     North Anchorage. OpenStreetMap gives no category.
 - osm: way/1024857541
   kind: anchorage
-  name: South Anchorage
+  name: Anchorage
   note: >-
     Seamark area, unnamed in OpenStreetMap; the name is from where it lies, south-east of the harbour.
     OpenStreetMap gives no category.
 - osm: relation/9646830
   kind: terminal
-  name: Castellón Container Terminal
+  name: Container terminal
   cargo:
   - container
   note: Tagged industrial=port and cargo=container, with no name or operator in OpenStreetMap.

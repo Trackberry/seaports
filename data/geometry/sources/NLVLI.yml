@@ -36,7 +36,7 @@ features:
   note: Seamark area in the Western Scheldt, south-east of Vlissingen.
 - osm: way/233090331
   kind: anchorage
-  name: Wielingen-Noord
+  name: Ankergebied Wielingen-Noord
   note: At the mouth of the Western Scheldt.
 - osm: relation/10362020
   kind: anchorage
@@ -49,7 +49,7 @@ features:
   note: OpenStreetMap gives no cargo type; the operator is from its name.
 - osm: way/1226608116
   kind: terminal
-  name: Verbrugge Scaldia Terminals
+  name: Verbrugge Scaldia Terminals B.V.
   operator: Verbrugge
   note: OpenStreetMap gives no cargo type; the operator is from its name.
 - osm: way/854930103
@@ -70,7 +70,7 @@ features:
   note: OpenStreetMap gives no cargo type; the operator is from its name.
 - osm: relation/10831684
   kind: terminal
-  name: Vesta Terminal Flushing
+  name: Vesta Terminal Flushing B.V. Sloe
   operator: Vesta Terminals
   cargo:
   - tanker

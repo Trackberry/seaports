@@ -22,7 +22,7 @@ features:
   - way/1300233196
   - way/1300233197
   kind: terminal
-  name: Rosslare Europort, Berths 1 to 4
+  name: Berth 1
   cargo:
   - ro_ro
   - passenger

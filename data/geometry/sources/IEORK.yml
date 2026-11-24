@@ -19,6 +19,12 @@ port_limits:
     OpenStreetMap maps no port limits for Cork. These are the hull of the Ringaskiddy terminals below,
     grown by 300 m. They take in the north end of Ringaskiddy village, around the ferry terminal, and
     none of the other harbour towns. Ships at Tivoli or at the Whitegate jetty fall outside them.
+  accepts:
+    houses: 81
+    residential_m2: 76822
+    amenities: 1
+    places:
+    - Ringaskiddy
 features:
 - osm: way/78183761
   kind: terminal
@@ -42,7 +48,7 @@ features:
     the container terminal, so the area is taken to be it.
 - osm: way/71433422
   kind: terminal
-  name: Ringaskiddy Ferry Terminal
+  name: Port of Cork
   operator: Port of Cork
   cargo:
   - ro_ro

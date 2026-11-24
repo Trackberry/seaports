@@ -14,6 +14,9 @@ port_limits:
     OpenStreetMap maps no port limits for London Gateway; the Port of London Authority's limits cover
     the whole tidal Thames. These are the hull of the container terminal, grown by 800 m to take in its
     berths and the river in front of them.
+  accepts:
+    places:
+    - Thames Haven
 features:
 - osm: way/505852953
   kind: terminal

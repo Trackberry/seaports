@@ -14,6 +14,9 @@ port_limits:
   note: >-
     OpenStreetMap maps no port limits for Wilmington. These are the Port of Wilmington's marine terminal
     grown by 600 m, which takes in its berths on the Delaware and the Christina and the water off them.
+  accepts:
+    places:
+    - New Castle Industrial Park
 features:
 - osm: way/228628615
   kind: terminal

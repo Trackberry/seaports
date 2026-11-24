@@ -23,7 +23,9 @@ module Seaports
     # which keeps the rule that no shape is typed or generated.
     module Selection
       TOP_KEYS = %w[locode reviewed_at note quays position_outside port_limits features].freeze
-      LIMIT_KEYS = %w[derive osm buffer_m clip disjoint note].freeze
+      LIMIT_KEYS = %w[derive osm buffer_m clip disjoint note accepts].freeze
+      # What the reviewers accepted inside the limits (Inside.compare).
+      ACCEPT_KEYS = %w[houses residential_m2 amenities places].freeze
       FEATURE_KEYS = %w[osm kind name operator cargo category buffer_m note reviewed_at].freeze
       EDITABLE = %w[kind name operator cargo category note].freeze
       TEXT_LIMITS = { "name" => 120, "operator" => 120, "note" => 600 }.freeze
@@ -162,7 +164,11 @@ module Seaports
       def canonical_value(key, value, feature_keys = FEATURE_KEYS)
         case key
         when "reviewed_at" then value.respond_to?(:iso8601) ? value.iso8601 : value.to_s
-        when "port_limits" then ordered(value, LIMIT_KEYS)
+        when "port_limits"
+          limits = ordered(value, LIMIT_KEYS)
+          limits["accepts"] = ordered(limits["accepts"], ACCEPT_KEYS) if limits["accepts"].is_a?(Hash)
+          limits.delete("accepts") if limits["accepts"] == {}
+          limits
         when "features" then value.map { |feature| ordered(feature, feature_keys) }
         when "ends" then value.is_a?(Hash) ? value.sort.to_h : value
         else value

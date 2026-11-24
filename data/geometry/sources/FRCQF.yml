@@ -18,7 +18,7 @@ port_limits:
 features:
 - osm: relation/9199357
   kind: terminal
-  name: Port de Calais ferry terminal
+  name: Port de Calais
   cargo:
   - ro_ro
   - passenger

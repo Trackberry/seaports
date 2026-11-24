@@ -21,7 +21,7 @@ port_limits:
 features:
 - osm: way/615484227
   kind: terminal
-  name: Terminal de contenedores (Muelle del Centenario)
+  name: Terminal de contenedores
   operator: Terminal Marítima del Guadalquivir
   cargo:
   - container
@@ -33,7 +33,7 @@ features:
     de contenedores and gives Puerto de Sevilla as operator.
 - osm: way/268627088
   kind: terminal
-  name: Exolum Sevilla
+  name: Berths
   operator: Exolum
   cargo:
   - tanker

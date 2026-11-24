@@ -18,10 +18,14 @@ port_limits:
     OpenStreetMap maps no port limits for Zeebrugge. These are the hull of the terminals below and the
     Verbindingsdok, from the outer harbour to the inner port behind the locks, grown by 1.5 km. They take
     in the town of Zeebrugge, so they are rougher than the legal port area.
+  accepts:
+    places:
+    - Zeebrugge
+    - Zeebrugge-Dorp
 features:
 - osm: way/129914569
   kind: anchorage
-  name: West Hinder Anchorage
+  name: West Hinder Achorage
   note: Seamark area offshore, about 40 km west-north-west of the port. OpenStreetMap spells it "Achorage".
 - osm: relation/10539931
   kind: anchorage
@@ -29,7 +33,7 @@ features:
   note: Seamark area offshore, west of the port.
 - osm: way/233090331
   kind: anchorage
-  name: Wielingen-Noord
+  name: Ankergebied Wielingen-Noord
   note: At the mouth of the Western Scheldt, north-east of the port.
 - osm: relation/10362020
   kind: anchorage
@@ -48,6 +52,7 @@ features:
   note: Tagged cargo=container.
 - osm: way/366540027
   kind: terminal
+  name: Container terminal
   cargo:
   - container
   note: >-
@@ -66,7 +71,7 @@ features:
   note: OpenStreetMap gives no cargo type; the operator is from its name.
 - osm: way/204683781
   kind: terminal
-  name: Zeebrugge LNG Terminal
+  name: Zeebrugge lng-terminal
   operator: Fluxys
   cargo:
   - tanker

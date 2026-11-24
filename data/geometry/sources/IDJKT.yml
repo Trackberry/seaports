@@ -25,6 +25,11 @@ port_limits:
     on the terminal areas (two in the old harbour, one each on the container and vehicle terminals), the
     Koja place name on the container terminal, and at the edge 30 m² of the MI Swasta Al-Ma'arif school
     grounds, 0.3 ha of an unnamed residential area and 0.1 ha of an islet's shore.
+  accepts:
+    residential_m2: 2583
+    amenities: 4
+    places:
+    - Koja
 features:
 - osm: way/850698169
   kind: terminal

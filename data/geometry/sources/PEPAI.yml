@@ -18,7 +18,7 @@ port_limits:
 features:
 - osm: way/585019362
   kind: terminal
-  name: Terminal Portuario Euroandinos
+  name: Terminales Portuarios Euroandinos
   operator: Terminales Portuarios Euroandinos Paita
   cargo:
   - container

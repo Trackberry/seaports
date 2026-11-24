@@ -18,7 +18,7 @@ port_limits:
 features:
 - osm: way/167792636
   kind: terminal
-  name: Eastern Docks
+  name: Port of Dover - Eastern Docks
   operator: Port of Dover
   cargo:
   - ro_ro

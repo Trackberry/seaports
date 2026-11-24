@@ -25,7 +25,7 @@ features:
     is a building inside it, so not a separate feature here.
 - osm: relation/4073345
   kind: terminal
-  name: Portico
+  name: Portico Cargo Terminal
   operator: Portico
   cargo:
   - reefer
@@ -35,7 +35,7 @@ features:
     berths next to the ferry port; reefer is from what Portico handles, so check it.
 - osm: way/71398461
   kind: terminal
-  name: Wightlink Portsmouth
+  name: Wightlink Car Ferry Terminal
   operator: Wightlink
   cargo:
   - ro_ro

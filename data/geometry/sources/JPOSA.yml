@@ -20,6 +20,14 @@ port_limits:
     Port Town and Cosmo Square, which has flats (River Garden) as well as offices. A scan of OpenStreetMap
     finds no homes, residential land, schools, hospitals or places of worship inside; the named places
     are the district (chōme) labels on the berths and the outlines of Yumeshima and Sakishima, under them.
+  accepts:
+    places:
+    - 南港中七丁目
+    - 南港中八丁目
+    - 南港北三丁目
+    - 南港東九丁目
+    - 南港東六丁目
+    - 夢洲東一丁目
 features:
 - osm: way/628733197
   kind: terminal

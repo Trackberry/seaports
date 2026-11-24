@@ -28,7 +28,7 @@ features:
     reefer is from its name.
 - osm: way/1116292605
   kind: terminal
-  name: Sea Invest Sète
+  name: Sea Invest
   operator: SEA-invest
   cargo:
   - bulk

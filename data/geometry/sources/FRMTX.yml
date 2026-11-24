@@ -23,7 +23,7 @@ port_limits:
 features:
 - osm: node/428646911
   kind: terminal
-  name: Montoir ro-ro terminal
+  name: Autoroute de la mer / Autovía marítima (Gijon - Saint-Nazaire)
   cargo:
   - ro_ro
   buffer_m: 300
@@ -35,7 +35,7 @@ features:
     the point's cargo=passengers tag is not followed.
 - osm: way/545376169
   kind: terminal
-  name: Terminal Méthanier de Montoir
+  name: Terminal Méthanier Elengy
   operator: Elengy
   cargo:
   - tanker
@@ -48,7 +48,7 @@ features:
   note: The coal terminal. OpenStreetMap gives no operator or cargo tag; bulk is from its name.
 - osm: way/1553540912
   kind: terminal
-  name: SEA-invest Montoir
+  name: SEA-invest
   operator: SEA-invest
   cargo:
   - bulk

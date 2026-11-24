@@ -24,7 +24,7 @@ port_limits:
 features:
 - osm: way/423037310
   kind: terminal
-  name: Cape Town Container Terminal
+  name: Cape Town Container Terminal (CTCT)
   operator: Transnet Port Terminals
   cargo:
   - container

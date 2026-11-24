@@ -27,6 +27,10 @@ port_limits:
     m² in all, with 12 m² of an apartment block. The named places are Pillar Point, under the River Trade
     Terminal, the Tai Kok Tau headland on Tsing Yi's shore, lot outlines and a label on the terminals,
     some 40 rocks and islets in the channels, and slivers of Ma Wan's and Lantau's shores.
+  accepts:
+    residential_m2: 1227
+    places:
+    - 望后石 Pillar Point
 features:
 - osm: way/208575109
   kind: anchorage

@@ -19,7 +19,7 @@ port_limits:
 features:
 - osm: relation/14685601
   kind: terminal
-  name: Terminal de Contenedores de Cartagena
+  name: Terminal de Contenedores - Muelle de Santa Lucía
   cargo:
   - container
   note: >-
@@ -27,7 +27,7 @@ features:
     only. Container is from the name.
 - osm: relation/14685519
   kind: terminal
-  name: Muelle de San Pedro
+  name: Terminal de Mercancía General - Muelle de San Pedro
   cargo:
   - general
   note: >-
@@ -35,7 +35,7 @@ features:
     only. General is from the name.
 - osm: way/316458295
   kind: terminal
-  name: Terminal de Cruceros de Cartagena
+  name: Terminal de Cruceros
   cargo:
   - passenger
   buffer_m: 60

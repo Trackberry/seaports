@@ -56,7 +56,10 @@ class CanalBuilderTest < Minitest::Test
     }.merge(changes.transform_keys(&:to_s))
   end
 
-  def build(sel = selection) = Builder.new(sel, shapes:).build
+  def build(sel = selection)
+    tags = ->(refs) { refs.to_h { |ref| [ref, { "seamark:name" => sel["features"].find { |f| Array(f["osm"]).first == ref }&.dig("name") }.compact] } }
+    Builder.new(sel, shapes:, tags:).build
+  end
 
   def test_builds_the_waterway_first_as_lines_and_keeps_each_anchorages_approach
     collection = build
@@ -193,7 +196,7 @@ class CanalBuilderTest < Minitest::Test
   def test_overlapping_anchorages_serving_different_ends_are_an_error
     collection = build
     twin = Marshal.load(Marshal.dump(collection["features"][1]))
-    twin["properties"].merge!("name" => "Twin", "approach" => "south", "osm" => ["way/5"])
+    twin["properties"].merge!("name" => "Twin", "approach" => "south", "osm" => ["way/5"], "osm_tags" => { "seamark:name" => "Twin" })
     collection["features"] << twin
 
     assert(Checks.run(collection).errors.any? { |line| line.include?("overlap but serve different ends") })

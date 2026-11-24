@@ -291,12 +291,13 @@ namespace :seaports do
     shipped_canals = canal_collections
     failed = []
     locodes.each do |locode|
-      sources = extract ? { shapes: extract.shapes_for(locode), water: extract.water_for(locode) } : {}
-      builder = builder_class.new(builder_class.read_selection(builder_class.selection_path(locode)), **sources)
+      sources = extract ? { shapes: extract.shapes_for(locode), water: extract.water_for(locode), tags: extract.tags_for(locode), inside: extract.inside_for(locode) } : {}
+      selection = builder_class.read_selection(builder_class.selection_path(locode))
+      builder = builder_class.new(selection, **sources)
       collection = builder.build
       builder.notices.each { |line| puts "  notice: #{line}" }
       others = geometry_collections.except(locode)
-      result = checks.run(collection, others:, file_locode: locode)
+      result = checks.run(collection, others:, file_locode: locode, selection:)
       report_geometry(result)
       # Both ways: new limits that now swallow a neighbour's terminal are as
       # wrong as a terminal inside a neighbour's limits, and limits that take
@@ -316,7 +317,7 @@ namespace :seaports do
       failed << locode
     end
     canals.each do |id|
-      shapes = extract ? { shapes: extract.shapes_for_canal(id) } : {}
+      shapes = extract ? { shapes: extract.shapes_for_canal(id), tags: extract.tags_for(id) } : {}
       collection = canal_builder.new(canal_builder.read_selection(canal_builder.selection_path(id)), **shapes).build
       result = Seaports::Canal::Checks.run(collection, others: geometry_collections, file_id: id)
       report_geometry(result)
@@ -358,7 +359,11 @@ namespace :seaports do
     require_relative "lib/seaports/geometry/checks"
 
     collections = geometry_collections
-    results = collections.map { |locode, collection| Seaports::Geometry::Checks.run(collection, others: collections, file_locode: locode) }
+    results = collections.map do |locode, collection|
+      path = Seaports::Geometry::Builder.selection_path(locode)
+      selection = File.exist?(path) ? Seaports::Geometry::Builder.read_selection(path) : nil
+      Seaports::Geometry::Checks.run(collection, others: collections, file_locode: locode, selection:)
+    end
     results.each { |result| report_geometry(result) }
     orphans = collections.keys.reject { |locode| File.exist?(Seaports::Geometry::Builder.selection_path(locode)) }
     abort "No selection for #{orphans.join(', ')}" unless orphans.empty?

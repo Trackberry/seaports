@@ -23,6 +23,11 @@ port_limits:
     inside in all, with the edge of a small residential area; the named places are the Sulphur Point label
     on the container terminal, and the boundaries of Mount Maunganui and its industrial quarter overlap
     the wharves.
+  accepts:
+    houses: 8
+    residential_m2: 93
+    places:
+    - Sulphur Point
 features:
 - osm: node/9234532498
   kind: pilot_boarding

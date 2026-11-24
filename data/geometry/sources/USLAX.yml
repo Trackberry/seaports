@@ -20,7 +20,7 @@ port_limits:
 features:
 - osm: relation/9256990
   kind: terminal
-  name: APM Terminals Pier 400
+  name: Pier 400
   operator: APM Terminals
   cargo:
   - container
@@ -29,14 +29,14 @@ features:
     it Pier 400.
 - osm: way/666016405
   kind: terminal
-  name: Fenix Marine Services
+  name: Pier 300
   operator: Fenix Marine Services
   cargo:
   - container
   note: Container terminal on Pier 300, berths 302 to 305. OpenStreetMap names it Pier 300.
 - osm: relation/14285488
   kind: terminal
-  name: Everport Terminal Services
+  name: Evergreen Container Terminal
   operator: Everport Terminal Services
   cargo:
   - container
@@ -45,21 +45,21 @@ features:
     Terminal.
 - osm: relation/14285489
   kind: terminal
-  name: Yusen Terminals
+  name: Yusen Container Terminal
   operator: Yusen Terminals
   cargo:
   - container
   note: Container terminal on Terminal Island, berths 212 to 225.
 - osm: way/667288516
   kind: terminal
-  name: TraPac Los Angeles
+  name: TraPac Container Terminal
   operator: TraPac
   cargo:
   - container
   note: Container terminal in Wilmington, berths 136 to 147.
 - osm: way/667263478
   kind: terminal
-  name: West Basin Container Terminal, berths 100 to 102
+  name: China Shipping Container Terminal
   operator: West Basin Container Terminal
   cargo:
   - container
@@ -67,7 +67,7 @@ features:
     The West Basin terminal's southern berths. OpenStreetMap still names it China Shipping Container Terminal.
 - osm: way/667288015
   kind: terminal
-  name: West Basin Container Terminal, berths 121 to 131
+  name: Yang Ming Container Terminal
   operator: West Basin Container Terminal
   cargo:
   - container
@@ -75,7 +75,7 @@ features:
     The West Basin terminal's northern berths. OpenStreetMap still names it Yang Ming Container Terminal.
 - osm: way/669457585
   kind: terminal
-  name: Pasha Stevedoring & Terminals
+  name: Pasha
   operator: Pasha Stevedoring & Terminals
   cargo:
   - general

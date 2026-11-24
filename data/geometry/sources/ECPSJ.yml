@@ -18,6 +18,10 @@ port_limits:
     land, schools, churches or hospitals inside them. The only places it maps inside are labels within
     the terminal's own fence: Barrio Lomas del Cangrejal Lote 1B, which covers yards, parking and a fuel
     station, and one naming the terminal itself.
+  accepts:
+    places:
+    - Terminal Portuario DP World -Posorja
+    - barrio Lomas del Cangrejal Lote 1B
 features:
 - osm: way/1281259809
   kind: terminal

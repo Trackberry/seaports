@@ -65,7 +65,7 @@ features:
     each an area of its own, with no one area for the canal.
 - osm: way/1445268881
   kind: anchorage
-  name: A
+  name: Fondeadero de barcos mercantes
   approach: north
   note: >-
     Seamark anchorage area in Limon Bay inside the Colón breakwaters, named in OpenStreetMap as the anchorage
@@ -87,7 +87,7 @@ features:
   note: Seamark anchorage area in Miraflores Lake, between the Pedro Miguel and Miraflores locks.
 - osm: way/836793584
   kind: anchorage
-  name: Cocolí Tie-up Station
+  name: Cocoli Tie up Station
   approach: in_transit
   note: >-
     Seamark anchorage area beside the Pedro Miguel locks, on the channel from the Cocolí locks to the
@@ -104,7 +104,7 @@ features:
   note: Seamark anchorage area south of the Pacific Anchorage.
 - osm: way/830303038
   kind: anchorage
-  name: Hazardous Cargo Anchorage
+  name: Hazardous Carcgo Anchorage
   approach: south
   note: >-
     Seamark anchorage area for ships carrying hazardous cargo, south-west of the Pacific Anchorage. OpenStreetMap

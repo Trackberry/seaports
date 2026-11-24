@@ -17,13 +17,13 @@ port_limits:
 features:
 - osm: way/1010784059
   kind: anchorage
-  name: North Anchorage
+  name: Anchorage
   note: >-
     Seamark area with anchor berths N1 to N4, unnamed in OpenStreetMap; the name is from those berths.
     OpenStreetMap gives no category.
 - osm: way/1010784058
   kind: anchorage
-  name: South Anchorage
+  name: Anchorage
   note: >-
     Seamark area with anchor berths S1 to S16, unnamed in OpenStreetMap; the name is from those berths.
     OpenStreetMap gives no category.
@@ -40,21 +40,21 @@ features:
   note: Tagged cargo=container. The operator is from the name, so check it.
 - osm: relation/21216348
   kind: terminal
-  name: MSC Terminal Valencia
+  name: MSC Terminal
   operator: MSC
   cargo:
   - container
   note: OpenStreetMap names it "MSC Terminal" and tags it cargo=container.
 - osm: relation/21216340
   kind: terminal
-  name: APM Terminals Valencia
+  name: APM Terminals
   operator: APM Terminals
   cargo:
   - container
   note: OpenStreetMap names it "APM Terminals" and tags it cargo=container.
 - osm: relation/16611362
   kind: terminal
-  name: Ro-ro terminal
+  name: Berths
   cargo:
   - ro_ro
   note: >-
@@ -62,7 +62,7 @@ features:
     once someone checks which it is.
 - osm: way/150545987
   kind: terminal
-  name: Trasmed Valencia Terminal
+  name: Terminal Acciona-Trasmediterránea
   operator: Trasmed
   cargo:
   - ro_ro

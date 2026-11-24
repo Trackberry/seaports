@@ -50,7 +50,7 @@ features:
   note: A building at the Pier Head, tagged amenity=ferry_terminal.
 - osm: way/435290221
   kind: terminal
-  name: Twelve Quays
+  name: Berths
   operator: Stena Line
   cargo:
   - ro_ro

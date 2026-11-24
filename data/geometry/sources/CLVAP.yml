@@ -19,7 +19,7 @@ port_limits:
 features:
 - osm: relation/14349711
   kind: terminal
-  name: TPS Valparaíso
+  name: Container terminal
   operator: Terminal Pacífico Sur
   cargo:
   - container

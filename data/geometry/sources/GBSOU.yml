@@ -18,7 +18,7 @@ port_limits:
 features:
 - osm: relation/13590178
   kind: terminal
-  name: DP World Southampton
+  name: Container terminal
   operator: DP World
   cargo:
   - container
@@ -35,7 +35,7 @@ features:
     name; OpenStreetMap gives no cargo tag, so check it.
 - osm: relation/3519616
   kind: terminal
-  name: Eastern Docks
+  name: Port of Southampton
   operator: Associated British Ports
   cargo:
   - ro_ro

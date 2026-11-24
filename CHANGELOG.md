@@ -3,6 +3,20 @@
 Entries are written by `.github/workflows/refresh.yml` when it opens a refresh
 pull request, or by hand for a code change; a person merges both.
 
+## Unreleased
+
+Three checks that a reviewer used to make by hand on every outline release are now made by `rake seaports:check_geometry`, offline, from what the build stores in each outline, so the weekly rebuild from OpenStreetMap fails when an edit there breaks one:
+
+- The name rule. The build stores the `name`, `name:en` and `seamark:name` tags of each terminal's and anchorage's OpenStreetMap element (the first listed, for a feature mapped in parts) as `osm_tags`, and a name that is not OpenStreetMap's own is an error: its `name`; its `name:en` where `name` is in another script than Latin, or is missing; its `seamark:name` for an unnamed seamark; "Anchorage", "Container terminal" or "Berths" where OpenStreetMap gives none. Canal anchorages too.
+- Notes that quote OpenStreetMap. "Named X in OpenStreetMap", "named so" and "OpenStreetMap names it "X"" in a feature's note must match the stored tags (an error); a quoted name close to a feature's but no longer equal to it is a warning.
+- What lies inside the limits. The build scans the final limits for homes, residential land, schools, hospitals, clinics, places of worship and place labels, and stores the summary on the limits as `inside`. A selection's new `accepts` key under `port_limits` says what the reviewers accepted, and a scan that holds more is an error; well below is a warning. `accepts` is left out of `selection_digest`, so accepting what a refresh found needs no rebuild.
+
+Every port and both canals are rebuilt so their outlines carry the tags and the scan; no limits changed in area, and four features moved by an OpenStreetMap edit (Zeebrugge's Wielingen-Noord anchorage, BLG Autoterminal Bremerhaven, Baleària's Las Palmas terminal and Le Havre's Centre roulier). 129 features in 49 ports and the Panama Canal are renamed to follow the name rule, most of them in ports outlined before 1.7.6: Rotterdam's "Euromax Terminal" is now "Hutchison ECT Euromax Terminal", Valencia's unnamed anchorages "Anchorage". The note on Cai Mep's Cảng Tổng hợp Thị Vải quoted its OpenStreetMap name without the diacritics it has.
+
+Of the 111 ports, 38 have nothing inside their limits, and 35 now say under `accepts` what their scan holds and their note discloses. The other 38 hold more than their notes say, every one of them limits without `clip: water`, hulls grown by up to 1.5 km over towns their notes do not mention (Antwerp, Rotterdam, Hamburg, Southampton, Liverpool), and fail `check_geometry` until their notes or their limits are put right.
+
+`Extract` names its cut files after the region with any slash replaced, so a scan or a clip in a Geofabrik region with a nested id (`us/delaware`) no longer fails to write it.
+
 ## 1.7.6 — 2026-11-23
 
 Port outlines for 49 more ports, plus Ain Sokhna below, so 111 in all, every one with `clip: water` limits:

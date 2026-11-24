@@ -17,6 +17,8 @@ port_limits:
     OpenStreetMap maps no port limits for Waterford. These are the hull of Belview, grown by 500 m: the
     river berths at Belview only. The city quays (Frank Cassin Wharf), which the port lists for cruise
     and project cargo, are left out, so the limits do not reach the city.
+  accepts:
+    residential_m2: 13
 features:
 - osm: way/46605667
   kind: terminal

@@ -28,7 +28,7 @@ port_limits:
 features:
 - osm: way/744954052
   kind: terminal
-  name: Belfast Harbour Victoria Terminals
+  name: Belfast Harbour
   operator: Belfast Harbour
   cargo:
   - container
@@ -54,7 +54,7 @@ features:
   - way/223540693
   - way/223540694
   kind: terminal
-  name: Pollock Dock
+  name: Pollock Dock B-D
   cargo:
   - general
   note: >-

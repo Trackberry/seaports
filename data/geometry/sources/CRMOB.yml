@@ -23,7 +23,7 @@ port_limits:
 features:
 - osm: way/1453248880
   kind: terminal
-  name: APM Terminals Moín
+  name: Terminal de Contenedores Moín
   operator: APM Terminals
   cargo:
   - container
@@ -33,7 +33,7 @@ features:
     Terminals lists 3,933 reefer plugs there.
 - osm: way/25371549
   kind: terminal
-  name: Terminal Portuaria Gastón Kogan Kogan
+  name: Puerto Internacional Moín
   operator: JAPDEVA
   note: >-
     JAPDEVA's Moín terminal, mapped in OpenStreetMap as Puerto Internacional Moín. OpenStreetMap gives

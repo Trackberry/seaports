@@ -27,7 +27,7 @@ features:
   - way/1030152712
   - way/1030152713
   kind: terminal
-  name: Port of Immingham
+  name: Container terminal
   operator: Associated British Ports
   cargo:
   - bulk
@@ -38,7 +38,7 @@ features:
     the ABP dock offices mapped among them; the cargo types are a guess at the dock's mix, so check them.
 - osm: way/101338872
   kind: terminal
-  name: DFDS Immingham
+  name: DFDS Seaways Ferry Terminal
   operator: DFDS
   cargo:
   - ro_ro

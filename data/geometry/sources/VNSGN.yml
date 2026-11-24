@@ -26,6 +26,10 @@ port_limits:
     residential areas on the banks reach in where they are drawn over the river, by about 2 ha in all,
     most of it a strip of Khu đô thị Sala in Thu Thiem, none of it more than 40 m inside, and an island's
     shore by 320 m²; the only named place is a Khu phố 26 neighbourhood label on the river bank.
+  accepts:
+    residential_m2: 20788
+    places:
+    - Khu phố 26
 features:
 - osm: way/410427637
   kind: terminal

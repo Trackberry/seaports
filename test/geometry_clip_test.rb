@@ -81,7 +81,9 @@ class GeometryClipTest < Minitest::Test
   end
 
   def build(limits = { "clip" => "water" }, **options)
-    Builder.new(selection(limits, **options), shapes:, water: ->(_bbox) { Harbour.water }).build
+    sel = selection(limits, **options)
+    tags = ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| f["osm"] == ref }&.dig("name") }.compact] } }
+    Builder.new(sel, shapes:, water: ->(_bbox) { Harbour.water }, tags:, inside: ->(_bbox) { [] }).build
   end
 
   def limits(collection) = collection["features"].find { |f| f["properties"]["kind"] == "port_limits" }["geometry"]
@@ -303,9 +305,10 @@ class GeometryClipChecksTest < Minitest::Test
   Checks = Seaports::Geometry::Checks
 
   def feature(kind, geometry, **props)
+    stored = kind == "port_limits" ? { "inside" => { "houses" => 0 } } : { "osm_tags" => { "name" => props[:name] }.compact }
     { "type" => "Feature", "geometry" => geometry,
       "properties" => { "kind" => kind, "source" => "test", "licence" => "ODbL-1.0", "reviewed_at" => "2026-11-23", "note" => "n",
-                        "cargo" => ["bulk"] }.merge(props.transform_keys(&:to_s)) }
+                        "cargo" => ["bulk"] }.merge(stored).merge(props.transform_keys(&:to_s)) }
   end
 
   def collection(limits, terminals)

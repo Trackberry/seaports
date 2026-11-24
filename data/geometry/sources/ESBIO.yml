@@ -21,12 +21,15 @@ port_limits:
     tagged harbour=yes and named Bilbao Port), the terminals below and the Getxo cruise terminal across
     the Abra, grown by 300 m. They take in the water of the Abra between, and the waterfront of Santurtzi
     as far as its town hall.
+  accepts:
+    places:
+    - Santurtzi
 features:
 - osm:
   - way/302501227
   - way/169168190
   kind: terminal
-  name: CSP Iberian Bilbao Terminal
+  name: Muelle A-1
   operator: CSP Iberian Bilbao Terminal
   cargo:
   - container
@@ -37,7 +40,7 @@ features:
     name.
 - osm: way/109786918
   kind: terminal
-  name: Frigoríficos Portuarios del Norte (Frioport)
+  name: Frigorífico Portuario del Norte
   cargo:
   - reefer
   note: >-
@@ -59,7 +62,7 @@ features:
   - way/292975951
   - way/390266991
   kind: terminal
-  name: Getxo Cruise Terminal
+  name: Terminal de Cruceros Getxo I y II
   cargo:
   - passenger
   note: Terminal de Cruceros Getxo I y II and Getxo III, two buildings merged here.

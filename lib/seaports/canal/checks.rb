@@ -43,6 +43,7 @@ module Seaports
         check_canal_header(id)
         features = Array(@collection["features"])
         features.each_with_index { |feature, index| check_canal_feature(feature, index) }
+        check_quotes(features)
         waterways = features.count { |f| f.dig("properties", "kind") == "waterway" }
         @errors << "#{id} has #{waterways} waterways, not one" unless waterways == 1
         @warnings << "no anchorage mapped" if features.none? { |f| f.dig("properties", "kind") == "anchorage" }
@@ -100,6 +101,9 @@ module Seaports
         else
           @errors << "#{where}: approach #{props['approach'].inspect} is not one of #{APPROACHES.join(', ')}" unless APPROACHES.include?(props["approach"])
           check_geometry(feature["geometry"], kind, where)
+          # The ports' name rule: a canal's anchorages are named as
+          # OpenStreetMap names them too.
+          check_name(props, where) if kind == "anchorage"
         end
       end
 

@@ -182,6 +182,11 @@ class GeometryBuilderTest < Minitest::Test
 
   def shapes = ->(refs) { { "way/1" => TERMINAL, "way/2" => BERTH, "way/3" => ANCHORAGE, "node/4" => PILOT }.slice(*refs) }
 
+  # OpenStreetMap's names: each feature's own, as the name rule wants.
+  def tags(sel = selection)
+    ->(refs) { refs.to_h { |ref| [ref, { "name" => sel["features"].find { |f| Array(f["osm"]).first == ref }&.dig("name") }.compact] } }
+  end
+
   def selection(features = nil)
     {
       "locode" => "NLRTM", "reviewed_at" => Date.new(2026, 11, 23), "quays" => ["NLBOT"],
@@ -307,7 +312,7 @@ class GeometryBuilderTest < Minitest::Test
   end
 
   def test_the_built_collection_passes_its_checks
-    result = Seaports::Geometry::Checks.run(Builder.new(selection, shapes:).build)
+    result = Seaports::Geometry::Checks.run(Builder.new(selection, shapes:, tags:, inside: ->(_bbox) { [] }).build)
 
     assert result.ok?, result.errors.join("\n")
   end
@@ -320,9 +325,13 @@ class GeometryChecksTest < Minitest::Test
     { "type" => "FeatureCollection", "locode" => locode, "quays" => [], "attribution" => "© OpenStreetMap", "features" => features }
   end
 
+  # Limits carry an empty scan, and a terminal or an anchorage the
+  # OpenStreetMap name it is given, as a build stores them.
   def feature(kind, coordinates, **props)
+    stored = kind == "port_limits" ? { "inside" => { "houses" => 0 } } : { "osm_tags" => { "name" => props[:name] }.compact }
     { "type" => "Feature", "geometry" => { "type" => "Polygon", "coordinates" => [coordinates] },
-      "properties" => { "kind" => kind, "source" => "test", "licence" => "ODbL-1.0", "reviewed_at" => "2026-11-23", "note" => "n" }.merge(props.transform_keys(&:to_s)) }
+      "properties" => { "kind" => kind, "source" => "test", "licence" => "ODbL-1.0", "reviewed_at" => "2026-11-23", "note" => "n" }
+        .merge(stored).merge(props.transform_keys(&:to_s)) }
   end
 
   LIMITS = [[4.4, 51.85], [4.6, 51.85], [4.6, 52.0], [4.4, 52.0], [4.4, 51.85]].freeze
@@ -350,7 +359,7 @@ class GeometryChecksTest < Minitest::Test
   end
 
   def test_gaps_are_warnings_not_errors
-    result = Checks.run(collection([feature("port_limits", LIMITS), feature("terminal", TERMINAL)]))
+    result = Checks.run(collection([feature("port_limits", LIMITS), feature("terminal", TERMINAL, name: "Container terminal")]))
 
     assert result.ok?, result.errors.join("\n")
     assert_includes result.warnings, "no anchorage mapped"
@@ -447,7 +456,7 @@ class GeometryApiTest < Minitest::Test
 
 def test_names_the_terminal_a_position_is_in
   assert_equal %w[terminal port_limits], Seaports.areas_at("GBDVR", 51.1256, 1.3315).map(&:kind)
-  assert_equal ["Eastern Docks"], Seaports.areas_at("GBDVR", 51.1256, 1.3315, kind: :terminal).map(&:name)
+  assert_equal ["Port of Dover - Eastern Docks"], Seaports.areas_at("GBDVR", 51.1256, 1.3315, kind: :terminal).map(&:name)
   assert_includes Seaports.terminals("GBDVR").first.cargo, "ro_ro"
 end
 

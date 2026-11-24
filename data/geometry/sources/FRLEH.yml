@@ -30,6 +30,12 @@ port_limits:
     and Terminal de l'Europe, is inside. Beyond it the only addresses inside are a few premises on Rue
     Cuvier, by the municipal vehicle garage, and a container depot on the Route des Marais. Saint-François,
     Saint-Nicolas, L'Eure, Graville, Harfleur and Gonfreville-l'Orcher are outside.
+  accepts:
+    houses: 7
+    residential_m2: 271254
+    amenities: 1
+    places:
+    - Les Neiges
 features:
 - osm: node/11431822294
   kind: pilot_boarding
@@ -47,7 +53,7 @@ features:
   - way/517454589
   - way/690910919
   kind: terminal
-  name: Terminaux de Normandie
+  name: Terminal TNMSC
   operator: Terminaux à Conteneurs de France (TiL)
   cargo:
   - container
@@ -60,7 +66,7 @@ features:
   - way/261362482
   - way/518702537
   kind: terminal
-  name: Terminal de France
+  name: Terminal de France - GMP
   operator: Générale de Manutention Portuaire (GMP)
   cargo:
   - container

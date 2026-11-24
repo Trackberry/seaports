@@ -21,10 +21,12 @@ port_limits:
     grown by 250 m, which takes in the width of the Seine along the quays. The centres of Grand-Couronne,
     Petit-Couronne, Grand-Quevilly, Val-de-la-Haye and Rouen are outside. On the far bank the 250 m takes
     in the riverside road at Val-de-la-Haye and Hautot-sur-Seine (Quai Napoléon) and a few houses there.
+  accepts:
+    residential_m2: 3497
 features:
 - osm: way/41891460
   kind: terminal
-  name: Grand-Couronne quays (TCMD)
+  name: Container terminal
   operator: SOMAP and Agence Maritime de Seine (AMS)
   cargo:
   - container
@@ -38,7 +40,7 @@ features:
     catalogue. The bulk berths with conveyors at its downstream end serve Saipol's oilseed plant.
 - osm: way/561981261
   kind: terminal
-  name: Saipol Grand-Couronne
+  name: Saipol
   operator: Saipol
   cargo:
   - tanker

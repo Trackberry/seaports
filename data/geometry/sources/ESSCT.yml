@@ -22,7 +22,7 @@ port_limits:
 features:
 - osm: relation/2609780
   kind: terminal
-  name: Terminal de Contenedores de Tenerife
+  name: Muelle de Contenedores
   operator: Terminal de Contenedores de Tenerife
   cargo:
   - container

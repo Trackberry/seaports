@@ -16,7 +16,7 @@ port_limits:
 features:
 - osm: way/183257786
   kind: terminal
-  name: Muelle 9
+  name: Muelle 9 - Polivalente
   cargo:
   - container
   - general

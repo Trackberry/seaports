@@ -28,6 +28,9 @@ port_limits:
     OpenStreetMap maps no port limits for Rotterdam. These are the hull of the terminals below, from Maasvlakte
     to Waalhaven, grown by 1.5 km. They also take in Rozenburg and the river banks between, which are
     inside the real port area too, but are rougher than the legal limits.
+  accepts:
+    places:
+    - Rozenburg
 features:
 - osm: relation/10406117
   kind: anchorage
@@ -43,12 +46,12 @@ features:
   note: Seamark area north of the approach channel.
 - osm: way/755193783
   kind: anchorage
-  name: Emergency anchorage
+  name: Emergency
   category: emergency
   note: OpenStreetMap names it "Emergency".
 - osm: way/597875321
   kind: terminal
-  name: Euromax Terminal
+  name: Hutchison ECT Euromax Terminal
   operator: Hutchison Ports ECT
   cargo:
   - container
@@ -57,14 +60,14 @@ features:
   - way/145664537
   - way/145664536
   kind: terminal
-  name: ECT Delta Terminal
+  name: Hutchison ECT Delta Terminal
   operator: Hutchison Ports ECT
   cargo:
   - container
   note: Mapped as two ways, merged here.
 - osm: way/607016850
   kind: terminal
-  name: Hutchison Ports Delta II
+  name: Hutchison Delta 2 Terminal
   operator: Hutchison Ports ECT
   cargo:
   - container
@@ -99,7 +102,7 @@ features:
   - way/271232095
   - way/726525834
   kind: terminal
-  name: Kloosterboer Maasvlakte
+  name: Kloosterboer
   operator: Kloosterboer
   cargo:
   - reefer
@@ -108,7 +111,7 @@ features:
     separately.
 - osm: way/144699200
   kind: terminal
-  name: P&O Ferries Europoort
+  name: P&O Ferries
   operator: P&O Ferries
   cargo:
   - ro_ro
@@ -157,7 +160,7 @@ features:
   note: Tagged cargo=general.
 - osm: way/144149689
   kind: terminal
-  name: Chane Terminal Botlek
+  name: Chane Terminal Botlek B.V.
   operator: Koole Terminals
   cargo:
   - tanker
@@ -166,7 +169,7 @@ features:
   - way/448735512
   - way/951224296
   kind: terminal
-  name: Cool Port
+  name: Cool Port I
   operator: Kloosterboer
   cargo:
   - reefer

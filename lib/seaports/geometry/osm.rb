@@ -18,6 +18,9 @@ module Seaports
       ENDPOINTS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"].freeze
       RETRY_PAUSES = [20, 60, nil].freeze
       REF = %r{\A(node|way|relation)/([1-9]\d*)\z}
+      # The tags a terminal's or an anchorage's name is checked against (the
+      # name rule, in Checks), stored in its outline as "osm_tags".
+      NAME_TAGS = %w[name name:en seamark:name].freeze
 
       class Error < StandardError; end
 
@@ -58,16 +61,26 @@ module Seaports
       # Polygon or MultiPolygon, or a LineString for a way that does not
       # close. Raises when OpenStreetMap no longer has one, so a deleted
       # feature is noticed by the refresh rather than shipped as a hole.
-      def shapes(refs, http: Http.method(:get))
+      #
+      # +tags+, a Hash, is filled with each reference's NAME_TAGS from the
+      # same answer, so the names cost no second query.
+      def shapes(refs, http: Http.method(:get), tags: nil)
         by_type = refs.map { |ref| parse_ref(ref) }.group_by(&:first)
         statements = by_type.map { |type, pairs| "#{type}(id:#{pairs.map(&:last).join(',')});" }.join
         elements = query("[out:json][timeout:120];(#{statements});out geom;", http:)["elements"]
 
         found = elements.to_h { |element| ["#{element['type']}/#{element['id']}", shape(element)] }
+        elements.each { |element| tags["#{element['type']}/#{element['id']}"] = name_tags(element["tags"]) } if tags
         missing = refs - found.keys
         raise Error, "OpenStreetMap has no #{missing.join(', ')}" unless missing.empty?
 
         found.slice(*refs)
+      end
+
+      # The NAME_TAGS among an element's +tags+, in NAME_TAGS's order.
+      def name_tags(tags)
+        tags ||= {}
+        NAME_TAGS.filter_map { |key| [key, tags[key]] unless tags[key].to_s.strip.empty? }.to_h
       end
 
       def parse_ref(ref)

@@ -23,7 +23,7 @@ port_limits:
 features:
 - osm: way/381834843
   kind: terminal
-  name: Muelle Sur
+  name: Puerto de Huelva
   cargo:
   - container
   - general

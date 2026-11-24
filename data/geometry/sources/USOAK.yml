@@ -20,7 +20,7 @@ port_limits:
 features:
 - osm: way/27234604
   kind: terminal
-  name: Everport Oakland
+  name: Port Of Oakland Ben E. Nutter Terminal
   operator: Everport Terminal Services
   cargo:
   - container
@@ -30,7 +30,7 @@ features:
   - way/27234638
   - way/27234676
   kind: terminal
-  name: TraPac Oakland
+  name: Port Of Oakland Berths 32-34
   operator: TraPac
   cargo:
   - container
@@ -41,7 +41,7 @@ features:
   - way/27234584
   - way/27234567
   kind: terminal
-  name: Oakland International Container Terminal
+  name: Port Of Oakland Hanjin Terminal
   operator: SSA Terminals
   cargo:
   - container
@@ -50,7 +50,7 @@ features:
     OpenStreetMap names Hanjin Terminal and Stevedoring Services Of America Terminal, merged here.
 - osm: way/27234534
   kind: terminal
-  name: Matson Terminal
+  name: Port Of Oakland APL Terminal
   operator: SSA Terminals
   cargo:
   - container

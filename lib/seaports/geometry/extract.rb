@@ -11,6 +11,7 @@ require_relative "../http"
 require_relative "osm"
 require_relative "planar"
 require_relative "water"
+require_relative "inside"
 
 module Seaports
   module Geometry
@@ -262,6 +263,7 @@ module Seaports
         @http = http
         @now = now
         @pbfs = {}
+        @tags = {}
       end
 
       # A callable with Osm.shapes's shape for Builder, which reads the
@@ -291,6 +293,26 @@ module Seaports
         ->(bbox) { water(bbox, label: locode) }
       end
 
+      # A callable for Builder's +tags+: each reference's Osm.name_tags, from
+      # the objects #shapes read, so the names cost no second pass.
+      def tags_for(_label = nil)
+        ->(refs) { refs.to_h { |ref| [ref, Osm.name_tags(@tags[ref])] } }
+      end
+
+      # A callable with Inside.overpass's shape for Builder, for the scan of
+      # what lies inside the port limits.
+      def inside_for(locode)
+        ->(bbox) { inside(bbox, label: locode) }
+      end
+
+      # The homes, residential areas, amenities and places inside +bbox+, as
+      # Inside.overpass answers them but with whole geometries, cut from the
+      # extracts that hold the box like #water.
+      def inside(bbox, label: "OpenStreetMap")
+        elements, = cut(bbox, label:, what: "inside", filters: Inside::FILTERS, nodes: true)
+        elements
+      end
+
       # What osmium keeps of an extract for Water: the tags Water's Overpass
       # query asks for, and what those ways and relations reference.
       WATER_FILTERS = %w[w/natural=coastline nwr/natural=water w/waterway=riverbank,dock,canal r/waterway=riverbank].freeze
@@ -301,29 +323,8 @@ module Seaports
       # multipolygons, so a river relation is not cut at the edge), then
       # filtered by tag.
       def water(bbox, label: "OpenStreetMap")
-        west, south, east, north = bbox
-        points = [[west, south], [east, south], [east, north], [west, north], [(west + east) / 2.0, (south + north) / 2.0]]
-        cover = @region_name ? [named_region] : self.class.covers(regions, points).first
-        elements = {}
-        skipped = []
-        cover.sort_by(&:path).each do |region|
-          source = pbf(region)
-          @out.puts "#{label}: water from Geofabrik #{region.path} (OpenStreetMap as of #{timestamp(source)})"
-          FileUtils.mkdir_p(File.join(@cache_dir, "water"))
-          cut = File.join(@cache_dir, "water", "#{label}-#{region.id}.osm.pbf")
-          osmium!("extract", "--bbox", [west, south, east, north].join(","), "--strategy", "smart", "--overwrite",
-            "--no-progress", "-o", cut, source)
-          opl = osmium!("tags-filter", "--no-progress", "--output-format", "opl,add_metadata=false", "-o", "-", cut, *WATER_FILTERS)
-          objects = self.class.objects(opl)
-          self.class.tags(opl).each do |ref, tags|
-            next if elements.key?(ref) || ref.start_with?("node/")
-
-            elements[ref] = self.class.element(ref, objects).merge("tags" => tags)
-          rescue Incomplete => e
-            skipped << "#{ref}: #{e.message}"
-          end
-        end
-        water = Water.classify(elements.values)
+        elements, skipped = cut(bbox, label:, what: "water", filters: WATER_FILTERS)
+        water = Water.classify(elements)
         water.merge("skipped" => water["skipped"] + skipped)
       end
 
@@ -423,6 +424,38 @@ module Seaports
 
       private
 
+      # The tagged elements matching +filters+ (osmium tags-filter
+      # expressions) inside +bbox+, from the extracts that hold it: cut to
+      # the box with osmium extract (whole ways and whole multipolygons, so a
+      # river relation is not cut at the edge), then filtered by tag. Answers
+      # the elements and the references skipped as incomplete. Nodes are
+      # kept only when +nodes+.
+      def cut(bbox, label:, what:, filters:, nodes: false)
+        west, south, east, north = bbox
+        points = [[west, south], [east, south], [east, north], [west, north], [(west + east) / 2.0, (south + north) / 2.0]]
+        cover = @region_name ? [named_region] : self.class.covers(regions, points).first
+        elements = {}
+        skipped = []
+        cover.sort_by(&:path).each do |region|
+          source = pbf(region)
+          @out.puts "#{label}: #{what} from Geofabrik #{region.path} (OpenStreetMap as of #{timestamp(source)})"
+          FileUtils.mkdir_p(File.join(@cache_dir, what))
+          cut = File.join(@cache_dir, what, "#{label}-#{region.id.tr("/", "-")}.osm.pbf")
+          osmium!("extract", "--bbox", [west, south, east, north].join(","), "--strategy", "smart", "--overwrite",
+            "--no-progress", "-o", cut, source)
+          opl = osmium!("tags-filter", "--no-progress", "--output-format", "opl,add_metadata=false", "-o", "-", cut, *filters)
+          objects = self.class.objects(opl)
+          self.class.tags(opl).each do |ref, tags|
+            next if elements.key?(ref) || (!nodes && ref.start_with?("node/"))
+
+            elements[ref] = self.class.element(ref, objects).merge("tags" => tags)
+          rescue Incomplete => e
+            skipped << "#{ref}: #{e.message}"
+          end
+        end
+        [elements.values, skipped]
+      end
+
       def named_region
         @named_region ||= regions.find { |region| [region.id, region.path].include?(@region_name) } or
           raise Osm::Error, "Geofabrik has no region #{@region_name}: give its id (zuid-holland) or path (europe/netherlands/zuid-holland)"
@@ -481,6 +514,7 @@ module Seaports
           raise Osm::Error, "osmium getid failed on #{region.path}: #{stderr.lines.grep_v(/\A\[/).join.strip[0, 300]}"
         end
 
+        @tags.merge!(self.class.tags(stdout)) { |_, earlier, _| earlier }
         self.class.objects(stdout)
       end
 

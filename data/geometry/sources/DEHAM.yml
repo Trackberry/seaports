@@ -20,6 +20,9 @@ port_limits:
     and Altenwerder in the west to O'Swaldkai and the cruise centre in the east, grown by 1.5 km. They
     take in Steinwerder, Wilhelmsburg's port side and the Elbe between, so they are rougher than the legal
     port area.
+  accepts:
+    places:
+    - Steinwerder
 features:
 - osm: way/991881631
   kind: anchorage
@@ -84,7 +87,7 @@ features:
   note: OpenStreetMap gives no cargo type or operator.
 - osm: way/735594029
   kind: terminal
-  name: HHLA Frucht- und Kühlzentrum
+  name: HHLA Frucht und Kühlzentrum
   operator: HHLA
   cargo:
   - reefer

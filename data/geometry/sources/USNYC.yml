@@ -34,7 +34,7 @@ features:
   note: The port's largest container terminal, at Port Elizabeth. Tagged man_made=container_terminal.
 - osm: relation/21240521
   kind: terminal
-  name: APM Terminals Elizabeth
+  name: APM Terminals
   operator: APM Terminals
   cargo:
   - container
@@ -50,7 +50,7 @@ features:
   note: PNCT, on the Port Newark channel. Tagged man_made=container_terminal, operator Ports America.
 - osm: way/1319129979
   kind: terminal
-  name: Red Hook Terminals Newark
+  name: Red Hook Terminal
   operator: Red Hook Terminals
   cargo:
   - ro_ro

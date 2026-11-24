@@ -18,7 +18,7 @@ port_limits:
 features:
 - osm: way/557412429
   kind: terminal
-  name: Garden City Terminal
+  name: Georgia Ports Authority - Garden City Terminal
   operator: Georgia Ports Authority
   cargo:
   - container
