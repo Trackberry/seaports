@@ -460,10 +460,11 @@ Port Said in the C and V areas are waiting for a Suez convoy, not for a berth
 at Port Said; ships in the Great Bitter Lake are part-way through, waiting for
 the convoy coming the other way to pass. The gem ships outlines for the Suez,
 Panama and Kiel canals so a tracker can say "waiting to transit Suez since
-Tuesday" rather than "at anchor, Port Said".
+Tuesday" rather than "at anchor, Port Said", and the Turkish Straits' waterway,
+whose waiting areas are not mapped yet.
 
 ```ruby
-Seaports.canal_ids                               # => ["kiel", "panama", "suez"]
+Seaports.canal_ids                               # => ["kiel", "panama", "suez", "turkish_straits"]
 suez = Seaports.canal("suez")
 suez.anchorages.size                             # => 78
 suez.anchorages_for(:north).map(&:name).first(3) # => ["C1", "C2", "C3"]
@@ -480,7 +481,9 @@ Each canal is a `Seaports::Canal` with an `id`, a `name`, its two `ends` and
 its areas, each a `Seaports::Canal::Area`. The ends are named for the way the
 canal runs: `north` and `south` for Suez (Port Said and Suez) and Panama (Colón
 on the Atlantic and Balboa on the Pacific), `west` and `east` for the Kiel
-Canal (Brunsbüttel on the Elbe and Kiel-Holtenau on the Kiel Fjord).
+Canal (Brunsbüttel on the Elbe and Kiel-Holtenau on the Kiel Fjord), and
+`north` and `south` for the Turkish Straits (Istanbul on the Black Sea and
+Çanakkale on the Aegean).
 `approaches` lists the canal's two ends and `in_transit`. The areas:
 
 - one `waterway`, the canal's centreline as OpenStreetMap maps it. It is a
@@ -532,12 +535,20 @@ the canal. OpenStreetMap draws the Nordwest-Reede as an open line along the
 fairway, so its area is that line grown by 300 m. It maps no sidings inside
 the canal as areas, and no pilot boarding place at Brunsbüttel.
 
-The Turkish Straits are not outlined. OpenStreetMap maps the Bosporus and the
-Dardanelles as straits (relations 8926171 and 8926172), but none of the
-anchorages where ships wait to transit them: off the Black Sea entrance, off
-Istanbul in the Sea of Marmara, or off the Dardanelles. The only seamark
-anchorages there are the two inspection areas of the Black Sea Grain
-Initiative, which ended in July 2023.
+The Turkish Straits (`turkish_straits`) are a waterway only, with no waiting
+areas yet. OpenStreetMap maps the Bosporus and the Dardanelles as strait areas
+bounded by the coastline (relations 8926171 and 8926172) and no waterway through
+them, so the waterway is the traffic separation schemes' seamarks: the Istanbul
+Strait's separation line, the length of the strait, and the Çanakkale Strait's
+separation zone, which OpenStreetMap maps only from off Gelibolu to off
+Çoraklık Burnu. The Istanbul scheme's separation zones in the approaches beyond
+the strait (ways 1034443807 and 1034443809) are left out. The narrows at
+Çanakkale, the stretch down to the Aegean and the Sea of Marmara have no line.
+OpenStreetMap maps none of the anchorages the Turkish Straits Maritime Traffic
+Regulation (2019) sets at the straits' entrances and, at Karanlık Liman, inside
+the Çanakkale Strait, and no pilot boarding place. The only seamark anchorages there are the two inspection areas
+of the Black Sea Grain Initiative, which ended in July 2023, and they are left
+out.
 
 ### What is deliberately not in it
 

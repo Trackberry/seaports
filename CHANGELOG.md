@@ -9,7 +9,7 @@ A canal outline for the Kiel Canal (`kiel`): the Nord-Ostsee-Kanal waterway rela
 
 A canal's ends can now be `west` and `east` as well as `north` and `south`, since the Kiel Canal runs from Brunsbüttel in the west to Kiel-Holtenau in the east. A canal's areas take its own two ends or `in_transit` as their approach, `Seaports::Canal#approaches` lists them, and `anchorages_for` refuses an approach the canal does not have. `Seaports::Canal::APPROACHES` now lists every canal's approaches, `west` and `east` included. Suez and Panama outlines are unchanged.
 
-The Turkish Straits are not outlined: OpenStreetMap maps the Bosporus and the Dardanelles as straits but none of the anchorages where ships wait to transit them.
+A canal outline for the Turkish Straits (`turkish_straits`), north end Istanbul and south end Çanakkale, with a waterway only: the Istanbul Strait's traffic separation line and the part of the Çanakkale Strait's separation zone OpenStreetMap maps, from off Gelibolu to off Çoraklık Burnu. OpenStreetMap maps none of the anchorages the Turkish Straits Maritime Traffic Regulation sets at the entrances and no pilot boarding place, so the outline has no waiting areas until they are mapped.
 
 ## 1.7.6 — 2026-11-23
 

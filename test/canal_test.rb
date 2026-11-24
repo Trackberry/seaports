@@ -255,8 +255,8 @@ class CanalApiTest < Minitest::Test
   Builder = Seaports::Canal::Builder
 
   def test_lists_the_canals
-    assert_equal %w[kiel panama suez], Seaports.canal_ids
-    assert_equal %w[kiel panama suez], Seaports.canals.map(&:id)
+    assert_equal %w[kiel panama suez turkish_straits], Seaports.canal_ids
+    assert_equal %w[kiel panama suez turkish_straits], Seaports.canals.map(&:id)
   end
 
   def test_finds_a_canal_whatever_the_case_and_answers_nil_for_an_unknown_one
@@ -279,12 +279,28 @@ class CanalApiTest < Minitest::Test
     assert_nil Seaports.canal_anchorage_at(51.0, 1.5)
   end
 
+  # The Turkish Straits' waiting anchorages are not in OpenStreetMap yet,
+  # so their outline is the waterway alone.
+  WATERWAY_ONLY = %w[turkish_straits].freeze
+
   def test_each_canal_has_one_waterway_and_anchorages_at_both_ends
     Seaports.canals.each do |canal|
       assert_equal "MultiLineString", canal.waterway.geometry["type"], canal.id
       assert_equal 2, canal.ends.size
+      next if WATERWAY_ONLY.include?(canal.id)
+
       canal.ends.each_key { |approach| refute_empty canal.anchorages_for(approach), "#{canal.id} #{approach}" }
     end
+  end
+
+  def test_the_turkish_straits_run_north_to_south_and_have_no_waiting_areas_yet
+    straits = Seaports.canal("turkish_straits")
+
+    assert_equal %w[north south in_transit], straits.approaches
+    assert_equal "Istanbul", straits.end_name(:north)
+    assert_equal "Çanakkale", straits.end_name(:south)
+    assert_empty straits.anchorages
+    assert_empty straits.pilot_boarding_places
   end
 
   def test_an_unknown_approach_raises
